@@ -1,0 +1,155 @@
+ syntax="proto3";
+ package
+// metamodel_version: 1.7.0
+// Logical grouping of CPE match expressions.
+message Configuration
+ {
+  string cpeUri = 0
+  string operator = 0
+ }
+// Logical grouping of CPE match criteria for affected software.
+message CPEConfiguration
+ {
+  string configurationId = 0
+  configurationType configurationType = 0
+  string operator = 0
+ repeated  cPEConfiguration children = 0
+ repeated  cPEMatch matches = 0
+  string summary = 0
+ }
+// Leaf-level CPE match criterion and optional version bounds.
+message CPEMatch
+ {
+  string matchCriteriaId = 0
+  string criteria = 0
+  string cpe23Uri = 0
+  boolean vulnerable = 0
+  string versionStartIncluding = 0
+  string versionStartExcluding = 0
+  string versionEndIncluding = 0
+  string versionEndExcluding = 0
+ repeated  string matchedCpeNames = 0
+ }
+// Individual CVSS vector and score attribution.
+message CVSSMetric
+ {
+  string version = 0
+  string vectorString = 0
+  float baseScore = 0
+  impactSeverity baseSeverity = 0
+  scoreSource source = 0
+  string providerLabel = 0
+  string scoringJustification = 0
+ }
+// Additional explanatory note for CVSS display conditions.
+message CVSSScoreNote
+ {
+  string noteId = 0
+  string message = 0
+  string source = 0
+  datetime created = 0
+ }
+// Assessment of the vulnerability's impact and severity.
+message Impact
+ {
+  impactSeverity severity = 0
+  string vector = 0
+  float score = 0
+ }
+// CISA KEV information rendered on the NVD detail page.
+message KnownExploitedVulnerability
+ {
+  date dateAdded = 0
+  date dueDate = 0
+  string requiredAction = 0
+  uri kevReference = 0
+ }
+// Container for all metric views across CVSS versions.
+message MetricSet
+ {
+ repeated  cVSSMetric cvssV4Metrics = 0
+ repeated  cVSSMetric cvssV3Metrics = 0
+ repeated  cVSSMetric cvssV2Metrics = 0
+ repeated  cVSSScoreNote scoreNotes = 0
+ }
+// Enriched NVD representation of a CVE entry.
+message NVDEntry
+ {
+  cveId cveId = 0
+  string title = 0
+  datetime publishedDate = 0
+  datetime lastModifiedDate = 0
+ repeated  product products = 0
+  impact impact = 0
+  string descriptionSource = 0
+  string analysisDescription = 0
+  metricSet metrics = 0
+ repeated  cPEConfiguration configurations = 0
+ repeated  nVDReference references = 0
+ repeated  nVDWeakness weaknesses = 0
+ repeated  vendorComment vendorComments = 0
+ repeated  nVDTag nvdTags = 0
+ repeated  string cveTags = 0
+  nVDWorkflowStatus workflowStatus = 0
+ repeated  statusTransition statusTransitions = 0
+  knownExploitedVulnerability knownExploited = 0
+  string cweView = 0
+  datetime dateReceived = 0
+  nVDWorkflowStatus status = 0
+  string description = 0
+ }
+// Reference URL with NVD resource tags.
+message NVDReference
+ {
+  string name = 0
+ repeated  referenceTag resourceTags = 0
+  uri url = 0
+  string source = 0
+ }
+// Weakness row as presented on the NVD detail page.
+message NVDWeakness
+ {
+  string description = 0
+  string source = 0
+  string cweId = 0
+  string name = 0
+ }
+// Software or hardware entity affected by the vulnerability.
+message Product
+ {
+  string vendor = 0
+  string name = 0
+  string version = 0
+ repeated  string platforms = 0
+ }
+// External reference such as an advisory or article.
+message Reference
+ {
+  uri url = 0
+  string name = 0
+  string source = 0
+ }
+// State transition event in NVD enrichment workflow.
+message StatusTransition
+ {
+  string transitionId = 0
+  nVDWorkflowStatus fromStatus = 0
+  nVDWorkflowStatus toStatus = 0
+  nVDWorkflowEventSource eventSource = 0
+  datetime transitionTime = 0
+  string rationale = 0
+ }
+// Comment provided by vendor during NVD analysis.
+message VendorComment
+ {
+  string vendor = 0
+  string comment = 0
+  datetime lastModifiedDate = 0
+ }
+// Weakness classification from CWE or a similar taxonomy.
+message Weakness
+ {
+  string cweId = 0
+  string name = 0
+  string description = 0
+ }

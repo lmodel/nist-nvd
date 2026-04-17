@@ -1,0 +1,252 @@
+# metamodel_version: 1.7.0
+enum ConfigurationType
+  {
+    BASIC
+    RUNNING_ON_WITH
+    ADVANCED
+  }
+
+enum CVSSVersion
+  {
+    V2_0
+    V3_0
+    V3_1
+    V4_0
+  }
+
+enum ImpactSeverity
+  {
+    NONE
+    LOW
+    MEDIUM
+    HIGH
+    CRITICAL
+    UNKNOWN
+  }
+
+enum NVDTag
+  {
+    ANALYSIS_PENDING
+    ADDITIONAL_INFORMATION
+  }
+
+enum NVDWorkflowEventSource
+  {
+    NVD_PROCESS
+    NVD_STAFF_DECISION
+    CVE_PROGRAM_PROCESS
+    USER_REQUEST
+  }
+
+enum NVDWorkflowStatus
+  {
+    AWAITING_ENRICHMENT
+    UNDERGOING_ENRICHMENT
+    ENRICHED
+    MODIFIED_AFTER_ENRICHMENT
+    NOT_SCHEDULED
+    REJECTED
+  }
+
+enum ReferenceTag
+  {
+    THIRD_PARTY_ADVISORY
+    VENDOR_ADVISORY
+    ISSUE_TRACKING
+    PATCH
+    TECHNICAL_DESCRIPTION
+    PRESS_MEDIA_COVERAGE
+    VDB_ENTRY
+  }
+
+enum ScoreSource
+  {
+    NVD
+    CNA
+    ADP
+    VENDOR
+    THIRD_PARTY
+  }
+
+enum VersionBoundType
+  {
+    START_INCLUDING
+    START_EXCLUDING
+    END_INCLUDING
+    END_EXCLUDING
+  }
+
+enum VulnerabilityStatus
+  {
+    ACTIVE
+    REJECTED
+    DISPUTED
+    RESERVED
+    DEPRECATED
+  }
+
+type Configuration
+  {
+    cpeUri: String
+    operator: String
+  }
+
+type CPEConfiguration
+  {
+    configurationId: String
+    configurationType: ConfigurationType
+    operator: String
+    children: [CPEConfiguration]
+    matches: [CPEMatch]
+    summary: String
+  }
+
+type CPEMatch
+  {
+    matchCriteriaId: String
+    criteria: String
+    cpe23Uri: String
+    vulnerable: Boolean
+    versionStartIncluding: String
+    versionStartExcluding: String
+    versionEndIncluding: String
+    versionEndExcluding: String
+    matchedCpeNames: [String]
+  }
+
+type CVSSMetric
+  {
+    version: String
+    vectorString: String
+    baseScore: Float
+    baseSeverity: ImpactSeverity
+    source: ScoreSource
+    providerLabel: String
+    scoringJustification: String
+  }
+
+type CVSSScoreNote
+  {
+    noteId: String!
+    message: String
+    source: String
+    created: String
+  }
+
+type Impact
+  {
+    severity: ImpactSeverity
+    vector: String
+    score: Float
+  }
+
+type KnownExploitedVulnerability
+  {
+    dateAdded: String
+    dueDate: String
+    requiredAction: String
+    kevReference: String
+  }
+
+type MetricSet
+  {
+    cvssV4Metrics: [CVSSMetric]
+    cvssV3Metrics: [CVSSMetric]
+    cvssV2Metrics: [CVSSMetric]
+    scoreNotes: [CVSSScoreNote]
+  }
+
+type NVDEntry
+  {
+    cveId: CveId!
+    title: String
+    publishedDate: String
+    lastModifiedDate: String
+    products: [Product]
+    impact: Impact
+    descriptionSource: String
+    analysisDescription: String
+    metrics: MetricSet
+    configurations: [CPEConfiguration]
+    references: [NVDReference]
+    weaknesses: [NVDWeakness]
+    vendorComments: [VendorComment]
+    nvdTags: [NVDTag]
+    cveTags: [String]
+    workflowStatus: NVDWorkflowStatus
+    statusTransitions: [StatusTransition]
+    knownExploited: KnownExploitedVulnerability
+    cweView: String
+    dateReceived: String
+    status: NVDWorkflowStatus
+    description: String!
+  }
+
+type NVDReference
+  {
+    name: String
+    resourceTags: [ReferenceTag]
+    url: String!
+    source: String
+  }
+
+type NVDWeakness
+  {
+    description: String
+    source: String!
+    cweId: String!
+    name: String!
+  }
+
+type Product
+  {
+    vendor: String
+    name: String
+    version: String
+    platforms: [String]
+  }
+
+type Reference
+  {
+    url: String
+    name: String
+    source: String
+  }
+
+type StatusTransition
+  {
+    transitionId: String!
+    fromStatus: NVDWorkflowStatus
+    toStatus: NVDWorkflowStatus
+    eventSource: NVDWorkflowEventSource
+    transitionTime: String
+    rationale: String
+  }
+
+type VendorComment
+  {
+    vendor: String
+    comment: String
+    lastModifiedDate: String
+  }
+
+interface Vulnerability
+  {
+    cveId: CveId!
+    title: String
+    description: String!
+    publishedDate: String
+    lastModifiedDate: String
+    products: [Product]
+    weaknesses: [Weakness]
+    references: [Reference]
+    impact: Impact
+    status: VulnerabilityStatus
+  }
+
+type Weakness
+  {
+    cweId: String
+    name: String
+    description: String
+  }

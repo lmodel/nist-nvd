@@ -1,0 +1,352 @@
+{
+   "@context": {
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "WIKIDATA": "https://www.wikidata.org/wiki/",
+      "core": "https://w3id.org/lmodel/vulnerability-core/",
+      "dct": "http://purl.org/dc/terms/",
+      "linkml": "https://w3id.org/linkml/",
+      "nvd": "https://w3id.org/lmodel/nist-nvd/",
+      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+      "schema": "http://schema.org/",
+      "skos": "http://www.w3.org/2004/02/skos/core#",
+      "@vocab": "https://w3id.org/lmodel/nist-nvd/",
+      "analysis_description": {
+         "@id": "dct:description"
+      },
+      "base_score": {
+         "@type": "xsd:float",
+         "@id": "base_score"
+      },
+      "base_severity": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "base_severity"
+      },
+      "children": {
+         "@type": "@id",
+         "@id": "children"
+      },
+      "comment": {
+         "@id": "comment"
+      },
+      "configuration_id": {
+         "@id": "configuration_id"
+      },
+      "configuration_type": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "configuration_type"
+      },
+      "configurations": {
+         "@type": "@id",
+         "@id": "configurations"
+      },
+      "cpe23_uri": {
+         "@id": "cpe23_uri"
+      },
+      "cpe_uri": {
+         "@id": "core:cpe_uri"
+      },
+      "created": {
+         "@type": "xsd:dateTime",
+         "@id": "dct:created"
+      },
+      "criteria": {
+         "@id": "criteria"
+      },
+      "cve_id": "@id",
+      "cve_tags": {
+         "@id": "cve_tags"
+      },
+      "cvss_v2_metrics": {
+         "@type": "@id",
+         "@id": "cvss_v2_metrics"
+      },
+      "cvss_v3_metrics": {
+         "@type": "@id",
+         "@id": "cvss_v3_metrics"
+      },
+      "cvss_v4_metrics": {
+         "@type": "@id",
+         "@id": "cvss_v4_metrics"
+      },
+      "cwe_id": {
+         "@id": "dct:identifier"
+      },
+      "cwe_view": {
+         "@id": "cwe_view"
+      },
+      "date_added": {
+         "@type": "xsd:date",
+         "@id": "dct:created"
+      },
+      "date_received": {
+         "@type": "xsd:dateTime",
+         "@id": "date_received"
+      },
+      "description": {
+         "@id": "dct:description"
+      },
+      "description_source": {
+         "@id": "dct:source"
+      },
+      "due_date": {
+         "@type": "xsd:date",
+         "@id": "dct:date"
+      },
+      "event_source": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "event_source"
+      },
+      "from_status": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "from_status"
+      },
+      "impact": {
+         "@type": "@id",
+         "@id": "core:impact"
+      },
+      "kev_reference": {
+         "@type": "xsd:anyURI",
+         "@id": "schema:url"
+      },
+      "known_exploited": {
+         "@type": "@id",
+         "@id": "known_exploited"
+      },
+      "last_modified_date": {
+         "@type": "xsd:dateTime",
+         "@id": "dct:modified"
+      },
+      "match_criteria_id": {
+         "@id": "match_criteria_id"
+      },
+      "matched_cpe_names": {
+         "@id": "matched_cpe_names"
+      },
+      "matches": {
+         "@type": "@id",
+         "@id": "matches"
+      },
+      "message": {
+         "@id": "message"
+      },
+      "metrics": {
+         "@type": "@id",
+         "@id": "metrics"
+      },
+      "name": {
+         "@id": "rdfs:label"
+      },
+      "note_id": "@id",
+      "nvd_tags": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "nvd_tags"
+      },
+      "operator": {
+         "@id": "core:operator"
+      },
+      "platforms": {
+         "@id": "core:platforms"
+      },
+      "products": {
+         "@type": "@id",
+         "@id": "core:products"
+      },
+      "provider_label": {
+         "@id": "provider_label"
+      },
+      "published_date": {
+         "@type": "xsd:dateTime",
+         "@id": "dct:created"
+      },
+      "rationale": {
+         "@id": "rationale"
+      },
+      "references": {
+         "@type": "@id",
+         "@id": "core:references"
+      },
+      "required_action": {
+         "@id": "dct:description"
+      },
+      "resource_tags": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "resource_tags"
+      },
+      "score": {
+         "@type": "xsd:float",
+         "@id": "core:score"
+      },
+      "score_notes": {
+         "@type": "@id",
+         "@id": "score_notes"
+      },
+      "scoring_justification": {
+         "@id": "scoring_justification"
+      },
+      "severity": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "core:severity"
+      },
+      "source": {
+         "@id": "dct:source"
+      },
+      "status": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "core:status"
+      },
+      "status_transitions": {
+         "@type": "@id",
+         "@id": "status_transitions"
+      },
+      "summary": {
+         "@id": "summary"
+      },
+      "title": {
+         "@id": "dct:title"
+      },
+      "to_status": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "to_status"
+      },
+      "transition_id": "@id",
+      "transition_time": {
+         "@type": "xsd:dateTime",
+         "@id": "dct:modified"
+      },
+      "url": {
+         "@type": "xsd:anyURI",
+         "@id": "schema:url"
+      },
+      "vector": {
+         "@id": "core:vector"
+      },
+      "vector_string": {
+         "@id": "vector_string"
+      },
+      "vendor": {
+         "@id": "schema:name"
+      },
+      "vendor_comments": {
+         "@type": "@id",
+         "@id": "vendor_comments"
+      },
+      "version": {
+         "@id": "schema:version"
+      },
+      "version_end_excluding": {
+         "@id": "version_end_excluding"
+      },
+      "version_end_including": {
+         "@id": "version_end_including"
+      },
+      "version_start_excluding": {
+         "@id": "version_start_excluding"
+      },
+      "version_start_including": {
+         "@id": "version_start_including"
+      },
+      "vulnerable": {
+         "@type": "xsd:boolean",
+         "@id": "vulnerable"
+      },
+      "weaknesses": {
+         "@type": "@id",
+         "@id": "core:weaknesses"
+      },
+      "workflow_status": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "workflow_status"
+      },
+      "Configuration": {
+         "@id": "core:Configuration"
+      },
+      "CPEConfiguration": {
+         "@id": "CPEConfiguration"
+      },
+      "CPEMatch": {
+         "@id": "CPEMatch"
+      },
+      "CVSSMetric": {
+         "@id": "CVSSMetric"
+      },
+      "CVSSScoreNote": {
+         "@id": "CVSSScoreNote"
+      },
+      "Impact": {
+         "@id": "core:Impact"
+      },
+      "KnownExploitedVulnerability": {
+         "@id": "KnownExploitedVulnerability"
+      },
+      "MetricSet": {
+         "@id": "MetricSet"
+      },
+      "NVDEntry": {
+         "@id": "NVDEntry"
+      },
+      "NVDReference": {
+         "@id": "NVDReference"
+      },
+      "NVDWeakness": {
+         "@id": "NVDWeakness"
+      },
+      "Product": {
+         "@id": "core:Product"
+      },
+      "Reference": {
+         "@id": "core:Reference"
+      },
+      "StatusTransition": {
+         "@id": "StatusTransition"
+      },
+      "VendorComment": {
+         "@id": "VendorComment"
+      },
+      "Vulnerability": {
+         "@id": "core:Vulnerability"
+      },
+      "Weakness": {
+         "@id": "core:Weakness"
+      }
+   }
+}

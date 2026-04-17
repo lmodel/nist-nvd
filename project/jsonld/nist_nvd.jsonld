@@ -1,0 +1,2482 @@
+{
+  "name": "nist-nvd",
+  "annotations": [
+    {
+      "tag": "source_context",
+      "value": "NVD Vulnerability Detail Pages and Vulnerability Status pages"
+    },
+    {
+      "tag": "source_features",
+      "value": "current_description,analysis_description,cvss_tabs,reference_resource_tags,cpe_configuration_types,kev_banner,weakness_source_table,status_flow"
+    },
+    {
+      "tag": "cwe_view",
+      "value": "CWE-1003"
+    }
+  ],
+  "description": "NIST National Vulnerability Database (NVD) LinkML Schema.\nCaptures enriched vulnerability records, CVSS metric views, CPE\napplicability statements, weakness attributions, reference resource tags,\nKEV indicator details, and NVD lifecycle status transitions.",
+  "title": "nist-nvd",
+  "source": "https://nvd.nist.gov/vuln/data-feeds",
+  "see_also": [
+    "https://lmodel.github.io/nist-nvd",
+    "https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema",
+    "https://nvd.nist.gov/vuln/detail",
+    "https://nvd.nist.gov/general/visualizations/vulnerability-visualizations/cve-status-waterfall"
+  ],
+  "id": "https://w3id.org/lmodel/nist-nvd",
+  "imports": [
+    "./vulnerability_core",
+    "linkml:types"
+  ],
+  "license": "Apache-2.0",
+  "prefixes": [
+    {
+      "prefix_prefix": "nvd",
+      "prefix_reference": "https://w3id.org/lmodel/nist-nvd/"
+    },
+    {
+      "prefix_prefix": "core",
+      "prefix_reference": "https://w3id.org/lmodel/vulnerability-core/"
+    },
+    {
+      "prefix_prefix": "linkml",
+      "prefix_reference": "https://w3id.org/linkml/"
+    },
+    {
+      "prefix_prefix": "schema",
+      "prefix_reference": "http://schema.org/"
+    },
+    {
+      "prefix_prefix": "dct",
+      "prefix_reference": "http://purl.org/dc/terms/"
+    },
+    {
+      "prefix_prefix": "skos",
+      "prefix_reference": "http://www.w3.org/2004/02/skos/core#"
+    },
+    {
+      "prefix_prefix": "xsd",
+      "prefix_reference": "http://www.w3.org/2001/XMLSchema#"
+    },
+    {
+      "prefix_prefix": "WIKIDATA",
+      "prefix_reference": "https://www.wikidata.org/wiki/"
+    }
+  ],
+  "default_prefix": "nvd",
+  "default_range": "string",
+  "subsets": [
+    {
+      "name": "nvd_feed",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/NvdFeed",
+      "description": "Fields published in NVD API and feeds.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "@type": "SubsetDefinition"
+    },
+    {
+      "name": "metrics",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/Metrics",
+      "description": "CVSS and related scoring content.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "@type": "SubsetDefinition"
+    },
+    {
+      "name": "detail_page",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/DetailPage",
+      "description": "Fields represented on NVD vulnerability detail pages.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "@type": "SubsetDefinition"
+    },
+    {
+      "name": "status_workflow",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/StatusWorkflow",
+      "description": "Fields representing NVD status lifecycle and transition context.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "@type": "SubsetDefinition"
+    },
+    {
+      "name": "core",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/Core",
+      "description": "Cross-program vulnerability metadata",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "@type": "SubsetDefinition"
+    },
+    {
+      "name": "metadata",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/Metadata",
+      "description": "Identification and reference fields",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "@type": "SubsetDefinition"
+    }
+  ],
+  "types": [
+    {
+      "name": "CveId",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/CveId",
+      "description": "A CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "pattern": "^CVE-[0-9]{4}-[0-9]+$",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "IsoDate",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/IsoDate",
+      "description": "A calendar date in ISO 8601 format (YYYY-MM-DD).",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "string",
+      "definition_uri": "https://w3id.org/linkml/String",
+      "description": "A character string",
+      "notes": [
+        "In RDF serializations, a slot with range of string is treated as a literal or type xsd:string.   If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"string\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Text"
+      ],
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "integer",
+      "definition_uri": "https://w3id.org/linkml/Integer",
+      "description": "An integer",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"integer\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Integer"
+      ],
+      "base": "int",
+      "uri": "http://www.w3.org/2001/XMLSchema#integer",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "boolean",
+      "definition_uri": "https://w3id.org/linkml/Boolean",
+      "description": "A binary (true or false) value",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"boolean\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Boolean"
+      ],
+      "base": "Bool",
+      "uri": "http://www.w3.org/2001/XMLSchema#boolean",
+      "repr": "bool",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "float",
+      "definition_uri": "https://w3id.org/linkml/Float",
+      "description": "A real number that conforms to the xsd:float specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"float\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Float"
+      ],
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "double",
+      "definition_uri": "https://w3id.org/linkml/Double",
+      "description": "A real number that conforms to the xsd:double specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"double\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "close_mappings": [
+        "schema:Float"
+      ],
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#double",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "decimal",
+      "definition_uri": "https://w3id.org/linkml/Decimal",
+      "description": "A real number with arbitrary precision that conforms to the xsd:decimal specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"decimal\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "broad_mappings": [
+        "schema:Number"
+      ],
+      "base": "Decimal",
+      "uri": "http://www.w3.org/2001/XMLSchema#decimal",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "time",
+      "definition_uri": "https://w3id.org/linkml/Time",
+      "description": "A time object represents a (local) time of day, independent of any particular day",
+      "notes": [
+        "URI is dateTime because OWL reasoners do not work with straight date or time",
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"time\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Time"
+      ],
+      "base": "XSDTime",
+      "uri": "http://www.w3.org/2001/XMLSchema#time",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "date",
+      "definition_uri": "https://w3id.org/linkml/Date",
+      "description": "a date (year, month and day) in an idealized calendar",
+      "notes": [
+        "URI is dateTime because OWL reasoners don't work with straight date or time",
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"date\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Date"
+      ],
+      "base": "XSDDate",
+      "uri": "http://www.w3.org/2001/XMLSchema#date",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "datetime",
+      "definition_uri": "https://w3id.org/linkml/Datetime",
+      "description": "The combination of a date and time",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"datetime\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:DateTime"
+      ],
+      "base": "XSDDateTime",
+      "uri": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "date_or_datetime",
+      "definition_uri": "https://w3id.org/linkml/DateOrDatetime",
+      "description": "Either a date or a datetime",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"date_or_datetime\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "https://w3id.org/linkml/DateOrDatetime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "uriorcurie",
+      "definition_uri": "https://w3id.org/linkml/Uriorcurie",
+      "description": "a URI or a CURIE",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"uriorcurie\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "URIorCURIE",
+      "uri": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "curie",
+      "definition_uri": "https://w3id.org/linkml/Curie",
+      "conforms_to": "https://www.w3.org/TR/curie/",
+      "description": "a compact URI",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"curie\"."
+      ],
+      "comments": [
+        "in RDF serializations this MUST be expanded to a URI",
+        "in non-RDF serializations MAY be serialized as the compact representation"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "Curie",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "uri",
+      "definition_uri": "https://w3id.org/linkml/Uri",
+      "conforms_to": "https://www.ietf.org/rfc/rfc3987.txt",
+      "description": "a complete URI",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"uri\"."
+      ],
+      "comments": [
+        "in RDF serializations a slot with range of uri is treated as a literal or type xsd:anyURI unless it is an identifier or a reference to an identifier, in which case it is translated directly to a node"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "close_mappings": [
+        "schema:URL"
+      ],
+      "base": "URI",
+      "uri": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "ncname",
+      "definition_uri": "https://w3id.org/linkml/Ncname",
+      "description": "Prefix part of CURIE",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"ncname\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "NCName",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "objectidentifier",
+      "definition_uri": "https://w3id.org/linkml/Objectidentifier",
+      "description": "A URI or CURIE that represents an object in the model.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"objectidentifier\"."
+      ],
+      "comments": [
+        "Used for inheritance and type checking"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "ElementIdentifier",
+      "uri": "http://www.w3.org/ns/shex#iri",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "nodeidentifier",
+      "definition_uri": "https://w3id.org/linkml/Nodeidentifier",
+      "description": "A URI, CURIE or BNODE that represents a node in a model.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"nodeidentifier\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "NodeIdentifier",
+      "uri": "http://www.w3.org/ns/shex#nonLiteral",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "jsonpointer",
+      "definition_uri": "https://w3id.org/linkml/Jsonpointer",
+      "conforms_to": "https://datatracker.ietf.org/doc/html/rfc6901",
+      "description": "A string encoding a JSON Pointer. The value of the string MUST conform to JSON Point syntax and SHOULD dereference to a valid object within the current instance document when encoded in tree form.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"jsonpointer\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "jsonpath",
+      "definition_uri": "https://w3id.org/linkml/Jsonpath",
+      "conforms_to": "https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html",
+      "description": "A string encoding a JSON Path. The value of the string MUST conform to JSON Point syntax and SHOULD dereference to zero or more valid objects within the current instance document when encoded in tree form.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"jsonpath\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "sparqlpath",
+      "definition_uri": "https://w3id.org/linkml/Sparqlpath",
+      "conforms_to": "https://www.w3.org/TR/sparql11-query/#propertypaths",
+      "description": "A string encoding a SPARQL Property Path. The value of the string MUST conform to SPARQL syntax and SHOULD dereference to zero or more valid objects within the current instance document when encoded as RDF.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"sparqlpath\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    }
+  ],
+  "enums": [
+    {
+      "name": "CVSSVersion",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/CVSSVersion",
+      "description": "Supported CVSS versions displayed in NVD metrics tabs.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "permissible_values": [
+        {
+          "text": "V2_0"
+        },
+        {
+          "text": "V3_0"
+        },
+        {
+          "text": "V3_1"
+        },
+        {
+          "text": "V4_0"
+        }
+      ]
+    },
+    {
+      "name": "NVDTag",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/NVDTag",
+      "description": "NVD analysis tags attached to vulnerability records.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "permissible_values": [
+        {
+          "text": "ANALYSIS_PENDING"
+        },
+        {
+          "text": "ADDITIONAL_INFORMATION"
+        }
+      ]
+    },
+    {
+      "name": "ScoreSource",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/ScoreSource",
+      "description": "Provider of CVSS vectors and scores.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "permissible_values": [
+        {
+          "text": "NVD"
+        },
+        {
+          "text": "CNA"
+        },
+        {
+          "text": "ADP"
+        },
+        {
+          "text": "VENDOR"
+        },
+        {
+          "text": "THIRD_PARTY"
+        }
+      ]
+    },
+    {
+      "name": "ReferenceTag",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/ReferenceTag",
+      "description": "Resource tag labels used by NVD references.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "permissible_values": [
+        {
+          "text": "THIRD_PARTY_ADVISORY"
+        },
+        {
+          "text": "VENDOR_ADVISORY"
+        },
+        {
+          "text": "ISSUE_TRACKING"
+        },
+        {
+          "text": "PATCH"
+        },
+        {
+          "text": "TECHNICAL_DESCRIPTION"
+        },
+        {
+          "text": "PRESS_MEDIA_COVERAGE"
+        },
+        {
+          "text": "VDB_ENTRY"
+        }
+      ]
+    },
+    {
+      "name": "ConfigurationType",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/ConfigurationType",
+      "description": "NVD configuration rendering category.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "permissible_values": [
+        {
+          "text": "BASIC"
+        },
+        {
+          "text": "RUNNING_ON_WITH"
+        },
+        {
+          "text": "ADVANCED"
+        }
+      ]
+    },
+    {
+      "name": "NVDWorkflowStatus",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus",
+      "description": "Enrichment state labels shown by NVD for CVEs.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "permissible_values": [
+        {
+          "text": "AWAITING_ENRICHMENT"
+        },
+        {
+          "text": "UNDERGOING_ENRICHMENT"
+        },
+        {
+          "text": "ENRICHED"
+        },
+        {
+          "text": "MODIFIED_AFTER_ENRICHMENT"
+        },
+        {
+          "text": "NOT_SCHEDULED"
+        },
+        {
+          "text": "REJECTED"
+        }
+      ]
+    },
+    {
+      "name": "NVDWorkflowEventSource",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource",
+      "description": "Source of state transition decisions in the status flow.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "permissible_values": [
+        {
+          "text": "NVD_PROCESS"
+        },
+        {
+          "text": "NVD_STAFF_DECISION"
+        },
+        {
+          "text": "CVE_PROGRAM_PROCESS"
+        },
+        {
+          "text": "USER_REQUEST"
+        }
+      ]
+    },
+    {
+      "name": "VersionBoundType",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/VersionBoundType",
+      "description": "Boundary type for version-range constraints.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "permissible_values": [
+        {
+          "text": "START_INCLUDING"
+        },
+        {
+          "text": "START_EXCLUDING"
+        },
+        {
+          "text": "END_INCLUDING"
+        },
+        {
+          "text": "END_EXCLUDING"
+        }
+      ]
+    },
+    {
+      "name": "VulnerabilityStatus",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus",
+      "description": "Lifecycle state of a vulnerability record.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "permissible_values": [
+        {
+          "text": "ACTIVE",
+          "description": "Vulnerability is actively maintained and published."
+        },
+        {
+          "text": "REJECTED",
+          "description": "CVE ID was rejected and should not be used."
+        },
+        {
+          "text": "DISPUTED",
+          "description": "The vulnerability details are disputed by a party."
+        },
+        {
+          "text": "RESERVED",
+          "description": "CVE ID is reserved but details are not yet published."
+        },
+        {
+          "text": "DEPRECATED",
+          "description": "Entry has been superseded or withdrawn."
+        }
+      ]
+    },
+    {
+      "name": "ImpactSeverity",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/ImpactSeverity",
+      "description": "CVSS qualitative severity rating.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "permissible_values": [
+        {
+          "text": "NONE",
+          "description": "No measurable impact."
+        },
+        {
+          "text": "LOW",
+          "description": "Limited impact; exploitation requires specific conditions."
+        },
+        {
+          "text": "MEDIUM",
+          "description": "Moderate impact; partial compromise of security properties."
+        },
+        {
+          "text": "HIGH",
+          "description": "High impact; significant compromise of security properties."
+        },
+        {
+          "text": "CRITICAL",
+          "description": "Critical impact; complete compromise; remote exploitation likely."
+        },
+        {
+          "text": "UNKNOWN",
+          "description": "Severity has not been assessed or is unavailable."
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "name": "description_source",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/description_source",
+      "description": "Source attribution shown beneath Current Description.",
+      "examples": [
+        {
+          "value": "MITRE",
+          "@type": "Example"
+        }
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/source"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/source",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "analysis_description",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/analysis_description",
+      "description": "Description available at enrichment time and shown under Analysis Description.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/description"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/description",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "metrics",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/metrics",
+      "description": "Grouped CVSS displays and notes for this entry.",
+      "in_subset": [
+        "metrics"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/metrics",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "MetricSet",
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "configurations",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/configurations",
+      "description": "Affected software configuration statements.",
+      "in_subset": [
+        "detail_page"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/configurations",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "CPEConfiguration",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "workflow_status",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/workflow_status",
+      "description": "Current NVD workflow status for the CVE.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "exact_mappings": [
+        "http://www.w3.org/2004/02/skos/core#notation"
+      ],
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/workflow_status",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "NVDWorkflowStatus",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "status_transitions",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/status_transitions",
+      "description": "Timeline of status transitions in NVD workflow.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/status_transitions",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "StatusTransition",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "known_exploited",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/known_exploited",
+      "description": "KEV banner details when this CVE is listed by CISA.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/known_exploited",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "KnownExploitedVulnerability",
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cve_tags",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/cve_tags",
+      "description": "CVE tags passed through the CVE List and rendered by NVD.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cve_tags",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "string",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cwe_view",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/cwe_view",
+      "description": "CWE view used for weakness mapping, typically CWE-1003.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cwe_view",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "date_received",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/date_received",
+      "description": "Date/time when NVD received the CVE record for processing.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/date_received",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "datetime",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cvss_v4_metrics",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/cvss_v4_metrics",
+      "description": "CVSS v4.0 metrics.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cvss_v4_metrics",
+      "owner": "MetricSet",
+      "domain_of": [
+        "MetricSet"
+      ],
+      "range": "CVSSMetric",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cvss_v3_metrics",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/cvss_v3_metrics",
+      "description": "CVSS v3.x metrics.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cvss_v3_metrics",
+      "owner": "MetricSet",
+      "domain_of": [
+        "MetricSet"
+      ],
+      "range": "CVSSMetric",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cvss_v2_metrics",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/cvss_v2_metrics",
+      "description": "CVSS v2.0 metrics.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cvss_v2_metrics",
+      "owner": "MetricSet",
+      "domain_of": [
+        "MetricSet"
+      ],
+      "range": "CVSSMetric",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "score_notes",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/score_notes",
+      "description": "Notes about CVSS display behavior and data provenance.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/score_notes",
+      "owner": "MetricSet",
+      "domain_of": [
+        "MetricSet"
+      ],
+      "range": "CVSSScoreNote",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "note_id",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/note_id",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/identifier"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/identifier",
+      "identifier": true,
+      "owner": "CVSSScoreNote",
+      "domain_of": [
+        "CVSSScoreNote"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "message",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/message",
+      "description": "Human-readable explanatory note text.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/message",
+      "owner": "CVSSScoreNote",
+      "domain_of": [
+        "CVSSScoreNote"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "created",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/created",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/created"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/created",
+      "owner": "CVSSScoreNote",
+      "domain_of": [
+        "CVSSScoreNote"
+      ],
+      "range": "datetime",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "provider_label",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/provider_label",
+      "description": "Display label for score source, such as NIST NVD or CNA Example.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/provider_label",
+      "owner": "CVSSMetric",
+      "domain_of": [
+        "CVSSMetric"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "scoring_justification",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/scoring_justification",
+      "description": "Supplemental rationale or caveat for a CVSS score.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/scoring_justification",
+      "owner": "CVSSMetric",
+      "domain_of": [
+        "CVSSMetric"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "configuration_id",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/configuration_id",
+      "description": "Display identifier, for example Configuration 1.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/configuration_id",
+      "owner": "CPEConfiguration",
+      "domain_of": [
+        "CPEConfiguration"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "configuration_type",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/configuration_type",
+      "description": "Simplified configuration rendering type.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/configuration_type",
+      "owner": "CPEConfiguration",
+      "domain_of": [
+        "CPEConfiguration"
+      ],
+      "range": "ConfigurationType",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "summary",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/summary",
+      "description": "Human-oriented explanation of configuration logic.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/summary",
+      "owner": "CPEConfiguration",
+      "domain_of": [
+        "CPEConfiguration"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "match_criteria_id",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/match_criteria_id",
+      "description": "Identifier for a match criterion.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/match_criteria_id",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "criteria",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/criteria",
+      "description": "CPE 2.3 match criterion expression.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/criteria",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cpe23_uri",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/cpe23_uri",
+      "description": "Concrete CPE 2.3 URI.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cpe23_uri",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "version_start_including",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/version_start_including",
+      "description": "Inclusive lower version bound.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/version_start_including",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "version_start_excluding",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/version_start_excluding",
+      "description": "Exclusive lower version bound.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/version_start_excluding",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "version_end_including",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/version_end_including",
+      "description": "Inclusive upper version bound.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/version_end_including",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "version_end_excluding",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/version_end_excluding",
+      "description": "Exclusive upper version bound.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/version_end_excluding",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "matched_cpe_names",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/matched_cpe_names",
+      "description": "Expanded list of matching CPE names shown in detail UI.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/matched_cpe_names",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "string",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "nvd_tags",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/nvd_tags",
+      "description": "NVD analysis tag values.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/nvd_tags",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "NVDTag",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "vendor_comments",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/vendor_comments",
+      "description": "Vendor comments associated with the vulnerability record.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/vendor_comments",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "range": "VendorComment",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "resource_tags",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/resource_tags",
+      "description": "NVD resource categories attached to references.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/resource_tags",
+      "owner": "NVDReference",
+      "domain_of": [
+        "NVDReference"
+      ],
+      "range": "ReferenceTag",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "vector_string",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/vector_string",
+      "description": "Serialized CVSS vector string.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/vector_string",
+      "owner": "CVSSMetric",
+      "domain_of": [
+        "CVSSMetric"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "base_score",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/base_score",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/base_score",
+      "owner": "CVSSMetric",
+      "domain_of": [
+        "CVSSMetric"
+      ],
+      "range": "float",
+      "minimum_value": 0,
+      "maximum_value": 10,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "base_severity",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/base_severity",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/base_severity",
+      "owner": "CVSSMetric",
+      "domain_of": [
+        "CVSSMetric"
+      ],
+      "range": "ImpactSeverity",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "children",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/children",
+      "description": "Child configuration nodes.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/children",
+      "owner": "CPEConfiguration",
+      "domain_of": [
+        "CPEConfiguration"
+      ],
+      "range": "CPEConfiguration",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "matches",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/matches",
+      "description": "Match criteria for this configuration node.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/matches",
+      "owner": "CPEConfiguration",
+      "domain_of": [
+        "CPEConfiguration"
+      ],
+      "range": "CPEMatch",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "vulnerable",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/vulnerable",
+      "description": "Whether the criterion indicates a vulnerable product context.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/vulnerable",
+      "owner": "CPEMatch",
+      "domain_of": [
+        "CPEMatch"
+      ],
+      "range": "boolean",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "date_added",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/date_added",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/created"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/created",
+      "owner": "KnownExploitedVulnerability",
+      "domain_of": [
+        "KnownExploitedVulnerability"
+      ],
+      "range": "date",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "due_date",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/due_date",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/date"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/date",
+      "owner": "KnownExploitedVulnerability",
+      "domain_of": [
+        "KnownExploitedVulnerability"
+      ],
+      "range": "date",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "required_action",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/required_action",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/description"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/description",
+      "owner": "KnownExploitedVulnerability",
+      "domain_of": [
+        "KnownExploitedVulnerability"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "kev_reference",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/kev_reference",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://schema.org/url"
+      ],
+      "slot_uri": "http://schema.org/url",
+      "owner": "KnownExploitedVulnerability",
+      "domain_of": [
+        "KnownExploitedVulnerability"
+      ],
+      "range": "uri",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "transition_id",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/transition_id",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/identifier"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/identifier",
+      "identifier": true,
+      "owner": "StatusTransition",
+      "domain_of": [
+        "StatusTransition"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "from_status",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/from_status",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/from_status",
+      "owner": "StatusTransition",
+      "domain_of": [
+        "StatusTransition"
+      ],
+      "range": "NVDWorkflowStatus",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "to_status",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/to_status",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/to_status",
+      "owner": "StatusTransition",
+      "domain_of": [
+        "StatusTransition"
+      ],
+      "range": "NVDWorkflowStatus",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "event_source",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/event_source",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/event_source",
+      "owner": "StatusTransition",
+      "domain_of": [
+        "StatusTransition"
+      ],
+      "range": "NVDWorkflowEventSource",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "transition_time",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/transition_time",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "mappings": [
+        "http://purl.org/dc/terms/modified"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/modified",
+      "owner": "StatusTransition",
+      "domain_of": [
+        "StatusTransition"
+      ],
+      "range": "datetime",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "rationale",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/rationale",
+      "description": "Optional reason for transition.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/rationale",
+      "owner": "StatusTransition",
+      "domain_of": [
+        "StatusTransition"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "comment",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/comment",
+      "description": "Vendor-provided comment text.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/comment",
+      "owner": "VendorComment",
+      "domain_of": [
+        "VendorComment"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cve_id",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/cve_id",
+      "description": "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.",
+      "in_subset": [
+        "metadata"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "aliases": [
+        "cveID"
+      ],
+      "mappings": [
+        "http://purl.org/dc/terms/identifier"
+      ],
+      "exact_mappings": [
+        "http://schema.org/identifier"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/identifier",
+      "identifier": true,
+      "owner": "Vulnerability",
+      "domain_of": [
+        "Vulnerability"
+      ],
+      "range": "CveId",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "title",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/title",
+      "description": "Short human-readable title or name for this entity.",
+      "in_subset": [
+        "metadata"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/title"
+      ],
+      "exact_mappings": [
+        "http://schema.org/name"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/title",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "Vulnerability"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "description",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/description",
+      "description": "Narrative description of the vulnerability.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/description"
+      ],
+      "exact_mappings": [
+        "http://schema.org/description"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/description",
+      "owner": "Weakness",
+      "domain_of": [
+        "Vulnerability",
+        "Weakness"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "published_date",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/published_date",
+      "description": "Date and time the vulnerability was first published.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/created"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/created",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "Vulnerability"
+      ],
+      "range": "datetime",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "last_modified_date",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/last_modified_date",
+      "description": "Date and time the vulnerability record was last modified.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/modified"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/modified",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "VendorComment",
+        "Vulnerability"
+      ],
+      "range": "datetime",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "products",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/products",
+      "description": "Products affected by this vulnerability.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/products",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "Vulnerability"
+      ],
+      "range": "Product",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "weaknesses",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/weaknesses",
+      "description": "Weakness classifications (e.g. CWE) associated with this vulnerability.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/weaknesses",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "NVDEntry",
+        "Vulnerability"
+      ],
+      "range": "Weakness",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "references",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/references",
+      "description": "External references such as advisories and articles.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/references",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "NVDEntry",
+        "Vulnerability"
+      ],
+      "range": "Reference",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "impact",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/impact",
+      "description": "Impact and severity assessment for this vulnerability.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/impact",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "Vulnerability"
+      ],
+      "range": "Impact",
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "status",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/status",
+      "description": "Current lifecycle state of the vulnerability record.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/status",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "Vulnerability"
+      ],
+      "range": "VulnerabilityStatus",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "vendor",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/vendor",
+      "description": "Name of the vendor or organization responsible for the product.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://schema.org/name"
+      ],
+      "slot_uri": "http://schema.org/name",
+      "owner": "Product",
+      "domain_of": [
+        "VendorComment",
+        "Product"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "name",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/name",
+      "description": "Name of the entity (product, weakness, reference, etc.).",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "aliases": [
+        "label"
+      ],
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#label"
+      ],
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#label",
+      "owner": "Weakness",
+      "domain_of": [
+        "Product",
+        "Reference",
+        "Weakness"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "version",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/version",
+      "description": "Version string of the affected product.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://schema.org/version"
+      ],
+      "slot_uri": "http://schema.org/version",
+      "owner": "Product",
+      "domain_of": [
+        "CVSSMetric",
+        "Product"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "platforms",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/platforms",
+      "description": "Platforms or operating environments affected.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/platforms",
+      "owner": "Product",
+      "domain_of": [
+        "Product"
+      ],
+      "range": "string",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "url",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/url",
+      "description": "URL pointing to the reference resource.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://schema.org/url"
+      ],
+      "slot_uri": "http://schema.org/url",
+      "owner": "Reference",
+      "domain_of": [
+        "Reference"
+      ],
+      "range": "uri",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "source",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/source",
+      "description": "Source or origin of the reference or data.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/source"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/source",
+      "owner": "Reference",
+      "domain_of": [
+        "CVSSMetric",
+        "CVSSScoreNote",
+        "NVDWeakness",
+        "Reference"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cwe_id",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/cwe_id",
+      "description": "CWE identifier for the weakness classification (e.g. CWE-79).",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "aliases": [
+        "cweID"
+      ],
+      "mappings": [
+        "http://purl.org/dc/terms/identifier"
+      ],
+      "slot_uri": "http://purl.org/dc/terms/identifier",
+      "owner": "Weakness",
+      "domain_of": [
+        "Weakness"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "severity",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/severity",
+      "description": "Qualitative severity rating.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/severity",
+      "owner": "Impact",
+      "domain_of": [
+        "Impact"
+      ],
+      "range": "ImpactSeverity",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "vector",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/vector",
+      "description": "CVSS vector string or equivalent scoring vector expression.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/vector",
+      "owner": "Impact",
+      "domain_of": [
+        "Impact"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "score",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/score",
+      "description": "Numeric vulnerability score (e.g. CVSS base score).",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/score",
+      "owner": "Impact",
+      "domain_of": [
+        "Impact"
+      ],
+      "range": "float",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cpe_uri",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/cpe_uri",
+      "description": "CPE 2.2 URI identifying an affected product configuration.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "aliases": [
+        "cpeUri"
+      ],
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/cpe_uri",
+      "owner": "Configuration",
+      "domain_of": [
+        "Configuration"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "operator",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/operator",
+      "description": "Logical operator (AND/OR) used in configuration node groupings.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/operator",
+      "owner": "Configuration",
+      "domain_of": [
+        "CPEConfiguration",
+        "Configuration"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDEntry_references",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/references",
+      "description": "External references such as advisories and articles.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "is_a": "references",
+      "domain": "NVDEntry",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/references",
+      "alias": "references",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "references",
+      "range": "NVDReference",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDEntry_weaknesses",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/weaknesses",
+      "description": "Weakness classifications (e.g. CWE) associated with this vulnerability.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "is_a": "weaknesses",
+      "domain": "NVDEntry",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/weaknesses",
+      "alias": "weaknesses",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "weaknesses",
+      "range": "NVDWeakness",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDEntry_status",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/status",
+      "description": "Current lifecycle state of the vulnerability record.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "is_a": "status",
+      "domain": "NVDEntry",
+      "slot_uri": "https://w3id.org/lmodel/vulnerability-core/status",
+      "alias": "status",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "status",
+      "range": "NVDWorkflowStatus",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDEntry_description",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/description",
+      "description": "Current Description shown on the NVD detail page.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/description"
+      ],
+      "exact_mappings": [
+        "http://schema.org/description"
+      ],
+      "is_a": "description",
+      "domain": "NVDEntry",
+      "slot_uri": "http://purl.org/dc/terms/description",
+      "alias": "description",
+      "owner": "NVDEntry",
+      "domain_of": [
+        "NVDEntry"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "description",
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "CVSSMetric_source",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/source",
+      "description": "Source or origin of the reference or data.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/source"
+      ],
+      "is_a": "source",
+      "domain": "CVSSMetric",
+      "slot_uri": "http://purl.org/dc/terms/source",
+      "alias": "source",
+      "owner": "CVSSMetric",
+      "domain_of": [
+        "CVSSMetric"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "source",
+      "range": "ScoreSource",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDReference_url",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/url",
+      "description": "URL pointing to the reference resource.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://schema.org/url"
+      ],
+      "is_a": "url",
+      "domain": "NVDReference",
+      "slot_uri": "http://schema.org/url",
+      "alias": "url",
+      "owner": "NVDReference",
+      "domain_of": [
+        "NVDReference"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "url",
+      "range": "uri",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDReference_source",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/source",
+      "description": "Source or origin of the reference or data.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/source"
+      ],
+      "is_a": "source",
+      "domain": "NVDReference",
+      "slot_uri": "http://purl.org/dc/terms/source",
+      "alias": "source",
+      "owner": "NVDReference",
+      "domain_of": [
+        "NVDReference"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "source",
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDWeakness_cwe_id",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/cwe_id",
+      "description": "CWE identifier for the weakness classification (e.g. CWE-79).",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "aliases": [
+        "cweID"
+      ],
+      "mappings": [
+        "http://purl.org/dc/terms/identifier"
+      ],
+      "is_a": "cwe_id",
+      "domain": "NVDWeakness",
+      "slot_uri": "http://purl.org/dc/terms/identifier",
+      "alias": "cwe_id",
+      "owner": "NVDWeakness",
+      "domain_of": [
+        "NVDWeakness"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "cwe_id",
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDWeakness_name",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/name",
+      "description": "Name of the entity (product, weakness, reference, etc.).",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "aliases": [
+        "label"
+      ],
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#label"
+      ],
+      "is_a": "name",
+      "domain": "NVDWeakness",
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#label",
+      "alias": "name",
+      "owner": "NVDWeakness",
+      "domain_of": [
+        "NVDWeakness"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "name",
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NVDWeakness_source",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/source",
+      "description": "Source column value, such as NIST or ASSIGNER.",
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/source"
+      ],
+      "is_a": "source",
+      "domain": "NVDWeakness",
+      "slot_uri": "http://purl.org/dc/terms/source",
+      "alias": "source",
+      "owner": "NVDWeakness",
+      "domain_of": [
+        "NVDWeakness"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "source",
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "Vulnerability_cve_id",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/cve_id",
+      "description": "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.",
+      "in_subset": [
+        "metadata"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "aliases": [
+        "cveID"
+      ],
+      "mappings": [
+        "http://purl.org/dc/terms/identifier"
+      ],
+      "exact_mappings": [
+        "http://schema.org/identifier"
+      ],
+      "is_a": "cve_id",
+      "domain": "Vulnerability",
+      "slot_uri": "http://purl.org/dc/terms/identifier",
+      "identifier": true,
+      "alias": "cve_id",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "Vulnerability"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "cve_id",
+      "range": "CveId",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "Vulnerability_description",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/description",
+      "description": "Narrative description of the vulnerability.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "mappings": [
+        "http://purl.org/dc/terms/description"
+      ],
+      "exact_mappings": [
+        "http://schema.org/description"
+      ],
+      "is_a": "description",
+      "domain": "Vulnerability",
+      "slot_uri": "http://purl.org/dc/terms/description",
+      "alias": "description",
+      "owner": "Vulnerability",
+      "domain_of": [
+        "Vulnerability"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "description",
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    }
+  ],
+  "classes": [
+    {
+      "name": "NVDEntry",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/NVDEntry",
+      "description": "Enriched NVD representation of a CVE entry.",
+      "notes": [
+        "If NVD and CNA CVSS values match, NVD displays only the CNA values.",
+        "Rejected CVEs are determined by the CVE Program rather than NVD."
+      ],
+      "comments": [
+        "Current Description is the currently visible CVE description.",
+        "Analysis Description captures the description present when NVD enrichment occurred."
+      ],
+      "in_subset": [
+        "nvd_feed",
+        "detail_page"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "exact_mappings": [
+        "WIKIDATA:Q631425"
+      ],
+      "is_a": "Vulnerability",
+      "slots": [
+        "Vulnerability_cve_id",
+        "title",
+        "published_date",
+        "last_modified_date",
+        "products",
+        "impact",
+        "description_source",
+        "analysis_description",
+        "metrics",
+        "configurations",
+        "NVDEntry_references",
+        "NVDEntry_weaknesses",
+        "vendor_comments",
+        "nvd_tags",
+        "cve_tags",
+        "workflow_status",
+        "status_transitions",
+        "known_exploited",
+        "cwe_view",
+        "date_received",
+        "NVDEntry_status",
+        "NVDEntry_description"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/NVDEntry",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "MetricSet",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/MetricSet",
+      "description": "Container for all metric views across CVSS versions.",
+      "comments": [
+        "NVD detail pages expose button toggles for CVSS v4.0, v3.x, and v2.0."
+      ],
+      "in_subset": [
+        "metrics"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slots": [
+        "cvss_v4_metrics",
+        "cvss_v3_metrics",
+        "cvss_v2_metrics",
+        "score_notes"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/MetricSet",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "CVSSMetric",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/CVSSMetric",
+      "description": "Individual CVSS vector and score attribution.",
+      "in_subset": [
+        "metrics"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slots": [
+        "version",
+        "vector_string",
+        "base_score",
+        "base_severity",
+        "CVSSMetric_source",
+        "provider_label",
+        "scoring_justification"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/CVSSMetric",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "CVSSScoreNote",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/CVSSScoreNote",
+      "description": "Additional explanatory note for CVSS display conditions.",
+      "in_subset": [
+        "metrics"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slots": [
+        "note_id",
+        "message",
+        "source",
+        "created"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/CVSSScoreNote",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "CPEConfiguration",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/CPEConfiguration",
+      "description": "Logical grouping of CPE match criteria for affected software.",
+      "comments": [
+        "Supported rendering categories include Basic, Running On/With, and Advanced."
+      ],
+      "in_subset": [
+        "detail_page"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slots": [
+        "configuration_id",
+        "configuration_type",
+        "operator",
+        "children",
+        "matches",
+        "summary"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/CPEConfiguration",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "CPEMatch",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/CPEMatch",
+      "description": "Leaf-level CPE match criterion and optional version bounds.",
+      "notes": [
+        "Matching CPE names can be exposed in expanded detail-page sections."
+      ],
+      "in_subset": [
+        "detail_page"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slots": [
+        "match_criteria_id",
+        "criteria",
+        "cpe23_uri",
+        "vulnerable",
+        "version_start_including",
+        "version_start_excluding",
+        "version_end_including",
+        "version_end_excluding",
+        "matched_cpe_names"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/CPEMatch",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "NVDReference",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/NVDReference",
+      "description": "Reference URL with NVD resource tags.",
+      "in_subset": [
+        "detail_page"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "is_a": "Reference",
+      "slots": [
+        "name",
+        "resource_tags",
+        "NVDReference_url",
+        "NVDReference_source"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/NVDReference",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "NVDWeakness",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/NVDWeakness",
+      "description": "Weakness row as presented on the NVD detail page.",
+      "comments": [
+        "NVD uses CWE-1003 for simplified mapping of published vulnerabilities."
+      ],
+      "in_subset": [
+        "detail_page"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "is_a": "Weakness",
+      "slots": [
+        "description",
+        "NVDWeakness_source",
+        "NVDWeakness_cwe_id",
+        "NVDWeakness_name"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/NVDWeakness",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "VendorComment",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/VendorComment",
+      "description": "Comment provided by vendor during NVD analysis.",
+      "in_subset": [
+        "nvd_feed"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slots": [
+        "vendor",
+        "comment",
+        "last_modified_date"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/VendorComment",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "KnownExploitedVulnerability",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/KnownExploitedVulnerability",
+      "description": "CISA KEV information rendered on the NVD detail page.",
+      "notes": [
+        "Present only when the CVE appears in the CISA Known Exploited Vulnerabilities catalog."
+      ],
+      "in_subset": [
+        "detail_page"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slots": [
+        "date_added",
+        "due_date",
+        "required_action",
+        "kev_reference"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/KnownExploitedVulnerability",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "StatusTransition",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/StatusTransition",
+      "description": "State transition event in NVD enrichment workflow.",
+      "in_subset": [
+        "status_workflow"
+      ],
+      "from_schema": "https://w3id.org/lmodel/nist-nvd",
+      "slots": [
+        "transition_id",
+        "from_status",
+        "to_status",
+        "event_source",
+        "transition_time",
+        "rationale"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/nist-nvd/StatusTransition",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Vulnerability",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/Vulnerability",
+      "description": "Abstract base representation of a security vulnerability. Extended by source-specific schemas (KEV, CVE, NVD).",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "exact_mappings": [
+        "WIKIDATA:Q631425"
+      ],
+      "related_mappings": [
+        "schema:SoftwareApplication"
+      ],
+      "abstract": true,
+      "slots": [
+        "Vulnerability_cve_id",
+        "title",
+        "Vulnerability_description",
+        "published_date",
+        "last_modified_date",
+        "products",
+        "weaknesses",
+        "references",
+        "impact",
+        "status"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/vulnerability-core/Vulnerability",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Product",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/Product",
+      "description": "Software or hardware entity affected by the vulnerability.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "exact_mappings": [
+        "schema:SoftwareApplication"
+      ],
+      "slots": [
+        "vendor",
+        "name",
+        "version",
+        "platforms"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/vulnerability-core/Product",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Reference",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/Reference",
+      "description": "External reference such as an advisory or article.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "exact_mappings": [
+        "schema:CreativeWork"
+      ],
+      "slots": [
+        "url",
+        "name",
+        "source"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/vulnerability-core/Reference",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Weakness",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/Weakness",
+      "description": "Weakness classification from CWE or a similar taxonomy.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slots": [
+        "cwe_id",
+        "name",
+        "description"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/vulnerability-core/Weakness",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Impact",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/Impact",
+      "description": "Assessment of the vulnerability's impact and severity.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slots": [
+        "severity",
+        "vector",
+        "score"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/vulnerability-core/Impact",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Configuration",
+      "definition_uri": "https://w3id.org/lmodel/vulnerability-core/Configuration",
+      "description": "Logical grouping of CPE match expressions.",
+      "in_subset": [
+        "core"
+      ],
+      "from_schema": "https://w3id.org/lmodel/vulnerability-core",
+      "slots": [
+        "cpe_uri",
+        "operator"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/lmodel/vulnerability-core/Configuration",
+      "@type": "ClassDefinition"
+    }
+  ],
+  "metamodel_version": "1.7.0",
+  "source_file": "nist_nvd.yaml",
+  "source_file_date": "2026-04-17T17:43:34",
+  "source_file_size": 12757,
+  "generation_date": "2026-04-17T17:50:04",
+  "@type": "SchemaDefinition",
+  "@context": [
+    "project/jsonld/nist_nvd.context.jsonld",
+    "./vulnerability_core.context.jsonld",
+    "https://w3id.org/linkml/types.context.jsonld",
+    {
+      "@base": "https://w3id.org/lmodel/nist-nvd/"
+    }
+  ]
+}

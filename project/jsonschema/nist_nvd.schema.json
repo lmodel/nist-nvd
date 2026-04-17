@@ -1,0 +1,899 @@
+{
+    "$defs": {
+        "CPEConfiguration": {
+            "additionalProperties": false,
+            "description": "Logical grouping of CPE match criteria for affected software.",
+            "properties": {
+                "children": {
+                    "description": "Child configuration nodes.",
+                    "items": {
+                        "$ref": "#/$defs/CPEConfiguration"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "configuration_id": {
+                    "description": "Display identifier, for example Configuration 1.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "configuration_type": {
+                    "$ref": "#/$defs/ConfigurationType",
+                    "description": "Simplified configuration rendering type."
+                },
+                "matches": {
+                    "description": "Match criteria for this configuration node.",
+                    "items": {
+                        "$ref": "#/$defs/CPEMatch"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "operator": {
+                    "description": "Logical operator (AND/OR) used in configuration node groupings.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "summary": {
+                    "description": "Human-oriented explanation of configuration logic.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "CPEConfiguration",
+            "type": "object"
+        },
+        "CPEMatch": {
+            "additionalProperties": false,
+            "description": "Leaf-level CPE match criterion and optional version bounds.",
+            "properties": {
+                "cpe23_uri": {
+                    "description": "Concrete CPE 2.3 URI.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "criteria": {
+                    "description": "CPE 2.3 match criterion expression.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "match_criteria_id": {
+                    "description": "Identifier for a match criterion.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "matched_cpe_names": {
+                    "description": "Expanded list of matching CPE names shown in detail UI.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "version_end_excluding": {
+                    "description": "Exclusive upper version bound.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version_end_including": {
+                    "description": "Inclusive upper version bound.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version_start_excluding": {
+                    "description": "Exclusive lower version bound.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version_start_including": {
+                    "description": "Inclusive lower version bound.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "vulnerable": {
+                    "description": "Whether the criterion indicates a vulnerable product context.",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                }
+            },
+            "title": "CPEMatch",
+            "type": "object"
+        },
+        "CVSSMetric": {
+            "additionalProperties": false,
+            "description": "Individual CVSS vector and score attribution.",
+            "properties": {
+                "base_score": {
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "base_severity": {
+                    "$ref": "#/$defs/ImpactSeverity"
+                },
+                "provider_label": {
+                    "description": "Display label for score source, such as NIST NVD or CNA Example.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "scoring_justification": {
+                    "description": "Supplemental rationale or caveat for a CVSS score.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source": {
+                    "$ref": "#/$defs/ScoreSource",
+                    "description": "Source or origin of the reference or data."
+                },
+                "vector_string": {
+                    "description": "Serialized CVSS vector string.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version": {
+                    "description": "Version string of the affected product.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "CVSSMetric",
+            "type": "object"
+        },
+        "CVSSScoreNote": {
+            "additionalProperties": false,
+            "description": "Additional explanatory note for CVSS display conditions.",
+            "properties": {
+                "created": {
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "message": {
+                    "description": "Human-readable explanatory note text.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "note_id": {
+                    "type": "string"
+                },
+                "source": {
+                    "description": "Source or origin of the reference or data.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "note_id"
+            ],
+            "title": "CVSSScoreNote",
+            "type": "object"
+        },
+        "CVSSVersion": {
+            "description": "Supported CVSS versions displayed in NVD metrics tabs.",
+            "enum": [
+                "V2_0",
+                "V3_0",
+                "V3_1",
+                "V4_0"
+            ],
+            "title": "CVSSVersion",
+            "type": "string"
+        },
+        "Configuration": {
+            "additionalProperties": false,
+            "description": "Logical grouping of CPE match expressions.",
+            "properties": {
+                "cpe_uri": {
+                    "description": "CPE 2.2 URI identifying an affected product configuration.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "operator": {
+                    "description": "Logical operator (AND/OR) used in configuration node groupings.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "Configuration",
+            "type": "object"
+        },
+        "ConfigurationType": {
+            "description": "NVD configuration rendering category.",
+            "enum": [
+                "BASIC",
+                "RUNNING_ON_WITH",
+                "ADVANCED"
+            ],
+            "title": "ConfigurationType",
+            "type": "string"
+        },
+        "Impact": {
+            "additionalProperties": false,
+            "description": "Assessment of the vulnerability's impact and severity.",
+            "properties": {
+                "score": {
+                    "description": "Numeric vulnerability score (e.g. CVSS base score).",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "severity": {
+                    "$ref": "#/$defs/ImpactSeverity",
+                    "description": "Qualitative severity rating."
+                },
+                "vector": {
+                    "description": "CVSS vector string or equivalent scoring vector expression.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "Impact",
+            "type": "object"
+        },
+        "ImpactSeverity": {
+            "description": "CVSS qualitative severity rating.",
+            "enum": [
+                "NONE",
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "CRITICAL",
+                "UNKNOWN"
+            ],
+            "title": "ImpactSeverity",
+            "type": "string"
+        },
+        "KnownExploitedVulnerability": {
+            "additionalProperties": false,
+            "description": "CISA KEV information rendered on the NVD detail page.",
+            "properties": {
+                "date_added": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "due_date": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "kev_reference": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "required_action": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "KnownExploitedVulnerability",
+            "type": "object"
+        },
+        "MetricSet": {
+            "additionalProperties": false,
+            "description": "Container for all metric views across CVSS versions.",
+            "properties": {
+                "cvss_v2_metrics": {
+                    "description": "CVSS v2.0 metrics.",
+                    "items": {
+                        "$ref": "#/$defs/CVSSMetric"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "cvss_v3_metrics": {
+                    "description": "CVSS v3.x metrics.",
+                    "items": {
+                        "$ref": "#/$defs/CVSSMetric"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "cvss_v4_metrics": {
+                    "description": "CVSS v4.0 metrics.",
+                    "items": {
+                        "$ref": "#/$defs/CVSSMetric"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "score_notes": {
+                    "description": "Notes about CVSS display behavior and data provenance.",
+                    "items": {
+                        "$ref": "#/$defs/CVSSScoreNote"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "title": "MetricSet",
+            "type": "object"
+        },
+        "NVDEntry": {
+            "additionalProperties": false,
+            "description": "Enriched NVD representation of a CVE entry.",
+            "properties": {
+                "analysis_description": {
+                    "description": "Description available at enrichment time and shown under Analysis Description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "configurations": {
+                    "description": "Affected software configuration statements.",
+                    "items": {
+                        "$ref": "#/$defs/CPEConfiguration"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "cve_id": {
+                    "description": "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.",
+                    "pattern": "^CVE-[0-9]{4}-[0-9]+$",
+                    "type": "string"
+                },
+                "cve_tags": {
+                    "description": "CVE tags passed through the CVE List and rendered by NVD.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "cwe_view": {
+                    "description": "CWE view used for weakness mapping, typically CWE-1003.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "date_received": {
+                    "description": "Date/time when NVD received the CVE record for processing.",
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "Current Description shown on the NVD detail page.",
+                    "type": "string"
+                },
+                "description_source": {
+                    "description": "Source attribution shown beneath Current Description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "impact": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Impact"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Impact and severity assessment for this vulnerability."
+                },
+                "known_exploited": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/KnownExploitedVulnerability"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "KEV banner details when this CVE is listed by CISA."
+                },
+                "last_modified_date": {
+                    "description": "Date and time the vulnerability record was last modified.",
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "metrics": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/MetricSet"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Grouped CVSS displays and notes for this entry."
+                },
+                "nvd_tags": {
+                    "description": "NVD analysis tag values.",
+                    "items": {
+                        "$ref": "#/$defs/NVDTag"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "products": {
+                    "description": "Products affected by this vulnerability.",
+                    "items": {
+                        "$ref": "#/$defs/Product"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "published_date": {
+                    "description": "Date and time the vulnerability was first published.",
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "references": {
+                    "description": "External references such as advisories and articles.",
+                    "items": {
+                        "$ref": "#/$defs/NVDReference"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "status": {
+                    "$ref": "#/$defs/NVDWorkflowStatus",
+                    "description": "Current lifecycle state of the vulnerability record."
+                },
+                "status_transitions": {
+                    "description": "Timeline of status transitions in NVD workflow.",
+                    "items": {
+                        "$ref": "#/$defs/StatusTransition"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "title": {
+                    "description": "Short human-readable title or name for this entity.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "vendor_comments": {
+                    "description": "Vendor comments associated with the vulnerability record.",
+                    "items": {
+                        "$ref": "#/$defs/VendorComment"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "weaknesses": {
+                    "description": "Weakness classifications (e.g. CWE) associated with this vulnerability.",
+                    "items": {
+                        "$ref": "#/$defs/NVDWeakness"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "workflow_status": {
+                    "$ref": "#/$defs/NVDWorkflowStatus",
+                    "description": "Current NVD workflow status for the CVE."
+                }
+            },
+            "required": [
+                "cve_id",
+                "description"
+            ],
+            "title": "NVDEntry",
+            "type": "object"
+        },
+        "NVDReference": {
+            "additionalProperties": false,
+            "description": "Reference URL with NVD resource tags.",
+            "properties": {
+                "name": {
+                    "description": "Name of the entity (product, weakness, reference, etc.).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "resource_tags": {
+                    "description": "NVD resource categories attached to references.",
+                    "items": {
+                        "$ref": "#/$defs/ReferenceTag"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "source": {
+                    "description": "Source or origin of the reference or data.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "url": {
+                    "description": "URL pointing to the reference resource.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "url"
+            ],
+            "title": "NVDReference",
+            "type": "object"
+        },
+        "NVDTag": {
+            "description": "NVD analysis tags attached to vulnerability records.",
+            "enum": [
+                "ANALYSIS_PENDING",
+                "ADDITIONAL_INFORMATION"
+            ],
+            "title": "NVDTag",
+            "type": "string"
+        },
+        "NVDWeakness": {
+            "additionalProperties": false,
+            "description": "Weakness row as presented on the NVD detail page.",
+            "properties": {
+                "cwe_id": {
+                    "description": "CWE identifier for the weakness classification (e.g. CWE-79).",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Narrative description of the vulnerability.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "name": {
+                    "description": "Name of the entity (product, weakness, reference, etc.).",
+                    "type": "string"
+                },
+                "source": {
+                    "description": "Source column value, such as NIST or ASSIGNER.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "source",
+                "cwe_id",
+                "name"
+            ],
+            "title": "NVDWeakness",
+            "type": "object"
+        },
+        "NVDWorkflowEventSource": {
+            "description": "Source of state transition decisions in the status flow.",
+            "enum": [
+                "NVD_PROCESS",
+                "NVD_STAFF_DECISION",
+                "CVE_PROGRAM_PROCESS",
+                "USER_REQUEST"
+            ],
+            "title": "NVDWorkflowEventSource",
+            "type": "string"
+        },
+        "NVDWorkflowStatus": {
+            "description": "Enrichment state labels shown by NVD for CVEs.",
+            "enum": [
+                "AWAITING_ENRICHMENT",
+                "UNDERGOING_ENRICHMENT",
+                "ENRICHED",
+                "MODIFIED_AFTER_ENRICHMENT",
+                "NOT_SCHEDULED",
+                "REJECTED"
+            ],
+            "title": "NVDWorkflowStatus",
+            "type": "string"
+        },
+        "Product": {
+            "additionalProperties": false,
+            "description": "Software or hardware entity affected by the vulnerability.",
+            "properties": {
+                "name": {
+                    "description": "Name of the entity (product, weakness, reference, etc.).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "platforms": {
+                    "description": "Platforms or operating environments affected.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "vendor": {
+                    "description": "Name of the vendor or organization responsible for the product.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version": {
+                    "description": "Version string of the affected product.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "Product",
+            "type": "object"
+        },
+        "Reference": {
+            "additionalProperties": false,
+            "description": "External reference such as an advisory or article.",
+            "properties": {
+                "name": {
+                    "description": "Name of the entity (product, weakness, reference, etc.).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source": {
+                    "description": "Source or origin of the reference or data.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "url": {
+                    "description": "URL pointing to the reference resource.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "Reference",
+            "type": "object"
+        },
+        "ReferenceTag": {
+            "description": "Resource tag labels used by NVD references.",
+            "enum": [
+                "THIRD_PARTY_ADVISORY",
+                "VENDOR_ADVISORY",
+                "ISSUE_TRACKING",
+                "PATCH",
+                "TECHNICAL_DESCRIPTION",
+                "PRESS_MEDIA_COVERAGE",
+                "VDB_ENTRY"
+            ],
+            "title": "ReferenceTag",
+            "type": "string"
+        },
+        "ScoreSource": {
+            "description": "Provider of CVSS vectors and scores.",
+            "enum": [
+                "NVD",
+                "CNA",
+                "ADP",
+                "VENDOR",
+                "THIRD_PARTY"
+            ],
+            "title": "ScoreSource",
+            "type": "string"
+        },
+        "StatusTransition": {
+            "additionalProperties": false,
+            "description": "State transition event in NVD enrichment workflow.",
+            "properties": {
+                "event_source": {
+                    "$ref": "#/$defs/NVDWorkflowEventSource"
+                },
+                "from_status": {
+                    "$ref": "#/$defs/NVDWorkflowStatus"
+                },
+                "rationale": {
+                    "description": "Optional reason for transition.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "to_status": {
+                    "$ref": "#/$defs/NVDWorkflowStatus"
+                },
+                "transition_id": {
+                    "type": "string"
+                },
+                "transition_time": {
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "transition_id"
+            ],
+            "title": "StatusTransition",
+            "type": "object"
+        },
+        "VendorComment": {
+            "additionalProperties": false,
+            "description": "Comment provided by vendor during NVD analysis.",
+            "properties": {
+                "comment": {
+                    "description": "Vendor-provided comment text.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "last_modified_date": {
+                    "description": "Date and time the vulnerability record was last modified.",
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "vendor": {
+                    "description": "Name of the vendor or organization responsible for the product.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "VendorComment",
+            "type": "object"
+        },
+        "VersionBoundType": {
+            "description": "Boundary type for version-range constraints.",
+            "enum": [
+                "START_INCLUDING",
+                "START_EXCLUDING",
+                "END_INCLUDING",
+                "END_EXCLUDING"
+            ],
+            "title": "VersionBoundType",
+            "type": "string"
+        },
+        "VulnerabilityStatus": {
+            "description": "Lifecycle state of a vulnerability record.",
+            "enum": [
+                "ACTIVE",
+                "REJECTED",
+                "DISPUTED",
+                "RESERVED",
+                "DEPRECATED"
+            ],
+            "title": "VulnerabilityStatus",
+            "type": "string"
+        },
+        "Weakness": {
+            "additionalProperties": false,
+            "description": "Weakness classification from CWE or a similar taxonomy.",
+            "properties": {
+                "cwe_id": {
+                    "description": "CWE identifier for the weakness classification (e.g. CWE-79).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "Narrative description of the vulnerability.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "name": {
+                    "description": "Name of the entity (product, weakness, reference, etc.).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "title": "Weakness",
+            "type": "object"
+        }
+    },
+    "$id": "https://w3id.org/lmodel/nist-nvd",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "additionalProperties": true,
+    "metamodel_version": "1.7.0",
+    "title": "nist-nvd",
+    "type": "object",
+    "version": null
+}

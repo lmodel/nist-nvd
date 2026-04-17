@@ -1,0 +1,1631 @@
+@prefix WIKIDATA: <https://www.wikidata.org/wiki/> .
+@prefix core: <https://w3id.org/lmodel/vulnerability-core/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix linkml: <https://w3id.org/linkml/> .
+@prefix nvd: <https://w3id.org/lmodel/nist-nvd/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema1: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/lmodel/nist-nvd.owl.ttl> a owl:Ontology ;
+    rdfs:label "nist-nvd" ;
+    dct:license "Apache-2.0" ;
+    dct:source <https://nvd.nist.gov/vuln/data-feeds> ;
+    dct:title "nist-nvd" ;
+    rdfs:seeAlso <https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema>,
+        <https://lmodel.github.io/nist-nvd>,
+        <https://nvd.nist.gov/general/visualizations/vulnerability-visualizations/cve-status-waterfall>,
+        <https://nvd.nist.gov/vuln/detail> ;
+    skos:definition """NIST National Vulnerability Database (NVD) LinkML Schema.
+Captures enriched vulnerability records, CVSS metric views, CPE
+applicability statements, weakness attributions, reference resource tags,
+KEV indicator details, and NVD lifecycle status transitions.""" ;
+    nvd:cwe_view "CWE-1003" ;
+    nvd:source_context "NVD Vulnerability Detail Pages and Vulnerability Status pages" ;
+    nvd:source_features "current_description,analysis_description,cvss_tabs,reference_resource_tags,cpe_configuration_types,kev_banner,weakness_source_table,status_flow" .
+
+nvd:NVDEntry a owl:Class ;
+    rdfs:label "NVDEntry" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:metrics ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:date_received ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:status ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:known_exploited ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:description_source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:description_source ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:NVDWorkflowStatus ;
+            owl:onProperty nvd:workflow_status ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:NVDWorkflowStatus ;
+            owl:onProperty nvd:status ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:weaknesses ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:vendor_comments ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:date_received ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:CPEConfiguration ;
+            owl:onProperty nvd:configurations ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:cwe_view ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:analysis_description ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:workflow_status ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:StatusTransition ;
+            owl:onProperty nvd:status_transitions ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:nvd_tags ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:cwe_view ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:cve_tags ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:NVDTag ;
+            owl:onProperty nvd:nvd_tags ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:VendorComment ;
+            owl:onProperty nvd:vendor_comments ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:analysis_description ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:status ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:cwe_view ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:description_source ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:NVDWeakness ;
+            owl:onProperty core:weaknesses ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:description ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:KnownExploitedVulnerability ;
+            owl:onProperty nvd:known_exploited ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:metrics ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:analysis_description ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:workflow_status ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:configurations ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:references ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty nvd:date_received ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty nvd:description ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:cve_tags ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:description ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:NVDReference ;
+            owl:onProperty core:references ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:known_exploited ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:status_transitions ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:MetricSet ;
+            owl:onProperty nvd:metrics ],
+        core:Vulnerability ;
+    skos:definition "Enriched NVD representation of a CVE entry." ;
+    skos:editorialNote "If NVD and CNA CVSS values match, NVD displays only the CNA values.",
+        "Rejected CVEs are determined by the CVE Program rather than NVD." ;
+    skos:exactMatch WIKIDATA:Q631425 ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    skos:note "Analysis Description captures the description present when NVD enrichment occurred.",
+        "Current Description is the currently visible CVE description." .
+
+core:Configuration a owl:Class ;
+    rdfs:label "Configuration" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:cpe_uri ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:operator ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:operator ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:cpe_uri ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:operator ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:cpe_uri ] ;
+    skos:definition "Logical grouping of CPE match expressions." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+nvd:NVDReference a owl:Class ;
+    rdfs:label "NVDReference" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:url ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:source ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:resource_tags ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty nvd:url ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:url ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:ReferenceTag ;
+            owl:onProperty nvd:resource_tags ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:source ],
+        core:Reference ;
+    skos:definition "Reference URL with NVD resource tags." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:NVDWeakness a owl:Class ;
+    rdfs:label "NVDWeakness" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:cwe_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty nvd:name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty nvd:cwe_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:cwe_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:name ],
+        core:Weakness ;
+    skos:definition "Weakness row as presented on the NVD detail page." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    skos:note "NVD uses CWE-1003 for simplified mapping of published vulnerabilities." .
+
+core:Vulnerability a owl:Class ;
+    rdfs:label "Vulnerability" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:products ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:last_modified_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Product ;
+            owl:onProperty core:products ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:cve_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:impact ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty core:cve_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:description ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:title ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Reference ;
+            owl:onProperty core:references ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:impact ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty core:last_modified_date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:references ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:published_date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:weaknesses ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Weakness ;
+            owl:onProperty core:weaknesses ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Impact ;
+            owl:onProperty core:impact ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty core:description ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:status ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty core:published_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:VulnerabilityStatus ;
+            owl:onProperty core:status ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:title ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:published_date ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:last_modified_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:title ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:description ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:status ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:cve_id ] ;
+    skos:definition "Abstract base representation of a security vulnerability. Extended by source-specific schemas (KEV, CVE, NVD)." ;
+    skos:exactMatch WIKIDATA:Q631425 ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> ;
+    skos:relatedMatch schema1:SoftwareApplication .
+
+nvd:CPEMatch a owl:Class ;
+    rdfs:label "CPEMatch" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:version_start_excluding ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:version_start_excluding ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:cpe23_uri ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:match_criteria_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:cpe23_uri ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:criteria ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:criteria ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:version_end_including ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:version_end_excluding ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:match_criteria_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:version_end_including ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:version_start_including ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:vulnerable ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:boolean ;
+            owl:onProperty nvd:vulnerable ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:vulnerable ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:cpe23_uri ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:version_end_excluding ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:version_end_excluding ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:version_start_including ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:match_criteria_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:version_end_including ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:matched_cpe_names ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:criteria ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:matched_cpe_names ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:version_start_including ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:version_start_excluding ] ;
+    skos:definition "Leaf-level CPE match criterion and optional version bounds." ;
+    skos:editorialNote "Matching CPE names can be exposed in expanded detail-page sections." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:CVSSScoreNote a owl:Class ;
+    rdfs:label "CVSSScoreNote" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:message ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:message ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty nvd:created ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty nvd:note_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:created ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:note_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:message ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:note_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:created ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:source ] ;
+    skos:definition "Additional explanatory note for CVSS display conditions." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+<https://w3id.org/lmodel/nist-nvd/CVSSVersion#V2_0> a owl:Class ;
+    rdfs:label "V2_0" ;
+    rdfs:subClassOf nvd:CVSSVersion .
+
+<https://w3id.org/lmodel/nist-nvd/CVSSVersion#V3_0> a owl:Class ;
+    rdfs:label "V3_0" ;
+    rdfs:subClassOf nvd:CVSSVersion .
+
+<https://w3id.org/lmodel/nist-nvd/CVSSVersion#V3_1> a owl:Class ;
+    rdfs:label "V3_1" ;
+    rdfs:subClassOf nvd:CVSSVersion .
+
+<https://w3id.org/lmodel/nist-nvd/CVSSVersion#V4_0> a owl:Class ;
+    rdfs:label "V4_0" ;
+    rdfs:subClassOf nvd:CVSSVersion .
+
+<https://w3id.org/lmodel/nist-nvd/ConfigurationType#ADVANCED> a owl:Class ;
+    rdfs:label "ADVANCED" ;
+    rdfs:subClassOf nvd:ConfigurationType .
+
+<https://w3id.org/lmodel/nist-nvd/ConfigurationType#BASIC> a owl:Class ;
+    rdfs:label "BASIC" ;
+    rdfs:subClassOf nvd:ConfigurationType .
+
+<https://w3id.org/lmodel/nist-nvd/ConfigurationType#RUNNING_ON_WITH> a owl:Class ;
+    rdfs:label "RUNNING_ON_WITH" ;
+    rdfs:subClassOf nvd:ConfigurationType .
+
+<https://w3id.org/lmodel/nist-nvd/ImpactSeverity#CRITICAL> a owl:Class ;
+    rdfs:label "CRITICAL" ;
+    rdfs:subClassOf nvd:ImpactSeverity ;
+    skos:definition "Critical impact; complete compromise; remote exploitation likely." .
+
+<https://w3id.org/lmodel/nist-nvd/ImpactSeverity#HIGH> a owl:Class ;
+    rdfs:label "HIGH" ;
+    rdfs:subClassOf nvd:ImpactSeverity ;
+    skos:definition "High impact; significant compromise of security properties." .
+
+<https://w3id.org/lmodel/nist-nvd/ImpactSeverity#LOW> a owl:Class ;
+    rdfs:label "LOW" ;
+    rdfs:subClassOf nvd:ImpactSeverity ;
+    skos:definition "Limited impact; exploitation requires specific conditions." .
+
+<https://w3id.org/lmodel/nist-nvd/ImpactSeverity#MEDIUM> a owl:Class ;
+    rdfs:label "MEDIUM" ;
+    rdfs:subClassOf nvd:ImpactSeverity ;
+    skos:definition "Moderate impact; partial compromise of security properties." .
+
+<https://w3id.org/lmodel/nist-nvd/ImpactSeverity#NONE> a owl:Class ;
+    rdfs:label "NONE" ;
+    rdfs:subClassOf nvd:ImpactSeverity ;
+    skos:definition "No measurable impact." .
+
+<https://w3id.org/lmodel/nist-nvd/ImpactSeverity#UNKNOWN> a owl:Class ;
+    rdfs:label "UNKNOWN" ;
+    rdfs:subClassOf nvd:ImpactSeverity ;
+    skos:definition "Severity has not been assessed or is unavailable." .
+
+nvd:KnownExploitedVulnerability a owl:Class ;
+    rdfs:label "KnownExploitedVulnerability" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:required_action ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:date ;
+            owl:onProperty nvd:date_added ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:kev_reference ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:kev_reference ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:due_date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:due_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty nvd:kev_reference ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:date_added ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:date ;
+            owl:onProperty nvd:due_date ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:required_action ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:date_added ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:required_action ] ;
+    skos:definition "CISA KEV information rendered on the NVD detail page." ;
+    skos:editorialNote "Present only when the CVE appears in the CISA Known Exploited Vulnerabilities catalog." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:MetricSet a owl:Class ;
+    rdfs:label "MetricSet" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom nvd:CVSSScoreNote ;
+            owl:onProperty nvd:score_notes ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:cvss_v2_metrics ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:CVSSMetric ;
+            owl:onProperty nvd:cvss_v3_metrics ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:cvss_v4_metrics ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:CVSSMetric ;
+            owl:onProperty nvd:cvss_v4_metrics ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:score_notes ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:CVSSMetric ;
+            owl:onProperty nvd:cvss_v2_metrics ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:cvss_v3_metrics ] ;
+    skos:definition "Container for all metric views across CVSS versions." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    skos:note "NVD detail pages expose button toggles for CVSS v4.0, v3.x, and v2.0." .
+
+<https://w3id.org/lmodel/nist-nvd/NVDTag#ADDITIONAL_INFORMATION> a owl:Class ;
+    rdfs:label "ADDITIONAL_INFORMATION" ;
+    rdfs:subClassOf nvd:NVDTag .
+
+<https://w3id.org/lmodel/nist-nvd/NVDTag#ANALYSIS_PENDING> a owl:Class ;
+    rdfs:label "ANALYSIS_PENDING" ;
+    rdfs:subClassOf nvd:NVDTag .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#CVE_PROGRAM_PROCESS> a owl:Class ;
+    rdfs:label "CVE_PROGRAM_PROCESS" ;
+    rdfs:subClassOf nvd:NVDWorkflowEventSource .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_PROCESS> a owl:Class ;
+    rdfs:label "NVD_PROCESS" ;
+    rdfs:subClassOf nvd:NVDWorkflowEventSource .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_STAFF_DECISION> a owl:Class ;
+    rdfs:label "NVD_STAFF_DECISION" ;
+    rdfs:subClassOf nvd:NVDWorkflowEventSource .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#USER_REQUEST> a owl:Class ;
+    rdfs:label "USER_REQUEST" ;
+    rdfs:subClassOf nvd:NVDWorkflowEventSource .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT> a owl:Class ;
+    rdfs:label "AWAITING_ENRICHMENT" ;
+    rdfs:subClassOf nvd:NVDWorkflowStatus .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED> a owl:Class ;
+    rdfs:label "ENRICHED" ;
+    rdfs:subClassOf nvd:NVDWorkflowStatus .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT> a owl:Class ;
+    rdfs:label "MODIFIED_AFTER_ENRICHMENT" ;
+    rdfs:subClassOf nvd:NVDWorkflowStatus .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED> a owl:Class ;
+    rdfs:label "NOT_SCHEDULED" ;
+    rdfs:subClassOf nvd:NVDWorkflowStatus .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> a owl:Class ;
+    rdfs:label "REJECTED" ;
+    rdfs:subClassOf nvd:NVDWorkflowStatus .
+
+<https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT> a owl:Class ;
+    rdfs:label "UNDERGOING_ENRICHMENT" ;
+    rdfs:subClassOf nvd:NVDWorkflowStatus .
+
+<https://w3id.org/lmodel/nist-nvd/ReferenceTag#ISSUE_TRACKING> a owl:Class ;
+    rdfs:label "ISSUE_TRACKING" ;
+    rdfs:subClassOf nvd:ReferenceTag .
+
+<https://w3id.org/lmodel/nist-nvd/ReferenceTag#PATCH> a owl:Class ;
+    rdfs:label "PATCH" ;
+    rdfs:subClassOf nvd:ReferenceTag .
+
+<https://w3id.org/lmodel/nist-nvd/ReferenceTag#PRESS_MEDIA_COVERAGE> a owl:Class ;
+    rdfs:label "PRESS_MEDIA_COVERAGE" ;
+    rdfs:subClassOf nvd:ReferenceTag .
+
+<https://w3id.org/lmodel/nist-nvd/ReferenceTag#TECHNICAL_DESCRIPTION> a owl:Class ;
+    rdfs:label "TECHNICAL_DESCRIPTION" ;
+    rdfs:subClassOf nvd:ReferenceTag .
+
+<https://w3id.org/lmodel/nist-nvd/ReferenceTag#THIRD_PARTY_ADVISORY> a owl:Class ;
+    rdfs:label "THIRD_PARTY_ADVISORY" ;
+    rdfs:subClassOf nvd:ReferenceTag .
+
+<https://w3id.org/lmodel/nist-nvd/ReferenceTag#VDB_ENTRY> a owl:Class ;
+    rdfs:label "VDB_ENTRY" ;
+    rdfs:subClassOf nvd:ReferenceTag .
+
+<https://w3id.org/lmodel/nist-nvd/ReferenceTag#VENDOR_ADVISORY> a owl:Class ;
+    rdfs:label "VENDOR_ADVISORY" ;
+    rdfs:subClassOf nvd:ReferenceTag .
+
+<https://w3id.org/lmodel/nist-nvd/ScoreSource#ADP> a owl:Class ;
+    rdfs:label "ADP" ;
+    rdfs:subClassOf nvd:ScoreSource .
+
+<https://w3id.org/lmodel/nist-nvd/ScoreSource#CNA> a owl:Class ;
+    rdfs:label "CNA" ;
+    rdfs:subClassOf nvd:ScoreSource .
+
+<https://w3id.org/lmodel/nist-nvd/ScoreSource#NVD> a owl:Class ;
+    rdfs:label "NVD" ;
+    rdfs:subClassOf nvd:ScoreSource .
+
+<https://w3id.org/lmodel/nist-nvd/ScoreSource#THIRD_PARTY> a owl:Class ;
+    rdfs:label "THIRD_PARTY" ;
+    rdfs:subClassOf nvd:ScoreSource .
+
+<https://w3id.org/lmodel/nist-nvd/ScoreSource#VENDOR> a owl:Class ;
+    rdfs:label "VENDOR" ;
+    rdfs:subClassOf nvd:ScoreSource .
+
+nvd:StatusTransition a owl:Class ;
+    rdfs:label "StatusTransition" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:transition_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:rationale ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:rationale ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty nvd:transition_time ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:NVDWorkflowStatus ;
+            owl:onProperty nvd:from_status ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:NVDWorkflowEventSource ;
+            owl:onProperty nvd:event_source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:from_status ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:from_status ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:NVDWorkflowStatus ;
+            owl:onProperty nvd:to_status ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:event_source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:transition_time ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty nvd:transition_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:transition_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:to_status ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:to_status ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:transition_time ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:event_source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:rationale ] ;
+    skos:definition "State transition event in NVD enrichment workflow." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:VendorComment a owl:Class ;
+    rdfs:label "VendorComment" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:vendor ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:last_modified_date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:vendor ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:last_modified_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:comment ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:comment ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty core:last_modified_date ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:vendor ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:comment ] ;
+    skos:definition "Comment provided by vendor during NVD analysis." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+<https://w3id.org/lmodel/nist-nvd/VersionBoundType#END_EXCLUDING> a owl:Class ;
+    rdfs:label "END_EXCLUDING" ;
+    rdfs:subClassOf nvd:VersionBoundType .
+
+<https://w3id.org/lmodel/nist-nvd/VersionBoundType#END_INCLUDING> a owl:Class ;
+    rdfs:label "END_INCLUDING" ;
+    rdfs:subClassOf nvd:VersionBoundType .
+
+<https://w3id.org/lmodel/nist-nvd/VersionBoundType#START_EXCLUDING> a owl:Class ;
+    rdfs:label "START_EXCLUDING" ;
+    rdfs:subClassOf nvd:VersionBoundType .
+
+<https://w3id.org/lmodel/nist-nvd/VersionBoundType#START_INCLUDING> a owl:Class ;
+    rdfs:label "START_INCLUDING" ;
+    rdfs:subClassOf nvd:VersionBoundType .
+
+<https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#ACTIVE> a owl:Class ;
+    rdfs:label "ACTIVE" ;
+    rdfs:subClassOf nvd:VulnerabilityStatus ;
+    skos:definition "Vulnerability is actively maintained and published." .
+
+<https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#DEPRECATED> a owl:Class ;
+    rdfs:label "DEPRECATED" ;
+    rdfs:subClassOf nvd:VulnerabilityStatus ;
+    skos:definition "Entry has been superseded or withdrawn." .
+
+<https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#DISPUTED> a owl:Class ;
+    rdfs:label "DISPUTED" ;
+    rdfs:subClassOf nvd:VulnerabilityStatus ;
+    skos:definition "The vulnerability details are disputed by a party." .
+
+<https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#REJECTED> a owl:Class ;
+    rdfs:label "REJECTED" ;
+    rdfs:subClassOf nvd:VulnerabilityStatus ;
+    skos:definition "CVE ID was rejected and should not be used." .
+
+<https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#RESERVED> a owl:Class ;
+    rdfs:label "RESERVED" ;
+    rdfs:subClassOf nvd:VulnerabilityStatus ;
+    skos:definition "CVE ID is reserved but details are not yet published." .
+
+nvd:children a owl:ObjectProperty ;
+    rdfs:label "children" ;
+    rdfs:range nvd:CPEConfiguration ;
+    skos:definition "Child configuration nodes." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:configurations a owl:ObjectProperty ;
+    rdfs:label "configurations" ;
+    rdfs:range nvd:CPEConfiguration ;
+    skos:definition "Affected software configuration statements." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:cve_tags a owl:DatatypeProperty ;
+    rdfs:label "cve_tags" ;
+    rdfs:range xsd:string ;
+    skos:definition "CVE tags passed through the CVE List and rendered by NVD." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:cvss_v2_metrics a owl:ObjectProperty ;
+    rdfs:label "cvss_v2_metrics" ;
+    rdfs:range nvd:CVSSMetric ;
+    skos:definition "CVSS v2.0 metrics." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:cvss_v3_metrics a owl:ObjectProperty ;
+    rdfs:label "cvss_v3_metrics" ;
+    rdfs:range nvd:CVSSMetric ;
+    skos:definition "CVSS v3.x metrics." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:cvss_v4_metrics a owl:ObjectProperty ;
+    rdfs:label "cvss_v4_metrics" ;
+    rdfs:range nvd:CVSSMetric ;
+    skos:definition "CVSS v4.0 metrics." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:matched_cpe_names a owl:DatatypeProperty ;
+    rdfs:label "matched_cpe_names" ;
+    rdfs:range xsd:string ;
+    skos:definition "Expanded list of matching CPE names shown in detail UI." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:matches a owl:ObjectProperty ;
+    rdfs:label "matches" ;
+    rdfs:range nvd:CPEMatch ;
+    skos:definition "Match criteria for this configuration node." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:nvd_tags a owl:ObjectProperty ;
+    rdfs:label "nvd_tags" ;
+    rdfs:range nvd:NVDTag ;
+    skos:definition "NVD analysis tag values." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:resource_tags a owl:ObjectProperty ;
+    rdfs:label "resource_tags" ;
+    rdfs:range nvd:ReferenceTag ;
+    skos:definition "NVD resource categories attached to references." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:score_notes a owl:ObjectProperty ;
+    rdfs:label "score_notes" ;
+    rdfs:range nvd:CVSSScoreNote ;
+    skos:definition "Notes about CVSS display behavior and data provenance." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:status_transitions a owl:ObjectProperty ;
+    rdfs:label "status_transitions" ;
+    rdfs:range nvd:StatusTransition ;
+    skos:definition "Timeline of status transitions in NVD workflow." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:vendor_comments a owl:ObjectProperty ;
+    rdfs:label "vendor_comments" ;
+    rdfs:range nvd:VendorComment ;
+    skos:definition "Vendor comments associated with the vulnerability record." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+core:Impact a owl:Class ;
+    rdfs:label "Impact" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:vector ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:vector ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:score ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:score ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:severity ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty core:score ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:ImpactSeverity ;
+            owl:onProperty core:severity ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:severity ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:vector ] ;
+    skos:definition "Assessment of the vulnerability's impact and severity." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:Product a owl:Class ;
+    rdfs:label "Product" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:platforms ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:vendor ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:vendor ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:version ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:version ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:vendor ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:platforms ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:version ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:name ] ;
+    skos:definition "Software or hardware entity affected by the vulnerability." ;
+    skos:exactMatch schema1:SoftwareApplication ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:platforms a owl:DatatypeProperty ;
+    rdfs:label "platforms" ;
+    rdfs:range xsd:string ;
+    skos:definition "Platforms or operating environments affected." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:products a owl:ObjectProperty ;
+    rdfs:label "products" ;
+    rdfs:range core:Product ;
+    skos:definition "Products affected by this vulnerability." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+nvd:analysis_description a owl:DatatypeProperty ;
+    rdfs:label "analysis_description" ;
+    rdfs:range xsd:string ;
+    skos:definition "Description available at enrichment time and shown under Analysis Description." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:base_score a owl:DatatypeProperty ;
+    rdfs:label "base_score" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 10 ] ) ] ) ] ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:base_severity a owl:ObjectProperty ;
+    rdfs:label "base_severity" ;
+    rdfs:range nvd:ImpactSeverity ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:comment a owl:DatatypeProperty ;
+    rdfs:label "comment" ;
+    skos:definition "Vendor-provided comment text." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:configuration_id a owl:DatatypeProperty ;
+    rdfs:label "configuration_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "Display identifier, for example Configuration 1." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:configuration_type a owl:ObjectProperty ;
+    rdfs:label "configuration_type" ;
+    rdfs:range nvd:ConfigurationType ;
+    skos:definition "Simplified configuration rendering type." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:cpe23_uri a owl:DatatypeProperty ;
+    rdfs:label "cpe23_uri" ;
+    rdfs:range xsd:string ;
+    skos:definition "Concrete CPE 2.3 URI." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:created a owl:DatatypeProperty ;
+    rdfs:label "created" ;
+    rdfs:range xsd:dateTime ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:criteria a owl:DatatypeProperty ;
+    rdfs:label "criteria" ;
+    rdfs:range xsd:string ;
+    skos:definition "CPE 2.3 match criterion expression." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:cwe_view a owl:DatatypeProperty ;
+    rdfs:label "cwe_view" ;
+    rdfs:range xsd:string ;
+    skos:definition "CWE view used for weakness mapping, typically CWE-1003." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:date_added a owl:DatatypeProperty ;
+    rdfs:label "date_added" ;
+    rdfs:range xsd:date ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:date_received a owl:DatatypeProperty ;
+    rdfs:label "date_received" ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "Date/time when NVD received the CVE record for processing." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:description_source a owl:DatatypeProperty ;
+    rdfs:label "description_source" ;
+    rdfs:range xsd:string ;
+    skos:definition "Source attribution shown beneath Current Description." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:due_date a owl:DatatypeProperty ;
+    rdfs:label "due_date" ;
+    rdfs:range xsd:date ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:event_source a owl:ObjectProperty ;
+    rdfs:label "event_source" ;
+    rdfs:range nvd:NVDWorkflowEventSource ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:from_status a owl:ObjectProperty ;
+    rdfs:label "from_status" ;
+    rdfs:range nvd:NVDWorkflowStatus ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:kev_reference a owl:DatatypeProperty ;
+    rdfs:label "kev_reference" ;
+    rdfs:range xsd:anyURI ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:known_exploited a owl:ObjectProperty ;
+    rdfs:label "known_exploited" ;
+    rdfs:range nvd:KnownExploitedVulnerability ;
+    skos:definition "KEV banner details when this CVE is listed by CISA." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:match_criteria_id a owl:DatatypeProperty ;
+    rdfs:label "match_criteria_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for a match criterion." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:message a owl:DatatypeProperty ;
+    rdfs:label "message" ;
+    rdfs:range xsd:string ;
+    skos:definition "Human-readable explanatory note text." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:metrics a owl:ObjectProperty ;
+    rdfs:label "metrics" ;
+    rdfs:range nvd:MetricSet ;
+    skos:definition "Grouped CVSS displays and notes for this entry." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:note_id a owl:DatatypeProperty ;
+    rdfs:label "note_id" ;
+    rdfs:range xsd:string ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:provider_label a owl:DatatypeProperty ;
+    rdfs:label "provider_label" ;
+    rdfs:range xsd:string ;
+    skos:definition "Display label for score source, such as NIST NVD or CNA Example." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:rationale a owl:DatatypeProperty ;
+    rdfs:label "rationale" ;
+    rdfs:range xsd:string ;
+    skos:definition "Optional reason for transition." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:required_action a owl:DatatypeProperty ;
+    rdfs:label "required_action" ;
+    rdfs:range xsd:string ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:scoring_justification a owl:DatatypeProperty ;
+    rdfs:label "scoring_justification" ;
+    rdfs:range xsd:string ;
+    skos:definition "Supplemental rationale or caveat for a CVSS score." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:summary a owl:DatatypeProperty ;
+    rdfs:label "summary" ;
+    rdfs:range xsd:string ;
+    skos:definition "Human-oriented explanation of configuration logic." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:to_status a owl:ObjectProperty ;
+    rdfs:label "to_status" ;
+    rdfs:range nvd:NVDWorkflowStatus ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:transition_id a owl:DatatypeProperty ;
+    rdfs:label "transition_id" ;
+    rdfs:range xsd:string ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:transition_time a owl:DatatypeProperty ;
+    rdfs:label "transition_time" ;
+    rdfs:range xsd:dateTime ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:vector_string a owl:DatatypeProperty ;
+    rdfs:label "vector_string" ;
+    skos:definition "Serialized CVSS vector string." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:version_end_excluding a owl:DatatypeProperty ;
+    rdfs:label "version_end_excluding" ;
+    rdfs:range xsd:string ;
+    skos:definition "Exclusive upper version bound." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:version_end_including a owl:DatatypeProperty ;
+    rdfs:label "version_end_including" ;
+    rdfs:range xsd:string ;
+    skos:definition "Inclusive upper version bound." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:version_start_excluding a owl:DatatypeProperty ;
+    rdfs:label "version_start_excluding" ;
+    rdfs:range xsd:string ;
+    skos:definition "Exclusive lower version bound." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:version_start_including a owl:DatatypeProperty ;
+    rdfs:label "version_start_including" ;
+    rdfs:range xsd:string ;
+    skos:definition "Inclusive lower version bound." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:vulnerable a owl:DatatypeProperty ;
+    rdfs:label "vulnerable" ;
+    rdfs:range xsd:boolean ;
+    skos:definition "Whether the criterion indicates a vulnerable product context." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:workflow_status a owl:ObjectProperty ;
+    rdfs:label "workflow_status" ;
+    rdfs:range nvd:NVDWorkflowStatus ;
+    skos:definition "Current NVD workflow status for the CVE." ;
+    skos:exactMatch skos:notation ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+core:Reference a owl:Class ;
+    rdfs:label "Reference" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty core:url ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:url ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:url ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:name ] ;
+    skos:definition "External reference such as an advisory or article." ;
+    skos:exactMatch schema1:CreativeWork ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:Weakness a owl:Class ;
+    rdfs:label "Weakness" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:description ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:cwe_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:cwe_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:description ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:cwe_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:description ] ;
+    skos:definition "Weakness classification from CWE or a similar taxonomy." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:cpe_uri a owl:DatatypeProperty ;
+    rdfs:label "cpe_uri" ;
+    rdfs:range xsd:string ;
+    skos:altLabel "cpeUri" ;
+    skos:definition "CPE 2.2 URI identifying an affected product configuration." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:cve_id a owl:DatatypeProperty ;
+    rdfs:label "cve_id" ;
+    rdfs:range xsd:string ;
+    skos:altLabel "cveID" ;
+    skos:definition "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN." ;
+    skos:exactMatch schema1:identifier ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:cwe_id a owl:DatatypeProperty ;
+    rdfs:label "cwe_id" ;
+    rdfs:range xsd:string ;
+    skos:altLabel "cweID" ;
+    skos:definition "CWE identifier for the weakness classification (e.g. CWE-79)." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:impact a owl:ObjectProperty ;
+    rdfs:label "impact" ;
+    rdfs:range core:Impact ;
+    skos:definition "Impact and severity assessment for this vulnerability." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:published_date a owl:DatatypeProperty ;
+    rdfs:label "published_date" ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "Date and time the vulnerability was first published." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:score a owl:DatatypeProperty ;
+    rdfs:label "score" ;
+    rdfs:range xsd:float ;
+    skos:definition "Numeric vulnerability score (e.g. CVSS base score)." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:severity a owl:ObjectProperty ;
+    rdfs:label "severity" ;
+    rdfs:range nvd:ImpactSeverity ;
+    skos:definition "Qualitative severity rating." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:status a owl:ObjectProperty ;
+    rdfs:label "status" ;
+    rdfs:range nvd:VulnerabilityStatus ;
+    skos:definition "Current lifecycle state of the vulnerability record." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:title a owl:DatatypeProperty ;
+    rdfs:label "title" ;
+    rdfs:range xsd:string ;
+    skos:definition "Short human-readable title or name for this entity." ;
+    skos:exactMatch schema1:name ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:url a owl:DatatypeProperty ;
+    rdfs:label "url" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "URL pointing to the reference resource." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:vector a owl:DatatypeProperty ;
+    rdfs:label "vector" ;
+    rdfs:range xsd:string ;
+    skos:definition "CVSS vector string or equivalent scoring vector expression." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+xsd:date a rdfs:Datatype ;
+    owl:equivalentClass [ a rdfs:Datatype ;
+            owl:onDatatype xsd:string ;
+            owl:withRestrictions ( [ xsd:pattern "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" ] ) ] .
+
+nvd:CPEConfiguration a owl:Class ;
+    rdfs:label "CPEConfiguration" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom nvd:ConfigurationType ;
+            owl:onProperty nvd:configuration_type ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:CPEConfiguration ;
+            owl:onProperty nvd:children ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:summary ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:summary ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:children ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:configuration_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:operator ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:CPEMatch ;
+            owl:onProperty nvd:matches ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:matches ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:operator ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:configuration_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:operator ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:configuration_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:configuration_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:configuration_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:summary ] ;
+    skos:definition "Logical grouping of CPE match criteria for affected software." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    skos:note "Supported rendering categories include Basic, Running On/With, and Advanced." .
+
+nvd:CVSSVersion a owl:Class ;
+    rdfs:label "CVSSVersion" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/CVSSVersion#V2_0> <https://w3id.org/lmodel/nist-nvd/CVSSVersion#V3_0> <https://w3id.org/lmodel/nist-nvd/CVSSVersion#V3_1> <https://w3id.org/lmodel/nist-nvd/CVSSVersion#V4_0> ) ;
+    skos:definition "Supported CVSS versions displayed in NVD metrics tabs." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/CVSSVersion#V2_0>,
+        <https://w3id.org/lmodel/nist-nvd/CVSSVersion#V3_0>,
+        <https://w3id.org/lmodel/nist-nvd/CVSSVersion#V3_1>,
+        <https://w3id.org/lmodel/nist-nvd/CVSSVersion#V4_0> .
+
+nvd:NVDTag a owl:Class ;
+    rdfs:label "NVDTag" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/NVDTag#ANALYSIS_PENDING> <https://w3id.org/lmodel/nist-nvd/NVDTag#ADDITIONAL_INFORMATION> ) ;
+    skos:definition "NVD analysis tags attached to vulnerability records." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/NVDTag#ADDITIONAL_INFORMATION>,
+        <https://w3id.org/lmodel/nist-nvd/NVDTag#ANALYSIS_PENDING> .
+
+nvd:VersionBoundType a owl:Class ;
+    rdfs:label "VersionBoundType" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/VersionBoundType#START_INCLUDING> <https://w3id.org/lmodel/nist-nvd/VersionBoundType#START_EXCLUDING> <https://w3id.org/lmodel/nist-nvd/VersionBoundType#END_INCLUDING> <https://w3id.org/lmodel/nist-nvd/VersionBoundType#END_EXCLUDING> ) ;
+    skos:definition "Boundary type for version-range constraints." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/VersionBoundType#END_EXCLUDING>,
+        <https://w3id.org/lmodel/nist-nvd/VersionBoundType#END_INCLUDING>,
+        <https://w3id.org/lmodel/nist-nvd/VersionBoundType#START_EXCLUDING>,
+        <https://w3id.org/lmodel/nist-nvd/VersionBoundType#START_INCLUDING> .
+
+core:references a owl:ObjectProperty ;
+    rdfs:label "references" ;
+    rdfs:range core:Reference ;
+    skos:definition "External references such as advisories and articles." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:weaknesses a owl:ObjectProperty ;
+    rdfs:label "weaknesses" ;
+    rdfs:range core:Weakness ;
+    skos:definition "Weakness classifications (e.g. CWE) associated with this vulnerability." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+nvd:ConfigurationType a owl:Class ;
+    rdfs:label "ConfigurationType" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/ConfigurationType#BASIC> <https://w3id.org/lmodel/nist-nvd/ConfigurationType#RUNNING_ON_WITH> <https://w3id.org/lmodel/nist-nvd/ConfigurationType#ADVANCED> ) ;
+    skos:definition "NVD configuration rendering category." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/ConfigurationType#ADVANCED>,
+        <https://w3id.org/lmodel/nist-nvd/ConfigurationType#BASIC>,
+        <https://w3id.org/lmodel/nist-nvd/ConfigurationType#RUNNING_ON_WITH> .
+
+nvd:CVSSMetric a owl:Class ;
+    rdfs:label "CVSSMetric" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:vector_string ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:source ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:vector_string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:ImpactSeverity ;
+            owl:onProperty nvd:base_severity ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:base_score ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:provider_label ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:base_severity ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty core:version ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 10 ] ) ] ) ] ;
+            owl:onProperty nvd:base_score ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty core:version ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:base_severity ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:provider_label ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:vector_string ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty core:version ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:scoring_justification ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty nvd:base_score ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:provider_label ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty nvd:scoring_justification ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty nvd:scoring_justification ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom nvd:ScoreSource ;
+            owl:onProperty core:source ] ;
+    skos:definition "Individual CVSS vector and score attribution." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> .
+
+nvd:NVDWorkflowEventSource a owl:Class ;
+    rdfs:label "NVDWorkflowEventSource" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_PROCESS> <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_STAFF_DECISION> <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#CVE_PROGRAM_PROCESS> <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#USER_REQUEST> ) ;
+    skos:definition "Source of state transition decisions in the status flow." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#CVE_PROGRAM_PROCESS>,
+        <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_PROCESS>,
+        <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_STAFF_DECISION>,
+        <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#USER_REQUEST> .
+
+nvd:ScoreSource a owl:Class ;
+    rdfs:label "ScoreSource" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/ScoreSource#NVD> <https://w3id.org/lmodel/nist-nvd/ScoreSource#CNA> <https://w3id.org/lmodel/nist-nvd/ScoreSource#ADP> <https://w3id.org/lmodel/nist-nvd/ScoreSource#VENDOR> <https://w3id.org/lmodel/nist-nvd/ScoreSource#THIRD_PARTY> ) ;
+    skos:definition "Provider of CVSS vectors and scores." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/ScoreSource#ADP>,
+        <https://w3id.org/lmodel/nist-nvd/ScoreSource#CNA>,
+        <https://w3id.org/lmodel/nist-nvd/ScoreSource#NVD>,
+        <https://w3id.org/lmodel/nist-nvd/ScoreSource#THIRD_PARTY>,
+        <https://w3id.org/lmodel/nist-nvd/ScoreSource#VENDOR> .
+
+core:description a owl:DatatypeProperty ;
+    rdfs:label "description" ;
+    rdfs:range xsd:string ;
+    skos:definition "Narrative description of the vulnerability." ;
+    skos:exactMatch schema1:description ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:last_modified_date a owl:DatatypeProperty ;
+    rdfs:label "last_modified_date" ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "Date and time the vulnerability record was last modified." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:operator a owl:DatatypeProperty ;
+    rdfs:label "operator" ;
+    rdfs:range xsd:string ;
+    skos:definition "Logical operator (AND/OR) used in configuration node groupings." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:vendor a owl:DatatypeProperty ;
+    rdfs:label "vendor" ;
+    rdfs:range xsd:string ;
+    skos:definition "Name of the vendor or organization responsible for the product." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+core:version a owl:DatatypeProperty ;
+    rdfs:label "version" ;
+    rdfs:range xsd:string ;
+    skos:definition "Version string of the affected product." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+nvd:VulnerabilityStatus a owl:Class ;
+    rdfs:label "VulnerabilityStatus" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#ACTIVE> <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#REJECTED> <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#DISPUTED> <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#RESERVED> <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#DEPRECATED> ) ;
+    skos:definition "Lifecycle state of a vulnerability record." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#ACTIVE>,
+        <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#DEPRECATED>,
+        <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#DISPUTED>,
+        <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#REJECTED>,
+        <https://w3id.org/lmodel/nist-nvd/VulnerabilityStatus#RESERVED> .
+
+nvd:ReferenceTag a owl:Class ;
+    rdfs:label "ReferenceTag" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/ReferenceTag#THIRD_PARTY_ADVISORY> <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VENDOR_ADVISORY> <https://w3id.org/lmodel/nist-nvd/ReferenceTag#ISSUE_TRACKING> <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PATCH> <https://w3id.org/lmodel/nist-nvd/ReferenceTag#TECHNICAL_DESCRIPTION> <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PRESS_MEDIA_COVERAGE> <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VDB_ENTRY> ) ;
+    skos:definition "Resource tag labels used by NVD references." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/ReferenceTag#ISSUE_TRACKING>,
+        <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PATCH>,
+        <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PRESS_MEDIA_COVERAGE>,
+        <https://w3id.org/lmodel/nist-nvd/ReferenceTag#TECHNICAL_DESCRIPTION>,
+        <https://w3id.org/lmodel/nist-nvd/ReferenceTag#THIRD_PARTY_ADVISORY>,
+        <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VDB_ENTRY>,
+        <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VENDOR_ADVISORY> .
+
+core:name a owl:DatatypeProperty ;
+    rdfs:label "name" ;
+    rdfs:range xsd:string ;
+    skos:altLabel "label" ;
+    skos:definition "Name of the entity (product, weakness, reference, etc.)." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+nvd:ImpactSeverity a owl:Class ;
+    rdfs:label "ImpactSeverity" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#NONE> <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#LOW> <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#MEDIUM> <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#HIGH> <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#CRITICAL> <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#UNKNOWN> ) ;
+    skos:definition "CVSS qualitative severity rating." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#CRITICAL>,
+        <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#HIGH>,
+        <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#LOW>,
+        <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#MEDIUM>,
+        <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#NONE>,
+        <https://w3id.org/lmodel/nist-nvd/ImpactSeverity#UNKNOWN> .
+
+core:source a owl:DatatypeProperty ;
+    rdfs:label "source" ;
+    rdfs:range xsd:string ;
+    skos:definition "Source or origin of the reference or data." ;
+    skos:inScheme <https://w3id.org/lmodel/vulnerability-core> .
+
+nvd:NVDWorkflowStatus a owl:Class ;
+    rdfs:label "NVDWorkflowStatus" ;
+    owl:unionOf ( <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT> <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT> <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED> <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT> <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED> <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ) ;
+    skos:definition "Enrichment state labels shown by NVD for CVEs." ;
+    skos:inScheme <https://w3id.org/lmodel/nist-nvd> ;
+    linkml:permissible_values <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>,
+        <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>,
+        <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>,
+        <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>,
+        <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED>,
+        <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT> .
+
+xsd:string a rdfs:Datatype ;
+    owl:equivalentClass [ a rdfs:Datatype ;
+            owl:onDatatype xsd:string ;
+            owl:withRestrictions ( [ xsd:pattern "^CVE-[0-9]{4}-[0-9]+$" ] ) ] .
+
+

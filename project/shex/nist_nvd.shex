@@ -1,0 +1,300 @@
+# metamodel_version: 1.7.0
+BASE <https://w3id.org/lmodel/nist-nvd/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX core: <https://w3id.org/lmodel/vulnerability-core/>
+PREFIX linkml: <https://w3id.org/linkml/>
+PREFIX schema1: <http://schema.org/>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+
+core:CveId xsd:string
+
+core:IsoDate xsd:date
+
+linkml:String xsd:string
+
+linkml:Integer xsd:integer
+
+linkml:Boolean xsd:boolean
+
+linkml:Float xsd:float
+
+linkml:Double xsd:double
+
+linkml:Decimal xsd:decimal
+
+linkml:Time xsd:time
+
+linkml:Date xsd:date
+
+linkml:Datetime xsd:dateTime
+
+linkml:DateOrDatetime linkml:DateOrDatetime
+
+linkml:Uriorcurie IRI
+
+linkml:Curie xsd:string
+
+linkml:Uri IRI
+
+linkml:Ncname xsd:string
+
+linkml:Objectidentifier IRI
+
+linkml:Nodeidentifier NONLITERAL
+
+linkml:Jsonpointer xsd:string
+
+linkml:Jsonpath xsd:string
+
+linkml:Sparqlpath xsd:string
+
+core:Configuration CLOSED {
+    (  $core:Configuration_tes (  core:cpe_uri @linkml:String ? ;
+          core:operator @linkml:String ?
+       ) ;
+       rdf:type [ core:Configuration ] ?
+    )
+}
+
+<CPEConfiguration> CLOSED {
+    (  $<CPEConfiguration_tes> (  <configuration_id> @linkml:String ? ;
+          <configuration_type> [ <https://w3id.org/lmodel/nist-nvd/ConfigurationType#BASIC>
+             <https://w3id.org/lmodel/nist-nvd/ConfigurationType#RUNNING_ON_WITH>
+             <https://w3id.org/lmodel/nist-nvd/ConfigurationType#ADVANCED> ] ? ;
+          core:operator @linkml:String ? ;
+          <children> @<CPEConfiguration> * ;
+          <matches> @<CPEMatch> * ;
+          <summary> @linkml:String ?
+       ) ;
+       rdf:type [ <CPEConfiguration> ] ?
+    )
+}
+
+<CPEMatch> CLOSED {
+    (  $<CPEMatch_tes> (  <match_criteria_id> @linkml:String ? ;
+          <criteria> @linkml:String ? ;
+          <cpe23_uri> @linkml:String ? ;
+          <vulnerable> @linkml:Boolean ? ;
+          <version_start_including> @linkml:String ? ;
+          <version_start_excluding> @linkml:String ? ;
+          <version_end_including> @linkml:String ? ;
+          <version_end_excluding> @linkml:String ? ;
+          <matched_cpe_names> @linkml:String *
+       ) ;
+       rdf:type [ <CPEMatch> ] ?
+    )
+}
+
+<CVSSMetric> CLOSED {
+    (  $<CVSSMetric_tes> (  schema1:version @linkml:String ? ;
+          <vector_string> @linkml:String ? ;
+          <base_score> @linkml:Float ? ;
+          <base_severity> [ <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#NONE>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#LOW>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#MEDIUM>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#HIGH>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#CRITICAL>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#UNKNOWN> ] ? ;
+          dct:source [ <https://w3id.org/lmodel/nist-nvd/ScoreSource#NVD> <https://w3id.org/lmodel/nist-nvd/ScoreSource#CNA>
+             <https://w3id.org/lmodel/nist-nvd/ScoreSource#ADP> <https://w3id.org/lmodel/nist-nvd/ScoreSource#VENDOR>
+             <https://w3id.org/lmodel/nist-nvd/ScoreSource#THIRD_PARTY> ] ? ;
+          <provider_label> @linkml:String ? ;
+          <scoring_justification> @linkml:String ?
+       ) ;
+       rdf:type [ <CVSSMetric> ] ?
+    )
+}
+
+<CVSSScoreNote> CLOSED {
+    (  $<CVSSScoreNote_tes> (  <message> @linkml:String ? ;
+          dct:source @linkml:String ? ;
+          dct:created @linkml:Datetime ?
+       ) ;
+       rdf:type [ <CVSSScoreNote> ]
+    )
+}
+
+core:Impact CLOSED {
+    (  $core:Impact_tes (  core:severity [ <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#NONE>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#LOW>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#MEDIUM>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#HIGH>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#CRITICAL>
+             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#UNKNOWN> ] ? ;
+          core:vector @linkml:String ? ;
+          core:score @linkml:Float ?
+       ) ;
+       rdf:type [ core:Impact ] ?
+    )
+}
+
+<KnownExploitedVulnerability> CLOSED {
+    (  $<KnownExploitedVulnerability_tes> (  dct:created @linkml:Date ? ;
+          dct:date @linkml:Date ? ;
+          dct:description @linkml:String ? ;
+          schema1:url @linkml:Uri ?
+       ) ;
+       rdf:type [ <KnownExploitedVulnerability> ] ?
+    )
+}
+
+<MetricSet> CLOSED {
+    (  $<MetricSet_tes> (  <cvss_v4_metrics> @<CVSSMetric> * ;
+          <cvss_v3_metrics> @<CVSSMetric> * ;
+          <cvss_v2_metrics> @<CVSSMetric> * ;
+          <score_notes> @<CVSSScoreNote> *
+       ) ;
+       rdf:type [ <MetricSet> ] ?
+    )
+}
+
+<NVDEntry> CLOSED {
+    (  $<NVDEntry_tes> (  &core:Vulnerability_tes ;
+          rdf:type [ core:Vulnerability ] ? ;
+          dct:source @linkml:String ? ;
+          dct:description @linkml:String ? ;
+          <metrics> @<MetricSet> ? ;
+          <configurations> @<CPEConfiguration> * ;
+          core:references @<NVDReference> * ;
+          core:weaknesses @<NVDWeakness> * ;
+          <vendor_comments> @<VendorComment> * ;
+          <nvd_tags> [ <https://w3id.org/lmodel/nist-nvd/NVDTag#ANALYSIS_PENDING>
+             <https://w3id.org/lmodel/nist-nvd/NVDTag#ADDITIONAL_INFORMATION> ] * ;
+          <cve_tags> @linkml:String * ;
+          <workflow_status> [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
+          <status_transitions> @<StatusTransition> * ;
+          <known_exploited> @<KnownExploitedVulnerability> ? ;
+          <cwe_view> @linkml:String ? ;
+          <date_received> @linkml:Datetime ? ;
+          core:status [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
+          dct:description @linkml:String
+       ) ;
+       rdf:type [ <NVDEntry> ]
+    )
+}
+
+<NVDReference> CLOSED {
+    (  $<NVDReference_tes> (  &core:Reference_tes ;
+          rdf:type [ core:Reference ] ? ;
+          <resource_tags> [ <https://w3id.org/lmodel/nist-nvd/ReferenceTag#THIRD_PARTY_ADVISORY>
+             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VENDOR_ADVISORY>
+             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#ISSUE_TRACKING> <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PATCH>
+             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#TECHNICAL_DESCRIPTION>
+             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PRESS_MEDIA_COVERAGE>
+             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VDB_ENTRY> ] * ;
+          schema1:url @linkml:Uri ;
+          dct:source @linkml:String ?
+       ) ;
+       rdf:type [ <NVDReference> ] ?
+    )
+}
+
+<NVDWeakness> CLOSED {
+    (  $<NVDWeakness_tes> (  &core:Weakness_tes ;
+          rdf:type [ core:Weakness ] ? ;
+          dct:source @linkml:String ;
+          dct:identifier @linkml:String ;
+          rdfs:label @linkml:String
+       ) ;
+       rdf:type [ <NVDWeakness> ] ?
+    )
+}
+
+core:Product CLOSED {
+    (  $core:Product_tes (  schema1:name @linkml:String ? ;
+          rdfs:label @linkml:String ? ;
+          schema1:version @linkml:String ? ;
+          core:platforms @linkml:String *
+       ) ;
+       rdf:type [ core:Product ] ?
+    )
+}
+
+core:Reference  (
+    CLOSED {
+       (  $core:Reference_tes (  schema1:url @linkml:Uri ? ;
+             rdfs:label @linkml:String ? ;
+             dct:source @linkml:String ?
+          ) ;
+          rdf:type [ core:Reference ] ?
+       )
+    } OR @<NVDReference>
+)
+
+<StatusTransition> CLOSED {
+    (  $<StatusTransition_tes> (  <from_status> [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
+          <to_status> [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
+          <event_source> [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_PROCESS>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_STAFF_DECISION>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#CVE_PROGRAM_PROCESS>
+             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#USER_REQUEST> ] ? ;
+          dct:modified @linkml:Datetime ? ;
+          <rationale> @linkml:String ?
+       ) ;
+       rdf:type [ <StatusTransition> ]
+    )
+}
+
+<VendorComment> CLOSED {
+    (  $<VendorComment_tes> (  schema1:name @linkml:String ? ;
+          <comment> @linkml:String ? ;
+          dct:modified @linkml:Datetime ?
+       ) ;
+       rdf:type [ <VendorComment> ] ?
+    )
+}
+
+core:Vulnerability  (
+    {
+       (  $core:Vulnerability_tes (  dct:title @linkml:String ? ;
+             dct:description @linkml:String ;
+             dct:created @linkml:Datetime ? ;
+             dct:modified @linkml:Datetime ? ;
+             core:products @core:Product * ;
+             core:weaknesses @core:Weakness * ;
+             core:references @core:Reference * ;
+             core:impact @core:Impact ? ;
+             core:status [ <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#ACTIVE>
+                <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#REJECTED>
+                <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#DISPUTED>
+                <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#RESERVED>
+                <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#DEPRECATED> ] ?
+          ) ;
+          rdf:type [ core:Vulnerability ]
+       )
+    } OR @<NVDEntry>
+)
+
+core:Weakness  (
+    CLOSED {
+       (  $core:Weakness_tes (  dct:identifier @linkml:String ? ;
+             rdfs:label @linkml:String ? ;
+             dct:description @linkml:String ?
+          ) ;
+          rdf:type [ core:Weakness ] ?
+       )
+    } OR @<NVDWeakness>
+)
