@@ -1965,7 +1965,7 @@ classes:
     class_uri: core:Configuration
 metamodel_version: 1.7.0
 source_file: nist_nvd.yaml
-source_file_date: '2026-04-17T16:54:12'
+source_file_date: '2026-04-17T17:01:20'
 source_file_size: 12757
-generation_date: '2026-04-17T16:54:23'
+generation_date: '2026-04-17T17:01:30'
 
