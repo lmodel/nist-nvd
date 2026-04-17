@@ -1,0 +1,6 @@
+transition_id: status-001
+from_status: AWAITING_ENRICHMENT
+to_status: UNDERGOING_ENRICHMENT
+event_source: NVD_PROCESS
+transition_time: "2024-01-03T00:00:00Z"
+rationale: Automatic intake from CVE publication.

@@ -1,0 +1,5 @@
+criteria: cpe:2.3:a:fusionpbx:fusionpbx:*:*:*:*:*:*:*:*
+vulnerable: true
+version_end_including: 4.5.7
+matched_cpe_names:
+  - cpe:2.3:a:fusionpbx:fusionpbx:4.5.7:*:*:*:*:*:*:*

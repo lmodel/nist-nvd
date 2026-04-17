@@ -1,0 +1,84 @@
+cve_id: CVE-2023-12345
+description: |
+  Current Description example for an NVD entry. Demonstrates enriched fields
+  captured from NVD vulnerability detail pages.
+description_source: MITRE
+analysis_description: |
+  Analysis Description present at time of NVD enrichment.
+published_date: "2023-07-15T10:00:00Z"
+last_modified_date: "2024-02-20T17:30:00Z"
+metrics:
+  cvss_v3_metrics:
+    - version: V3_1
+      vector_string: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+      base_score: 9.8
+      base_severity: CRITICAL
+      source: NVD
+      provider_label: NIST NVD
+  cvss_v2_metrics:
+    - version: V2_0
+      vector_string: AV:N/AC:L/Au:N/C:P/I:P/A:P
+      base_score: 7.5
+      base_severity: HIGH
+      source: CNA
+      provider_label: CNA Example
+  score_notes:
+    - note_id: note-1
+      message: CNA-provided score is displayed when matching NVD values.
+      source: NVD detail page guidance
+      created: "2024-02-21T00:00:00Z"
+configurations:
+  - configuration_id: Configuration 1
+    configuration_type: RUNNING_ON_WITH
+    operator: AND
+    summary: Product must run on specified platform to be vulnerable.
+    matches:
+      - criteria: cpe:2.3:a:example:server:*:*:*:*:*:*:*:*
+        vulnerable: true
+        version_end_excluding: 4.5.7
+      - criteria: cpe:2.3:o:microsoft:windows_server_2008:r2:sp1:*:*:*:*:x64:*
+        vulnerable: false
+references:
+  - url: https://security-tracker.debian.org/tracker/CVE-2023-12345
+    source: debian
+    resource_tags:
+      - THIRD_PARTY_ADVISORY
+  - url: https://vendor.example/advisories/2023-12345
+    source: vendor
+    resource_tags:
+      - VENDOR_ADVISORY
+      - PATCH
+weaknesses:
+  - cwe_id: CWE-20
+    name: Improper Input Validation
+    source: NIST
+  - cwe_id: CWE-805
+    name: Buffer Access with Incorrect Length Value
+    source: ASSIGNER
+vendor_comments:
+  - vendor: ExampleCorp
+    comment: Fix available in release 4.5.8.
+    last_modified_date: "2024-02-22T09:00:00Z"
+nvd_tags:
+  - ANALYSIS_PENDING
+cve_tags:
+  - disputed
+workflow_status: ENRICHED
+status_transitions:
+  - transition_id: st-1
+    from_status: AWAITING_ENRICHMENT
+    to_status: UNDERGOING_ENRICHMENT
+    event_source: NVD_PROCESS
+    transition_time: "2024-01-02T08:00:00Z"
+  - transition_id: st-2
+    from_status: UNDERGOING_ENRICHMENT
+    to_status: ENRICHED
+    event_source: NVD_STAFF_DECISION
+    transition_time: "2024-01-08T14:30:00Z"
+known_exploited:
+  date_added: "2021-11-03"
+  due_date: "2022-05-03"
+  required_action: The impacted product is end-of-life and should be disconnected if still in use.
+  kev_reference: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+cwe_view: CWE-1003
+date_received: "2024-01-01T12:00:00Z"

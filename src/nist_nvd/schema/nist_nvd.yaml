@@ -1,0 +1,527 @@
+---
+id: https://w3id.org/lmodel/nist-nvd
+name: nist-nvd
+title: nist-nvd
+description: |-
+  NIST National Vulnerability Database (NVD) LinkML Schema.
+  Captures enriched vulnerability records, CVSS metric views, CPE
+  applicability statements, weakness attributions, reference resource tags,
+  KEV indicator details, and NVD lifecycle status transitions.
+license: Apache-2.0
+
+source: https://nvd.nist.gov/vuln/data-feeds
+version:   # vendor version if available
+annotations:
+  source_context: NVD Vulnerability Detail Pages and Vulnerability Status pages
+  source_features: current_description,analysis_description,cvss_tabs,reference_resource_tags,cpe_configuration_types,kev_banner,weakness_source_table,status_flow
+  cwe_view: CWE-1003
+
+see_also:
+  - https://lmodel.github.io/nist-nvd
+  - https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema
+  - https://nvd.nist.gov/vuln/detail
+  - https://nvd.nist.gov/general/visualizations/vulnerability-visualizations/cve-status-waterfall
+
+prefixes:
+  nvd: https://w3id.org/lmodel/nist-nvd/
+  core: https://w3id.org/lmodel/vulnerability-core/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  dct: http://purl.org/dc/terms/
+  skos: http://www.w3.org/2004/02/skos/core#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  WIKIDATA: https://www.wikidata.org/wiki/
+
+default_prefix: nvd
+default_range: string
+
+imports:
+  - ./vulnerability_core
+
+subsets:
+  nvd_feed:
+    description: Fields published in NVD API and feeds.
+
+  metrics:
+    description: CVSS and related scoring content.
+
+  detail_page:
+    description: Fields represented on NVD vulnerability detail pages.
+
+  status_workflow:
+    description: Fields representing NVD status lifecycle and transition context.
+
+enums:
+  CVSSVersion:
+    description: Supported CVSS versions displayed in NVD metrics tabs.
+    permissible_values:
+      V2_0:
+      V3_0:
+      V3_1:
+      V4_0:
+
+  NVDTag:
+    description: NVD analysis tags attached to vulnerability records.
+    permissible_values:
+      ANALYSIS_PENDING:
+      ADDITIONAL_INFORMATION:
+
+  ScoreSource:
+    description: Provider of CVSS vectors and scores.
+    permissible_values:
+      NVD:
+      CNA:
+      ADP:
+      VENDOR:
+      THIRD_PARTY:
+
+  ReferenceTag:
+    description: Resource tag labels used by NVD references.
+    permissible_values:
+      THIRD_PARTY_ADVISORY:
+      VENDOR_ADVISORY:
+      ISSUE_TRACKING:
+      PATCH:
+      TECHNICAL_DESCRIPTION:
+      PRESS_MEDIA_COVERAGE:
+      VDB_ENTRY:
+
+  ConfigurationType:
+    description: NVD configuration rendering category.
+    permissible_values:
+      BASIC:
+      RUNNING_ON_WITH:
+      ADVANCED:
+
+  NVDWorkflowStatus:
+    description: Enrichment state labels shown by NVD for CVEs.
+    permissible_values:
+      AWAITING_ENRICHMENT:
+      UNDERGOING_ENRICHMENT:
+      ENRICHED:
+      MODIFIED_AFTER_ENRICHMENT:
+      NOT_SCHEDULED:
+      REJECTED:
+
+  NVDWorkflowEventSource:
+    description: Source of state transition decisions in the status flow.
+    permissible_values:
+      NVD_PROCESS:
+      NVD_STAFF_DECISION:
+      CVE_PROGRAM_PROCESS:
+      USER_REQUEST:
+
+  VersionBoundType:
+    description: Boundary type for version-range constraints.
+    permissible_values:
+      START_INCLUDING:
+      START_EXCLUDING:
+      END_INCLUDING:
+      END_EXCLUDING:
+
+classes:
+  NVDEntry:
+    is_a: Vulnerability
+    description: Enriched NVD representation of a CVE entry.
+    comments:
+      - Current Description is the currently visible CVE description.
+      - Analysis Description captures the description present when NVD enrichment occurred.
+    notes:
+      - If NVD and CNA CVSS values match, NVD displays only the CNA values.
+      - Rejected CVEs are determined by the CVE Program rather than NVD.
+    slots:
+      - description_source
+      - analysis_description
+      - metrics
+      - configurations
+      - references
+      - weaknesses
+      - vendor_comments
+      - nvd_tags
+      - cve_tags
+      - workflow_status
+      - status_transitions
+      - known_exploited
+      - cwe_view
+      - date_received
+    slot_usage:
+      references:
+        range: NVDReference
+      weaknesses:
+        range: NVDWeakness
+      status:
+        range: NVDWorkflowStatus
+      description:
+        required: true
+        description: Current Description shown on the NVD detail page.
+    exact_mappings:
+      - WIKIDATA:Q631425
+    in_subset:
+      - nvd_feed
+      - detail_page
+
+  MetricSet:
+    description: Container for all metric views across CVSS versions.
+    slots:
+      - cvss_v4_metrics
+      - cvss_v3_metrics
+      - cvss_v2_metrics
+      - score_notes
+    comments:
+      - NVD detail pages expose button toggles for CVSS v4.0, v3.x, and v2.0.
+    in_subset:
+      - metrics
+
+  CVSSMetric:
+    description: Individual CVSS vector and score attribution.
+    slots:
+      - version
+      - vector_string
+      - base_score
+      - base_severity
+      - source
+      - provider_label
+      - scoring_justification
+    slot_usage:
+      source:
+        range: ScoreSource
+    in_subset:
+      - metrics
+
+  CVSSScoreNote:
+    description: Additional explanatory note for CVSS display conditions.
+    slots:
+      - note_id
+      - message
+      - source
+      - created
+    in_subset:
+      - metrics
+
+  CPEConfiguration:
+    description: Logical grouping of CPE match criteria for affected software.
+    slots:
+      - configuration_id
+      - configuration_type
+      - operator
+      - children
+      - matches
+      - summary
+    comments:
+      - Supported rendering categories include Basic, Running On/With, and Advanced.
+    in_subset:
+      - detail_page
+
+  CPEMatch:
+    description: Leaf-level CPE match criterion and optional version bounds.
+    slots:
+      - match_criteria_id
+      - criteria
+      - cpe23_uri
+      - vulnerable
+      - version_start_including
+      - version_start_excluding
+      - version_end_including
+      - version_end_excluding
+      - matched_cpe_names
+    notes:
+      - Matching CPE names can be exposed in expanded detail-page sections.
+    in_subset:
+      - detail_page
+
+  NVDReference:
+    is_a: Reference
+    description: Reference URL with NVD resource tags.
+    slots:
+      - resource_tags
+    slot_usage:
+      url:
+        required: true
+      source:
+        required: false
+    in_subset:
+      - detail_page
+
+  NVDWeakness:
+    is_a: Weakness
+    description: Weakness row as presented on the NVD detail page.
+    slots:
+      - source
+    slot_usage:
+      cwe_id:
+        required: true
+      name:
+        required: true
+      source:
+        required: true
+        description: Source column value, such as NIST or ASSIGNER.
+    comments:
+      - NVD uses CWE-1003 for simplified mapping of published vulnerabilities.
+    in_subset:
+      - detail_page
+
+  VendorComment:
+    description: Comment provided by vendor during NVD analysis.
+    slots:
+      - vendor
+      - comment
+      - last_modified_date
+    in_subset:
+      - nvd_feed
+
+  KnownExploitedVulnerability:
+    description: CISA KEV information rendered on the NVD detail page.
+    slots:
+      - date_added
+      - due_date
+      - required_action
+      - kev_reference
+    notes:
+      - Present only when the CVE appears in the CISA Known Exploited Vulnerabilities catalog.
+    in_subset:
+      - detail_page
+
+  StatusTransition:
+    description: State transition event in NVD enrichment workflow.
+    slots:
+      - transition_id
+      - from_status
+      - to_status
+      - event_source
+      - transition_time
+      - rationale
+    in_subset:
+      - status_workflow
+
+slots:
+  description_source:
+    range: string
+    description: Source attribution shown beneath Current Description.
+    slot_uri: dct:source
+    examples:
+      - value: MITRE
+
+  analysis_description:
+    range: string
+    description: Description available at enrichment time and shown under Analysis Description.
+    slot_uri: dct:description
+
+  metrics:
+    range: MetricSet
+    description: Grouped CVSS displays and notes for this entry.
+    in_subset:
+      - metrics
+  
+  configurations:
+    range: CPEConfiguration
+    multivalued: true
+    inlined_as_list: true
+    description: Affected software configuration statements.
+    in_subset:
+      - detail_page
+  
+  workflow_status:
+    range: NVDWorkflowStatus
+    description: Current NVD workflow status for the CVE.
+    exact_mappings:
+      - skos:notation
+
+  status_transitions:
+    range: StatusTransition
+    multivalued: true
+    inlined_as_list: true
+    description: Timeline of status transitions in NVD workflow.
+
+  known_exploited:
+    range: KnownExploitedVulnerability
+    description: KEV banner details when this CVE is listed by CISA.
+
+  cve_tags:
+    range: string
+    multivalued: true
+    description: CVE tags passed through the CVE List and rendered by NVD.
+
+  cwe_view:
+    range: string
+    description: CWE view used for weakness mapping, typically CWE-1003.
+
+  date_received:
+    range: datetime
+    description: Date/time when NVD received the CVE record for processing.
+
+  cvss_v4_metrics:
+    range: CVSSMetric
+    multivalued: true
+    inlined_as_list: true
+    description: CVSS v4.0 metrics.
+  
+  cvss_v3_metrics:
+    range: CVSSMetric
+    multivalued: true
+    inlined_as_list: true
+    description: CVSS v3.x metrics.
+
+  cvss_v2_metrics:
+    range: CVSSMetric
+    multivalued: true
+    inlined_as_list: true
+    description: CVSS v2.0 metrics.
+
+  score_notes:
+    range: CVSSScoreNote
+    multivalued: true
+    inlined_as_list: true
+    description: Notes about CVSS display behavior and data provenance.
+
+  note_id:
+    identifier: true
+    required: true
+    range: string
+    slot_uri: dct:identifier
+
+  message:
+    range: string
+    description: Human-readable explanatory note text.
+
+  created:
+    range: datetime
+    slot_uri: dct:created
+  
+  provider_label:
+    range: string
+    description: Display label for score source, such as NIST NVD or CNA Example.
+
+  scoring_justification:
+    range: string
+    description: Supplemental rationale or caveat for a CVSS score.
+  
+  configuration_id:
+    range: string
+    description: Display identifier, for example Configuration 1.
+
+  configuration_type:
+    range: ConfigurationType
+    description: Simplified configuration rendering type.
+  
+  summary:
+    range: string
+    description: Human-oriented explanation of configuration logic.
+
+  match_criteria_id:
+    range: string
+    description: Identifier for a match criterion.
+
+  criteria:
+    range: string
+    description: CPE 2.3 match criterion expression.
+
+  cpe23_uri:
+    range: string
+    description: Concrete CPE 2.3 URI.
+
+  version_start_including:
+    range: string
+    description: Inclusive lower version bound.
+
+  version_start_excluding:
+    range: string
+    description: Exclusive lower version bound.
+
+  version_end_including:
+    range: string
+    description: Inclusive upper version bound.
+
+  version_end_excluding:
+    range: string
+    description: Exclusive upper version bound.
+
+  matched_cpe_names:
+    range: string
+    multivalued: true
+    description: Expanded list of matching CPE names shown in detail UI.
+  
+  nvd_tags:
+    range: NVDTag
+    multivalued: true
+    description: NVD analysis tag values.
+
+  vendor_comments:
+    range: VendorComment
+    multivalued: true
+    inlined_as_list: true
+    description: Vendor comments associated with the vulnerability record.
+
+  resource_tags:
+    range: ReferenceTag
+    multivalued: true
+    description: NVD resource categories attached to references.
+  
+  vector_string:
+    description: Serialized CVSS vector string.
+  
+  base_score:
+    range: float
+    minimum_value: 0
+    maximum_value: 10
+  
+  base_severity:
+    range: ImpactSeverity
+  
+  children:
+    range: CPEConfiguration
+    multivalued: true
+    inlined_as_list: true
+    description: Child configuration nodes.
+  
+  matches:
+    range: CPEMatch
+    multivalued: true
+    inlined_as_list: true
+    description: Match criteria for this configuration node.
+  
+  vulnerable:
+    range: boolean
+    description: Whether the criterion indicates a vulnerable product context.
+
+  date_added:
+    range: date
+    slot_uri: dct:created
+
+  due_date:
+    range: date
+    slot_uri: dct:date
+
+  required_action:
+    range: string
+    slot_uri: dct:description
+
+  kev_reference:
+    range: uri
+    slot_uri: schema:url
+
+  transition_id:
+    identifier: true
+    required: true
+    range: string
+    slot_uri: dct:identifier
+
+  from_status:
+    range: NVDWorkflowStatus
+
+  to_status:
+    range: NVDWorkflowStatus
+
+  event_source:
+    range: NVDWorkflowEventSource
+
+  transition_time:
+    range: datetime
+    slot_uri: dct:modified
+
+  rationale:
+    range: string
+    description: Optional reason for transition.
+  
+  comment:
+    description: Vendor-provided comment text.
+  

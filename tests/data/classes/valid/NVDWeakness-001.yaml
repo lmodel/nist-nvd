@@ -1,0 +1,4 @@
+cwe_id: CWE-20
+name: Improper Input Validation
+source: NIST
+description: Weakness row example for NVD detail page rendering.
