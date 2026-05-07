@@ -25,6 +25,7 @@ see_also:
 prefixes:
   nvd: https://w3id.org/lmodel/nist-nvd/
   core: https://w3id.org/lmodel/vulnerability-core/
+  cve: https://w3id.org/lmodel/cve/
   linkml: https://w3id.org/linkml/
   schema: http://schema.org/
   dct: http://purl.org/dc/terms/
@@ -68,6 +69,8 @@ enums:
 
   ScoreSource:
     description: Provider of CVSS vectors and scores.
+    related_mappings:
+      - cve:ProviderMetadata
     permissible_values:
       NVD:
       CNA:
@@ -156,6 +159,8 @@ classes:
         description: Current Description shown on the NVD detail page.
     exact_mappings:
       - WIKIDATA:Q631425
+    close_mappings:
+      - cve:CVERecord
     in_subset:
       - nvd_feed
       - detail_page
@@ -169,6 +174,8 @@ classes:
       - score_notes
     comments:
       - NVD detail pages expose button toggles for CVSS v4.0, v3.x, and v2.0.
+    close_mappings:
+      - cve:MetricEntry
     in_subset:
       - metrics
 
@@ -185,6 +192,10 @@ classes:
     slot_usage:
       source:
         range: ScoreSource
+    broad_mappings:
+      - cve:CvssV4_0
+      - cve:CvssV3
+      - cve:CvssV2_0
     in_subset:
       - metrics
 
@@ -209,6 +220,8 @@ classes:
       - summary
     comments:
       - Supported rendering categories include Basic, Running On/With, and Advanced.
+    close_mappings:
+      - cve:CpeApplicabilityElement
     in_subset:
       - detail_page
 
@@ -226,6 +239,8 @@ classes:
       - matched_cpe_names
     notes:
       - Matching CPE names can be exposed in expanded detail-page sections.
+    exact_mappings:
+      - cve:CpeMatch
     in_subset:
       - detail_page
 
@@ -239,6 +254,8 @@ classes:
         required: true
       source:
         required: false
+    close_mappings:
+      - cve:CveReference
     in_subset:
       - detail_page
 
@@ -257,6 +274,8 @@ classes:
         description: Source column value, such as NIST or ASSIGNER.
     comments:
       - NVD uses CWE-1003 for simplified mapping of published vulnerabilities.
+    close_mappings:
+      - cve:ProblemType
     in_subset:
       - detail_page
 

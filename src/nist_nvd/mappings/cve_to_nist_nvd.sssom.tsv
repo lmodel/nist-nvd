@@ -1,0 +1,31 @@
+# curie_map:
+#   cve: https://w3id.org/lmodel/cve/
+#   nvd: https://w3id.org/lmodel/nist-nvd/
+#   skos: http://www.w3.org/2004/02/skos/core#
+#   semapv: https://w3id.org/semapv/vocab/
+# license: https://creativecommons.org/publicdomain/zero/1.0/
+# mapping_set_id: https://w3id.org/lmodel/cve/mappings/cve-to-nist-nvd
+# mapping_set_title: CVE to NIST NVD LinkML schema mappings
+# mapping_set_description: |
+#   Element-level mappings between the lmodel CVE schema (https://w3id.org/lmodel/cve)
+#   and the lmodel NIST NVD schema (https://w3id.org/lmodel/nist-nvd). NVD enriches
+#   raw CVE records with workflow status, version-agnostic CVSS metric views, CPE
+#   applicability, and weakness attributions, so most mappings are closeMatch (NVD
+#   side adds analyst-provided fields) or narrowMatch (CVE has version-specific
+#   classes that NVD generalizes).
+# subject_source: https://w3id.org/lmodel/cve
+# object_source: https://w3id.org/lmodel/nist-nvd
+# mapping_provider: https://lmodel.github.io/cve
+# mapping_date: 2026-05-07
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	comment
+cve:CVERecord	CVERecord	skos:closeMatch	nvd:NVDEntry	NVDEntry	semapv:ManualMappingCuration	NVDEntry wraps a CVE Record and adds NVD-only enrichment (workflow status, analyst metrics, CPE applicability) - same primary entity, broader scope.
+cve:MetricEntry	MetricEntry	skos:closeMatch	nvd:MetricSet	MetricSet	semapv:ManualMappingCuration	Both group one or more CVSS scoring objects with format and scenario metadata.
+cve:CvssV4_0	CvssV4_0	skos:narrowMatch	nvd:CVSSMetric	CVSSMetric	semapv:ManualMappingCuration	NVD models CVSS as a single version-agnostic class with a CVSSVersion enum; CVE has a version-specific class.
+cve:CvssV3	CvssV3	skos:narrowMatch	nvd:CVSSMetric	CVSSMetric	semapv:ManualMappingCuration	NVD models CVSS as a single version-agnostic class with a CVSSVersion enum; CVE has a v3.x-specific class.
+cve:CvssV2_0	CvssV2_0	skos:narrowMatch	nvd:CVSSMetric	CVSSMetric	semapv:ManualMappingCuration	NVD models CVSS as a single version-agnostic class with a CVSSVersion enum; CVE has a v2.0-specific class.
+cve:CveReference	CveReference	skos:closeMatch	nvd:NVDReference	NVDReference	semapv:ManualMappingCuration	Both model external references attached to a vulnerability; NVD adds reference-resource tags.
+cve:CpeApplicabilityElement	CpeApplicabilityElement	skos:closeMatch	nvd:CPEConfiguration	CPEConfiguration	semapv:ManualMappingCuration	Both model CPE-based applicability statements describing affected configurations.
+cve:CpeMatch	CpeMatch	skos:exactMatch	nvd:CPEMatch	CPEMatch	semapv:ManualMappingCuration	Identical concept and field semantics in both schemas - a single CPE match expression with optional version bounds.
+cve:ProblemType	ProblemType	skos:closeMatch	nvd:NVDWeakness	NVDWeakness	semapv:ManualMappingCuration	Both attach a CWE weakness classification to a CVE; NVD adds source/scoring attributions.
+cve:ProviderMetadata	ProviderMetadata	skos:relatedMatch	nvd:ScoreSource	ScoreSource	semapv:ManualMappingCuration	Both identify the organization that produced a record or score; not the same shape but adjacent concepts.
+cve:cve_id	cve_id	skos:exactMatch	nvd:cve_id	cve_id	semapv:ManualMappingCuration	Inherited from vulnerability_core in both schemas; same identifier, same pattern.

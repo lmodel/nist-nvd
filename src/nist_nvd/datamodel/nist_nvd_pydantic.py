@@ -88,6 +88,8 @@ linkml_meta = LinkMLMeta({'annotations': {'cwe_view': {'tag': 'cwe_view', 'value
                                'prefix_reference': 'https://www.wikidata.org/wiki/'},
                   'core': {'prefix_prefix': 'core',
                            'prefix_reference': 'https://w3id.org/lmodel/vulnerability-core/'},
+                  'cve': {'prefix_prefix': 'cve',
+                          'prefix_reference': 'https://w3id.org/lmodel/cve/'},
                   'dct': {'prefix_prefix': 'dct',
                           'prefix_reference': 'http://purl.org/dc/terms/'},
                   'linkml': {'prefix_prefix': 'linkml',
@@ -269,37 +271,50 @@ class Vulnerability(ConfiguredBaseModel):
     Abstract base representation of a security vulnerability. Extended by source-specific schemas (KEV, CVE, NVD).
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'abstract': True,
+         'broad_mappings': ['nvd:NVDEntry', 'kev_catalog:KevEntry'],
          'exact_mappings': ['WIKIDATA:Q631425'],
          'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
          'in_subset': ['core'],
-         'related_mappings': ['schema:SoftwareApplication'],
-         'slot_usage': {'cve_id': {'name': 'cve_id', 'required': True},
-                        'description': {'name': 'description', 'required': True}}})
+         'related_mappings': ['schema:SoftwareApplication', 'cwe:Weakness'],
+         'slot_usage': {'cve_id': {'name': 'cve_id', 'recommended': True},
+                        'description': {'name': 'description', 'recommended': True}}})
 
-    cve_id: str = Field(default=..., description="""The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.""", json_schema_extra = { "linkml_meta": {'aliases': ['cveID'],
+    cve_id: str = Field(default=..., description="""The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.""", json_schema_extra = { "linkml_meta": {'aliases': ['cveId'],
          'domain_of': ['Vulnerability'],
-         'exact_mappings': ['schema:identifier'],
+         'exact_mappings': ['schema:identifier',
+                            'cve:cve_id',
+                            'nvd:cve_id',
+                            'kev_catalog:cve_id'],
          'in_subset': ['metadata'],
+         'recommended': True,
          'slot_uri': 'dct:identifier'} })
-    title: Optional[str] = Field(default=None, description="""Short human-readable title or name for this entity.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'],
+    title: Optional[str] = Field(default=None, description="""Short human-readable title or name for this entity.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['kev_catalog:vulnerability_name'],
+         'domain_of': ['Vulnerability'],
          'exact_mappings': ['schema:name'],
          'in_subset': ['metadata'],
          'slot_uri': 'dct:title'} })
-    description: str = Field(default=..., description="""Narrative description of the vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'Weakness'],
+    description: Optional[str] = Field(default=None, description="""Narrative description of the vulnerability.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['kev_catalog:short_description'],
+         'domain_of': ['Vulnerability', 'Weakness'],
          'exact_mappings': ['schema:description'],
          'in_subset': ['core'],
+         'recommended': True,
          'slot_uri': 'dct:description'} })
     published_date: Optional[datetime ] = Field(default=None, description="""Date and time the vulnerability was first published.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'],
          'in_subset': ['core'],
+         'related_mappings': ['kev_catalog:date_added'],
          'slot_uri': 'dct:created'} })
     last_modified_date: Optional[datetime ] = Field(default=None, description="""Date and time the vulnerability record was last modified.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'VendorComment'],
          'in_subset': ['core'],
          'slot_uri': 'dct:modified'} })
     products: Optional[list[Product]] = Field(default=None, description="""Products affected by this vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'], 'in_subset': ['core']} })
-    weaknesses: Optional[list[Weakness]] = Field(default=None, description="""Weakness classifications (e.g. CWE) associated with this vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'NVDEntry'], 'in_subset': ['core']} })
+    weaknesses: Optional[list[Weakness]] = Field(default=None, description="""Weakness classifications (e.g. CWE) associated with this vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'NVDEntry'],
+         'in_subset': ['core'],
+         'related_mappings': ['cwe:Weakness']} })
     references: Optional[list[Reference]] = Field(default=None, description="""External references such as advisories and articles.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'NVDEntry'], 'in_subset': ['core']} })
     impact: Optional[Impact] = Field(default=None, description="""Impact and severity assessment for this vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'], 'in_subset': ['core']} })
-    status: Optional[VulnerabilityStatus] = Field(default=None, description="""Current lifecycle state of the vulnerability record.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'], 'in_subset': ['core']} })
+    status: Optional[VulnerabilityStatus] = Field(default=None, description="""Current lifecycle state of the vulnerability record.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['nvd:NVDWorkflowStatus'],
+         'domain_of': ['Vulnerability'],
+         'in_subset': ['core']} })
 
 
 class Product(ConfiguredBaseModel):
@@ -308,10 +323,11 @@ class Product(ConfiguredBaseModel):
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'exact_mappings': ['schema:SoftwareApplication'],
          'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
-         'in_subset': ['core']})
+         'in_subset': ['core'],
+         'related_mappings': ['kev_catalog:KevEntry']})
 
     vendor: Optional[str] = Field(default=None, description="""Name of the vendor or organization responsible for the product.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Product', 'VendorComment'], 'slot_uri': 'schema:name'} })
-    name: Optional[str] = Field(default=None, description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label'],
+    name: Optional[str] = Field(default=None, description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label', 'product'],
          'domain_of': ['Product', 'Reference', 'Weakness'],
          'slot_uri': 'rdfs:label'} })
     version: Optional[str] = Field(default=None, description="""Version string of the affected product.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Product', 'CVSSMetric'], 'slot_uri': 'schema:version'} })
@@ -322,12 +338,14 @@ class Reference(ConfiguredBaseModel):
     """
     External reference such as an advisory or article.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'exact_mappings': ['schema:CreativeWork'],
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['cwe:ExternalReference', 'nvd:NVDReference'],
+         'exact_mappings': ['schema:CreativeWork'],
          'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
-         'in_subset': ['core']})
+         'in_subset': ['core'],
+         'related_mappings': ['kev_catalog:notes']})
 
     url: Optional[str] = Field(default=None, description="""URL pointing to the reference resource.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Reference'], 'slot_uri': 'schema:url'} })
-    name: Optional[str] = Field(default=None, description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label'],
+    name: Optional[str] = Field(default=None, description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label', 'product'],
          'domain_of': ['Product', 'Reference', 'Weakness'],
          'slot_uri': 'rdfs:label'} })
     source: Optional[str] = Field(default=None, description="""Source or origin of the reference or data.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Reference', 'CVSSMetric', 'CVSSScoreNote', 'NVDWeakness'],
@@ -338,28 +356,47 @@ class Weakness(ConfiguredBaseModel):
     """
     Weakness classification from CWE or a similar taxonomy.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['cwe:Weakness', 'nvd:NVDWeakness'],
+         'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
          'in_subset': ['core']})
 
-    cwe_id: Optional[str] = Field(default=None, description="""CWE identifier for the weakness classification (e.g. CWE-79).""", json_schema_extra = { "linkml_meta": {'aliases': ['cweID'], 'domain_of': ['Weakness'], 'slot_uri': 'dct:identifier'} })
-    name: Optional[str] = Field(default=None, description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label'],
+    cwe_id: Optional[str] = Field(default=None, description="""CWE identifier for the weakness classification (e.g. CWE-79).""", json_schema_extra = { "linkml_meta": {'aliases': ['cweId'],
+         'domain_of': ['Weakness'],
+         'related_mappings': ['cwe:Weakness'],
+         'slot_uri': 'dct:identifier'} })
+    name: Optional[str] = Field(default=None, description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label', 'product'],
          'domain_of': ['Product', 'Reference', 'Weakness'],
          'slot_uri': 'rdfs:label'} })
-    description: Optional[str] = Field(default=None, description="""Narrative description of the vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'Weakness'],
+    description: Optional[str] = Field(default=None, description="""Narrative description of the vulnerability.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['kev_catalog:short_description'],
+         'domain_of': ['Vulnerability', 'Weakness'],
          'exact_mappings': ['schema:description'],
          'in_subset': ['core'],
          'slot_uri': 'dct:description'} })
+
+    @field_validator('cwe_id')
+    def pattern_cwe_id(cls, v):
+        pattern=re.compile(r"^CWE-[1-9][0-9]*$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.match(element):
+                    err_msg = f"Invalid cwe_id format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.match(v):
+            err_msg = f"Invalid cwe_id format: {v}"
+            raise ValueError(err_msg)
+        return v
 
 
 class Impact(ConfiguredBaseModel):
     """
     Assessment of the vulnerability's impact and severity.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['nvd:CVSSMetric'],
+         'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
          'in_subset': ['core']})
 
-    severity: Optional[ImpactSeverity] = Field(default=None, description="""Qualitative severity rating.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Impact']} })
-    vector: Optional[str] = Field(default=None, description="""CVSS vector string or equivalent scoring vector expression.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Impact']} })
+    severity: Optional[ImpactSeverity] = Field(default=None, description="""Qualitative severity rating.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['nvd:CVSSMetric'], 'domain_of': ['Impact']} })
+    vector: Optional[str] = Field(default=None, description="""CVSS vector string or equivalent scoring vector expression.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['nvd:CVSSMetric'], 'domain_of': ['Impact']} })
     score: Optional[float] = Field(default=None, description="""Numeric vulnerability score (e.g. CVSS base score).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Impact']} })
 
 
@@ -367,10 +404,13 @@ class Configuration(ConfiguredBaseModel):
     """
     Logical grouping of CPE match expressions.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['nvd:CPEConfiguration'],
+         'from_schema': 'https://w3id.org/lmodel/vulnerability-core',
          'in_subset': ['core']})
 
-    cpe_uri: Optional[str] = Field(default=None, description="""CPE 2.2 URI identifying an affected product configuration.""", json_schema_extra = { "linkml_meta": {'aliases': ['cpeUri'], 'domain_of': ['Configuration']} })
+    cpe_uri: Optional[str] = Field(default=None, description="""CPE 2.2 URI identifying an affected product configuration.""", json_schema_extra = { "linkml_meta": {'aliases': ['cpeUri'],
+         'domain_of': ['Configuration'],
+         'related_mappings': ['nvd:CPEMatch']} })
     operator: Optional[str] = Field(default=None, description="""Logical operator (AND/OR) used in configuration node groupings.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Configuration', 'CPEConfiguration']} })
 
 
@@ -378,7 +418,8 @@ class NVDEntry(Vulnerability):
     """
     Enriched NVD representation of a CVE entry.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'comments': ['Current Description is the currently visible CVE description.',
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['cve:CVERecord'],
+         'comments': ['Current Description is the currently visible CVE description.',
                       'Analysis Description captures the description present when NVD '
                       'enrichment occurred.'],
          'exact_mappings': ['WIKIDATA:Q631425'],
@@ -402,7 +443,9 @@ class NVDEntry(Vulnerability):
     metrics: Optional[MetricSet] = Field(default=None, description="""Grouped CVSS displays and notes for this entry.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDEntry'], 'in_subset': ['metrics']} })
     configurations: Optional[list[CPEConfiguration]] = Field(default=None, description="""Affected software configuration statements.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDEntry'], 'in_subset': ['detail_page']} })
     references: Optional[list[NVDReference]] = Field(default=None, description="""External references such as advisories and articles.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'NVDEntry'], 'in_subset': ['core']} })
-    weaknesses: Optional[list[NVDWeakness]] = Field(default=None, description="""Weakness classifications (e.g. CWE) associated with this vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'NVDEntry'], 'in_subset': ['core']} })
+    weaknesses: Optional[list[NVDWeakness]] = Field(default=None, description="""Weakness classifications (e.g. CWE) associated with this vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'NVDEntry'],
+         'in_subset': ['core'],
+         'related_mappings': ['cwe:Weakness']} })
     vendor_comments: Optional[list[VendorComment]] = Field(default=None, description="""Vendor comments associated with the vulnerability record.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDEntry']} })
     nvd_tags: Optional[list[NVDTag]] = Field(default=None, description="""NVD analysis tag values.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDEntry']} })
     cve_tags: Optional[list[str]] = Field(default=None, description="""CVE tags passed through the CVE List and rendered by NVD.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDEntry']} })
@@ -411,35 +454,46 @@ class NVDEntry(Vulnerability):
     known_exploited: Optional[KnownExploitedVulnerability] = Field(default=None, description="""KEV banner details when this CVE is listed by CISA.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDEntry']} })
     cwe_view: Optional[str] = Field(default=None, description="""CWE view used for weakness mapping, typically CWE-1003.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDEntry']} })
     date_received: Optional[datetime ] = Field(default=None, description="""Date/time when NVD received the CVE record for processing.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDEntry']} })
-    cve_id: str = Field(default=..., description="""The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.""", json_schema_extra = { "linkml_meta": {'aliases': ['cveID'],
+    cve_id: str = Field(default=..., description="""The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.""", json_schema_extra = { "linkml_meta": {'aliases': ['cveId'],
          'domain_of': ['Vulnerability'],
-         'exact_mappings': ['schema:identifier'],
+         'exact_mappings': ['schema:identifier',
+                            'cve:cve_id',
+                            'nvd:cve_id',
+                            'kev_catalog:cve_id'],
          'in_subset': ['metadata'],
+         'recommended': True,
          'slot_uri': 'dct:identifier'} })
-    title: Optional[str] = Field(default=None, description="""Short human-readable title or name for this entity.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'],
+    title: Optional[str] = Field(default=None, description="""Short human-readable title or name for this entity.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['kev_catalog:vulnerability_name'],
+         'domain_of': ['Vulnerability'],
          'exact_mappings': ['schema:name'],
          'in_subset': ['metadata'],
          'slot_uri': 'dct:title'} })
-    description: str = Field(default=..., description="""Current Description shown on the NVD detail page.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'Weakness'],
+    description: str = Field(default=..., description="""Current Description shown on the NVD detail page.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['kev_catalog:short_description'],
+         'domain_of': ['Vulnerability', 'Weakness'],
          'exact_mappings': ['schema:description'],
          'in_subset': ['core'],
+         'recommended': True,
          'slot_uri': 'dct:description'} })
     published_date: Optional[datetime ] = Field(default=None, description="""Date and time the vulnerability was first published.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'],
          'in_subset': ['core'],
+         'related_mappings': ['kev_catalog:date_added'],
          'slot_uri': 'dct:created'} })
     last_modified_date: Optional[datetime ] = Field(default=None, description="""Date and time the vulnerability record was last modified.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'VendorComment'],
          'in_subset': ['core'],
          'slot_uri': 'dct:modified'} })
     products: Optional[list[Product]] = Field(default=None, description="""Products affected by this vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'], 'in_subset': ['core']} })
     impact: Optional[Impact] = Field(default=None, description="""Impact and severity assessment for this vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'], 'in_subset': ['core']} })
-    status: Optional[NVDWorkflowStatus] = Field(default=None, description="""Current lifecycle state of the vulnerability record.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability'], 'in_subset': ['core']} })
+    status: Optional[NVDWorkflowStatus] = Field(default=None, description="""Current lifecycle state of the vulnerability record.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['nvd:NVDWorkflowStatus'],
+         'domain_of': ['Vulnerability'],
+         'in_subset': ['core']} })
 
 
 class MetricSet(ConfiguredBaseModel):
     """
     Container for all metric views across CVSS versions.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'comments': ['NVD detail pages expose button toggles for CVSS v4.0, v3.x, and '
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['cve:MetricEntry'],
+         'comments': ['NVD detail pages expose button toggles for CVSS v4.0, v3.x, and '
                       'v2.0.'],
          'from_schema': 'https://w3id.org/lmodel/nist-nvd',
          'in_subset': ['metrics']})
@@ -454,7 +508,8 @@ class CVSSMetric(ConfiguredBaseModel):
     """
     Individual CVSS vector and score attribution.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://w3id.org/lmodel/nist-nvd',
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'broad_mappings': ['cve:CvssV4_0', 'cve:CvssV3', 'cve:CvssV2_0'],
+         'from_schema': 'https://w3id.org/lmodel/nist-nvd',
          'in_subset': ['metrics'],
          'slot_usage': {'source': {'name': 'source', 'range': 'ScoreSource'}}})
 
@@ -485,7 +540,8 @@ class CPEConfiguration(ConfiguredBaseModel):
     """
     Logical grouping of CPE match criteria for affected software.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'comments': ['Supported rendering categories include Basic, Running On/With, '
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['cve:CpeApplicabilityElement'],
+         'comments': ['Supported rendering categories include Basic, Running On/With, '
                       'and Advanced.'],
          'from_schema': 'https://w3id.org/lmodel/nist-nvd',
          'in_subset': ['detail_page']})
@@ -502,7 +558,8 @@ class CPEMatch(ConfiguredBaseModel):
     """
     Leaf-level CPE match criterion and optional version bounds.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://w3id.org/lmodel/nist-nvd',
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'exact_mappings': ['cve:CpeMatch'],
+         'from_schema': 'https://w3id.org/lmodel/nist-nvd',
          'in_subset': ['detail_page'],
          'notes': ['Matching CPE names can be exposed in expanded detail-page '
                    'sections.']})
@@ -522,14 +579,15 @@ class NVDReference(Reference):
     """
     Reference URL with NVD resource tags.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://w3id.org/lmodel/nist-nvd',
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['cve:CveReference'],
+         'from_schema': 'https://w3id.org/lmodel/nist-nvd',
          'in_subset': ['detail_page'],
          'slot_usage': {'source': {'name': 'source', 'required': False},
                         'url': {'name': 'url', 'required': True}}})
 
     resource_tags: Optional[list[ReferenceTag]] = Field(default=None, description="""NVD resource categories attached to references.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NVDReference']} })
     url: str = Field(default=..., description="""URL pointing to the reference resource.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Reference'], 'slot_uri': 'schema:url'} })
-    name: Optional[str] = Field(default=None, description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label'],
+    name: Optional[str] = Field(default=None, description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label', 'product'],
          'domain_of': ['Product', 'Reference', 'Weakness'],
          'slot_uri': 'rdfs:label'} })
     source: Optional[str] = Field(default=None, description="""Source or origin of the reference or data.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Reference', 'CVSSMetric', 'CVSSScoreNote', 'NVDWeakness'],
@@ -540,7 +598,8 @@ class NVDWeakness(Weakness):
     """
     Weakness row as presented on the NVD detail page.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'comments': ['NVD uses CWE-1003 for simplified mapping of published '
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'close_mappings': ['cve:ProblemType'],
+         'comments': ['NVD uses CWE-1003 for simplified mapping of published '
                       'vulnerabilities.'],
          'from_schema': 'https://w3id.org/lmodel/nist-nvd',
          'in_subset': ['detail_page'],
@@ -553,14 +612,31 @@ class NVDWeakness(Weakness):
 
     source: str = Field(default=..., description="""Source column value, such as NIST or ASSIGNER.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Reference', 'CVSSMetric', 'CVSSScoreNote', 'NVDWeakness'],
          'slot_uri': 'dct:source'} })
-    cwe_id: str = Field(default=..., description="""CWE identifier for the weakness classification (e.g. CWE-79).""", json_schema_extra = { "linkml_meta": {'aliases': ['cweID'], 'domain_of': ['Weakness'], 'slot_uri': 'dct:identifier'} })
-    name: str = Field(default=..., description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label'],
+    cwe_id: str = Field(default=..., description="""CWE identifier for the weakness classification (e.g. CWE-79).""", json_schema_extra = { "linkml_meta": {'aliases': ['cweId'],
+         'domain_of': ['Weakness'],
+         'related_mappings': ['cwe:Weakness'],
+         'slot_uri': 'dct:identifier'} })
+    name: str = Field(default=..., description="""Name of the entity (product, weakness, reference, etc.).""", json_schema_extra = { "linkml_meta": {'aliases': ['label', 'product'],
          'domain_of': ['Product', 'Reference', 'Weakness'],
          'slot_uri': 'rdfs:label'} })
-    description: Optional[str] = Field(default=None, description="""Narrative description of the vulnerability.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Vulnerability', 'Weakness'],
+    description: Optional[str] = Field(default=None, description="""Narrative description of the vulnerability.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['kev_catalog:short_description'],
+         'domain_of': ['Vulnerability', 'Weakness'],
          'exact_mappings': ['schema:description'],
          'in_subset': ['core'],
          'slot_uri': 'dct:description'} })
+
+    @field_validator('cwe_id')
+    def pattern_cwe_id(cls, v):
+        pattern=re.compile(r"^CWE-[1-9][0-9]*$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.match(element):
+                    err_msg = f"Invalid cwe_id format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.match(v):
+            err_msg = f"Invalid cwe_id format: {v}"
+            raise ValueError(err_msg)
+        return v
 
 
 class VendorComment(ConfiguredBaseModel):

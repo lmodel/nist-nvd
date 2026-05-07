@@ -234,7 +234,7 @@ interface Vulnerability
   {
     cveId: CveId!
     title: String
-    description: String!
+    description: String
     publishedDate: String
     lastModifiedDate: String
     products: [Product]

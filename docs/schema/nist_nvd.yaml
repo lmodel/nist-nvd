@@ -35,6 +35,9 @@ prefixes:
   core:
     prefix_prefix: core
     prefix_reference: https://w3id.org/lmodel/vulnerability-core/
+  cve:
+    prefix_prefix: cve
+    prefix_reference: https://w3id.org/lmodel/cve/
   linkml:
     prefix_prefix: linkml
     prefix_reference: https://w3id.org/linkml/
@@ -93,6 +96,8 @@ types:
     description: 'A CVE identifier assigned by a CVE Numbering Authority (CNA). Format:
       CVE-YYYY-NNNNN.'
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    exact_mappings:
+    - cwe:CveId
     base: str
     uri: xsd:string
     pattern: ^CVE-[0-9]{4}-[0-9]+$
@@ -402,6 +407,8 @@ enums:
     definition_uri: https://w3id.org/lmodel/nist-nvd/ScoreSource
     description: Provider of CVSS vectors and scores.
     from_schema: https://w3id.org/lmodel/nist-nvd
+    related_mappings:
+    - cve:ProviderMetadata
     permissible_values:
       NVD:
         text: NVD
@@ -1103,11 +1110,14 @@ slots:
     - metadata
     from_schema: https://w3id.org/lmodel/vulnerability-core
     aliases:
-    - cveID
+    - cveId
     mappings:
     - dct:identifier
     exact_mappings:
     - schema:identifier
+    - cve:cve_id
+    - nvd:cve_id
+    - kev_catalog:cve_id
     slot_uri: dct:identifier
     identifier: true
     owner: Vulnerability
@@ -1126,6 +1136,8 @@ slots:
     - dct:title
     exact_mappings:
     - schema:name
+    close_mappings:
+    - kev_catalog:vulnerability_name
     slot_uri: dct:title
     owner: Vulnerability
     domain_of:
@@ -1142,6 +1154,8 @@ slots:
     - dct:description
     exact_mappings:
     - schema:description
+    close_mappings:
+    - kev_catalog:short_description
     slot_uri: dct:description
     owner: Weakness
     domain_of:
@@ -1157,6 +1171,8 @@ slots:
     from_schema: https://w3id.org/lmodel/vulnerability-core
     mappings:
     - dct:created
+    related_mappings:
+    - kev_catalog:date_added
     slot_uri: dct:created
     owner: Vulnerability
     domain_of:
@@ -1199,6 +1215,8 @@ slots:
     in_subset:
     - core
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    related_mappings:
+    - cwe:Weakness
     slot_uri: core:weaknesses
     owner: Vulnerability
     domain_of:
@@ -1245,6 +1263,8 @@ slots:
     in_subset:
     - core
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    close_mappings:
+    - nvd:NVDWorkflowStatus
     slot_uri: core:status
     owner: Vulnerability
     domain_of:
@@ -1270,6 +1290,7 @@ slots:
     from_schema: https://w3id.org/lmodel/vulnerability-core
     aliases:
     - label
+    - product
     mappings:
     - rdfs:label
     slot_uri: rdfs:label
@@ -1336,19 +1357,24 @@ slots:
     description: CWE identifier for the weakness classification (e.g. CWE-79).
     from_schema: https://w3id.org/lmodel/vulnerability-core
     aliases:
-    - cweID
+    - cweId
     mappings:
     - dct:identifier
+    related_mappings:
+    - cwe:Weakness
     slot_uri: dct:identifier
     owner: Weakness
     domain_of:
     - Weakness
     range: string
+    pattern: ^CWE-[1-9][0-9]*$
   severity:
     name: severity
     definition_uri: https://w3id.org/lmodel/vulnerability-core/severity
     description: Qualitative severity rating.
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    close_mappings:
+    - nvd:CVSSMetric
     slot_uri: core:severity
     owner: Impact
     domain_of:
@@ -1359,6 +1385,8 @@ slots:
     definition_uri: https://w3id.org/lmodel/vulnerability-core/vector
     description: CVSS vector string or equivalent scoring vector expression.
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    close_mappings:
+    - nvd:CVSSMetric
     slot_uri: core:vector
     owner: Impact
     domain_of:
@@ -1381,6 +1409,8 @@ slots:
     from_schema: https://w3id.org/lmodel/vulnerability-core
     aliases:
     - cpeUri
+    related_mappings:
+    - nvd:CPEMatch
     slot_uri: core:cpe_uri
     owner: Configuration
     domain_of:
@@ -1424,6 +1454,8 @@ slots:
     in_subset:
     - core
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    related_mappings:
+    - cwe:Weakness
     is_a: weaknesses
     domain: NVDEntry
     slot_uri: core:weaknesses
@@ -1444,6 +1476,8 @@ slots:
     in_subset:
     - core
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    close_mappings:
+    - nvd:NVDWorkflowStatus
     is_a: status
     domain: NVDEntry
     slot_uri: core:status
@@ -1465,6 +1499,8 @@ slots:
     - dct:description
     exact_mappings:
     - schema:description
+    close_mappings:
+    - kev_catalog:short_description
     is_a: description
     domain: NVDEntry
     slot_uri: dct:description
@@ -1535,9 +1571,11 @@ slots:
     description: CWE identifier for the weakness classification (e.g. CWE-79).
     from_schema: https://w3id.org/lmodel/vulnerability-core
     aliases:
-    - cweID
+    - cweId
     mappings:
     - dct:identifier
+    related_mappings:
+    - cwe:Weakness
     is_a: cwe_id
     domain: NVDWeakness
     slot_uri: dct:identifier
@@ -1549,6 +1587,7 @@ slots:
     usage_slot_name: cwe_id
     range: string
     required: true
+    pattern: ^CWE-[1-9][0-9]*$
   NVDWeakness_name:
     name: NVDWeakness_name
     definition_uri: https://w3id.org/lmodel/vulnerability-core/name
@@ -1556,6 +1595,7 @@ slots:
     from_schema: https://w3id.org/lmodel/vulnerability-core
     aliases:
     - label
+    - product
     mappings:
     - rdfs:label
     is_a: name
@@ -1596,11 +1636,14 @@ slots:
     - metadata
     from_schema: https://w3id.org/lmodel/vulnerability-core
     aliases:
-    - cveID
+    - cveId
     mappings:
     - dct:identifier
     exact_mappings:
     - schema:identifier
+    - cve:cve_id
+    - nvd:cve_id
+    - kev_catalog:cve_id
     is_a: cve_id
     domain: Vulnerability
     slot_uri: dct:identifier
@@ -1613,6 +1656,7 @@ slots:
     usage_slot_name: cve_id
     range: CveId
     required: true
+    recommended: true
   Vulnerability_description:
     name: Vulnerability_description
     definition_uri: https://w3id.org/lmodel/vulnerability-core/description
@@ -1624,6 +1668,8 @@ slots:
     - dct:description
     exact_mappings:
     - schema:description
+    close_mappings:
+    - kev_catalog:short_description
     is_a: description
     domain: Vulnerability
     slot_uri: dct:description
@@ -1634,7 +1680,7 @@ slots:
     is_usage_slot: true
     usage_slot_name: description
     range: string
-    required: true
+    recommended: true
 classes:
   NVDEntry:
     name: NVDEntry
@@ -1652,6 +1698,8 @@ classes:
     from_schema: https://w3id.org/lmodel/nist-nvd
     exact_mappings:
     - WIKIDATA:Q631425
+    close_mappings:
+    - cve:CVERecord
     is_a: Vulnerability
     slots:
     - Vulnerability_cve_id
@@ -1700,6 +1748,8 @@ classes:
     in_subset:
     - metrics
     from_schema: https://w3id.org/lmodel/nist-nvd
+    close_mappings:
+    - cve:MetricEntry
     slots:
     - cvss_v4_metrics
     - cvss_v3_metrics
@@ -1713,6 +1763,10 @@ classes:
     in_subset:
     - metrics
     from_schema: https://w3id.org/lmodel/nist-nvd
+    broad_mappings:
+    - cve:CvssV4_0
+    - cve:CvssV3
+    - cve:CvssV2_0
     slots:
     - version
     - vector_string
@@ -1748,6 +1802,8 @@ classes:
     in_subset:
     - detail_page
     from_schema: https://w3id.org/lmodel/nist-nvd
+    close_mappings:
+    - cve:CpeApplicabilityElement
     slots:
     - configuration_id
     - configuration_type
@@ -1765,6 +1821,8 @@ classes:
     in_subset:
     - detail_page
     from_schema: https://w3id.org/lmodel/nist-nvd
+    exact_mappings:
+    - cve:CpeMatch
     slots:
     - match_criteria_id
     - criteria
@@ -1783,6 +1841,8 @@ classes:
     in_subset:
     - detail_page
     from_schema: https://w3id.org/lmodel/nist-nvd
+    close_mappings:
+    - cve:CveReference
     is_a: Reference
     slots:
     - name
@@ -1806,6 +1866,8 @@ classes:
     in_subset:
     - detail_page
     from_schema: https://w3id.org/lmodel/nist-nvd
+    close_mappings:
+    - cve:ProblemType
     is_a: Weakness
     slots:
     - description
@@ -1879,6 +1941,10 @@ classes:
     - WIKIDATA:Q631425
     related_mappings:
     - schema:SoftwareApplication
+    - cwe:Weakness
+    broad_mappings:
+    - nvd:NVDEntry
+    - kev_catalog:KevEntry
     abstract: true
     slots:
     - Vulnerability_cve_id
@@ -1894,10 +1960,10 @@ classes:
     slot_usage:
       cve_id:
         name: cve_id
-        required: true
+        recommended: true
       description:
         name: description
-        required: true
+        recommended: true
     class_uri: core:Vulnerability
   Product:
     name: Product
@@ -1908,6 +1974,8 @@ classes:
     from_schema: https://w3id.org/lmodel/vulnerability-core
     exact_mappings:
     - schema:SoftwareApplication
+    related_mappings:
+    - kev_catalog:KevEntry
     slots:
     - vendor
     - name
@@ -1923,6 +1991,11 @@ classes:
     from_schema: https://w3id.org/lmodel/vulnerability-core
     exact_mappings:
     - schema:CreativeWork
+    close_mappings:
+    - cwe:ExternalReference
+    - nvd:NVDReference
+    related_mappings:
+    - kev_catalog:notes
     slots:
     - url
     - name
@@ -1935,6 +2008,9 @@ classes:
     in_subset:
     - core
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    close_mappings:
+    - cwe:Weakness
+    - nvd:NVDWeakness
     slots:
     - cwe_id
     - name
@@ -1947,6 +2023,8 @@ classes:
     in_subset:
     - core
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    close_mappings:
+    - nvd:CVSSMetric
     slots:
     - severity
     - vector
@@ -1959,13 +2037,15 @@ classes:
     in_subset:
     - core
     from_schema: https://w3id.org/lmodel/vulnerability-core
+    close_mappings:
+    - nvd:CPEConfiguration
     slots:
     - cpe_uri
     - operator
     class_uri: core:Configuration
 metamodel_version: 1.7.0
 source_file: nist_nvd.yaml
-source_file_date: '2026-04-17T17:43:34'
-source_file_size: 12757
-generation_date: '2026-04-17T17:50:14'
+source_file_date: '2026-05-07T15:23:39'
+source_file_size: 13197
+generation_date: '2026-05-07T15:33:01'
 

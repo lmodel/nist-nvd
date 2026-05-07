@@ -219,7 +219,7 @@ CREATE INDEX "ix_CVSSScoreNote_note_id" ON "CVSSScoreNote" (note_id);
 CREATE TABLE "Vulnerability" (
 	cve_id TEXT NOT NULL,
 	title TEXT,
-	description TEXT NOT NULL,
+	description TEXT,
 	published_date DATETIME,
 	last_modified_date DATETIME,
 	status VARCHAR(10),
@@ -331,8 +331,8 @@ CREATE TABLE "NVDEntry_nvd_tags" (
 	PRIMARY KEY ("NVDEntry_cve_id", nvd_tags),
 	FOREIGN KEY("NVDEntry_cve_id") REFERENCES "NVDEntry" (cve_id)
 );
-CREATE INDEX "ix_NVDEntry_nvd_tags_nvd_tags" ON "NVDEntry_nvd_tags" (nvd_tags);
 CREATE INDEX "ix_NVDEntry_nvd_tags_NVDEntry_cve_id" ON "NVDEntry_nvd_tags" ("NVDEntry_cve_id");
+CREATE INDEX "ix_NVDEntry_nvd_tags_nvd_tags" ON "NVDEntry_nvd_tags" (nvd_tags);
 
 CREATE TABLE "NVDEntry_cve_tags" (
 	"NVDEntry_cve_id" TEXT,
@@ -340,8 +340,8 @@ CREATE TABLE "NVDEntry_cve_tags" (
 	PRIMARY KEY ("NVDEntry_cve_id", cve_tags),
 	FOREIGN KEY("NVDEntry_cve_id") REFERENCES "NVDEntry" (cve_id)
 );
-CREATE INDEX "ix_NVDEntry_cve_tags_NVDEntry_cve_id" ON "NVDEntry_cve_tags" ("NVDEntry_cve_id");
 CREATE INDEX "ix_NVDEntry_cve_tags_cve_tags" ON "NVDEntry_cve_tags" (cve_tags);
+CREATE INDEX "ix_NVDEntry_cve_tags_NVDEntry_cve_id" ON "NVDEntry_cve_tags" ("NVDEntry_cve_id");
 
 CREATE TABLE "CPEMatch" (
 	id INTEGER NOT NULL,
@@ -365,8 +365,8 @@ CREATE TABLE "NVDReference_resource_tags" (
 	PRIMARY KEY ("NVDReference_id", resource_tags),
 	FOREIGN KEY("NVDReference_id") REFERENCES "NVDReference" (id)
 );
-CREATE INDEX "ix_NVDReference_resource_tags_NVDReference_id" ON "NVDReference_resource_tags" ("NVDReference_id");
 CREATE INDEX "ix_NVDReference_resource_tags_resource_tags" ON "NVDReference_resource_tags" (resource_tags);
+CREATE INDEX "ix_NVDReference_resource_tags_NVDReference_id" ON "NVDReference_resource_tags" ("NVDReference_id");
 
 CREATE TABLE "Product_platforms" (
 	"Product_id" INTEGER,
@@ -374,8 +374,8 @@ CREATE TABLE "Product_platforms" (
 	PRIMARY KEY ("Product_id", platforms),
 	FOREIGN KEY("Product_id") REFERENCES "Product" (id)
 );
-CREATE INDEX "ix_Product_platforms_Product_id" ON "Product_platforms" ("Product_id");
 CREATE INDEX "ix_Product_platforms_platforms" ON "Product_platforms" (platforms);
+CREATE INDEX "ix_Product_platforms_Product_id" ON "Product_platforms" ("Product_id");
 
 CREATE TABLE "CPEMatch_matched_cpe_names" (
 	"CPEMatch_id" INTEGER,

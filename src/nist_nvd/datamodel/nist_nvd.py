@@ -1,5 +1,5 @@
 # Auto generated from nist_nvd.yaml by pythongen.py version: 0.0.1
-# Generation date: 2026-04-17T17:50:24
+# Generation date: 2026-05-07T15:33:09
 # Schema: nist-nvd
 #
 # id: https://w3id.org/lmodel/nist-nvd
@@ -68,7 +68,10 @@ version = None
 # Namespaces
 WIKIDATA = CurieNamespace('WIKIDATA', 'https://www.wikidata.org/wiki/')
 CORE = CurieNamespace('core', 'https://w3id.org/lmodel/vulnerability-core/')
+CVE = CurieNamespace('cve', 'https://w3id.org/lmodel/cve/')
+CWE = CurieNamespace('cwe', 'https://w3id.org/lmodel/cwe/')
 DCT = CurieNamespace('dct', 'http://purl.org/dc/terms/')
+KEV_CATALOG = CurieNamespace('kev_catalog', 'https://w3id.org/lmodel/kev-catalog/')
 LINKML = CurieNamespace('linkml', 'https://w3id.org/linkml/')
 NVD = CurieNamespace('nvd', 'https://w3id.org/lmodel/nist-nvd/')
 RDFS = CurieNamespace('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
@@ -442,8 +445,8 @@ class Vulnerability(YAMLRoot):
     class_model_uri: ClassVar[URIRef] = NVD.Vulnerability
 
     cve_id: Union[str, VulnerabilityCveId] = None
-    description: str = None
     title: Optional[str] = None
+    description: Optional[str] = None
     published_date: Optional[Union[str, XSDDateTime]] = None
     last_modified_date: Optional[Union[str, XSDDateTime]] = None
     products: Optional[Union[Union[dict, "Product"], list[Union[dict, "Product"]]]] = empty_list()
@@ -458,13 +461,11 @@ class Vulnerability(YAMLRoot):
         if not isinstance(self.cve_id, VulnerabilityCveId):
             self.cve_id = VulnerabilityCveId(self.cve_id)
 
-        if self._is_empty(self.description):
-            self.MissingRequiredField("description")
-        if not isinstance(self.description, str):
-            self.description = str(self.description)
-
         if self.title is not None and not isinstance(self.title, str):
             self.title = str(self.title)
+
+        if self.description is not None and not isinstance(self.description, str):
+            self.description = str(self.description)
 
         if self.published_date is not None and not isinstance(self.published_date, XSDDateTime):
             self.published_date = XSDDateTime(self.published_date)
@@ -1168,7 +1169,8 @@ slots.source = Slot(uri=DCT.source, name="source", curie=DCT.curie('source'),
                    model_uri=NVD.source, domain=None, range=Optional[str])
 
 slots.cwe_id = Slot(uri=DCT.identifier, name="cwe_id", curie=DCT.curie('identifier'),
-                   model_uri=NVD.cwe_id, domain=None, range=Optional[str])
+                   model_uri=NVD.cwe_id, domain=None, range=Optional[str],
+                   pattern=re.compile(r'^CWE-[1-9][0-9]*$'))
 
 slots.severity = Slot(uri=CORE.severity, name="severity", curie=CORE.curie('severity'),
                    model_uri=NVD.severity, domain=None, range=Optional[Union[str, "ImpactSeverity"]])
@@ -1207,7 +1209,8 @@ slots.NVDReference_source = Slot(uri=DCT.source, name="NVDReference_source", cur
                    model_uri=NVD.NVDReference_source, domain=NVDReference, range=Optional[str])
 
 slots.NVDWeakness_cwe_id = Slot(uri=DCT.identifier, name="NVDWeakness_cwe_id", curie=DCT.curie('identifier'),
-                   model_uri=NVD.NVDWeakness_cwe_id, domain=NVDWeakness, range=str)
+                   model_uri=NVD.NVDWeakness_cwe_id, domain=NVDWeakness, range=str,
+                   pattern=re.compile(r'^CWE-[1-9][0-9]*$'))
 
 slots.NVDWeakness_name = Slot(uri=RDFS.label, name="NVDWeakness_name", curie=RDFS.curie('label'),
                    model_uri=NVD.NVDWeakness_name, domain=NVDWeakness, range=str)
@@ -1219,4 +1222,4 @@ slots.Vulnerability_cve_id = Slot(uri=DCT.identifier, name="Vulnerability_cve_id
                    model_uri=NVD.Vulnerability_cve_id, domain=Vulnerability, range=Union[str, VulnerabilityCveId])
 
 slots.Vulnerability_description = Slot(uri=DCT.description, name="Vulnerability_description", curie=DCT.curie('description'),
-                   model_uri=NVD.Vulnerability_description, domain=Vulnerability, range=str)
+                   model_uri=NVD.Vulnerability_description, domain=Vulnerability, range=Optional[str])

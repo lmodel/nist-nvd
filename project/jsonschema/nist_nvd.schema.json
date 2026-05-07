@@ -625,6 +625,7 @@
             "properties": {
                 "cwe_id": {
                     "description": "CWE identifier for the weakness classification (e.g. CWE-79).",
+                    "pattern": "^CWE-[1-9][0-9]*$",
                     "type": "string"
                 },
                 "description": {
@@ -865,6 +866,7 @@
             "properties": {
                 "cwe_id": {
                     "description": "CWE identifier for the weakness classification (e.g. CWE-79).",
+                    "pattern": "^CWE-[1-9][0-9]*$",
                     "type": [
                         "string",
                         "null"
