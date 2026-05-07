@@ -513,13 +513,13 @@ Alias: title</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="../NVDEntry/">NVDEntry</a></td>
-<td>Enriched NVD representation of a CVE entry</td>
+<td><a href="../Vulnerability/">Vulnerability</a></td>
+<td>Abstract base representation of a security vulnerability</td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../Vulnerability/">Vulnerability</a></td>
-<td>Abstract base representation of a security vulnerability</td>
+<td><a href="../NVDEntry/">NVDEntry</a></td>
+<td>Enriched NVD representation of a CVE entry</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -593,6 +593,10 @@ Alias: title</p>
 <td>exact</td>
 <td>schema:name</td>
 </tr>
+<tr>
+<td>close</td>
+<td>kev_catalog:vulnerability_name</td>
+</tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
@@ -604,6 +608,8 @@ Alias: title</p>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/lmodel/nist-nvd</span>
 <span class="nt">exact_mappings</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:name</span>
+<span class="nt">close_mappings</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kev_catalog:vulnerability_name</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dct:title</span>
 <span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">title</span>
