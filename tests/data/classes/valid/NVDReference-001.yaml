@@ -1,0 +1,5 @@
+url: https://vendor.example/advisories/2023-12345
+source: vendor
+resource_tags:
+  - VENDOR_ADVISORY
+  - PATCH

@@ -33,11 +33,13 @@ prefixes:
   xsd: http://www.w3.org/2001/XMLSchema#
   WIKIDATA: https://www.wikidata.org/wiki/
 
+  schema_vulnerability_core: https://w3id.org/lmodel/vulnerability-core/schema/
+
 default_prefix: nvd
 default_range: string
 
 imports:
-  - ./vulnerability_core
+  - schema_vulnerability_core:vulnerability_core
 
 subsets:
   nvd_feed:

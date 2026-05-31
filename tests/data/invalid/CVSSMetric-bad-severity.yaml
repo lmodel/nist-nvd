@@ -1,0 +1,6 @@
+# base_severity is not a valid ImpactSeverity enum code
+version: V3_1
+vector_string: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+base_score: 9.8
+base_severity: SUPER_BAD
+source: NVD

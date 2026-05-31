@@ -6,11 +6,13 @@
       "cve": "https://w3id.org/lmodel/cve/",
       "cwe": "https://w3id.org/lmodel/cwe/",
       "dct": "http://purl.org/dc/terms/",
+      "dcterms": "http://purl.org/dc/terms/",
       "kev_catalog": "https://w3id.org/lmodel/kev-catalog/",
       "linkml": "https://w3id.org/linkml/",
       "nvd": "https://w3id.org/lmodel/nist-nvd/",
       "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
       "schema": "http://schema.org/",
+      "schema_vulnerability_core": "https://w3id.org/lmodel/vulnerability-core/schema/",
       "skos": "http://www.w3.org/2004/02/skos/core#",
       "@vocab": "https://w3id.org/lmodel/nist-nvd/",
       "analysis_description": {
@@ -80,7 +82,7 @@
          "@id": "cvss_v4_metrics"
       },
       "cwe_id": {
-         "@id": "dct:identifier"
+         "@id": "dcterms:identifier"
       },
       "cwe_view": {
          "@id": "cwe_view"
@@ -94,7 +96,7 @@
          "@id": "date_received"
       },
       "description": {
-         "@id": "dct:description"
+         "@id": "dcterms:description"
       },
       "description_source": {
          "@id": "dct:source"
@@ -133,7 +135,7 @@
       },
       "last_modified_date": {
          "@type": "xsd:dateTime",
-         "@id": "dct:modified"
+         "@id": "dcterms:modified"
       },
       "match_criteria_id": {
          "@id": "match_criteria_id"
@@ -179,7 +181,7 @@
       },
       "published_date": {
          "@type": "xsd:dateTime",
-         "@id": "dct:created"
+         "@id": "dcterms:created"
       },
       "rationale": {
          "@id": "rationale"
@@ -219,7 +221,7 @@
          "@id": "core:severity"
       },
       "source": {
-         "@id": "dct:source"
+         "@id": "dcterms:source"
       },
       "status": {
          "@context": {
@@ -237,7 +239,7 @@
          "@id": "summary"
       },
       "title": {
-         "@id": "dct:title"
+         "@id": "dcterms:title"
       },
       "to_status": {
          "@context": {

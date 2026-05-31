@@ -26,3 +26,15 @@ def test_valid_data_files(filepath):
     )
     obj = yaml_loader.load(filepath, target_class=tgt_class)
     assert obj
+
+
+@pytest.mark.parametrize("filepath", INVALID_EXAMPLE_FILES)
+def test_invalid_data_files(filepath):
+    """Test that all invalid data files are rejected on load."""
+    target_class_name = Path(filepath).stem.split("-")[0]
+    tgt_class = getattr(
+        nist_nvd.datamodel.nist_nvd,
+        target_class_name,
+    )
+    with pytest.raises(ValueError):
+        yaml_loader.load(filepath, target_class=tgt_class)

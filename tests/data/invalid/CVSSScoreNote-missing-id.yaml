@@ -1,0 +1,4 @@
+# note_id is a required identifier and is omitted
+message: A note without its required identifier.
+source: NVD
+created: "2024-02-21T00:00:00Z"

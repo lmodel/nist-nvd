@@ -1,5 +1,5 @@
 # Auto generated from nist_nvd.yaml by pythongen.py version: 0.0.1
-# Generation date: 2026-05-07T15:33:09
+# Generation date: 2026-05-31T01:50:50
 # Schema: nist-nvd
 #
 # id: https://w3id.org/lmodel/nist-nvd
@@ -62,6 +62,30 @@ from rdflib import (
 from linkml_runtime.linkml_model.types import Boolean, Date, Datetime, Float, String, Uri
 from linkml_runtime.utils.metamodelcore import Bool, URI, XSDDate, XSDDateTime
 
+# fix-protocol patch: enum hash/eq
+from linkml_runtime.linkml_model.meta import PermissibleValue as _PV
+from linkml_runtime.utils.enumerations import EnumDefinitionImpl as _EDI
+if not getattr(_PV, "_fix_protocol_patched", False):
+    _orig_pv_eq = _PV.__eq__
+    def _pv_eq(self, other):
+        if isinstance(other, str):
+            return self.text == other
+        return _orig_pv_eq(self, other)
+    _PV.__eq__ = _pv_eq
+    _PV.__hash__ = lambda self: hash(self.text)
+    _PV._fix_protocol_patched = True
+if not getattr(_EDI, "_fix_protocol_patched", False):
+    _orig_edi_eq = _EDI.__eq__
+    def _edi_eq(self, other):
+        if isinstance(other, str):
+            return str(self) == other
+        return _orig_edi_eq(self, other)
+    # Bypass EnumDefinitionMeta.__setattr__, which routes assignments on
+    # enum subclasses through PermissibleValue handling.
+    type.__setattr__(_EDI, "__eq__", _edi_eq)
+    type.__setattr__(_EDI, "__hash__", lambda self: hash(str(self)))
+    type.__setattr__(_EDI, "_fix_protocol_patched", True)
+
 metamodel_version = "1.7.0"
 version = None
 
@@ -71,11 +95,13 @@ CORE = CurieNamespace('core', 'https://w3id.org/lmodel/vulnerability-core/')
 CVE = CurieNamespace('cve', 'https://w3id.org/lmodel/cve/')
 CWE = CurieNamespace('cwe', 'https://w3id.org/lmodel/cwe/')
 DCT = CurieNamespace('dct', 'http://purl.org/dc/terms/')
+DCTERMS = CurieNamespace('dcterms', 'http://purl.org/dc/terms/')
 KEV_CATALOG = CurieNamespace('kev_catalog', 'https://w3id.org/lmodel/kev-catalog/')
 LINKML = CurieNamespace('linkml', 'https://w3id.org/linkml/')
 NVD = CurieNamespace('nvd', 'https://w3id.org/lmodel/nist-nvd/')
 RDFS = CurieNamespace('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
 SCHEMA = CurieNamespace('schema', 'http://schema.org/')
+SCHEMA_VULNERABILITY_CORE = CurieNamespace('schema_vulnerability_core', 'https://w3id.org/lmodel/vulnerability-core/schema/')
 SKOS = CurieNamespace('skos', 'http://www.w3.org/2004/02/skos/core#')
 XSD = CurieNamespace('xsd', 'http://www.w3.org/2001/XMLSchema#')
 DEFAULT_ = NVD
@@ -96,6 +122,178 @@ class IsoDate(str):
     type_class_curie = "xsd:date"
     type_name = "IsoDate"
     type_model_uri = NVD.IsoDate
+
+
+
+
+# Enumerations
+class CVSSVersion(EnumDefinitionImpl):
+    """
+    Supported CVSS versions displayed in NVD metrics tabs.
+    """
+    V2_0 = PermissibleValue(text="V2_0")
+    V3_0 = PermissibleValue(text="V3_0")
+    V3_1 = PermissibleValue(text="V3_1")
+    V4_0 = PermissibleValue(text="V4_0")
+
+    _defn = EnumDefinition(
+        name="CVSSVersion",
+        description="Supported CVSS versions displayed in NVD metrics tabs.",
+    )
+
+class NVDTag(EnumDefinitionImpl):
+    """
+    NVD analysis tags attached to vulnerability records.
+    """
+    ANALYSIS_PENDING = PermissibleValue(text="ANALYSIS_PENDING")
+    ADDITIONAL_INFORMATION = PermissibleValue(text="ADDITIONAL_INFORMATION")
+
+    _defn = EnumDefinition(
+        name="NVDTag",
+        description="NVD analysis tags attached to vulnerability records.",
+    )
+
+class ScoreSource(EnumDefinitionImpl):
+    """
+    Provider of CVSS vectors and scores.
+    """
+    NVD = PermissibleValue(text="NVD")
+    CNA = PermissibleValue(text="CNA")
+    ADP = PermissibleValue(text="ADP")
+    VENDOR = PermissibleValue(text="VENDOR")
+    THIRD_PARTY = PermissibleValue(text="THIRD_PARTY")
+
+    _defn = EnumDefinition(
+        name="ScoreSource",
+        description="Provider of CVSS vectors and scores.",
+    )
+
+class ReferenceTag(EnumDefinitionImpl):
+    """
+    Resource tag labels used by NVD references.
+    """
+    THIRD_PARTY_ADVISORY = PermissibleValue(text="THIRD_PARTY_ADVISORY")
+    VENDOR_ADVISORY = PermissibleValue(text="VENDOR_ADVISORY")
+    ISSUE_TRACKING = PermissibleValue(text="ISSUE_TRACKING")
+    PATCH = PermissibleValue(text="PATCH")
+    TECHNICAL_DESCRIPTION = PermissibleValue(text="TECHNICAL_DESCRIPTION")
+    PRESS_MEDIA_COVERAGE = PermissibleValue(text="PRESS_MEDIA_COVERAGE")
+    VDB_ENTRY = PermissibleValue(text="VDB_ENTRY")
+
+    _defn = EnumDefinition(
+        name="ReferenceTag",
+        description="Resource tag labels used by NVD references.",
+    )
+
+class ConfigurationType(EnumDefinitionImpl):
+    """
+    NVD configuration rendering category.
+    """
+    BASIC = PermissibleValue(text="BASIC")
+    RUNNING_ON_WITH = PermissibleValue(text="RUNNING_ON_WITH")
+    ADVANCED = PermissibleValue(text="ADVANCED")
+
+    _defn = EnumDefinition(
+        name="ConfigurationType",
+        description="NVD configuration rendering category.",
+    )
+
+class NVDWorkflowStatus(EnumDefinitionImpl):
+    """
+    Enrichment state labels shown by NVD for CVEs.
+    """
+    AWAITING_ENRICHMENT = PermissibleValue(text="AWAITING_ENRICHMENT")
+    UNDERGOING_ENRICHMENT = PermissibleValue(text="UNDERGOING_ENRICHMENT")
+    ENRICHED = PermissibleValue(text="ENRICHED")
+    MODIFIED_AFTER_ENRICHMENT = PermissibleValue(text="MODIFIED_AFTER_ENRICHMENT")
+    NOT_SCHEDULED = PermissibleValue(text="NOT_SCHEDULED")
+    REJECTED = PermissibleValue(text="REJECTED")
+
+    _defn = EnumDefinition(
+        name="NVDWorkflowStatus",
+        description="Enrichment state labels shown by NVD for CVEs.",
+    )
+
+class NVDWorkflowEventSource(EnumDefinitionImpl):
+    """
+    Source of state transition decisions in the status flow.
+    """
+    NVD_PROCESS = PermissibleValue(text="NVD_PROCESS")
+    NVD_STAFF_DECISION = PermissibleValue(text="NVD_STAFF_DECISION")
+    CVE_PROGRAM_PROCESS = PermissibleValue(text="CVE_PROGRAM_PROCESS")
+    USER_REQUEST = PermissibleValue(text="USER_REQUEST")
+
+    _defn = EnumDefinition(
+        name="NVDWorkflowEventSource",
+        description="Source of state transition decisions in the status flow.",
+    )
+
+class VersionBoundType(EnumDefinitionImpl):
+    """
+    Boundary type for version-range constraints.
+    """
+    START_INCLUDING = PermissibleValue(text="START_INCLUDING")
+    START_EXCLUDING = PermissibleValue(text="START_EXCLUDING")
+    END_INCLUDING = PermissibleValue(text="END_INCLUDING")
+    END_EXCLUDING = PermissibleValue(text="END_EXCLUDING")
+
+    _defn = EnumDefinition(
+        name="VersionBoundType",
+        description="Boundary type for version-range constraints.",
+    )
+
+class VulnerabilityStatus(EnumDefinitionImpl):
+    """
+    Lifecycle state of a vulnerability record.
+    """
+    ACTIVE = PermissibleValue(
+        text="ACTIVE",
+        description="Vulnerability is actively maintained and published.")
+    REJECTED = PermissibleValue(
+        text="REJECTED",
+        description="CVE ID was rejected and should not be used.")
+    DISPUTED = PermissibleValue(
+        text="DISPUTED",
+        description="The vulnerability details are disputed by a party.")
+    RESERVED = PermissibleValue(
+        text="RESERVED",
+        description="CVE ID is reserved but details are not yet published.")
+    DEPRECATED = PermissibleValue(
+        text="DEPRECATED",
+        description="Entry has been superseded or withdrawn.")
+
+    _defn = EnumDefinition(
+        name="VulnerabilityStatus",
+        description="Lifecycle state of a vulnerability record.",
+    )
+
+class ImpactSeverity(EnumDefinitionImpl):
+    """
+    CVSS qualitative severity rating.
+    """
+    NONE = PermissibleValue(
+        text="NONE",
+        description="No measurable impact.")
+    LOW = PermissibleValue(
+        text="LOW",
+        description="Limited impact; exploitation requires specific conditions.")
+    MEDIUM = PermissibleValue(
+        text="MEDIUM",
+        description="Moderate impact; partial compromise of security properties.")
+    HIGH = PermissibleValue(
+        text="HIGH",
+        description="High impact; significant compromise of security properties.")
+    CRITICAL = PermissibleValue(
+        text="CRITICAL",
+        description="Critical impact; complete compromise; remote exploitation likely.")
+    UNKNOWN = PermissibleValue(
+        text="UNKNOWN",
+        description="Severity has not been assessed or is unavailable.")
+
+    _defn = EnumDefinition(
+        name="ImpactSeverity",
+        description="CVSS qualitative severity rating.",
+    )
 
 
 # Class references
@@ -796,176 +994,6 @@ class Configuration(YAMLRoot):
 
         super().__post_init__(**kwargs)
 
-
-# Enumerations
-class CVSSVersion(EnumDefinitionImpl):
-    """
-    Supported CVSS versions displayed in NVD metrics tabs.
-    """
-    V2_0 = PermissibleValue(text="V2_0")
-    V3_0 = PermissibleValue(text="V3_0")
-    V3_1 = PermissibleValue(text="V3_1")
-    V4_0 = PermissibleValue(text="V4_0")
-
-    _defn = EnumDefinition(
-        name="CVSSVersion",
-        description="Supported CVSS versions displayed in NVD metrics tabs.",
-    )
-
-class NVDTag(EnumDefinitionImpl):
-    """
-    NVD analysis tags attached to vulnerability records.
-    """
-    ANALYSIS_PENDING = PermissibleValue(text="ANALYSIS_PENDING")
-    ADDITIONAL_INFORMATION = PermissibleValue(text="ADDITIONAL_INFORMATION")
-
-    _defn = EnumDefinition(
-        name="NVDTag",
-        description="NVD analysis tags attached to vulnerability records.",
-    )
-
-class ScoreSource(EnumDefinitionImpl):
-    """
-    Provider of CVSS vectors and scores.
-    """
-    NVD = PermissibleValue(text="NVD")
-    CNA = PermissibleValue(text="CNA")
-    ADP = PermissibleValue(text="ADP")
-    VENDOR = PermissibleValue(text="VENDOR")
-    THIRD_PARTY = PermissibleValue(text="THIRD_PARTY")
-
-    _defn = EnumDefinition(
-        name="ScoreSource",
-        description="Provider of CVSS vectors and scores.",
-    )
-
-class ReferenceTag(EnumDefinitionImpl):
-    """
-    Resource tag labels used by NVD references.
-    """
-    THIRD_PARTY_ADVISORY = PermissibleValue(text="THIRD_PARTY_ADVISORY")
-    VENDOR_ADVISORY = PermissibleValue(text="VENDOR_ADVISORY")
-    ISSUE_TRACKING = PermissibleValue(text="ISSUE_TRACKING")
-    PATCH = PermissibleValue(text="PATCH")
-    TECHNICAL_DESCRIPTION = PermissibleValue(text="TECHNICAL_DESCRIPTION")
-    PRESS_MEDIA_COVERAGE = PermissibleValue(text="PRESS_MEDIA_COVERAGE")
-    VDB_ENTRY = PermissibleValue(text="VDB_ENTRY")
-
-    _defn = EnumDefinition(
-        name="ReferenceTag",
-        description="Resource tag labels used by NVD references.",
-    )
-
-class ConfigurationType(EnumDefinitionImpl):
-    """
-    NVD configuration rendering category.
-    """
-    BASIC = PermissibleValue(text="BASIC")
-    RUNNING_ON_WITH = PermissibleValue(text="RUNNING_ON_WITH")
-    ADVANCED = PermissibleValue(text="ADVANCED")
-
-    _defn = EnumDefinition(
-        name="ConfigurationType",
-        description="NVD configuration rendering category.",
-    )
-
-class NVDWorkflowStatus(EnumDefinitionImpl):
-    """
-    Enrichment state labels shown by NVD for CVEs.
-    """
-    AWAITING_ENRICHMENT = PermissibleValue(text="AWAITING_ENRICHMENT")
-    UNDERGOING_ENRICHMENT = PermissibleValue(text="UNDERGOING_ENRICHMENT")
-    ENRICHED = PermissibleValue(text="ENRICHED")
-    MODIFIED_AFTER_ENRICHMENT = PermissibleValue(text="MODIFIED_AFTER_ENRICHMENT")
-    NOT_SCHEDULED = PermissibleValue(text="NOT_SCHEDULED")
-    REJECTED = PermissibleValue(text="REJECTED")
-
-    _defn = EnumDefinition(
-        name="NVDWorkflowStatus",
-        description="Enrichment state labels shown by NVD for CVEs.",
-    )
-
-class NVDWorkflowEventSource(EnumDefinitionImpl):
-    """
-    Source of state transition decisions in the status flow.
-    """
-    NVD_PROCESS = PermissibleValue(text="NVD_PROCESS")
-    NVD_STAFF_DECISION = PermissibleValue(text="NVD_STAFF_DECISION")
-    CVE_PROGRAM_PROCESS = PermissibleValue(text="CVE_PROGRAM_PROCESS")
-    USER_REQUEST = PermissibleValue(text="USER_REQUEST")
-
-    _defn = EnumDefinition(
-        name="NVDWorkflowEventSource",
-        description="Source of state transition decisions in the status flow.",
-    )
-
-class VersionBoundType(EnumDefinitionImpl):
-    """
-    Boundary type for version-range constraints.
-    """
-    START_INCLUDING = PermissibleValue(text="START_INCLUDING")
-    START_EXCLUDING = PermissibleValue(text="START_EXCLUDING")
-    END_INCLUDING = PermissibleValue(text="END_INCLUDING")
-    END_EXCLUDING = PermissibleValue(text="END_EXCLUDING")
-
-    _defn = EnumDefinition(
-        name="VersionBoundType",
-        description="Boundary type for version-range constraints.",
-    )
-
-class VulnerabilityStatus(EnumDefinitionImpl):
-    """
-    Lifecycle state of a vulnerability record.
-    """
-    ACTIVE = PermissibleValue(
-        text="ACTIVE",
-        description="Vulnerability is actively maintained and published.")
-    REJECTED = PermissibleValue(
-        text="REJECTED",
-        description="CVE ID was rejected and should not be used.")
-    DISPUTED = PermissibleValue(
-        text="DISPUTED",
-        description="The vulnerability details are disputed by a party.")
-    RESERVED = PermissibleValue(
-        text="RESERVED",
-        description="CVE ID is reserved but details are not yet published.")
-    DEPRECATED = PermissibleValue(
-        text="DEPRECATED",
-        description="Entry has been superseded or withdrawn.")
-
-    _defn = EnumDefinition(
-        name="VulnerabilityStatus",
-        description="Lifecycle state of a vulnerability record.",
-    )
-
-class ImpactSeverity(EnumDefinitionImpl):
-    """
-    CVSS qualitative severity rating.
-    """
-    NONE = PermissibleValue(
-        text="NONE",
-        description="No measurable impact.")
-    LOW = PermissibleValue(
-        text="LOW",
-        description="Limited impact; exploitation requires specific conditions.")
-    MEDIUM = PermissibleValue(
-        text="MEDIUM",
-        description="Moderate impact; partial compromise of security properties.")
-    HIGH = PermissibleValue(
-        text="HIGH",
-        description="High impact; significant compromise of security properties.")
-    CRITICAL = PermissibleValue(
-        text="CRITICAL",
-        description="Critical impact; complete compromise; remote exploitation likely.")
-    UNKNOWN = PermissibleValue(
-        text="UNKNOWN",
-        description="Severity has not been assessed or is unavailable.")
-
-    _defn = EnumDefinition(
-        name="ImpactSeverity",
-        description="CVSS qualitative severity rating.",
-    )
-
 # Slots
 class slots:
     pass
@@ -1120,19 +1148,19 @@ slots.rationale = Slot(uri=NVD.rationale, name="rationale", curie=NVD.curie('rat
 slots.comment = Slot(uri=NVD.comment, name="comment", curie=NVD.curie('comment'),
                    model_uri=NVD.comment, domain=None, range=Optional[str])
 
-slots.cve_id = Slot(uri=DCT.identifier, name="cve_id", curie=DCT.curie('identifier'),
+slots.cve_id = Slot(uri=DCTERMS.identifier, name="cve_id", curie=DCTERMS.curie('identifier'),
                    model_uri=NVD.cve_id, domain=None, range=URIRef)
 
-slots.title = Slot(uri=DCT.title, name="title", curie=DCT.curie('title'),
+slots.title = Slot(uri=DCTERMS.title, name="title", curie=DCTERMS.curie('title'),
                    model_uri=NVD.title, domain=None, range=Optional[str])
 
-slots.description = Slot(uri=DCT.description, name="description", curie=DCT.curie('description'),
+slots.description = Slot(uri=DCTERMS.description, name="description", curie=DCTERMS.curie('description'),
                    model_uri=NVD.description, domain=None, range=Optional[str])
 
-slots.published_date = Slot(uri=DCT.created, name="published_date", curie=DCT.curie('created'),
+slots.published_date = Slot(uri=DCTERMS.created, name="published_date", curie=DCTERMS.curie('created'),
                    model_uri=NVD.published_date, domain=None, range=Optional[Union[str, XSDDateTime]])
 
-slots.last_modified_date = Slot(uri=DCT.modified, name="last_modified_date", curie=DCT.curie('modified'),
+slots.last_modified_date = Slot(uri=DCTERMS.modified, name="last_modified_date", curie=DCTERMS.curie('modified'),
                    model_uri=NVD.last_modified_date, domain=None, range=Optional[Union[str, XSDDateTime]])
 
 slots.products = Slot(uri=CORE.products, name="products", curie=CORE.curie('products'),
@@ -1165,10 +1193,10 @@ slots.platforms = Slot(uri=CORE.platforms, name="platforms", curie=CORE.curie('p
 slots.url = Slot(uri=SCHEMA.url, name="url", curie=SCHEMA.curie('url'),
                    model_uri=NVD.url, domain=None, range=Optional[Union[str, URI]])
 
-slots.source = Slot(uri=DCT.source, name="source", curie=DCT.curie('source'),
+slots.source = Slot(uri=DCTERMS.source, name="source", curie=DCTERMS.curie('source'),
                    model_uri=NVD.source, domain=None, range=Optional[str])
 
-slots.cwe_id = Slot(uri=DCT.identifier, name="cwe_id", curie=DCT.curie('identifier'),
+slots.cwe_id = Slot(uri=DCTERMS.identifier, name="cwe_id", curie=DCTERMS.curie('identifier'),
                    model_uri=NVD.cwe_id, domain=None, range=Optional[str],
                    pattern=re.compile(r'^CWE-[1-9][0-9]*$'))
 
@@ -1196,30 +1224,30 @@ slots.NVDEntry_weaknesses = Slot(uri=CORE.weaknesses, name="NVDEntry_weaknesses"
 slots.NVDEntry_status = Slot(uri=CORE.status, name="NVDEntry_status", curie=CORE.curie('status'),
                    model_uri=NVD.NVDEntry_status, domain=NVDEntry, range=Optional[Union[str, "NVDWorkflowStatus"]])
 
-slots.NVDEntry_description = Slot(uri=DCT.description, name="NVDEntry_description", curie=DCT.curie('description'),
+slots.NVDEntry_description = Slot(uri=DCTERMS.description, name="NVDEntry_description", curie=DCTERMS.curie('description'),
                    model_uri=NVD.NVDEntry_description, domain=NVDEntry, range=str)
 
-slots.CVSSMetric_source = Slot(uri=DCT.source, name="CVSSMetric_source", curie=DCT.curie('source'),
+slots.CVSSMetric_source = Slot(uri=DCTERMS.source, name="CVSSMetric_source", curie=DCTERMS.curie('source'),
                    model_uri=NVD.CVSSMetric_source, domain=CVSSMetric, range=Optional[Union[str, "ScoreSource"]])
 
 slots.NVDReference_url = Slot(uri=SCHEMA.url, name="NVDReference_url", curie=SCHEMA.curie('url'),
                    model_uri=NVD.NVDReference_url, domain=NVDReference, range=Union[str, URI])
 
-slots.NVDReference_source = Slot(uri=DCT.source, name="NVDReference_source", curie=DCT.curie('source'),
+slots.NVDReference_source = Slot(uri=DCTERMS.source, name="NVDReference_source", curie=DCTERMS.curie('source'),
                    model_uri=NVD.NVDReference_source, domain=NVDReference, range=Optional[str])
 
-slots.NVDWeakness_cwe_id = Slot(uri=DCT.identifier, name="NVDWeakness_cwe_id", curie=DCT.curie('identifier'),
+slots.NVDWeakness_cwe_id = Slot(uri=DCTERMS.identifier, name="NVDWeakness_cwe_id", curie=DCTERMS.curie('identifier'),
                    model_uri=NVD.NVDWeakness_cwe_id, domain=NVDWeakness, range=str,
                    pattern=re.compile(r'^CWE-[1-9][0-9]*$'))
 
 slots.NVDWeakness_name = Slot(uri=RDFS.label, name="NVDWeakness_name", curie=RDFS.curie('label'),
                    model_uri=NVD.NVDWeakness_name, domain=NVDWeakness, range=str)
 
-slots.NVDWeakness_source = Slot(uri=DCT.source, name="NVDWeakness_source", curie=DCT.curie('source'),
+slots.NVDWeakness_source = Slot(uri=DCTERMS.source, name="NVDWeakness_source", curie=DCTERMS.curie('source'),
                    model_uri=NVD.NVDWeakness_source, domain=NVDWeakness, range=str)
 
-slots.Vulnerability_cve_id = Slot(uri=DCT.identifier, name="Vulnerability_cve_id", curie=DCT.curie('identifier'),
+slots.Vulnerability_cve_id = Slot(uri=DCTERMS.identifier, name="Vulnerability_cve_id", curie=DCTERMS.curie('identifier'),
                    model_uri=NVD.Vulnerability_cve_id, domain=Vulnerability, range=Union[str, VulnerabilityCveId])
 
-slots.Vulnerability_description = Slot(uri=DCT.description, name="Vulnerability_description", curie=DCT.curie('description'),
+slots.Vulnerability_description = Slot(uri=DCTERMS.description, name="Vulnerability_description", curie=DCTERMS.curie('description'),
                    model_uri=NVD.Vulnerability_description, domain=Vulnerability, range=Optional[str])

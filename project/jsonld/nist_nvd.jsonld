@@ -25,7 +25,7 @@
   ],
   "id": "https://w3id.org/lmodel/nist-nvd",
   "imports": [
-    "./vulnerability_core",
+    "schema_vulnerability_core:vulnerability_core",
     "linkml:types"
   ],
   "license": "Apache-2.0",
@@ -65,6 +65,10 @@
     {
       "prefix_prefix": "WIKIDATA",
       "prefix_reference": "https://www.wikidata.org/wiki/"
+    },
+    {
+      "prefix_prefix": "schema_vulnerability_core",
+      "prefix_reference": "https://w3id.org/lmodel/vulnerability-core/schema/"
     }
   ],
   "default_prefix": "nvd",
@@ -1420,9 +1424,8 @@
       ],
       "exact_mappings": [
         "http://schema.org/identifier",
-        "https://w3id.org/lmodel/cve/cve_id",
-        "https://w3id.org/lmodel/nist-nvd/cve_id",
-        "https://w3id.org/lmodel/kev-catalog/cve_id"
+        "https://w3id.org/lmodel/kev-catalog/cve_id",
+        "https://w3id.org/lmodel/nist-nvd/cve_id"
       ],
       "slot_uri": "http://purl.org/dc/terms/identifier",
       "identifier": true,
@@ -2095,9 +2098,8 @@
       ],
       "exact_mappings": [
         "http://schema.org/identifier",
-        "https://w3id.org/lmodel/cve/cve_id",
-        "https://w3id.org/lmodel/nist-nvd/cve_id",
-        "https://w3id.org/lmodel/kev-catalog/cve_id"
+        "https://w3id.org/lmodel/kev-catalog/cve_id",
+        "https://w3id.org/lmodel/nist-nvd/cve_id"
       ],
       "is_a": "cve_id",
       "domain": "Vulnerability",
@@ -2503,9 +2505,6 @@
         "cwe:ExternalReference",
         "nvd:NVDReference"
       ],
-      "related_mappings": [
-        "kev_catalog:notes"
-      ],
       "slots": [
         "url",
         "name",
@@ -2578,13 +2577,13 @@
   ],
   "metamodel_version": "1.7.0",
   "source_file": "nist_nvd.yaml",
-  "source_file_date": "2026-05-07T15:23:39",
-  "source_file_size": 13197,
-  "generation_date": "2026-05-07T15:32:51",
+  "source_file_date": "2026-05-31T01:25:37",
+  "source_file_size": 13302,
+  "generation_date": "2026-05-31T01:50:17",
   "@type": "SchemaDefinition",
   "@context": [
     "project/jsonld/nist_nvd.context.jsonld",
-    "./vulnerability_core.context.jsonld",
+    "https://w3id.org/lmodel/vulnerability-core/schema/vulnerability_core.context.jsonld",
     "https://w3id.org/linkml/types.context.jsonld",
     {
       "@base": "https://w3id.org/lmodel/nist-nvd/"

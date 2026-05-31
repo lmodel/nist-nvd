@@ -11,130 +11,130 @@ nvd:NVDEntry a sh:NodeShape ;
     rdfs:comment "Enriched NVD representation of a CVE entry." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:class nvd:StatusTransition ;
-            sh:description "Timeline of status transitions in NVD workflow." ;
-            sh:nodeKind sh:IRI ;
-            sh:order 10 ;
-            sh:path nvd:status_transitions ],
-        [ sh:datatype xsd:string ;
-            sh:description "Description available at enrichment time and shown under Analysis Description." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path dct:description ],
-        [ sh:class nvd:KnownExploitedVulnerability ;
-            sh:description "KEV banner details when this CVE is listed by CISA." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 11 ;
-            sh:path nvd:known_exploited ],
-        [ sh:datatype xsd:string ;
-            sh:description "CWE view used for weakness mapping, typically CWE-1003." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 12 ;
-            sh:path nvd:cwe_view ],
-        [ sh:class nvd:VendorComment ;
-            sh:description "Vendor comments associated with the vulnerability record." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 6 ;
-            sh:path nvd:vendor_comments ],
-        [ sh:class nvd:MetricSet ;
+    sh:property [ sh:class nvd:MetricSet ;
             sh:description "Grouped CVSS displays and notes for this entry." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:BlankNodeOrIRI ;
             sh:order 2 ;
             sh:path nvd:metrics ],
-        [ sh:class core:Product ;
-            sh:description "Products affected by this vulnerability." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 19 ;
-            sh:path core:products ],
-        [ sh:datatype xsd:string ;
-            sh:description "Source attribution shown beneath Current Description." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path dct:source ],
-        [ sh:datatype xsd:string ;
-            sh:description "Short human-readable title or name for this entity." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 15 ;
-            sh:path dct:title ],
-        [ sh:class nvd:NVDWeakness ;
-            sh:description "Weakness classifications (e.g. CWE) associated with this vulnerability." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 5 ;
-            sh:path core:weaknesses ],
-        [ sh:datatype xsd:string ;
-            sh:description "Current Description shown on the NVD detail page." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 16 ;
-            sh:path dct:description ],
-        [ sh:datatype xsd:dateTime ;
-            sh:description "Date and time the vulnerability record was last modified." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 18 ;
-            sh:path dct:modified ],
-        [ sh:datatype xsd:string ;
-            sh:description "CVE tags passed through the CVE List and rendered by NVD." ;
-            sh:nodeKind sh:Literal ;
-            sh:order 8 ;
-            sh:path nvd:cve_tags ],
-        [ sh:description "Current NVD workflow status for the CVE." ;
-            sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
-            sh:maxCount 1 ;
-            sh:order 9 ;
-            sh:path nvd:workflow_status ],
-        [ sh:datatype xsd:string ;
-            sh:description "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 14 ;
-            sh:path dct:identifier ;
-            sh:pattern "^CVE-[0-9]{4}-[0-9]+$" ],
-        [ sh:class nvd:NVDReference ;
-            sh:description "External references such as advisories and articles." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 4 ;
-            sh:path core:references ],
         [ sh:class core:Impact ;
             sh:description "Impact and severity assessment for this vulnerability." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:BlankNodeOrIRI ;
             sh:order 20 ;
             sh:path core:impact ],
-        [ sh:description "Current lifecycle state of the vulnerability record." ;
-            sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
+        [ sh:datatype xsd:string ;
+            sh:description "Short human-readable title or name for this entity." ;
             sh:maxCount 1 ;
-            sh:order 21 ;
-            sh:path core:status ],
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path <dcterms:title> ],
+        [ sh:description "NVD analysis tag values." ;
+            sh:in ( "ANALYSIS_PENDING" "ADDITIONAL_INFORMATION" ) ;
+            sh:order 7 ;
+            sh:path nvd:nvd_tags ],
+        [ sh:class nvd:CPEConfiguration ;
+            sh:description "Affected software configuration statements." ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 3 ;
+            sh:path nvd:configurations ],
         [ sh:datatype xsd:dateTime ;
             sh:description "Date and time the vulnerability was first published." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 17 ;
-            sh:path dct:created ],
+            sh:path <dcterms:created> ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Date and time the vulnerability record was last modified." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 18 ;
+            sh:path <dcterms:modified> ],
+        [ sh:description "Current NVD workflow status for the CVE." ;
+            sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
+            sh:maxCount 1 ;
+            sh:order 9 ;
+            sh:path nvd:workflow_status ],
+        [ sh:class nvd:StatusTransition ;
+            sh:description "Timeline of status transitions in NVD workflow." ;
+            sh:nodeKind sh:IRI ;
+            sh:order 10 ;
+            sh:path nvd:status_transitions ],
+        [ sh:datatype xsd:string ;
+            sh:description "Source attribution shown beneath Current Description." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path dct:source ],
+        [ sh:class nvd:KnownExploitedVulnerability ;
+            sh:description "KEV banner details when this CVE is listed by CISA." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 11 ;
+            sh:path nvd:known_exploited ],
+        [ sh:class nvd:VendorComment ;
+            sh:description "Vendor comments associated with the vulnerability record." ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 6 ;
+            sh:path nvd:vendor_comments ],
         [ sh:datatype xsd:dateTime ;
             sh:description "Date/time when NVD received the CVE record for processing." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 13 ;
             sh:path nvd:date_received ],
-        [ sh:class nvd:CPEConfiguration ;
-            sh:description "Affected software configuration statements." ;
+        [ sh:datatype xsd:string ;
+            sh:description "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN." ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path <dcterms:identifier> ;
+            sh:pattern "^CVE-[0-9]{4}-[0-9]+$" ],
+        [ sh:description "Current lifecycle state of the vulnerability record." ;
+            sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
+            sh:maxCount 1 ;
+            sh:order 21 ;
+            sh:path core:status ],
+        [ sh:class nvd:NVDReference ;
+            sh:description "External references such as advisories and articles." ;
             sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 3 ;
-            sh:path nvd:configurations ],
-        [ sh:description "NVD analysis tag values." ;
-            sh:in ( "ANALYSIS_PENDING" "ADDITIONAL_INFORMATION" ) ;
-            sh:order 7 ;
-            sh:path nvd:nvd_tags ] ;
+            sh:order 4 ;
+            sh:path core:references ],
+        [ sh:datatype xsd:string ;
+            sh:description "Description available at enrichment time and shown under Analysis Description." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path dct:description ],
+        [ sh:datatype xsd:string ;
+            sh:description "CWE view used for weakness mapping, typically CWE-1003." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path nvd:cwe_view ],
+        [ sh:datatype xsd:string ;
+            sh:description "Current Description shown on the NVD detail page." ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 16 ;
+            sh:path <dcterms:description> ],
+        [ sh:class core:Product ;
+            sh:description "Products affected by this vulnerability." ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 19 ;
+            sh:path core:products ],
+        [ sh:class nvd:NVDWeakness ;
+            sh:description "Weakness classifications (e.g. CWE) associated with this vulnerability." ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 5 ;
+            sh:path core:weaknesses ],
+        [ sh:datatype xsd:string ;
+            sh:description "CVE tags passed through the CVE List and rendered by NVD." ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path nvd:cve_tags ] ;
     sh:targetClass nvd:NVDEntry .
 
 core:Configuration a sh:NodeShape ;
@@ -158,89 +158,83 @@ core:Configuration a sh:NodeShape ;
 core:Vulnerability a sh:NodeShape ;
     rdfs:comment "Abstract base representation of a security vulnerability. Extended by source-specific schemas (KEV, CVE, NVD)." ;
     sh:closed false ;
-    sh:ignoredProperties ( nvd:metrics dct:source nvd:date_received nvd:known_exploited nvd:cve_tags nvd:status_transitions nvd:vendor_comments nvd:cwe_view rdf:type nvd:workflow_status nvd:configurations nvd:nvd_tags ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "Short human-readable title or name for this entity." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path dct:title ],
-        [ sh:datatype xsd:dateTime ;
-            sh:description "Date and time the vulnerability record was last modified." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path dct:modified ],
-        [ sh:class core:Weakness ;
-            sh:description "Weakness classifications (e.g. CWE) associated with this vulnerability." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 6 ;
-            sh:path core:weaknesses ],
-        [ sh:description "Current lifecycle state of the vulnerability record." ;
-            sh:in ( "ACTIVE" "REJECTED" "DISPUTED" "RESERVED" "DEPRECATED" ) ;
-            sh:maxCount 1 ;
-            sh:order 9 ;
-            sh:path core:status ],
-        [ sh:class core:Reference ;
-            sh:description "External references such as advisories and articles." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 7 ;
-            sh:path core:references ],
-        [ sh:datatype xsd:string ;
-            sh:description "Narrative description of the vulnerability." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path dct:description ],
-        [ sh:class core:Product ;
-            sh:description "Products affected by this vulnerability." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 5 ;
-            sh:path core:products ],
-        [ sh:class core:Impact ;
+    sh:ignoredProperties ( nvd:known_exploited nvd:nvd_tags rdf:type nvd:metrics nvd:cve_tags nvd:vendor_comments dct:description nvd:date_received nvd:workflow_status dct:source nvd:configurations nvd:status_transitions nvd:cwe_view ) ;
+    sh:property [ sh:class core:Impact ;
             sh:description "Impact and severity assessment for this vulnerability." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:BlankNodeOrIRI ;
             sh:order 8 ;
             sh:path core:impact ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Date and time the vulnerability record was last modified." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <dcterms:modified> ],
+        [ sh:class core:Reference ;
+            sh:description "External references such as advisories and articles." ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 7 ;
+            sh:path core:references ],
+        [ sh:description "Current lifecycle state of the vulnerability record." ;
+            sh:in ( "ACTIVE" "REJECTED" "DISPUTED" "RESERVED" "DEPRECATED" ) ;
+            sh:maxCount 1 ;
+            sh:order 9 ;
+            sh:path core:status ],
+        [ sh:datatype xsd:string ;
+            sh:description "Narrative description of the vulnerability." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path <dcterms:description> ],
+        [ sh:class core:Weakness ;
+            sh:description "Weakness classifications (e.g. CWE) associated with this vulnerability." ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 6 ;
+            sh:path core:weaknesses ],
+        [ sh:datatype xsd:string ;
+            sh:description "Short human-readable title or name for this entity." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path <dcterms:title> ],
         [ sh:datatype xsd:string ;
             sh:description "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN." ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path dct:identifier ;
+            sh:path <dcterms:identifier> ;
             sh:pattern "^CVE-[0-9]{4}-[0-9]+$" ],
         [ sh:datatype xsd:dateTime ;
             sh:description "Date and time the vulnerability was first published." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path dct:created ] ;
+            sh:path <dcterms:created> ],
+        [ sh:class core:Product ;
+            sh:description "Products affected by this vulnerability." ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 5 ;
+            sh:path core:products ] ;
     sh:targetClass core:Vulnerability .
 
 nvd:CPEMatch a sh:NodeShape ;
     rdfs:comment "Leaf-level CPE match criterion and optional version bounds." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:boolean ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Concrete CPE 2.3 URI." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path nvd:cpe23_uri ],
+        [ sh:datatype xsd:boolean ;
             sh:description "Whether the criterion indicates a vulnerable product context." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
             sh:path nvd:vulnerable ],
-        [ sh:datatype xsd:string ;
-            sh:description "Identifier for a match criterion." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path nvd:match_criteria_id ],
-        [ sh:datatype xsd:string ;
-            sh:description "CPE 2.3 match criterion expression." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path nvd:criteria ],
         [ sh:datatype xsd:string ;
             sh:description "Inclusive upper version bound." ;
             sh:maxCount 1 ;
@@ -248,22 +242,11 @@ nvd:CPEMatch a sh:NodeShape ;
             sh:order 6 ;
             sh:path nvd:version_end_including ],
         [ sh:datatype xsd:string ;
-            sh:description "Exclusive lower version bound." ;
+            sh:description "CPE 2.3 match criterion expression." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path nvd:version_start_excluding ],
-        [ sh:datatype xsd:string ;
-            sh:description "Expanded list of matching CPE names shown in detail UI." ;
-            sh:nodeKind sh:Literal ;
-            sh:order 8 ;
-            sh:path nvd:matched_cpe_names ],
-        [ sh:datatype xsd:string ;
-            sh:description "Inclusive lower version bound." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path nvd:version_start_including ],
+            sh:order 1 ;
+            sh:path nvd:criteria ],
         [ sh:datatype xsd:string ;
             sh:description "Exclusive upper version bound." ;
             sh:maxCount 1 ;
@@ -271,52 +254,64 @@ nvd:CPEMatch a sh:NodeShape ;
             sh:order 7 ;
             sh:path nvd:version_end_excluding ],
         [ sh:datatype xsd:string ;
-            sh:description "Concrete CPE 2.3 URI." ;
+            sh:description "Expanded list of matching CPE names shown in detail UI." ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path nvd:matched_cpe_names ],
+        [ sh:datatype xsd:string ;
+            sh:description "Exclusive lower version bound." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path nvd:cpe23_uri ] ;
+            sh:order 5 ;
+            sh:path nvd:version_start_excluding ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for a match criterion." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path nvd:match_criteria_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Inclusive lower version bound." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path nvd:version_start_including ] ;
     sh:targetClass nvd:CPEMatch .
 
 nvd:CVSSScoreNote a sh:NodeShape ;
     rdfs:comment "Additional explanatory note for CVSS display conditions." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
+    sh:property [ sh:datatype xsd:dateTime ;
             sh:maxCount 1 ;
-            sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path dct:identifier ],
+            sh:order 3 ;
+            sh:path dct:created ],
         [ sh:datatype xsd:string ;
             sh:description "Source or origin of the reference or data." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path dct:source ],
+            sh:path <dcterms:source> ],
         [ sh:datatype xsd:string ;
             sh:description "Human-readable explanatory note text." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
             sh:path nvd:message ],
-        [ sh:datatype xsd:dateTime ;
+        [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
+            sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path dct:created ] ;
+            sh:order 0 ;
+            sh:path dct:identifier ] ;
     sh:targetClass nvd:CVSSScoreNote .
 
 nvd:KnownExploitedVulnerability a sh:NodeShape ;
     rdfs:comment "CISA KEV information rendered on the NVD detail page." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path dct:description ],
-        [ sh:datatype xsd:date ;
+    sh:property [ sh:datatype xsd:date ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
@@ -330,7 +325,12 @@ nvd:KnownExploitedVulnerability a sh:NodeShape ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path schema1:url ] ;
+            sh:path schema1:url ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path dct:description ] ;
     sh:targetClass nvd:KnownExploitedVulnerability .
 
 nvd:MetricSet a sh:NodeShape ;
@@ -363,29 +363,29 @@ nvd:NVDReference a sh:NodeShape ;
     rdfs:comment "Reference URL with NVD resource tags." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:anyURI ;
+    sh:property [ sh:description "NVD resource categories attached to references." ;
+            sh:in ( "THIRD_PARTY_ADVISORY" "VENDOR_ADVISORY" "ISSUE_TRACKING" "PATCH" "TECHNICAL_DESCRIPTION" "PRESS_MEDIA_COVERAGE" "VDB_ENTRY" ) ;
+            sh:order 0 ;
+            sh:path nvd:resource_tags ],
+        [ sh:datatype xsd:anyURI ;
             sh:description "URL pointing to the reference resource." ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
             sh:path schema1:url ],
-        [ sh:description "NVD resource categories attached to references." ;
-            sh:in ( "THIRD_PARTY_ADVISORY" "VENDOR_ADVISORY" "ISSUE_TRACKING" "PATCH" "TECHNICAL_DESCRIPTION" "PRESS_MEDIA_COVERAGE" "VDB_ENTRY" ) ;
-            sh:order 0 ;
-            sh:path nvd:resource_tags ],
         [ sh:datatype xsd:string ;
             sh:description "Name of the entity (product, weakness, reference, etc.)." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path rdfs:label ],
+            sh:path <rdfs:label> ],
         [ sh:datatype xsd:string ;
             sh:description "Source or origin of the reference or data." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path dct:source ] ;
+            sh:path <dcterms:source> ] ;
     sh:targetClass nvd:NVDReference .
 
 nvd:NVDWeakness a sh:NodeShape ;
@@ -393,25 +393,19 @@ nvd:NVDWeakness a sh:NodeShape ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
     sh:property [ sh:datatype xsd:string ;
-            sh:description "Narrative description of the vulnerability." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path dct:description ],
-        [ sh:datatype xsd:string ;
             sh:description "Source column value, such as NIST or ASSIGNER." ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path dct:source ],
+            sh:path <dcterms:source> ],
         [ sh:datatype xsd:string ;
             sh:description "CWE identifier for the weakness classification (e.g. CWE-79)." ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
-            sh:path dct:identifier ;
+            sh:path <dcterms:identifier> ;
             sh:pattern "^CWE-[1-9][0-9]*$" ],
         [ sh:datatype xsd:string ;
             sh:description "Name of the entity (product, weakness, reference, etc.)." ;
@@ -419,42 +413,48 @@ nvd:NVDWeakness a sh:NodeShape ;
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path rdfs:label ] ;
+            sh:path <rdfs:label> ],
+        [ sh:datatype xsd:string ;
+            sh:description "Narrative description of the vulnerability." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path <dcterms:description> ] ;
     sh:targetClass nvd:NVDWeakness .
 
 nvd:StatusTransition a sh:NodeShape ;
     rdfs:comment "State transition event in NVD enrichment workflow." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
+    sh:property [ sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
+            sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path nvd:from_status ],
+        [ sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
+            sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path nvd:to_status ],
+        [ sh:in ( "NVD_PROCESS" "NVD_STAFF_DECISION" "CVE_PROGRAM_PROCESS" "USER_REQUEST" ) ;
+            sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path nvd:event_source ],
+        [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
             sh:path dct:identifier ],
-        [ sh:datatype xsd:string ;
-            sh:description "Optional reason for transition." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path nvd:rationale ],
-        [ sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
-            sh:maxCount 1 ;
-            sh:order 2 ;
-            sh:path nvd:to_status ],
         [ sh:datatype xsd:dateTime ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
             sh:path dct:modified ],
-        [ sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
+        [ sh:datatype xsd:string ;
+            sh:description "Optional reason for transition." ;
             sh:maxCount 1 ;
-            sh:order 1 ;
-            sh:path nvd:from_status ],
-        [ sh:in ( "NVD_PROCESS" "NVD_STAFF_DECISION" "CVE_PROGRAM_PROCESS" "USER_REQUEST" ) ;
-            sh:maxCount 1 ;
-            sh:order 3 ;
-            sh:path nvd:event_source ] ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path nvd:rationale ] ;
     sh:targetClass nvd:StatusTransition .
 
 nvd:VendorComment a sh:NodeShape ;
@@ -462,6 +462,12 @@ nvd:VendorComment a sh:NodeShape ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
     sh:property [ sh:datatype xsd:string ;
+            sh:description "Vendor-provided comment text." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path nvd:comment ],
+        [ sh:datatype xsd:string ;
             sh:description "Name of the vendor or organization responsible for the product." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
@@ -472,13 +478,7 @@ nvd:VendorComment a sh:NodeShape ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path dct:modified ],
-        [ sh:datatype xsd:string ;
-            sh:description "Vendor-provided comment text." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path nvd:comment ] ;
+            sh:path <dcterms:modified> ] ;
     sh:targetClass nvd:VendorComment .
 
 core:Reference a sh:NodeShape ;
@@ -490,100 +490,100 @@ core:Reference a sh:NodeShape ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
-            sh:path rdfs:label ],
-        [ sh:datatype xsd:anyURI ;
-            sh:description "URL pointing to the reference resource." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path schema1:url ],
+            sh:path <rdfs:label> ],
         [ sh:datatype xsd:string ;
             sh:description "Source or origin of the reference or data." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path dct:source ] ;
+            sh:path <dcterms:source> ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "URL pointing to the reference resource." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path schema1:url ] ;
     sh:targetClass core:Reference .
 
 core:Weakness a sh:NodeShape ;
     rdfs:comment "Weakness classification from CWE or a similar taxonomy." ;
     sh:closed true ;
-    sh:ignoredProperties ( rdf:type dct:source ) ;
+    sh:ignoredProperties ( rdf:type <dcterms:source> ) ;
     sh:property [ sh:datatype xsd:string ;
-            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
+            sh:description "CWE identifier for the weakness classification (e.g. CWE-79)." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path rdfs:label ],
+            sh:order 0 ;
+            sh:path <dcterms:identifier> ;
+            sh:pattern "^CWE-[1-9][0-9]*$" ],
         [ sh:datatype xsd:string ;
             sh:description "Narrative description of the vulnerability." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path dct:description ],
+            sh:path <dcterms:description> ],
         [ sh:datatype xsd:string ;
-            sh:description "CWE identifier for the weakness classification (e.g. CWE-79)." ;
+            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path dct:identifier ;
-            sh:pattern "^CWE-[1-9][0-9]*$" ] ;
+            sh:order 1 ;
+            sh:path <rdfs:label> ] ;
     sh:targetClass core:Weakness .
 
 nvd:CPEConfiguration a sh:NodeShape ;
     rdfs:comment "Logical grouping of CPE match criteria for affected software." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:description "Simplified configuration rendering type." ;
-            sh:in ( "BASIC" "RUNNING_ON_WITH" "ADVANCED" ) ;
-            sh:maxCount 1 ;
-            sh:order 1 ;
-            sh:path nvd:configuration_type ],
-        [ sh:datatype xsd:string ;
-            sh:description "Human-oriented explanation of configuration logic." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path nvd:summary ],
-        [ sh:class nvd:CPEConfiguration ;
-            sh:description "Child configuration nodes." ;
+    sh:property [ sh:class nvd:CPEMatch ;
+            sh:description "Match criteria for this configuration node." ;
             sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 3 ;
-            sh:path nvd:children ],
-        [ sh:datatype xsd:string ;
-            sh:description "Logical operator (AND/OR) used in configuration node groupings." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path core:operator ],
+            sh:order 4 ;
+            sh:path nvd:matches ],
         [ sh:datatype xsd:string ;
             sh:description "Display identifier, for example Configuration 1." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
             sh:path nvd:configuration_id ],
-        [ sh:class nvd:CPEMatch ;
-            sh:description "Match criteria for this configuration node." ;
+        [ sh:datatype xsd:string ;
+            sh:description "Human-oriented explanation of configuration logic." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path nvd:summary ],
+        [ sh:datatype xsd:string ;
+            sh:description "Logical operator (AND/OR) used in configuration node groupings." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path core:operator ],
+        [ sh:description "Simplified configuration rendering type." ;
+            sh:in ( "BASIC" "RUNNING_ON_WITH" "ADVANCED" ) ;
+            sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path nvd:configuration_type ],
+        [ sh:class nvd:CPEConfiguration ;
+            sh:description "Child configuration nodes." ;
             sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 4 ;
-            sh:path nvd:matches ] ;
+            sh:order 3 ;
+            sh:path nvd:children ] ;
     sh:targetClass nvd:CPEConfiguration .
 
 core:Impact a sh:NodeShape ;
     rdfs:comment "Assessment of the vulnerability's impact and severity." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:description "Qualitative severity rating." ;
-            sh:in ( "NONE" "LOW" "MEDIUM" "HIGH" "CRITICAL" "UNKNOWN" ) ;
-            sh:maxCount 1 ;
-            sh:order 0 ;
-            sh:path core:severity ],
-        [ sh:datatype xsd:float ;
+    sh:property [ sh:datatype xsd:float ;
             sh:description "Numeric vulnerability score (e.g. CVSS base score)." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
             sh:path core:score ],
+        [ sh:description "Qualitative severity rating." ;
+            sh:in ( "NONE" "LOW" "MEDIUM" "HIGH" "CRITICAL" "UNKNOWN" ) ;
+            sh:maxCount 1 ;
+            sh:order 0 ;
+            sh:path core:severity ],
         [ sh:datatype xsd:string ;
             sh:description "CVSS vector string or equivalent scoring vector expression." ;
             sh:maxCount 1 ;
@@ -597,12 +597,6 @@ core:Product a sh:NodeShape ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
     sh:property [ sh:datatype xsd:string ;
-            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path rdfs:label ],
-        [ sh:datatype xsd:string ;
             sh:description "Version string of the affected product." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
@@ -613,6 +607,12 @@ core:Product a sh:NodeShape ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
             sh:path core:platforms ],
+        [ sh:datatype xsd:string ;
+            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path <rdfs:label> ],
         [ sh:datatype xsd:string ;
             sh:description "Name of the vendor or organization responsible for the product." ;
             sh:maxCount 1 ;
@@ -625,27 +625,17 @@ nvd:CVSSMetric a sh:NodeShape ;
     rdfs:comment "Individual CVSS vector and score attribution." ;
     sh:closed true ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "Serialized CVSS vector string." ;
+    sh:property [ sh:datatype xsd:float ;
             sh:maxCount 1 ;
+            sh:maxInclusive 10 ;
+            sh:minInclusive 0 ;
             sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path nvd:vector_string ],
-        [ sh:datatype xsd:string ;
-            sh:description "Version string of the affected product." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path schema1:version ],
+            sh:order 2 ;
+            sh:path nvd:base_score ],
         [ sh:in ( "NONE" "LOW" "MEDIUM" "HIGH" "CRITICAL" "UNKNOWN" ) ;
             sh:maxCount 1 ;
             sh:order 3 ;
             sh:path nvd:base_severity ],
-        [ sh:description "Source or origin of the reference or data." ;
-            sh:in ( "NVD" "CNA" "ADP" "VENDOR" "THIRD_PARTY" ) ;
-            sh:maxCount 1 ;
-            sh:order 4 ;
-            sh:path dct:source ],
         [ sh:datatype xsd:string ;
             sh:description "Supplemental rationale or caveat for a CVSS score." ;
             sh:maxCount 1 ;
@@ -653,17 +643,27 @@ nvd:CVSSMetric a sh:NodeShape ;
             sh:order 6 ;
             sh:path nvd:scoring_justification ],
         [ sh:datatype xsd:string ;
+            sh:description "Version string of the affected product." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path schema1:version ],
+        [ sh:datatype xsd:string ;
+            sh:description "Serialized CVSS vector string." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path nvd:vector_string ],
+        [ sh:description "Source or origin of the reference or data." ;
+            sh:in ( "NVD" "CNA" "ADP" "VENDOR" "THIRD_PARTY" ) ;
+            sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path <dcterms:source> ],
+        [ sh:datatype xsd:string ;
             sh:description "Display label for score source, such as NIST NVD or CNA Example." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 5 ;
-            sh:path nvd:provider_label ],
-        [ sh:datatype xsd:float ;
-            sh:maxCount 1 ;
-            sh:maxInclusive 10 ;
-            sh:minInclusive 0 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path nvd:base_score ] ;
+            sh:path nvd:provider_label ] ;
     sh:targetClass nvd:CVSSMetric .
 

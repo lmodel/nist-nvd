@@ -6,7 +6,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX core: <https://w3id.org/lmodel/vulnerability-core/>
 PREFIX linkml: <https://w3id.org/linkml/>
 PREFIX schema1: <http://schema.org/>
-PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
 
 
 core:CveId xsd:string
@@ -98,7 +98,7 @@ core:Configuration CLOSED {
              <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#HIGH>
              <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#CRITICAL>
              <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#UNKNOWN> ] ? ;
-          dct:source [ <https://w3id.org/lmodel/nist-nvd/ScoreSource#NVD> <https://w3id.org/lmodel/nist-nvd/ScoreSource#CNA>
+          dcterms:source [ <https://w3id.org/lmodel/nist-nvd/ScoreSource#NVD> <https://w3id.org/lmodel/nist-nvd/ScoreSource#CNA>
              <https://w3id.org/lmodel/nist-nvd/ScoreSource#ADP> <https://w3id.org/lmodel/nist-nvd/ScoreSource#VENDOR>
              <https://w3id.org/lmodel/nist-nvd/ScoreSource#THIRD_PARTY> ] ? ;
           <provider_label> @linkml:String ? ;
@@ -110,8 +110,8 @@ core:Configuration CLOSED {
 
 <CVSSScoreNote> CLOSED {
     (  $<CVSSScoreNote_tes> (  <message> @linkml:String ? ;
-          dct:source @linkml:String ? ;
-          dct:created @linkml:Datetime ?
+          dcterms:source @linkml:String ? ;
+          dcterms:created @linkml:Datetime ?
        ) ;
        rdf:type [ <CVSSScoreNote> ]
     )
@@ -132,9 +132,9 @@ core:Impact CLOSED {
 }
 
 <KnownExploitedVulnerability> CLOSED {
-    (  $<KnownExploitedVulnerability_tes> (  dct:created @linkml:Date ? ;
-          dct:date @linkml:Date ? ;
-          dct:description @linkml:String ? ;
+    (  $<KnownExploitedVulnerability_tes> (  dcterms:created @linkml:Date ? ;
+          dcterms:date @linkml:Date ? ;
+          dcterms:description @linkml:String ? ;
           schema1:url @linkml:Uri ?
        ) ;
        rdf:type [ <KnownExploitedVulnerability> ] ?
@@ -154,8 +154,8 @@ core:Impact CLOSED {
 <NVDEntry> CLOSED {
     (  $<NVDEntry_tes> (  &core:Vulnerability_tes ;
           rdf:type [ core:Vulnerability ] ? ;
-          dct:source @linkml:String ? ;
-          dct:description @linkml:String ? ;
+          dcterms:source @linkml:String ? ;
+          dcterms:description @linkml:String ? ;
           <metrics> @<MetricSet> ? ;
           <configurations> @<CPEConfiguration> * ;
           core:references @<NVDReference> * ;
@@ -180,7 +180,7 @@ core:Impact CLOSED {
              <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
              <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
              <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
-          dct:description @linkml:String
+          dcterms:description @linkml:String
        ) ;
        rdf:type [ <NVDEntry> ]
     )
@@ -196,7 +196,7 @@ core:Impact CLOSED {
              <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PRESS_MEDIA_COVERAGE>
              <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VDB_ENTRY> ] * ;
           schema1:url @linkml:Uri ;
-          dct:source @linkml:String ?
+          dcterms:source @linkml:String ?
        ) ;
        rdf:type [ <NVDReference> ] ?
     )
@@ -205,8 +205,8 @@ core:Impact CLOSED {
 <NVDWeakness> CLOSED {
     (  $<NVDWeakness_tes> (  &core:Weakness_tes ;
           rdf:type [ core:Weakness ] ? ;
-          dct:source @linkml:String ;
-          dct:identifier @linkml:String ;
+          dcterms:source @linkml:String ;
+          dcterms:identifier @linkml:String ;
           rdfs:label @linkml:String
        ) ;
        rdf:type [ <NVDWeakness> ] ?
@@ -227,7 +227,7 @@ core:Reference  (
     CLOSED {
        (  $core:Reference_tes (  schema1:url @linkml:Uri ? ;
              rdfs:label @linkml:String ? ;
-             dct:source @linkml:String ?
+             dcterms:source @linkml:String ?
           ) ;
           rdf:type [ core:Reference ] ?
        )
@@ -251,7 +251,7 @@ core:Reference  (
              <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_STAFF_DECISION>
              <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#CVE_PROGRAM_PROCESS>
              <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#USER_REQUEST> ] ? ;
-          dct:modified @linkml:Datetime ? ;
+          dcterms:modified @linkml:Datetime ? ;
           <rationale> @linkml:String ?
        ) ;
        rdf:type [ <StatusTransition> ]
@@ -261,7 +261,7 @@ core:Reference  (
 <VendorComment> CLOSED {
     (  $<VendorComment_tes> (  schema1:name @linkml:String ? ;
           <comment> @linkml:String ? ;
-          dct:modified @linkml:Datetime ?
+          dcterms:modified @linkml:Datetime ?
        ) ;
        rdf:type [ <VendorComment> ] ?
     )
@@ -269,10 +269,10 @@ core:Reference  (
 
 core:Vulnerability  (
     {
-       (  $core:Vulnerability_tes (  dct:title @linkml:String ? ;
-             dct:description @linkml:String ? ;
-             dct:created @linkml:Datetime ? ;
-             dct:modified @linkml:Datetime ? ;
+       (  $core:Vulnerability_tes (  dcterms:title @linkml:String ? ;
+             dcterms:description @linkml:String ? ;
+             dcterms:created @linkml:Datetime ? ;
+             dcterms:modified @linkml:Datetime ? ;
              core:products @core:Product * ;
              core:weaknesses @core:Weakness * ;
              core:references @core:Reference * ;
@@ -290,9 +290,9 @@ core:Vulnerability  (
 
 core:Weakness  (
     CLOSED {
-       (  $core:Weakness_tes (  dct:identifier @linkml:String ? ;
+       (  $core:Weakness_tes (  dcterms:identifier @linkml:String ? ;
              rdfs:label @linkml:String ? ;
-             dct:description @linkml:String ?
+             dcterms:description @linkml:String ?
           ) ;
           rdf:type [ core:Weakness ] ?
        )

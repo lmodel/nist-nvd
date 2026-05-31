@@ -340,8 +340,8 @@ CREATE TABLE "NVDEntry_cve_tags" (
 	PRIMARY KEY ("NVDEntry_cve_id", cve_tags),
 	FOREIGN KEY("NVDEntry_cve_id") REFERENCES "NVDEntry" (cve_id)
 );
-CREATE INDEX "ix_NVDEntry_cve_tags_cve_tags" ON "NVDEntry_cve_tags" (cve_tags);
 CREATE INDEX "ix_NVDEntry_cve_tags_NVDEntry_cve_id" ON "NVDEntry_cve_tags" ("NVDEntry_cve_id");
+CREATE INDEX "ix_NVDEntry_cve_tags_cve_tags" ON "NVDEntry_cve_tags" (cve_tags);
 
 CREATE TABLE "CPEMatch" (
 	id INTEGER NOT NULL,
@@ -365,8 +365,8 @@ CREATE TABLE "NVDReference_resource_tags" (
 	PRIMARY KEY ("NVDReference_id", resource_tags),
 	FOREIGN KEY("NVDReference_id") REFERENCES "NVDReference" (id)
 );
-CREATE INDEX "ix_NVDReference_resource_tags_resource_tags" ON "NVDReference_resource_tags" (resource_tags);
 CREATE INDEX "ix_NVDReference_resource_tags_NVDReference_id" ON "NVDReference_resource_tags" ("NVDReference_id");
+CREATE INDEX "ix_NVDReference_resource_tags_resource_tags" ON "NVDReference_resource_tags" (resource_tags);
 
 CREATE TABLE "Product_platforms" (
 	"Product_id" INTEGER,
@@ -383,5 +383,5 @@ CREATE TABLE "CPEMatch_matched_cpe_names" (
 	PRIMARY KEY ("CPEMatch_id", matched_cpe_names),
 	FOREIGN KEY("CPEMatch_id") REFERENCES "CPEMatch" (id)
 );
-CREATE INDEX "ix_CPEMatch_matched_cpe_names_CPEMatch_id" ON "CPEMatch_matched_cpe_names" ("CPEMatch_id");
 CREATE INDEX "ix_CPEMatch_matched_cpe_names_matched_cpe_names" ON "CPEMatch_matched_cpe_names" (matched_cpe_names);
+CREATE INDEX "ix_CPEMatch_matched_cpe_names_CPEMatch_id" ON "CPEMatch_matched_cpe_names" ("CPEMatch_id");

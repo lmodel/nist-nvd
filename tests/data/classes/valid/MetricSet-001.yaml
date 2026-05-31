@@ -1,0 +1,26 @@
+cvss_v4_metrics:
+  - version: V4_0
+    vector_string: CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N
+    base_score: 9.3
+    base_severity: CRITICAL
+    source: NVD
+    provider_label: NIST NVD
+cvss_v3_metrics:
+  - version: V3_1
+    vector_string: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+    base_score: 9.8
+    base_severity: CRITICAL
+    source: NVD
+    provider_label: NIST NVD
+cvss_v2_metrics:
+  - version: V2_0
+    vector_string: AV:N/AC:L/Au:N/C:P/I:P/A:P
+    base_score: 7.5
+    base_severity: HIGH
+    source: CNA
+    provider_label: CNA Example
+score_notes:
+  - note_id: note-ms-1
+    message: CNA score is displayed when it matches the NVD value.
+    source: NVD
+    created: "2024-02-21T00:00:00Z"

@@ -1,0 +1,6 @@
+# event_source is not a valid NVDWorkflowEventSource enum code
+transition_id: status-bad-001
+from_status: AWAITING_ENRICHMENT
+to_status: UNDERGOING_ENRICHMENT
+event_source: ROBOT_OVERLORD
+transition_time: "2024-01-03T00:00:00Z"

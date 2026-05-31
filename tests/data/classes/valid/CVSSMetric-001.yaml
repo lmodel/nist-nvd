@@ -1,0 +1,7 @@
+version: V3_1
+vector_string: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+base_score: 9.8
+base_severity: CRITICAL
+source: NVD
+provider_label: NIST NVD
+scoring_justification: Base score reflects unauthenticated remote code execution.

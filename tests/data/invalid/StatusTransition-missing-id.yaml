@@ -1,0 +1,5 @@
+# transition_id is a required identifier and is omitted
+from_status: AWAITING_ENRICHMENT
+to_status: UNDERGOING_ENRICHMENT
+event_source: NVD_PROCESS
+transition_time: "2024-01-03T00:00:00Z"
