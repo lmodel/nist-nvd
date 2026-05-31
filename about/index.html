@@ -329,6 +329,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -345,6 +363,80 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enums" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enums
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mappings-to-cve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mappings to CVE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing &amp; build
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -370,6 +462,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enums" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enums
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mappings-to-cve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mappings to CVE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing &amp; build
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -390,7 +545,105 @@
 
 
 <h1 id="about-nist-nvd">About nist-nvd</h1>
-<p>NIST National Vunerability Database (NVD) LinkML Schema</p>
+<p>A <a href="https://linkml.io">LinkML</a> model of the <strong>NIST National Vulnerability
+Database (NVD)</strong> view of a CVE — the <em>enriched</em> data NVD layers on top of the
+upstream CVE record: CVSS metric tabs, CPE applicability statements, CWE
+weakness attributions, reference resource tags, CISA KEV details, and the NVD
+enrichment status lifecycle. It models what NVD <em>adds and renders</em>, not the raw
+CVE record (that is the upstream <code>cve</code> schema, to which nist-nvd maps).</p>
+<ul>
+<li><strong>Schema source:</strong> <a href="../src/nist_nvd/schema/nist_nvd.yaml">src/nist_nvd/schema/nist_nvd.yaml</a> (IRI <code>https://w3id.org/lmodel/nist-nvd</code>)</li>
+<li><strong>Docs site:</strong> <a href="https://lmodel.github.io/nist-nvd">https://lmodel.github.io/nist-nvd</a></li>
+<li><strong>Upstream:</strong> <a href="https://nvd.nist.gov/vuln/data-feeds">NVD data feeds</a>, <a href="https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema">CVE API 2.0 schema</a></li>
+</ul>
+<h2 id="design">Design</h2>
+<ul>
+<li><strong>Extends a shared core.</strong> Imports <code>vulnerability-core</code> and subclasses its
+  abstract <code>Vulnerability</code>, <code>Reference</code>, and <code>Weakness</code> rather than restating
+  common fields. NVD-specific enrichment lives here.</li>
+<li><strong>Tracks the detail page.</strong> Class and slot names mirror what an analyst sees
+  (Current vs Analysis description, CVSS version tabs, "Configuration 1"
+  groupings); <code>comments:</code>/<code>notes:</code> record NVD display rules.</li>
+<li><strong>Enums for closed lists.</strong> CVSS versions, resource tags, workflow states,
+  transition sources, and version bounds are validated <code>enum</code>s.</li>
+<li><strong>Resolvable identity.</strong> URIs use the project's <code>nvd:</code> namespace; upstream
+  equivalence is recorded via <code>*_mappings</code>.</li>
+</ul>
+<h2 id="class-model">Class model</h2>
+<p><code>NVDEntry</code> (<code>is_a: Vulnerability</code>) is the tree root and aggregates the views:</p>
+<div class="highlight"><pre><span></span><code>NVDEntry
+├── metrics            → MetricSet
+│     ├── cvss_v{4,3,2}_metrics → CVSSMetric
+│     └── score_notes           → CVSSScoreNote
+├── configurations     → CPEConfiguration (children: recursive; matches → CPEMatch)
+├── references         → NVDReference (is_a Reference, + resource_tags)
+├── weaknesses         → NVDWeakness (is_a Weakness, + source)
+├── vendor_comments    → VendorComment
+├── known_exploited    → KnownExploitedVulnerability (CISA KEV)
+└── status_transitions → StatusTransition
+</code></pre></div>
+<h2 id="enums">Enums</h2>
+<table>
+<thead>
+<tr>
+<th>Enum</th>
+<th>Vocabulary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CVSSVersion</code></td>
+<td><code>V2_0</code>, <code>V3_0</code>, <code>V3_1</code>, <code>V4_0</code></td>
+</tr>
+<tr>
+<td><code>ScoreSource</code></td>
+<td><code>NVD</code>, <code>CNA</code>, <code>ADP</code>, <code>VENDOR</code>, <code>THIRD_PARTY</code></td>
+</tr>
+<tr>
+<td><code>ReferenceTag</code></td>
+<td><code>THIRD_PARTY_ADVISORY</code>, <code>VENDOR_ADVISORY</code>, <code>ISSUE_TRACKING</code>, <code>PATCH</code>, …</td>
+</tr>
+<tr>
+<td><code>ConfigurationType</code></td>
+<td><code>BASIC</code>, <code>RUNNING_ON_WITH</code>, <code>ADVANCED</code></td>
+</tr>
+<tr>
+<td><code>NVDWorkflowStatus</code></td>
+<td><code>AWAITING_ENRICHMENT</code> → <code>UNDERGOING_ENRICHMENT</code> → <code>ENRICHED</code>, <code>MODIFIED_AFTER_ENRICHMENT</code>, <code>NOT_SCHEDULED</code>, <code>REJECTED</code></td>
+</tr>
+<tr>
+<td><code>NVDWorkflowEventSource</code></td>
+<td><code>NVD_PROCESS</code>, <code>NVD_STAFF_DECISION</code>, <code>CVE_PROGRAM_PROCESS</code>, <code>USER_REQUEST</code></td>
+</tr>
+<tr>
+<td><code>VersionBoundType</code></td>
+<td><code>START_INCLUDING</code>, <code>START_EXCLUDING</code>, <code>END_INCLUDING</code>, <code>END_EXCLUDING</code></td>
+</tr>
+<tr>
+<td><code>NVDTag</code></td>
+<td><code>ANALYSIS_PENDING</code>, <code>ADDITIONAL_INFORMATION</code></td>
+</tr>
+</tbody>
+</table>
+<p>Subsets partition fields into views: <code>nvd_feed</code>, <code>metrics</code>, <code>detail_page</code>,
+<code>status_workflow</code>.</p>
+<h2 id="mappings-to-cve">Mappings to CVE</h2>
+<p>Correspondence to the upstream <code>cve</code> schema is recorded inline via <code>*_mappings</code>
+(e.g. <code>CPEMatch</code> ↔ <code>cve:CpeMatch</code>, <code>NVDWeakness</code> ↔ <code>cve:ProblemType</code>) and as an
+SSSOM mapping set, <a href="../src/nist_nvd/mappings/cve_to_nist_nvd.sssom.tsv">cve_to_nist_nvd.sssom.tsv</a>.</p>
+<h2 id="testing-build">Testing &amp; build</h2>
+<p>Example-driven tests in <a href="../tests">tests/</a>: <code>data/valid/</code> and
+<code>data/classes/valid/</code> (must load), <code>data/invalid/</code> (must be rejected). The
+filename stem before the first <code>-</code> names the target class.
+<a href="../tests/test_data.py">tests/test_data.py</a> parametrizes over these folders.</p>
+<p>Recipes use <a href="https://github.com/casey/just/">just</a>: <code>just lint</code>,
+<code>just gen-project</code>, <code>just test</code>. Known issues:</p>
+<ul>
+<li><code>_test-examples</code> RDF dump fails with <code>Unknown CURIE prefix: @base</code> when
+  minting an IRI from a plain-string identifier (<code>NVDEntry</code>'s <code>cve_id</code>). Pass a
+  base via the runner's <code>--prefixes</code> flag (<code>"@base": https://w3id.org/lmodel/nist-nvd/</code>).</li>
+<li>Imported abstract base classes can cause example field mismatches</li>
+</ul>
 
 
 

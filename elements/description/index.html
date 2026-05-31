@@ -498,7 +498,7 @@
 
 <h1 id="slot-description">Slot: description</h1>
 <p><em>Narrative description of the vulnerability.</em></p>
-<p>URI: <a href="http://purl.org/dc/terms/description">dct:description</a>
+<p>URI: <a href="http://purl.org/dc/terms/description">dcterms:description</a>
 Alias: description</p>
 <!-- no inheritance hierarchy -->
 
@@ -513,9 +513,9 @@ Alias: description</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="../Vulnerability/">Vulnerability</a></td>
-<td>Abstract base representation of a security vulnerability</td>
-<td>yes</td>
+<td><a href="../NVDWeakness/">NVDWeakness</a></td>
+<td>Weakness row as presented on the NVD detail page</td>
+<td>no</td>
 </tr>
 <tr>
 <td><a href="../Weakness/">Weakness</a></td>
@@ -523,13 +523,13 @@ Alias: description</p>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../NVDWeakness/">NVDWeakness</a></td>
-<td>Weakness row as presented on the NVD detail page</td>
-<td>no</td>
-</tr>
-<tr>
 <td><a href="../NVDEntry/">NVDEntry</a></td>
 <td>Enriched NVD representation of a CVE entry</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><a href="../Vulnerability/">Vulnerability</a></td>
+<td>Abstract base representation of a security vulnerability</td>
 <td>yes</td>
 </tr>
 </tbody>
@@ -554,7 +554,7 @@ Alias: description</p>
 </tr>
 <tr>
 <td>Slot URI</td>
-<td><a href="http://purl.org/dc/terms/description">dct:description</a></td>
+<td><a href="http://purl.org/dc/terms/description">dcterms:description</a></td>
 </tr>
 </tbody>
 </table>
@@ -593,7 +593,7 @@ Alias: description</p>
 <tbody>
 <tr>
 <td>self</td>
-<td>dct:description</td>
+<td>dcterms:description</td>
 </tr>
 <tr>
 <td>native</td>
@@ -621,7 +621,7 @@ Alias: description</p>
 <span class="nt">close_mappings</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kev_catalog:short_description</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dct:description</span>
+<span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dcterms:description</span>
 <span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">description</span>
 <span class="nt">domain_of</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vulnerability</span>

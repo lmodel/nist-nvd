@@ -487,7 +487,7 @@
 
 <h1 id="slot-source">Slot: source</h1>
 <p><em>Source or origin of the reference or data.</em></p>
-<p>URI: <a href="http://purl.org/dc/terms/source">dct:source</a>
+<p>URI: <a href="http://purl.org/dc/terms/source">dcterms:source</a>
 Alias: source</p>
 <!-- no inheritance hierarchy -->
 
@@ -502,9 +502,19 @@ Alias: source</p>
 </thead>
 <tbody>
 <tr>
+<td><a href="../CVSSScoreNote/">CVSSScoreNote</a></td>
+<td>Additional explanatory note for CVSS display conditions</td>
+<td>no</td>
+</tr>
+<tr>
 <td><a href="../Reference/">Reference</a></td>
 <td>External reference such as an advisory or article</td>
 <td>no</td>
+</tr>
+<tr>
+<td><a href="../NVDReference/">NVDReference</a></td>
+<td>Reference URL with NVD resource tags</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><a href="../NVDWeakness/">NVDWeakness</a></td>
@@ -512,18 +522,8 @@ Alias: source</p>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../CVSSScoreNote/">CVSSScoreNote</a></td>
-<td>Additional explanatory note for CVSS display conditions</td>
-<td>no</td>
-</tr>
-<tr>
 <td><a href="../CVSSMetric/">CVSSMetric</a></td>
 <td>Individual CVSS vector and score attribution</td>
-<td>yes</td>
-</tr>
-<tr>
-<td><a href="../NVDReference/">NVDReference</a></td>
-<td>Reference URL with NVD resource tags</td>
 <td>yes</td>
 </tr>
 </tbody>
@@ -548,7 +548,7 @@ Alias: source</p>
 </tr>
 <tr>
 <td>Slot URI</td>
-<td><a href="http://purl.org/dc/terms/source">dct:source</a></td>
+<td><a href="http://purl.org/dc/terms/source">dcterms:source</a></td>
 </tr>
 </tbody>
 </table>
@@ -583,7 +583,7 @@ Alias: source</p>
 <tbody>
 <tr>
 <td>self</td>
-<td>dct:source</td>
+<td>dcterms:source</td>
 </tr>
 <tr>
 <td>native</td>
@@ -597,7 +597,7 @@ Alias: source</p>
 <span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Source or origin of the reference or data.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/lmodel/nist-nvd</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dct:source</span>
+<span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dcterms:source</span>
 <span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span>
 <span class="nt">domain_of</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CVSSMetric</span>
