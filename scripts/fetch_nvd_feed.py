@@ -82,14 +82,14 @@ _open = urllib.request.build_opener(_PinnedHostRedirect).open
 
 def _request(url: str):
     _check_address(url)
-    return _open(urllib.request.Request(url, headers={"User-Agent": USER_AGENT}), timeout=120)
+    return _open(
+        urllib.request.Request(url, headers={"User-Agent": USER_AGENT}), timeout=120
+    )
 
 
 def parse_meta(text: str) -> dict:
     """The size, gzip size and SHA-256 that a .meta file gives."""
-    fields = dict(
-        line.split(":", 1) for line in text.splitlines() if ":" in line
-    )
+    fields = dict(line.split(":", 1) for line in text.splitlines() if ":" in line)
     size, gz_size = int(fields["size"]), int(fields["gzSize"])
     digest = fields["sha256"].strip().lower()
     if not re.fullmatch(r"[0-9a-f]{64}", digest):
@@ -158,7 +158,10 @@ def fetch(dest: Path) -> tuple[int, str]:
                 continue
             if _matches(part, meta):
                 os.replace(part, target)
-                return 0, f"{NAME}: downloaded, {meta['size']} bytes matching its .meta file"
+                return (
+                    0,
+                    f"{NAME}: downloaded, {meta['size']} bytes matching its .meta file",
+                )
             part.unlink(missing_ok=True)
     except COULD_NOT_RUN as err:
         part.unlink(missing_ok=True)
@@ -169,7 +172,10 @@ def fetch(dest: Path) -> tuple[int, str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
-        "--dest", type=Path, default=DEST, help="The folder to fill (default: %(default)s)"
+        "--dest",
+        type=Path,
+        default=DEST,
+        help="The folder to fill (default: %(default)s)",
     )
     args = parser.parse_args(argv)
     code, line = fetch(args.dest)

@@ -163,7 +163,12 @@ def test_every_class_has_an_example():
 def test_validator_agrees():
     """linkml-validate, which docs/index.md tells a user to run, accepts a valid
     example and rejects a counter-example at the same place, for each response."""
-    for kind in ("NvdCveResponse", "NvdCpeResponse", "NvdCpeMatchResponse", "NvdHistoryResponse"):
+    for kind in (
+        "NvdCveResponse",
+        "NvdCpeResponse",
+        "NvdCpeMatchResponse",
+        "NvdHistoryResponse",
+    ):
         good = next(p for p in VALID if class_of_file(p) == kind)
         assert not validate(load(good), str(SCHEMA), kind).results, good.name
     bad = DATA / "invalid" / "NvdCve-unknown-status.yaml"
@@ -176,7 +181,9 @@ def test_validator_agrees():
 def test_the_validator_checks_a_real_timestamp_as_nvd_writes_it():
     """linkml-validate checks formats. A real timestamp has no UTC offset, so a
     `datetime` range would refuse every record, and this one must not."""
-    assert not validate(load(DATA / "valid" / "NvdCve-smallest.yaml"), str(SCHEMA), "NvdCve").results
+    assert not validate(
+        load(DATA / "valid" / "NvdCve-smallest.yaml"), str(SCHEMA), "NvdCve"
+    ).results
 
 
 @pytest.mark.parametrize("path", EXTRACT, ids=lambda p: p.stem)
@@ -206,8 +213,12 @@ def test_the_extract_covers_every_kind_and_case():
             assert value in cve["metrics"], case
         else:
             assert value in cve, case
-    configurations = [c for cve in by_id.values() for c in cve.get("configurations", [])]
-    assert any(c.get("operator") == "AND" and len(c["nodes"]) > 1 for c in configurations)
+    configurations = [
+        c for cve in by_id.values() for c in cve.get("configurations", [])
+    ]
+    assert any(
+        c.get("operator") == "AND" and len(c["nodes"]) > 1 for c in configurations
+    )
 
 
 @pytest.mark.parametrize("path", VALID, ids=lambda p: p.stem)
@@ -228,7 +239,10 @@ def test_valid_examples_keep_the_rules_beyond_the_validator(path):
 
 def test_each_rule_finds_its_breach():
     """Each rule beyond the validator reports a breach of it."""
-    product = {"cpes": ["a", "a"], "versions": [{"changes": [{"at": "1"}, {"at": "1"}]}]}
+    product = {
+        "cpes": ["a", "a"],
+        "versions": [{"changes": [{"at": "1"}, {"at": "1"}]}],
+    }
     assert [p[1] for p in nvd_rules.product_problems(product)] == [
         "/cpes",
         "/versions/0/changes",
@@ -236,7 +250,9 @@ def test_each_rule_finds_its_breach():
     twice = {"programRoutines": [{"name": "f"}, {"name": "f"}]}
     assert [p[1] for p in nvd_rules.product_problems(twice)] == ["/programRoutines"]
     assert list(nvd_rules.ssvc_problems({"options": [{"a": "b"}, {"a": "b"}]}))
-    assert [p[1] for p in nvd_rules.cvss_v40_problems({"baseScore": 7.15})] == ["/baseScore"]
+    assert [p[1] for p in nvd_rules.cvss_v40_problems({"baseScore": 7.15})] == [
+        "/baseScore"
+    ]
     assert not list(nvd_rules.cvss_v40_problems({"baseScore": 7.1}))
     cve = {
         "affected": [{"affectedData": [{"modules": ["m", "m"]}]}],
@@ -261,6 +277,8 @@ def test_the_generated_models_load_real_responses():
         records = [item["cve"] for item in data.get("vulnerabilities") or []]
         if any(not record["references"] for record in records):
             continue
-        yaml_loader.loads(yaml.safe_dump(data), target_class=getattr(dataclasses_module, name))
+        yaml_loader.loads(
+            yaml.safe_dump(data), target_class=getattr(dataclasses_module, name)
+        )
         loaded += 1
     assert loaded

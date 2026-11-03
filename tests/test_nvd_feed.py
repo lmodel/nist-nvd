@@ -26,7 +26,10 @@ from tests import nvd_rules
 from tests.test_data import errors, pointer
 
 ROOT = Path(__file__).parent.parent
-FEED = Path(os.environ.get("NVD_FEED_DIR", ROOT / "tmp" / "nvd-feed")) / "nvdcve-2.0-modified.json"
+FEED = (
+    Path(os.environ.get("NVD_FEED_DIR", ROOT / "tmp" / "nvd-feed"))
+    / "nvdcve-2.0-modified.json"
+)
 UPSTREAM = ROOT / "upstream"
 BASE = "https://csrc.nist.gov/schema/nvd/api/2.0/"
 
@@ -82,13 +85,16 @@ def _nvds_own_validator():
     for address, name in held.items():
         document = json.loads((UPSTREAM / name).read_text(encoding="utf-8"))
         registry = registry.with_resource(
-            BASE + address, Resource.from_contents(document, default_specification=DRAFT7)
+            BASE + address,
+            Resource.from_contents(document, default_specification=DRAFT7),
         )
     registry = registry.with_resource(
         "https://democert.org/ssvc/SSVC_Provision_v2.03.schema.json",
         Resource.from_contents({}, default_specification=DRAFT7),
     )
-    main = json.loads((UPSTREAM / "cve_api_json_2.0.schema").read_text(encoding="utf-8"))
+    main = json.loads(
+        (UPSTREAM / "cve_api_json_2.0.schema").read_text(encoding="utf-8")
+    )
     schema = {
         "$schema": main["$schema"],
         "$ref": "#/definitions/cve_item",
@@ -141,7 +147,8 @@ def test_the_breaches_of_nvds_own_schema_are_the_known_kinds():
     for record in records():
         for error in validator.iter_errors(record):
             path = "/".join(
-                "*" if isinstance(part, int) else str(part) for part in error.absolute_path
+                "*" if isinstance(part, int) else str(part)
+                for part in error.absolute_path
             )
             found[(error.validator, path)] += 1
     unknown = set(found) - set(KNOWN_BREACHES_OF_NVDS_SCHEMA)

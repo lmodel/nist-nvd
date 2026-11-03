@@ -69,8 +69,14 @@ DATA_ENUMS = {
     ("cve_api_json_2.0.schema#/definitions/cve_item", "vulnStatus"): "NvdVulnStatus",
     ("cve_api_json_2.0.schema#/definitions/reference", "tags"): "NvdReferenceTag",
     ("cve_api_json_2.0.schema#/definitions/weakness", "type"): "NvdSourceType",
-    ("cve_api_json_2.0.schema#/definitions/cvss-v2", "baseSeverity"): "NvdCvssV2Severity",
-    ("cpematch_api_json_2.0.schema#/definitions/def_match_data", "status"): "NvdMatchStringStatus",
+    (
+        "cve_api_json_2.0.schema#/definitions/cvss-v2",
+        "baseSeverity",
+    ): "NvdCvssV2Severity",
+    (
+        "cpematch_api_json_2.0.schema#/definitions/def_match_data",
+        "status",
+    ): "NvdMatchStringStatus",
 }
 
 # A string in NIST's file that the schema pins to the one value the API's answers
@@ -85,7 +91,11 @@ DATA_PINNED = {
 # Keys a class names beyond NIST's file, where that file leaves its keys open. Each
 # is the only key the data holds there, and the class's comment says why it is named.
 DATA_KEYS = {
-    f"{SSVC}#/properties/options/items": {"exploitation", "automatable", "technicalImpact"},
+    f"{SSVC}#/properties/options/items": {
+        "exploitation",
+        "automatable",
+        "technicalImpact",
+    },
 }
 
 # Where the schema departs from NIST's file, as (object, key, aspect): reason. The
@@ -97,19 +107,55 @@ _NO_OFFSET = (
     "nvd_timestamp type admits both forms."
 )
 DEPARTURES = {
-    ("cve_api_json_2.0.schema#/definitions/cve_item", "published", "format"): _NO_OFFSET,
-    ("cve_api_json_2.0.schema#/definitions/cve_item", "lastModified", "format"): _NO_OFFSET,
-    ("cve_api_json_2.0.schema#/definitions/vendorComment", "lastModified", "format"): _NO_OFFSET,
+    (
+        "cve_api_json_2.0.schema#/definitions/cve_item",
+        "published",
+        "format",
+    ): _NO_OFFSET,
+    (
+        "cve_api_json_2.0.schema#/definitions/cve_item",
+        "lastModified",
+        "format",
+    ): _NO_OFFSET,
+    (
+        "cve_api_json_2.0.schema#/definitions/vendorComment",
+        "lastModified",
+        "format",
+    ): _NO_OFFSET,
     ("cve_api_json_2.0.schema#", "timestamp", "format"): _NO_OFFSET,
     ("cpe_api_json_2.0.schema#", "timestamp", "format"): _NO_OFFSET,
-    ("cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe", "created", "format"): _NO_OFFSET,
-    ("cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe", "lastModified", "format"): _NO_OFFSET,
+    (
+        "cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe",
+        "created",
+        "format",
+    ): _NO_OFFSET,
+    (
+        "cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe",
+        "lastModified",
+        "format",
+    ): _NO_OFFSET,
     ("cpematch_api_json_2.0.schema#", "timestamp", "format"): _NO_OFFSET,
-    ("cpematch_api_json_2.0.schema#/definitions/def_match_data", "created", "format"): _NO_OFFSET,
-    ("cpematch_api_json_2.0.schema#/definitions/def_match_data", "lastModified", "format"): _NO_OFFSET,
-    ("cpematch_api_json_2.0.schema#/definitions/def_match_data", "cpeLastModified", "format"): _NO_OFFSET,
+    (
+        "cpematch_api_json_2.0.schema#/definitions/def_match_data",
+        "created",
+        "format",
+    ): _NO_OFFSET,
+    (
+        "cpematch_api_json_2.0.schema#/definitions/def_match_data",
+        "lastModified",
+        "format",
+    ): _NO_OFFSET,
+    (
+        "cpematch_api_json_2.0.schema#/definitions/def_match_data",
+        "cpeLastModified",
+        "format",
+    ): _NO_OFFSET,
     ("cve_history_api_json_2.0.schema#", "timestamp", "format"): _NO_OFFSET,
-    ("cve_history_api_json_2.0.schema#/definitions/changeItem", "created", "format"): _NO_OFFSET,
+    (
+        "cve_history_api_json_2.0.schema#/definitions/changeItem",
+        "created",
+        "format",
+    ): _NO_OFFSET,
     (f"{SSVC}#", "timestamp", "format"): _NO_OFFSET,
     ("cve_affected_1.0.json#", "repo", "format"): (
         "NIST's format uri is RFC 3986. Two records write "
@@ -265,7 +311,12 @@ def _check_scalar(anchor, key, schema, slot, problems):
         if bound in schema and getattr(slot, metaslot) != schema[bound]:
             problems.append(f"{where}: {metaslot} is not {schema[bound]}")
     fmt = schema.get("format")
-    expected = {"date-time": "nvd_timestamp", "date": "date", "uri": "uri", "uuid": "nvd_uuid"}
+    expected = {
+        "date-time": "nvd_timestamp",
+        "date": "date",
+        "uri": "uri",
+        "uuid": "nvd_uuid",
+    }
     pattern = _pattern_of(slot)
     if fmt == "date-time" and slot.range == "nvd_timestamp":
         if not _departs(anchor, key, "format"):
@@ -314,10 +365,14 @@ def _check_property(anchor, key, prop, cname, problems):
     if is_list and (slot.minimum_cardinality or 0) != minimum:
         problems.append(f"{where}: minimum_cardinality is not {minimum}")
     if is_list and bool(slot.list_elements_unique) != bool(plain.get("uniqueItems")):
-        problems.append(f"{where}: list_elements_unique is not {plain.get('uniqueItems')}")
+        problems.append(
+            f"{where}: list_elements_unique is not {plain.get('uniqueItems')}"
+        )
     items = plain.get("items", {}) if is_list else plain
     inner_anchor = anchor if target is None else target
-    plain_item, item_target = _deref(inner_anchor, items) if is_list else (items, target)
+    plain_item, item_target = (
+        _deref(inner_anchor, items) if is_list else (items, target)
+    )
     if is_list and "properties" in plain_item and item_target is None:
         item_target = f"{anchor}/properties/{key}/items"
     if not is_list and "properties" in plain_item and item_target is None:
@@ -325,10 +380,14 @@ def _check_property(anchor, key, prop, cname, problems):
     item_target = SAME_AS.get(item_target, item_target)
     if item_target in EXTERNAL:
         if slot.range != EXTERNAL[item_target]:
-            problems.append(f"{where}: range is {slot.range}, not {EXTERNAL[item_target]}")
+            problems.append(
+                f"{where}: range is {slot.range}, not {EXTERNAL[item_target]}"
+            )
     elif item_target in ANCHORS:
         if slot.range != ANCHORS[item_target]:
-            problems.append(f"{where}: range is {slot.range}, not {ANCHORS[item_target]}")
+            problems.append(
+                f"{where}: range is {slot.range}, not {ANCHORS[item_target]}"
+            )
     elif "properties" in plain_item:
         problems.append(f"{where}: no class renders {item_target}")
     else:
@@ -344,7 +403,9 @@ def walk():
         held = {slot.name for slot in VIEW.class_induced_slots(cname)}
         for key, prop in declared.items():
             if key not in held:
-                if not _departs(anchor, key, "key") and not _departs(anchor, key, "ref"):
+                if not _departs(anchor, key, "key") and not _departs(
+                    anchor, key, "ref"
+                ):
                     problems.append(f"{anchor} {key}: no slot on {cname}")
                 continue
             _check_property(anchor, key, prop, cname, problems)
@@ -352,7 +413,9 @@ def walk():
             if not _departs(anchor, key, "pattern-key"):
                 problems.append(f"{anchor} {key}: an unlisted pattern of keys")
         for key in held - set(declared) - DATA_KEYS.get(anchor, set()):
-            problems.append(f"{anchor} {key}: {cname} has a key NIST's file does not name")
+            problems.append(
+                f"{anchor} {key}: {cname} has a key NIST's file does not name"
+            )
         required = set(schema.get("required", []))
         branches = [set(b.get("required", [])) for b in schema.get("oneOf", [])]
         # What every branch of a oneOf requires is required; the rest is a rule.
@@ -373,7 +436,9 @@ PROBLEMS = walk()
 
 
 # tests/test_cve_import.py walks the four CVSS files.
-_RENDERED_FILES = sorted(n for n in WATCH.PINNED_SHA256 if not n.startswith("external/"))
+_RENDERED_FILES = sorted(
+    n for n in WATCH.PINNED_SHA256 if not n.startswith("external/")
+)
 
 
 def _objects_in(name, node, path, found):
@@ -480,6 +545,7 @@ def test_the_copies_are_the_pinned_files():
 def test_the_structure_holds_no_prose():
     """NOTICE says why the SSVC file's descriptions, titles and examples are not
     held here. Only property names may read like them."""
+
     def prose(node):
         if isinstance(node, dict):
             for key, value in node.items():

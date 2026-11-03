@@ -4,7 +4,7 @@
 
 ## What this project is
 
-A LinkML schema of the JSON responses of the National Vulnerability Database (NVD) API 2.0, rendered from the JSON schemas NIST publishes. It keeps NVD's keys, so a real response validates unchanged.
+A LinkML schema of the JSON responses of the National Vulnerability Database (NVD) API 2.0, from the JSON schemas NIST publishes. It keeps NVD's keys, so a real response validates unchanged.
 
 | Path | Holds |
 | --- | --- |
@@ -46,7 +46,7 @@ npx skills add noelmcloughlin/knowledge-trust-ladder --skill ktl-curator --yes  
 - **Never guess a mapping.** Read each target at its source. `tests/test_mappings.py` holds its prefix to the schema's bindings and an lmodel target to `tests/neighbours/`.
 - **Keep names apart.** A host imports this adapt copy beside the Linked Open Knowledge Format (LOKF) schema and the released neighbours' copies in `tests/neighbours/`, so a shared name carries one Internationalized Resource Identifier (IRI). `tests/test_schema_rules.py` checks this.
 - **Run the tests**: `just test` (schema generation, `pytest` and the examples under `tests/data/`). Example data goes in `tests/data/valid/` and `tests/data/invalid/`, named `ClassName-suffix.yaml`; an invalid example's first line, `# Fails at: <pointer>`, names where it fails. `just test-nvd-feed` validates the live modified feed.
-- **Follow the schema's conventions**: a short description on every element, caveats in `comments`, decisions in `notes`. `just lint` checks, under `.linkmllint.yaml`.
+- **Follow the schema's conventions**: a short description on every element, caveats in `comments`, decisions in `notes`. `just lint` checks.
 - **Run the pre-commit hooks** on what you staged (`uvx pre-commit run`) and fill in the pull request template.
 - **Lock files are part of the change.** CI installs with `uv sync --locked`, so an edit without its `uv.lock` (or `.lokf/uv.lock`) fails.
 - **Knowledge-bundle changes**: `cd .lokf && just lokf-validate` must pass, and `knowledge-registrar.yaml` runs on any `.lokf/**` change.
@@ -65,7 +65,7 @@ Artificial intelligence (AI) assistance is welcome; [AI_COVENANT.md](AI_COVENANT
 
 ## Reporting issues
 
-Use the [issue tracker](https://github.com/lmodel/nist-nvd/issues) for the schema. A problem in NVD's data or API belongs with [NIST's NVD team](https://nvd.nist.gov/).
+Use the [issue tracker](https://github.com/lmodel/nist-nvd/issues) for the schema. A problem in NVD's data belongs with [NIST's NVD team](https://nvd.nist.gov/).
 
 ## Releasing (maintainers)
 
@@ -78,4 +78,4 @@ Use the [issue tracker](https://github.com/lmodel/nist-nvd/issues) for the schem
 
 ## License
 
-By contributing, you agree that your contributions are licensed under the [Apache License 2.0](LICENSE). NIST's works and FIRST's CVSS schemas are under their own terms; [NOTICE](NOTICE) says what they allow. Update it when you add something from elsewhere.
+By contributing, you agree that your contributions are licensed under the [Apache License 2.0](LICENSE). NIST's works and FIRST's CVSS schemas have their own terms; [NOTICE](NOTICE) says what they allow.

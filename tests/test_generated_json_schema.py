@@ -36,7 +36,9 @@ KINDS = {
 def from_settings():
     """The JSON Schema as gen-project writes it, from its own settings."""
     settings = yaml.safe_load(CONFIG.read_text())["generator_args"]["jsonschema"]
-    return json.dumps(json.loads(JsonSchemaGenerator(str(SCHEMA), **settings).serialize()))
+    return json.dumps(
+        json.loads(JsonSchemaGenerator(str(SCHEMA), **settings).serialize())
+    )
 
 
 def schemas():
@@ -70,7 +72,9 @@ def test_the_committed_file_declares_a_draft_and_the_top_class():
     for label, schema in schemas():
         assert "$schema" in schema, label
         assert schema["title"] == "nist_nvd", label
-        assert set(schema["required"]) >= {"vulnerabilities", "format", "timestamp"}, label
+        assert set(schema["required"]) >= {"vulnerabilities", "format", "timestamp"}, (
+            label
+        )
 
 
 @pytest.mark.parametrize("path", EXTRACT, ids=lambda p: p.stem)

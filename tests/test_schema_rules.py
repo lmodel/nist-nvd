@@ -301,7 +301,9 @@ def test_the_copy_holds_lmodel_cves_cvss_classes():
     ours = _load(COPY)["classes"]
     theirs = _load(NEIGHBOUR_DIR / "cve.yaml")["classes"]
     for name in CVSS_CLASSES:
-        assert set(ours[name].get("slots") or []) == set(theirs[name].get("slots") or []), name
+        assert set(ours[name].get("slots") or []) == set(
+            theirs[name].get("slots") or []
+        ), name
         assert set(ours[name].get("attributes") or {}) == set(
             theirs[name].get("attributes") or {}
         ), name
@@ -329,7 +331,9 @@ def test_the_copy_renames_what_lokf_defines_and_keeps_the_iris():
         assert expand_copy(copy["slots"][new]["slot_uri"]) == expand[old](
             source[old]["slot_uri"]
         ), old
-    assert set(copy["slots"]) == (set(source) - set(RENAMED) - DROPPED) | set(RENAMED.values())
+    assert set(copy["slots"]) == (set(source) - set(RENAMED) - DROPPED) | set(
+        RENAMED.values()
+    )
 
 
 def test_copy_roots_the_concept_class():

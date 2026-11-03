@@ -144,4 +144,6 @@ def test_every_enum_value_of_nvd_is_in_the_module(name):
             held = set()
         if values - held:
             missing[key] = sorted(values - held)
-    assert missing == (KNOWN_MISSING_VALUES if name == "cvss-v4.0.json" else {}), missing
+    assert missing == (KNOWN_MISSING_VALUES if name == "cvss-v4.0.json" else {}), (
+        missing
+    )

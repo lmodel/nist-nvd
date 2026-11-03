@@ -199,8 +199,10 @@ def main(argv: list[str] | None = None) -> int:
         except COULD_NOT_RUN as err:
             could_not_run = True
             found, differs = (
-                [f"- **The check of `{name}` could not run: {_code(err)}.** This says "
-                 "nothing about the file."],
+                [
+                    f"- **The check of `{name}` could not run: {_code(err)}.** This says "
+                    "nothing about the file."
+                ],
                 False,
             )
         lines += found

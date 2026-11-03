@@ -61,7 +61,9 @@ def test_nothing_moved(watch, monkeypatch, tmp_path):
     assert text.count("answers with its pinned hash") == len(watch.PINNED_SHA256)
 
 
-def test_a_changed_file_is_a_finding_that_quotes_the_title(watch, monkeypatch, tmp_path):
+def test_a_changed_file_is_a_finding_that_quotes_the_title(
+    watch, monkeypatch, tmp_path
+):
     bodies = _unchanged(watch, monkeypatch)
     name = "cve_api_json_2.0.schema"
     bodies[name] = json.dumps({"title": "JSON Schema for NVD version 9.9.9"}).encode()
@@ -245,9 +247,7 @@ def test_the_pins_cover_every_copy():
     held = {
         str(p.relative_to(UPSTREAM)) for p in UPSTREAM.rglob("*") if p.is_file()
     } - {"README.md"}
-    expected = {
-        module.STRUCTURE_ONLY.get(name, name) for name in module.PINNED_SHA256
-    }
+    expected = {module.STRUCTURE_ONLY.get(name, name) for name in module.PINNED_SHA256}
     assert held == expected
     assert all(len(pin) == 64 for pin in module.PINNED_SHA256.values())
     assert hashlib.sha256(b"").hexdigest() not in module.PINNED_SHA256.values()

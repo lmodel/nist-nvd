@@ -93,7 +93,9 @@ def test_a_wrong_or_oversized_download_is_deleted(fetch, monkeypatch, tmp_path, 
     assert list(tmp_path.iterdir()) == []
 
 
-def test_a_feed_that_moved_between_requests_gets_a_second_try(fetch, monkeypatch, tmp_path):
+def test_a_feed_that_moved_between_requests_gets_a_second_try(
+    fetch, monkeypatch, tmp_path
+):
     newer = GOOD + b"\n"
     asked = _serve(
         fetch,
@@ -178,7 +180,9 @@ def test_an_address_off_the_host_is_refused(fetch, url):
 def test_a_redirect_on_the_host_is_followed(fetch):
     handler = fetch._PinnedHostRedirect()
     req = urllib.request.Request("https://nvd.nist.gov/a")
-    new = handler.redirect_request(req, None, 302, "Found", {}, "https://nvd.nist.gov/b")
+    new = handler.redirect_request(
+        req, None, 302, "Found", {}, "https://nvd.nist.gov/b"
+    )
     assert new.full_url == "https://nvd.nist.gov/b"
 
 

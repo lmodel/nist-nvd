@@ -63,11 +63,15 @@ def cve_problems(cve, where=""):
     """Every rule above, over one vulnerability."""
     metrics = cve.get("metrics") or {}
     for n, metric in enumerate(metrics.get("ssvcV203") or []):
-        yield from ssvc_problems(metric["ssvcData"], f"{where}/metrics/ssvcV203/{n}/ssvcData")
+        yield from ssvc_problems(
+            metric["ssvcData"], f"{where}/metrics/ssvcV203/{n}/ssvcData"
+        )
     for n, metric in enumerate(metrics.get("cvssMetricV40") or []):
         yield from cvss_v40_problems(
             metric["cvssData"], f"{where}/metrics/cvssMetricV40/{n}/cvssData"
         )
     for a, affected in enumerate(cve.get("affected") or []):
         for p, product in enumerate(affected.get("affectedData") or []):
-            yield from product_problems(product, f"{where}/affected/{a}/affectedData/{p}")
+            yield from product_problems(
+                product, f"{where}/affected/{a}/affectedData/{p}"
+            )

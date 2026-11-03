@@ -65,7 +65,14 @@ def mappings():
                 for curie in node.get(kind) or []:
                     found.append((name, kind, str(curie)))
             for key, value in node.items():
-                if key in ("slots", "classes", "attributes", "enums", "slot_usage", "types"):
+                if key in (
+                    "slots",
+                    "classes",
+                    "attributes",
+                    "enums",
+                    "slot_usage",
+                    "types",
+                ):
                     if isinstance(value, dict):
                         for sub, definition in value.items():
                             walk(definition, sub)
@@ -88,7 +95,9 @@ def _bindings():
     """The prefixes the umbrella's closure binds, as each module states them."""
     bound = {}
     for path in _files():
-        bound.update(yaml.safe_load(path.read_text(encoding="utf-8")).get("prefixes") or {})
+        bound.update(
+            yaml.safe_load(path.read_text(encoding="utf-8")).get("prefixes") or {}
+        )
     return bound
 
 
@@ -172,9 +181,9 @@ def test_mapping_names_a_term_that_exists(mapping):
     if prefix in LMODEL:
         path = NEIGHBOURS / LMODEL[prefix]
         names = _names_in(path)
-        assert local in names or underscore(local) in names or f"{prefix}_{local}" in names, (
-            f"{element} {kind} {curie} is not in {path.name}"
-        )
+        assert (
+            local in names or underscore(local) in names or f"{prefix}_{local}" in names
+        ), f"{element} {kind} {curie} is not in {path.name}"
     else:
         assert BOUND[prefix] + local in READ_TERMS, (
             f"{element} {kind} {curie} is not in tests/vocabulary-terms.txt"
