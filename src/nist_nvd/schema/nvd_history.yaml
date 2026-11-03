@@ -27,6 +27,14 @@ imports:
   - ./nvd_core
   - ./nvd_cve
 
+slots:
+
+  cveChangeId:
+    description: The UUID that NVD gives this change.
+    required: true
+    range: nvd_uuid
+    slot_uri: nist_nvd:cveChangeId
+
 classes:
 
   NvdHistoryResponse:
@@ -67,9 +75,12 @@ classes:
   NvdChange:
     description: One change to a vulnerability's record at NVD.
     slots:
+      - cveChangeId
       - sourceIdentifier
       - created
     slot_usage:
+      cveChangeId:
+        identifier: true
       sourceIdentifier:
         required: true
     attributes:
@@ -86,10 +97,6 @@ classes:
             NVD's schema says only that this is a string. The samples read here hold
             too little of a list of 2.4 million changes to close it, so it stays a
             string.
-      cveChangeId:
-        description: The UUID that NVD gives this change.
-        identifier: true
-        range: nvd_uuid
       details:
         description: What the change did, part by part.
         range: NvdChangeDetail
@@ -102,6 +109,10 @@ classes:
       - >-
         A change is something that happened to a record, so it relates to a PROV
         activity, but NVD records only when and by whom, not the entities it used.
+    notes:
+      - >-
+        The identifier is set on this class and not on the slot, so that lokf adapt
+        keeps the key beside LOKF's id, as it does for cpeNameId and matchCriteriaId.
     aliases:
       - changeItem
     annotations:

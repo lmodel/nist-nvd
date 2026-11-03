@@ -149,7 +149,7 @@ classes:
       - >-
         The identifier is set on this class alone, because cpeNameId also appears
         where one CPE name points to another. lokf adapt replaces a slot that is an
-        identifier everywhere with LOKF's id, which would rename those keys too.
+        identifier with LOKF's id everywhere, which would rename those keys too.
     annotations:
       upstream_definition: "cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe"
 

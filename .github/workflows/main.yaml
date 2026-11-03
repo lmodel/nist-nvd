@@ -70,6 +70,14 @@ jobs:
       - name: Run test suite
         run: just test
 
+      # .lokf/nist-nvd.yaml is the copy the knowledge bundle validates against
+      # and the release attaches, so it must match the schema and lokf.yaml.
+      - name: Check the adapted schema copy
+        if: matrix.python-version == '3.13'
+        run: |
+          uv sync --locked --project .lokf
+          just lokf-adapt-check
+
   # NVD's modified feed moves about every two hours and stays out of git: this
   # job fetches it, checks it against the feed's own .meta file, and validates
   # every record on its own. Because the feed is live, a red job can be NVD's
