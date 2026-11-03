@@ -209,8 +209,8 @@ slots:
     - value: Apache
     notes:
     - 'Close, not exact: both name who is responsible for the product, but in the sample of 120 entries
-      the value matched a CNA''s affected vendor on only 54, as CNAs often write a longer legal name or
-      n/a.'
+      the value matched the affected vendor that a CVE Numbering Authority (CNA) wrote on only 54, as
+      CNAs often write a longer legal name or n/a.'
     close_mappings:
     - cve:vendor
     annotations:
@@ -249,8 +249,10 @@ slots:
     examples:
     - value: '2021-12-10'
     notes:
-    - DCAT 3 uses dcterms:issued on a catalog record for the date of listing, of a dataset or service.
-      An entry here lists a vulnerability, so the mapping is close.
+    - 'DCAT 3 uses dcterms:issued on a catalog record for the date of listing, of a dataset or service.
+      An entry here lists a vulnerability, so the mapping is close. A CVE record repeats this date in
+      CISA''s ADP container, in a metric of type kev: on all 120 of the sample it was equal. That metric''s
+      content is free-form, so no slot mapping reaches it.'
     close_mappings:
     - dcterms:issued
     see_also:

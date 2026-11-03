@@ -33,11 +33,11 @@ NEIGHBOURS = {
     # lmodel/uco v0.3.0, schema-v0.3.0-uco.yaml
     "uco.yaml": "78bc3a266fa463ba380da7290adcbdfb1b8e1b7cef1ceb992bf8b1bed9b7b758",
     # lmodel/cve and lmodel/kev-catalog have no release yet, so these are the adapt
-    # copies on their feat/first-release branches, at the commits their NOTICE
-    # entries here name. Replace them with the release assets of cve v0.1.0 and
-    # kev-catalog v0.1.0, and move these two checksums.
-    "cve.yaml": "464e2c4b21e6a6eb6ed12010f06261b8096c2f657166a6824dcd231ac3f86145",
-    "kev-catalog.yaml": "98385b9764afa2168d1462b22a49ab2631c68ce6c055e3f87e4036727c16059b",
+    # copies on their feat/first-release branches, at c66cd5d and 5f3b913. Replace
+    # them with the release assets of cve v0.1.0 and kev-catalog v0.1.0, and move
+    # these two checksums.
+    "cve.yaml": "2af0eba805a4c33cc1ffd5fd4e1cda984133227b639f2a77103266de2176db72",
+    "kev-catalog.yaml": "176a7b0d7e4c7c858d2df5ac0b194a5f528f946651a30af734aba8c755ecbfa5",
 }
 NEIGHBOUR_DIR = ROOT / "tests" / "neighbours"
 ELEMENT_KINDS = ("classes", "enums", "types", "subsets")

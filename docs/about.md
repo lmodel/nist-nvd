@@ -33,7 +33,9 @@ Descriptions are this project's own words. Those of the permissible values of `N
 
 ## The CVSS module
 
-NVD's copies of FIRST's CVSS schemas have the same property names and required lists as the CVE Program's, and `tests/test_cve_import.py` walks NVD's against the module. NVD's CVSS 4.0 file allows a few things the module refuses, because the CVE Program's copy differs: the keys `threatScore`, `threatSeverity`, `environmentalScore` and `environmentalSeverity`, and the value `NEGLIGIBLE` for a modified impact on connected systems, where the CVE Program writes `NONE`. No record read on 2026-11-03 holds any of them.
+NVD's copies of FIRST's CVSS schemas have the same property names and required lists as the CVE Program's, and `tests/test_cve_import.py` walks NVD's against the module. NVD's CVSS 4.0 file allows a few things the module refuses, because the CVE Program's copy differs: the keys `threatScore`, `threatSeverity`, `environmentalScore` and `environmentalSeverity`, and the value `NEGLIGIBLE` for a modified impact on connected systems, where the CVE Program writes `NONE`. No record read on 2026-11-03 holds any of them: all 13,770 values of those three keys in the 4,590 CVSS 4.0 metrics of the modified feed are `NOT_DEFINED`.
+
+The module is also stricter in one place. NVD's CVSS 3.x files state no bands between a score and its severity, and the module's do. All 14,431 CVSS 3.x metrics of that feed keep them.
 
 ## What is left out
 

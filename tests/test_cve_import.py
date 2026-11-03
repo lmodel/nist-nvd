@@ -21,9 +21,9 @@ EXTERNAL = ROOT / "upstream" / "external"
 
 # The commit of lmodel/cve that the copy equals, and the git object hash of the
 # module there, under src/cve/schema/. lmodel/cve has no release yet, so this is
-# the head of its feat/first-release branch. Move both with the copy, from
-# lmodel/cve v0.1.0 once it is released.
-CVE_COMMIT = "09f46ea5353eccb5d109dfd23b2fe770541e9fd8"
+# the head of its feat/first-release branch when the file was last read. Move both
+# with the copy, from lmodel/cve v0.1.0 once it is released.
+CVE_COMMIT = "c66cd5d72932b77173526dc65bb7497814af6548"
 PINNED_BLOBS = {"cve_cvss.yaml": "54829e1452fba5ddd6e7a9f30c5de7077b7e3c0f"}
 
 CLASSES = {
@@ -44,26 +44,35 @@ ALLOF_KEYS = {
     "environmentalSeverity",
 }
 
-# What NVD's CVSS 4.0 file allows and the module refuses, each because the CVE
-# Program's copy differs from NVD's, which is FIRST's. No record of the 33,378
-# read on 2026-11-03 holds any of them, so nothing needs the module changed; the
-# feed test would report the first that does.
+# Where NVD's CVSS files and the module differ, each because the CVE Program's copy
+# differs from NVD's, which is FIRST's. Neither is forked: the module stays as it is
+# released, and these lists fail when the difference moves. The validator reads the
+# module, so tests/test_nvd_feed.py fails on the first record that needs what it
+# refuses. The counts are of the modified feed first read on 2026-11-03, 15,762
+# records, and agree with the same feed read later that day and with 17,669 other
+# records from the known-exploited list and eight pages across all NVD's years.
 #
-# NVD's rules name these four keys and it leaves its object open, so a score could
-# carry them. The CVE Program's copy names them too but closes its object.
+# NVD's CVSS 4.0 rules name these four keys and NVD leaves its object open, so a score
+# could carry them. The CVE Program's copy names them too but closes its object. None
+# of the 4,590 CVSS 4.0 metrics holds one.
 KNOWN_MISSING_KEYS = {
     "threatScore",
     "threatSeverity",
     "environmentalScore",
     "environmentalSeverity",
 }
-# FIRST's value for no modified impact on connected systems is NEGLIGIBLE. The CVE
-# Program's copy writes NONE.
+# FIRST's value for no modified impact on connected systems is NEGLIGIBLE, as NVD's
+# copy has it. The CVE Program's copy writes NONE. All 13,770 values of these three
+# keys in those 4,590 metrics are NOT_DEFINED, so neither spelling occurs.
 KNOWN_MISSING_VALUES = {
     "modifiedSubConfidentialityImpact": ["NEGLIGIBLE"],
     "modifiedSubIntegrityImpact": ["NEGLIGIBLE"],
     "modifiedSubAvailabilityImpact": ["NEGLIGIBLE"],
 }
+# NVD's CVSS 3.x files state no bands between a score and its severity, and the
+# module's do, through CvssSeverityBandsMixin. So the module is stricter here than
+# NVD's own schema. All 14,431 CVSS 3.x metrics keep the bands.
+NO_BANDS_IN_NVDS_FILE = {"cvss-v3.0.json", "cvss-v3.1.json"}
 
 
 def _blob_sha(path: Path) -> str:
@@ -105,6 +114,17 @@ def test_the_module_keeps_the_contract():
     assert schema.id == "https://w3id.org/lmodel/cve/cve_cvss"
     assert list(schema.imports) == ["linkml:types"]
     assert set(CLASSES.values()) <= set(VIEW.all_classes())
+
+
+@pytest.mark.parametrize("name", sorted(NO_BANDS_IN_NVDS_FILE), ids=str)
+def test_the_module_states_bands_that_nvds_3_x_files_do_not(name):
+    document = _nvd(name)
+    assert "allOf" not in document and "anyOf" not in document
+    assert "CvssSeverityBandsMixin" in VIEW.get_class(CLASSES[name]).mixins
+
+
+def test_nvds_4_0_file_states_its_own_bands():
+    assert "allOf" in _nvd("cvss-v4.0.json")
 
 
 @pytest.mark.parametrize("name", sorted(CLASSES), ids=str)

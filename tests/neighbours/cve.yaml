@@ -951,7 +951,7 @@ classes:
           upstream_path: CVE_Record_Format.json#/definitions/product/properties/programRoutines
       platforms:
         description: The platforms the flaw is limited to. Without this, it applies to all of them.
-        range: cve_short_text_1024
+        range: cve_text_up_to_1024
         multivalued: true
         minimum_cardinality: 1
         list_elements_unique: true
@@ -2767,7 +2767,7 @@ types:
     uri: xsd:string
     description: Text of 1 to 1024 characters.
     pattern: ^[\s\S]{1,1024}$
-  cve_short_text_1024:
+  cve_text_up_to_1024:
     typeof: string
     base: str
     uri: xsd:string
