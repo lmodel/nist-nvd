@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://csrc.nist.gov/schema/nvd/api/2.0/ssvc-v2.0.3.json",
+  "type": "object",
+  "properties": {
+    "computed": {
+      "type": "string"
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "type": [
+              "array",
+              "string"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "role": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "decisionTree": {
+      "$ref": "https://democert.org/ssvc/SSVC_Provision_v2.03.schema.json"
+    },
+    "id": {
+      "type": "string"
+    },
+    "decisionTreeUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "generator": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "options",
+    "role",
+    "version"
+  ],
+  "additionalProperties": false
+}
