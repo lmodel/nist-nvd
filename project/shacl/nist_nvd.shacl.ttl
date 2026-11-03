@@ -1,669 +1,3193 @@
-@prefix core: <https://w3id.org/lmodel/vulnerability-core/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix nvd: <https://w3id.org/lmodel/nist-nvd/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix schema1: <http://schema.org/> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix nist_nvd: <https://w3id.org/lmodel/nist-nvd/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-nvd:NVDEntry a sh:NodeShape ;
-    rdfs:comment "Enriched NVD representation of a CVE entry." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:class nvd:MetricSet ;
-            sh:description "Grouped CVSS displays and notes for this entry." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 2 ;
-            sh:path nvd:metrics ],
-        [ sh:class core:Impact ;
-            sh:description "Impact and severity assessment for this vulnerability." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 20 ;
-            sh:path core:impact ],
-        [ sh:datatype xsd:string ;
-            sh:description "Short human-readable title or name for this entity." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 15 ;
-            sh:path <dcterms:title> ],
-        [ sh:description "NVD analysis tag values." ;
-            sh:in ( "ANALYSIS_PENDING" "ADDITIONAL_INFORMATION" ) ;
-            sh:order 7 ;
-            sh:path nvd:nvd_tags ],
-        [ sh:class nvd:CPEConfiguration ;
-            sh:description "Affected software configuration statements." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 3 ;
-            sh:path nvd:configurations ],
-        [ sh:datatype xsd:dateTime ;
-            sh:description "Date and time the vulnerability was first published." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 17 ;
-            sh:path <dcterms:created> ],
-        [ sh:datatype xsd:dateTime ;
-            sh:description "Date and time the vulnerability record was last modified." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 18 ;
-            sh:path <dcterms:modified> ],
-        [ sh:description "Current NVD workflow status for the CVE." ;
-            sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
-            sh:maxCount 1 ;
-            sh:order 9 ;
-            sh:path nvd:workflow_status ],
-        [ sh:class nvd:StatusTransition ;
-            sh:description "Timeline of status transitions in NVD workflow." ;
-            sh:nodeKind sh:IRI ;
-            sh:order 10 ;
-            sh:path nvd:status_transitions ],
-        [ sh:datatype xsd:string ;
-            sh:description "Source attribution shown beneath Current Description." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path dct:source ],
-        [ sh:class nvd:KnownExploitedVulnerability ;
-            sh:description "KEV banner details when this CVE is listed by CISA." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 11 ;
-            sh:path nvd:known_exploited ],
-        [ sh:class nvd:VendorComment ;
-            sh:description "Vendor comments associated with the vulnerability record." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 6 ;
-            sh:path nvd:vendor_comments ],
-        [ sh:datatype xsd:dateTime ;
-            sh:description "Date/time when NVD received the CVE record for processing." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 13 ;
-            sh:path nvd:date_received ],
-        [ sh:datatype xsd:string ;
-            sh:description "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 14 ;
-            sh:path <dcterms:identifier> ;
-            sh:pattern "^CVE-[0-9]{4}-[0-9]+$" ],
-        [ sh:description "Current lifecycle state of the vulnerability record." ;
-            sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
-            sh:maxCount 1 ;
-            sh:order 21 ;
-            sh:path core:status ],
-        [ sh:class nvd:NVDReference ;
-            sh:description "External references such as advisories and articles." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 4 ;
-            sh:path core:references ],
-        [ sh:datatype xsd:string ;
-            sh:description "Description available at enrichment time and shown under Analysis Description." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path dct:description ],
-        [ sh:datatype xsd:string ;
-            sh:description "CWE view used for weakness mapping, typically CWE-1003." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 12 ;
-            sh:path nvd:cwe_view ],
-        [ sh:datatype xsd:string ;
-            sh:description "Current Description shown on the NVD detail page." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 16 ;
-            sh:path <dcterms:description> ],
-        [ sh:class core:Product ;
-            sh:description "Products affected by this vulnerability." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 19 ;
-            sh:path core:products ],
-        [ sh:class nvd:NVDWeakness ;
-            sh:description "Weakness classifications (e.g. CWE) associated with this vulnerability." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 5 ;
-            sh:path core:weaknesses ],
-        [ sh:datatype xsd:string ;
-            sh:description "CVE tags passed through the CVE List and rendered by NVD." ;
-            sh:nodeKind sh:Literal ;
-            sh:order 8 ;
-            sh:path nvd:cve_tags ] ;
-    sh:targetClass nvd:NVDEntry .
-
-core:Configuration a sh:NodeShape ;
-    rdfs:comment "Logical grouping of CPE match expressions." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "Logical operator (AND/OR) used in configuration node groupings." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path core:operator ],
-        [ sh:datatype xsd:string ;
-            sh:description "CPE 2.2 URI identifying an affected product configuration." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path core:cpe_uri ] ;
-    sh:targetClass core:Configuration .
-
-core:Vulnerability a sh:NodeShape ;
-    rdfs:comment "Abstract base representation of a security vulnerability. Extended by source-specific schemas (KEV, CVE, NVD)." ;
-    sh:closed false ;
-    sh:ignoredProperties ( nvd:known_exploited nvd:nvd_tags rdf:type nvd:metrics nvd:cve_tags nvd:vendor_comments dct:description nvd:date_received nvd:workflow_status dct:source nvd:configurations nvd:status_transitions nvd:cwe_view ) ;
-    sh:property [ sh:class core:Impact ;
-            sh:description "Impact and severity assessment for this vulnerability." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 8 ;
-            sh:path core:impact ],
-        [ sh:datatype xsd:dateTime ;
-            sh:description "Date and time the vulnerability record was last modified." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <dcterms:modified> ],
-        [ sh:class core:Reference ;
-            sh:description "External references such as advisories and articles." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 7 ;
-            sh:path core:references ],
-        [ sh:description "Current lifecycle state of the vulnerability record." ;
-            sh:in ( "ACTIVE" "REJECTED" "DISPUTED" "RESERVED" "DEPRECATED" ) ;
-            sh:maxCount 1 ;
-            sh:order 9 ;
-            sh:path core:status ],
-        [ sh:datatype xsd:string ;
-            sh:description "Narrative description of the vulnerability." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <dcterms:description> ],
-        [ sh:class core:Weakness ;
-            sh:description "Weakness classifications (e.g. CWE) associated with this vulnerability." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 6 ;
-            sh:path core:weaknesses ],
-        [ sh:datatype xsd:string ;
-            sh:description "Short human-readable title or name for this entity." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <dcterms:title> ],
-        [ sh:datatype xsd:string ;
-            sh:description "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <dcterms:identifier> ;
-            sh:pattern "^CVE-[0-9]{4}-[0-9]+$" ],
-        [ sh:datatype xsd:dateTime ;
-            sh:description "Date and time the vulnerability was first published." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path <dcterms:created> ],
-        [ sh:class core:Product ;
-            sh:description "Products affected by this vulnerability." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 5 ;
-            sh:path core:products ] ;
-    sh:targetClass core:Vulnerability .
-
-nvd:CPEMatch a sh:NodeShape ;
-    rdfs:comment "Leaf-level CPE match criterion and optional version bounds." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "Concrete CPE 2.3 URI." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path nvd:cpe23_uri ],
-        [ sh:datatype xsd:boolean ;
-            sh:description "Whether the criterion indicates a vulnerable product context." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path nvd:vulnerable ],
-        [ sh:datatype xsd:string ;
-            sh:description "Inclusive upper version bound." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path nvd:version_end_including ],
-        [ sh:datatype xsd:string ;
-            sh:description "CPE 2.3 match criterion expression." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path nvd:criteria ],
-        [ sh:datatype xsd:string ;
-            sh:description "Exclusive upper version bound." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 7 ;
-            sh:path nvd:version_end_excluding ],
-        [ sh:datatype xsd:string ;
-            sh:description "Expanded list of matching CPE names shown in detail UI." ;
-            sh:nodeKind sh:Literal ;
-            sh:order 8 ;
-            sh:path nvd:matched_cpe_names ],
-        [ sh:datatype xsd:string ;
-            sh:description "Exclusive lower version bound." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path nvd:version_start_excluding ],
-        [ sh:datatype xsd:string ;
-            sh:description "Identifier for a match criterion." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path nvd:match_criteria_id ],
-        [ sh:datatype xsd:string ;
-            sh:description "Inclusive lower version bound." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path nvd:version_start_including ] ;
-    sh:targetClass nvd:CPEMatch .
-
-nvd:CVSSScoreNote a sh:NodeShape ;
-    rdfs:comment "Additional explanatory note for CVSS display conditions." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:dateTime ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path dct:created ],
-        [ sh:datatype xsd:string ;
-            sh:description "Source or origin of the reference or data." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <dcterms:source> ],
-        [ sh:datatype xsd:string ;
-            sh:description "Human-readable explanatory note text." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path nvd:message ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path dct:identifier ] ;
-    sh:targetClass nvd:CVSSScoreNote .
-
-nvd:KnownExploitedVulnerability a sh:NodeShape ;
-    rdfs:comment "CISA KEV information rendered on the NVD detail page." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path dct:date ],
-        [ sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path dct:created ],
-        [ sh:datatype xsd:anyURI ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path schema1:url ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path dct:description ] ;
-    sh:targetClass nvd:KnownExploitedVulnerability .
-
-nvd:MetricSet a sh:NodeShape ;
-    rdfs:comment "Container for all metric views across CVSS versions." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:class nvd:CVSSMetric ;
-            sh:description "CVSS v2.0 metrics." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 2 ;
-            sh:path nvd:cvss_v2_metrics ],
-        [ sh:class nvd:CVSSMetric ;
-            sh:description "CVSS v3.x metrics." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 1 ;
-            sh:path nvd:cvss_v3_metrics ],
-        [ sh:class nvd:CVSSScoreNote ;
-            sh:description "Notes about CVSS display behavior and data provenance." ;
-            sh:nodeKind sh:IRI ;
-            sh:order 3 ;
-            sh:path nvd:score_notes ],
-        [ sh:class nvd:CVSSMetric ;
-            sh:description "CVSS v4.0 metrics." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 0 ;
-            sh:path nvd:cvss_v4_metrics ] ;
-    sh:targetClass nvd:MetricSet .
-
-nvd:NVDReference a sh:NodeShape ;
-    rdfs:comment "Reference URL with NVD resource tags." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:description "NVD resource categories attached to references." ;
-            sh:in ( "THIRD_PARTY_ADVISORY" "VENDOR_ADVISORY" "ISSUE_TRACKING" "PATCH" "TECHNICAL_DESCRIPTION" "PRESS_MEDIA_COVERAGE" "VDB_ENTRY" ) ;
-            sh:order 0 ;
-            sh:path nvd:resource_tags ],
-        [ sh:datatype xsd:anyURI ;
-            sh:description "URL pointing to the reference resource." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path schema1:url ],
-        [ sh:datatype xsd:string ;
-            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <rdfs:label> ],
-        [ sh:datatype xsd:string ;
-            sh:description "Source or origin of the reference or data." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path <dcterms:source> ] ;
-    sh:targetClass nvd:NVDReference .
-
-nvd:NVDWeakness a sh:NodeShape ;
-    rdfs:comment "Weakness row as presented on the NVD detail page." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "Source column value, such as NIST or ASSIGNER." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <dcterms:source> ],
-        [ sh:datatype xsd:string ;
-            sh:description "CWE identifier for the weakness classification (e.g. CWE-79)." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <dcterms:identifier> ;
-            sh:pattern "^CWE-[1-9][0-9]*$" ],
-        [ sh:datatype xsd:string ;
-            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <rdfs:label> ],
-        [ sh:datatype xsd:string ;
-            sh:description "Narrative description of the vulnerability." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path <dcterms:description> ] ;
-    sh:targetClass nvd:NVDWeakness .
-
-nvd:StatusTransition a sh:NodeShape ;
-    rdfs:comment "State transition event in NVD enrichment workflow." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
-            sh:maxCount 1 ;
-            sh:order 1 ;
-            sh:path nvd:from_status ],
-        [ sh:in ( "AWAITING_ENRICHMENT" "UNDERGOING_ENRICHMENT" "ENRICHED" "MODIFIED_AFTER_ENRICHMENT" "NOT_SCHEDULED" "REJECTED" ) ;
-            sh:maxCount 1 ;
-            sh:order 2 ;
-            sh:path nvd:to_status ],
-        [ sh:in ( "NVD_PROCESS" "NVD_STAFF_DECISION" "CVE_PROGRAM_PROCESS" "USER_REQUEST" ) ;
-            sh:maxCount 1 ;
-            sh:order 3 ;
-            sh:path nvd:event_source ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path dct:identifier ],
-        [ sh:datatype xsd:dateTime ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path dct:modified ],
-        [ sh:datatype xsd:string ;
-            sh:description "Optional reason for transition." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path nvd:rationale ] ;
-    sh:targetClass nvd:StatusTransition .
-
-nvd:VendorComment a sh:NodeShape ;
-    rdfs:comment "Comment provided by vendor during NVD analysis." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "Vendor-provided comment text." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path nvd:comment ],
-        [ sh:datatype xsd:string ;
-            sh:description "Name of the vendor or organization responsible for the product." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path schema1:name ],
-        [ sh:datatype xsd:dateTime ;
-            sh:description "Date and time the vulnerability record was last modified." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <dcterms:modified> ] ;
-    sh:targetClass nvd:VendorComment .
-
-core:Reference a sh:NodeShape ;
-    rdfs:comment "External reference such as an advisory or article." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type nvd:resource_tags ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <rdfs:label> ],
-        [ sh:datatype xsd:string ;
-            sh:description "Source or origin of the reference or data." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <dcterms:source> ],
-        [ sh:datatype xsd:anyURI ;
-            sh:description "URL pointing to the reference resource." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path schema1:url ] ;
-    sh:targetClass core:Reference .
-
-core:Weakness a sh:NodeShape ;
-    rdfs:comment "Weakness classification from CWE or a similar taxonomy." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type <dcterms:source> ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "CWE identifier for the weakness classification (e.g. CWE-79)." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <dcterms:identifier> ;
-            sh:pattern "^CWE-[1-9][0-9]*$" ],
-        [ sh:datatype xsd:string ;
-            sh:description "Narrative description of the vulnerability." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <dcterms:description> ],
-        [ sh:datatype xsd:string ;
-            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <rdfs:label> ] ;
-    sh:targetClass core:Weakness .
-
-nvd:CPEConfiguration a sh:NodeShape ;
-    rdfs:comment "Logical grouping of CPE match criteria for affected software." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:class nvd:CPEMatch ;
-            sh:description "Match criteria for this configuration node." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 4 ;
-            sh:path nvd:matches ],
-        [ sh:datatype xsd:string ;
-            sh:description "Display identifier, for example Configuration 1." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path nvd:configuration_id ],
-        [ sh:datatype xsd:string ;
-            sh:description "Human-oriented explanation of configuration logic." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path nvd:summary ],
-        [ sh:datatype xsd:string ;
-            sh:description "Logical operator (AND/OR) used in configuration node groupings." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path core:operator ],
-        [ sh:description "Simplified configuration rendering type." ;
-            sh:in ( "BASIC" "RUNNING_ON_WITH" "ADVANCED" ) ;
-            sh:maxCount 1 ;
-            sh:order 1 ;
-            sh:path nvd:configuration_type ],
-        [ sh:class nvd:CPEConfiguration ;
-            sh:description "Child configuration nodes." ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 3 ;
-            sh:path nvd:children ] ;
-    sh:targetClass nvd:CPEConfiguration .
-
-core:Impact a sh:NodeShape ;
-    rdfs:comment "Assessment of the vulnerability's impact and severity." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:float ;
-            sh:description "Numeric vulnerability score (e.g. CVSS base score)." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path core:score ],
-        [ sh:description "Qualitative severity rating." ;
-            sh:in ( "NONE" "LOW" "MEDIUM" "HIGH" "CRITICAL" "UNKNOWN" ) ;
-            sh:maxCount 1 ;
-            sh:order 0 ;
-            sh:path core:severity ],
-        [ sh:datatype xsd:string ;
-            sh:description "CVSS vector string or equivalent scoring vector expression." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path core:vector ] ;
-    sh:targetClass core:Impact .
-
-core:Product a sh:NodeShape ;
-    rdfs:comment "Software or hardware entity affected by the vulnerability." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:description "Version string of the affected product." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path schema1:version ],
-        [ sh:datatype xsd:string ;
-            sh:description "Platforms or operating environments affected." ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path core:platforms ],
-        [ sh:datatype xsd:string ;
-            sh:description "Name of the entity (product, weakness, reference, etc.)." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <rdfs:label> ],
-        [ sh:datatype xsd:string ;
-            sh:description "Name of the vendor or organization responsible for the product." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path schema1:name ] ;
-    sh:targetClass core:Product .
-
-nvd:CVSSMetric a sh:NodeShape ;
-    rdfs:comment "Individual CVSS vector and score attribution." ;
-    sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:datatype xsd:float ;
-            sh:maxCount 1 ;
-            sh:maxInclusive 10 ;
-            sh:minInclusive 0 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path nvd:base_score ],
-        [ sh:in ( "NONE" "LOW" "MEDIUM" "HIGH" "CRITICAL" "UNKNOWN" ) ;
-            sh:maxCount 1 ;
-            sh:order 3 ;
-            sh:path nvd:base_severity ],
-        [ sh:datatype xsd:string ;
-            sh:description "Supplemental rationale or caveat for a CVSS score." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path nvd:scoring_justification ],
-        [ sh:datatype xsd:string ;
-            sh:description "Version string of the affected product." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path schema1:version ],
-        [ sh:datatype xsd:string ;
-            sh:description "Serialized CVSS vector string." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path nvd:vector_string ],
-        [ sh:description "Source or origin of the reference or data." ;
-            sh:in ( "NVD" "CNA" "ADP" "VENDOR" "THIRD_PARTY" ) ;
-            sh:maxCount 1 ;
-            sh:order 4 ;
-            sh:path <dcterms:source> ],
-        [ sh:datatype xsd:string ;
-            sh:description "Display label for score source, such as NIST NVD or CNA Example." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path nvd:provider_label ] ;
-    sh:targetClass nvd:CVSSMetric .
-
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix linkml: <https://w3id.org/linkml/> .
+linkml:Any a sh:NodeShape ;
+	rdfs:comment "A whole SSVC decision tree, in the form of the schema NVD's file names." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n176 ;
+	sh:targetClass linkml:Any .
+<https://w3id.org/lmodel/cve/CvssSeverityBandsMixin> a sh:NodeShape ;
+	rdfs:comment "The base score and base severity of a CVSS version with severity bands, and the bands that tie one to the other." ;
+	sh:closed false ;
+	sh:ignoredProperties _:c14n375 ;
+	sh:property _:c14n221 , _:c14n256 ;
+	sh:targetClass <https://w3id.org/lmodel/cve/CvssSeverityBandsMixin> .
+<https://w3id.org/lmodel/cve/CvssV20> a sh:NodeShape ;
+	rdfs:comment "A score under CVSS version 2.0, which has no severity bands." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n395 ;
+	sh:property _:c14n125 , _:c14n129 , _:c14n130 , _:c14n133 , _:c14n138 , _:c14n158 , _:c14n17 , _:c14n190 , _:c14n265 , _:c14n288 , _:c14n31 , _:c14n323 , _:c14n325 , _:c14n369 , _:c14n386 , _:c14n404 , _:c14n62 , _:c14n65 , _:c14n70 ;
+	sh:targetClass <https://w3id.org/lmodel/cve/CvssV20> .
+<https://w3id.org/lmodel/cve/CvssV30> a sh:NodeShape ;
+	rdfs:comment "A score under CVSS version 3.0." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n391 ;
+	sh:property _:c14n103 , _:c14n11 , _:c14n117 , _:c14n122 , _:c14n128 , _:c14n136 , _:c14n140 , _:c14n146 , _:c14n19 , _:c14n202 , _:c14n250 , _:c14n27 , _:c14n272 , _:c14n292 , _:c14n3 , _:c14n314 , _:c14n358 , _:c14n36 , _:c14n373 , _:c14n380 , _:c14n387 , _:c14n398 , _:c14n401 , _:c14n407 , _:c14n411 , _:c14n57 , _:c14n7 , _:c14n72 , _:c14n88 , _:c14n9 ;
+	sh:targetClass <https://w3id.org/lmodel/cve/CvssV30> .
+<https://w3id.org/lmodel/cve/CvssV31> a sh:NodeShape ;
+	rdfs:comment "A score under CVSS version 3.1." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n237 ;
+	sh:property _:c14n104 , _:c14n12 , _:c14n139 , _:c14n166 , _:c14n192 , _:c14n196 , _:c14n21 , _:c14n225 , _:c14n230 , _:c14n233 , _:c14n239 , _:c14n251 , _:c14n253 , _:c14n275 , _:c14n301 , _:c14n308 , _:c14n317 , _:c14n329 , _:c14n336 , _:c14n345 , _:c14n350 , _:c14n361 , _:c14n364 , _:c14n390 , _:c14n4 , _:c14n52 , _:c14n54 , _:c14n68 , _:c14n81 , _:c14n84 ;
+	sh:targetClass <https://w3id.org/lmodel/cve/CvssV31> .
+<https://w3id.org/lmodel/cve/CvssV40> a sh:NodeShape ;
+	rdfs:comment "A score under CVSS version 4.0." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n8 ;
+	sh:property _:c14n105 , _:c14n119 , _:c14n142 , _:c14n143 , _:c14n150 , _:c14n168 , _:c14n174 , _:c14n180 , _:c14n186 , _:c14n197 , _:c14n200 , _:c14n206 , _:c14n207 , _:c14n217 , _:c14n218 , _:c14n226 , _:c14n252 , _:c14n282 , _:c14n307 , _:c14n313 , _:c14n333 , _:c14n338 , _:c14n352 , _:c14n360 , _:c14n362 , _:c14n363 , _:c14n374 , _:c14n376 , _:c14n399 , _:c14n47 , _:c14n49 , _:c14n56 , _:c14n69 , _:c14n85 , _:c14n94 , _:c14n99 ;
+	sh:targetClass <https://w3id.org/lmodel/cve/CvssV40> .
+nist_nvd:NvdAffected a sh:NodeShape ;
+	rdfs:comment "The products that one source says the vulnerability affects." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n291 ;
+	sh:property _:c14n76 , _:c14n89 ;
+	sh:targetClass nist_nvd:NvdAffected .
+nist_nvd:NvdAffectedProduct a sh:NodeShape ;
+	rdfs:comment "A product and which of its versions have the vulnerability." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n208 ;
+	sh:property _:c14n109 , _:c14n115 , _:c14n151 , _:c14n210 , _:c14n264 , _:c14n302 , _:c14n310 , _:c14n316 , _:c14n318 , _:c14n383 , _:c14n388 , _:c14n403 , _:c14n61 ;
+	sh:targetClass nist_nvd:NvdAffectedProduct .
+nist_nvd:NvdAffectedVersion a sh:NodeShape ;
+	rdfs:comment "The status of one version of a product, or of a range of its versions." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n170 ;
+	sh:property _:c14n161 , _:c14n232 , _:c14n262 , _:c14n351 , _:c14n397 , _:c14n406 ;
+	sh:targetClass nist_nvd:NvdAffectedVersion .
+nist_nvd:NvdChange a sh:NodeShape ;
+	rdfs:comment "One change to a vulnerability's record at NVD." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n113 ;
+	sh:property _:c14n1 , _:c14n124 , _:c14n193 , _:c14n236 , _:c14n48 , _:c14n50 ;
+	sh:targetClass nist_nvd:NvdChange .
+nist_nvd:NvdChangeDetail a sh:NodeShape ;
+	rdfs:comment "One part of a change, naming what kind of data changed and how." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n320 ;
+	sh:property _:c14n108 , _:c14n22 , _:c14n6 , _:c14n93 ;
+	sh:targetClass nist_nvd:NvdChangeDetail .
+nist_nvd:NvdChangeItem a sh:NodeShape ;
+	rdfs:comment "One entry of a change-history response, which only wraps the change." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n5 ;
+	sh:property _:c14n304 ;
+	sh:targetClass nist_nvd:NvdChangeItem .
+nist_nvd:NvdChangeObject a sh:NodeShape ;
+	rdfs:comment "A value before or after a change that is an object, with any keys." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n392 ;
+	sh:targetClass nist_nvd:NvdChangeObject .
+nist_nvd:NvdConfiguration a sh:NodeShape ;
+	rdfs:comment "A statement of which product configurations have the vulnerability." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n343 ;
+	sh:property _:c14n120 , _:c14n40 , _:c14n79 ;
+	sh:targetClass nist_nvd:NvdConfiguration .
+nist_nvd:NvdConfigurationNode a sh:NodeShape ;
+	rdfs:comment "One part of a configuration statement, as a set of CPE matches." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n268 ;
+	sh:property _:c14n263 , _:c14n306 , _:c14n312 ;
+	sh:targetClass nist_nvd:NvdConfigurationNode .
+nist_nvd:NvdCpe a sh:NodeShape ;
+	rdfs:comment "A CPE name as NVD holds it, with its UUID." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n181 ;
+	sh:property _:c14n223 , _:c14n234 , _:c14n254 , _:c14n290 , _:c14n297 , _:c14n385 , _:c14n393 , _:c14n66 , _:c14n74 ;
+	sh:targetClass nist_nvd:NvdCpe .
+nist_nvd:NvdCpeItem a sh:NodeShape ;
+	rdfs:comment "One entry of a product response, which only wraps the CPE name." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n379 ;
+	sh:property _:c14n417 ;
+	sh:targetClass nist_nvd:NvdCpeItem .
+nist_nvd:NvdCpeMatch a sh:NodeShape ;
+	rdfs:comment "A CPE match string or range, and whether what it matches is vulnerable." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n245 ;
+	sh:property _:c14n15 , _:c14n205 , _:c14n257 , _:c14n334 , _:c14n366 , _:c14n58 , _:c14n96 ;
+	sh:targetClass nist_nvd:NvdCpeMatch .
+nist_nvd:NvdCpeMatchResponse a sh:NodeShape ;
+	rdfs:comment "A page of the match-string API's results." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n147 ;
+	sh:property _:c14n189 , _:c14n201 , _:c14n204 , _:c14n219 , _:c14n330 , _:c14n348 , _:c14n53 ;
+	sh:targetClass nist_nvd:NvdCpeMatchResponse .
+nist_nvd:NvdCpeNameLink a sh:NodeShape ;
+	rdfs:comment "A pointer from one CPE name to another." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n98 ;
+	sh:property _:c14n41 , _:c14n410 ;
+	sh:targetClass nist_nvd:NvdCpeNameLink .
+nist_nvd:NvdCpeReference a sh:NodeShape ;
+	rdfs:comment "A page about a product, and what kind of page it is." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n75 ;
+	sh:property _:c14n296 , _:c14n80 ;
+	sh:targetClass nist_nvd:NvdCpeReference .
+nist_nvd:NvdCpeResponse a sh:NodeShape ;
+	rdfs:comment "A page of the product API's results." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n175 ;
+	sh:property _:c14n107 , _:c14n13 , _:c14n185 , _:c14n199 , _:c14n240 , _:c14n412 , _:c14n63 ;
+	sh:targetClass nist_nvd:NvdCpeResponse .
+nist_nvd:NvdCpeTitle a sh:NodeShape ;
+	rdfs:comment "A product's title in one language." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n42 ;
+	sh:property _:c14n274 , _:c14n344 ;
+	sh:targetClass nist_nvd:NvdCpeTitle .
+nist_nvd:NvdCve a sh:NodeShape ;
+	rdfs:comment "A vulnerability as NVD holds it, under its CVE identifier." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n159 ;
+	sh:property _:c14n160 , _:c14n163 , _:c14n18 , _:c14n191 , _:c14n203 , _:c14n246 , _:c14n255 , _:c14n269 , _:c14n273 , _:c14n286 , _:c14n295 , _:c14n322 , _:c14n324 , _:c14n346 , _:c14n381 , _:c14n396 , _:c14n409 , _:c14n44 , _:c14n46 , _:c14n87 ;
+	sh:targetClass nist_nvd:NvdCve .
+nist_nvd:NvdCveResponse a sh:NodeShape ;
+	rdfs:comment "A page of the vulnerability API's results, or a whole data feed." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n0 ;
+	sh:property _:c14n110 , _:c14n156 , _:c14n224 , _:c14n243 , _:c14n267 , _:c14n38 , _:c14n67 ;
+	sh:targetClass nist_nvd:NvdCveResponse .
+nist_nvd:NvdCveTag a sh:NodeShape ;
+	rdfs:comment "The labels that one source puts on a record." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n327 ;
+	sh:property _:c14n179 , _:c14n359 ;
+	sh:targetClass nist_nvd:NvdCveTag .
+nist_nvd:NvdCvssMetricV2 a sh:NodeShape ;
+	rdfs:comment "A CVSS 2.0 score, who gave it, and NVD's figures beside it." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n277 ;
+	sh:property _:c14n165 , _:c14n194 , _:c14n195 , _:c14n212 , _:c14n216 , _:c14n248 , _:c14n281 , _:c14n30 , _:c14n319 , _:c14n339 , _:c14n342 ;
+	sh:targetClass nist_nvd:NvdCvssMetricV2 .
+nist_nvd:NvdCvssMetricV30 a sh:NodeShape ;
+	rdfs:comment "A CVSS 3.0 score, who gave it, and its subscores." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n187 ;
+	sh:property _:c14n137 , _:c14n172 , _:c14n284 , _:c14n300 , _:c14n347 ;
+	sh:targetClass nist_nvd:NvdCvssMetricV30 .
+nist_nvd:NvdCvssMetricV31 a sh:NodeShape ;
+	rdfs:comment "A CVSS 3.1 score, who gave it, and its subscores." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n260 ;
+	sh:property _:c14n141 , _:c14n188 , _:c14n341 , _:c14n357 , _:c14n97 ;
+	sh:targetClass nist_nvd:NvdCvssMetricV31 .
+nist_nvd:NvdCvssMetricV40 a sh:NodeShape ;
+	rdfs:comment "A CVSS 4.0 score and who gave it." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n280 ;
+	sh:property _:c14n144 , _:c14n365 , _:c14n368 ;
+	sh:targetClass nist_nvd:NvdCvssMetricV40 .
+nist_nvd:NvdHistoryResponse a sh:NodeShape ;
+	rdfs:comment "A page of the change-history API's results." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n152 ;
+	sh:property _:c14n222 , _:c14n229 , _:c14n231 , _:c14n293 , _:c14n335 , _:c14n356 , _:c14n408 ;
+	sh:targetClass nist_nvd:NvdHistoryResponse .
+nist_nvd:NvdLangString a sh:NodeShape ;
+	rdfs:comment "A piece of text and the language it is in." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n276 ;
+	sh:property _:c14n178 , _:c14n64 ;
+	sh:targetClass nist_nvd:NvdLangString .
+nist_nvd:NvdMatchString a sh:NodeShape ;
+	rdfs:comment "A CPE match string or range as NVD holds it, and the CPE names it matches." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n299 ;
+	sh:property _:c14n114 , _:c14n14 , _:c14n153 , _:c14n227 , _:c14n228 , _:c14n235 , _:c14n271 , _:c14n28 , _:c14n321 , _:c14n372 , _:c14n415 ;
+	sh:targetClass nist_nvd:NvdMatchString .
+nist_nvd:NvdMatchStringItem a sh:NodeShape ;
+	rdfs:comment "One entry of a match-string response, which only wraps the match string." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n315 ;
+	sh:property _:c14n294 ;
+	sh:targetClass nist_nvd:NvdMatchStringItem .
+nist_nvd:NvdMatchedCpe a sh:NodeShape ;
+	rdfs:comment "A CPE name that a match string matches." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n337 ;
+	sh:property _:c14n167 , _:c14n405 ;
+	sh:targetClass nist_nvd:NvdMatchedCpe .
+nist_nvd:NvdMetrics a sh:NodeShape ;
+	rdfs:comment "The scores of a vulnerability, in a list per scoring system and version." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n116 ;
+	sh:property _:c14n121 , _:c14n148 , _:c14n353 , _:c14n394 , _:c14n59 ;
+	sh:targetClass nist_nvd:NvdMetrics .
+nist_nvd:NvdProgramRoutine a sh:NodeShape ;
+	rdfs:comment "One affected source code routine." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n279 ;
+	sh:property _:c14n100 ;
+	sh:targetClass nist_nvd:NvdProgramRoutine .
+nist_nvd:NvdReference a sh:NodeShape ;
+	rdfs:comment "A page about a vulnerability, with NVD's labels for what it is." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n16 ;
+	sh:property _:c14n111 , _:c14n24 , _:c14n92 ;
+	sh:targetClass nist_nvd:NvdReference .
+nist_nvd:NvdResponseMixin a sh:NodeShape ;
+	rdfs:comment "The fields of a page of results, which every NVD API response carries." ;
+	sh:closed false ;
+	sh:ignoredProperties _:c14n86 ;
+	sh:property _:c14n155 , _:c14n171 , _:c14n182 , _:c14n332 , _:c14n34 , _:c14n370 ;
+	sh:targetClass nist_nvd:NvdResponseMixin .
+nist_nvd:NvdSsvcData a sh:NodeShape ;
+	rdfs:comment "One SSVC decision, as the answers chosen on the way through a decision tree." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n127 ;
+	sh:property _:c14n10 , _:c14n131 , _:c14n134 , _:c14n149 , _:c14n214 , _:c14n259 , _:c14n32 , _:c14n402 , _:c14n73 ;
+	sh:targetClass nist_nvd:NvdSsvcData .
+nist_nvd:NvdSsvcMetricV203 a sh:NodeShape ;
+	rdfs:comment "A Stakeholder-Specific Vulnerability Categorization (SSVC) decision and who made it." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n29 ;
+	sh:property _:c14n389 , _:c14n414 ;
+	sh:targetClass nist_nvd:NvdSsvcMetricV203 .
+nist_nvd:NvdSsvcOption a sh:NodeShape ;
+	rdfs:comment "One answer on the way through a decision tree, keyed by its decision point." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n162 ;
+	sh:property _:c14n247 , _:c14n331 , _:c14n349 ;
+	sh:targetClass nist_nvd:NvdSsvcOption .
+nist_nvd:NvdVendorComment a sh:NodeShape ;
+	rdfs:comment "What a product's vendor has said about a vulnerability." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n413 ;
+	sh:property _:c14n211 , _:c14n287 , _:c14n298 ;
+	sh:targetClass nist_nvd:NvdVendorComment .
+nist_nvd:NvdVersionChange a sh:NodeShape ;
+	rdfs:comment "A point within a range of versions where the status changes." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n261 ;
+	sh:property _:c14n198 , _:c14n340 ;
+	sh:targetClass nist_nvd:NvdVersionChange .
+nist_nvd:NvdVulnerability a sh:NodeShape ;
+	rdfs:comment "One entry of a response, which only wraps the vulnerability." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n45 ;
+	sh:property _:c14n118 ;
+	sh:targetClass nist_nvd:NvdVulnerability .
+nist_nvd:NvdWeakness a sh:NodeShape ;
+	rdfs:comment "The weaknesses that one source says lie behind a vulnerability." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n102 ;
+	sh:property _:c14n238 , _:c14n354 , _:c14n90 ;
+	sh:targetClass nist_nvd:NvdWeakness .
+_:c14n0 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n1 sh:class nist_nvd:NvdCve ;
+	sh:description "The vulnerability the change is to." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:cveId ;
+	sh:pattern "^CVE-[0-9]{4}-[0-9]{4,}$" .
+_:c14n10 sh:datatype xsd:string ;
+	sh:description "The version of SSVC used." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:ssvcVersion .
+_:c14n100 sh:datatype xsd:string ;
+	sh:description "The name of the source code routine." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:name ;
+	sh:pattern "^[\\s\\S]{1,4096}$" .
+_:c14n101 rdf:first "Third Party Advisory" ;
+	rdf:rest _:c14n169 .
+_:c14n102 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n103 sh:description "The integrity impact as the scorer's own environment changes it." ;
+	sh:in _:c14n687 ;
+	sh:maxCount 1 ;
+	sh:order 24 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedIntegrityImpact> .
+_:c14n104 sh:description "Whether someone other than the attacker has to take part." ;
+	sh:in _:c14n806 ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path <https://w3id.org/lmodel/cve/userInteraction> .
+_:c14n105 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The integrity impact on connected systems, in the scorer's environment." ;
+	sh:in _:c14n683 ;
+	sh:maxCount 1 ;
+	sh:order 26 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedSubIntegrityImpact> .
+_:c14n106 rdf:first "CLEAR" ;
+	rdf:rest _:c14n23 .
+_:c14n107 sh:datatype xsd:integer ;
+	sh:description "The position of this page's first result among all the results." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:startIndex .
+_:c14n108 sh:datatype xsd:string ;
+	sh:description "How the data changed, such as Added." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:action .
+_:c14n109 sh:description "The status of any version the versions list does not name." ;
+	sh:in _:c14n800 ;
+	sh:maxCount 1 ;
+	sh:order 0 ;
+	sh:path nist_nvd:defaultStatus .
+_:c14n11 sh:description "How much availability matters to the scorer for the affected system." ;
+	sh:in _:c14n741 ;
+	sh:maxCount 1 ;
+	sh:order 17 ;
+	sh:path <https://w3id.org/lmodel/cve/availabilityRequirement> .
+_:c14n110 sh:datatype xsd:integer ;
+	sh:description "How many results this page holds." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:resultsPerPage .
+_:c14n111 sh:description "Labels on this thing, from the list its class names." ;
+	sh:in _:c14n328 ;
+	sh:order 2 ;
+	sh:path nist_nvd:tags .
+_:c14n112 rdf:first "Permissions Required" ;
+	rdf:rest _:c14n78 .
+_:c14n113 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n114 sh:datatype xsd:string ;
+	sh:description "The version above which the match starts, itself left out." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:versionStartExcluding .
+_:c14n115 sh:datatype xsd:string ;
+	sh:description "The address of the product's source code repository." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path nist_nvd:repo ;
+	sh:pattern "^[\\s\\S]{1,2048}$" .
+_:c14n116 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n117 sh:description "The rating in words that the base score falls under." ;
+	sh:in _:c14n479 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 29 ;
+	sh:path <https://w3id.org/lmodel/cve/baseSeverity> .
+_:c14n118 sh:class nist_nvd:NvdCve ;
+	sh:description "The vulnerability." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:cve .
+_:c14n119 sh:datatype xsd:float ;
+	sh:description "The score from 0 to 10 for what is inherent in the flaw." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minCount 1 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 34 ;
+	sh:path <https://w3id.org/lmodel/cve/baseScore> .
+_:c14n12 sh:description "How much confidentiality matters to the scorer for the affected system." ;
+	sh:in _:c14n753 ;
+	sh:maxCount 1 ;
+	sh:order 15 ;
+	sh:path <https://w3id.org/lmodel/cve/confidentialityRequirement> .
+_:c14n120 sh:description "How the parts of this configuration combine." ;
+	sh:in _:c14n531 ;
+	sh:maxCount 1 ;
+	sh:order 0 ;
+	sh:path nist_nvd:operator .
+_:c14n121 sh:class nist_nvd:NvdCvssMetricV2 ;
+	sh:description "The CVSS 2.0 scores." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 3 ;
+	sh:path nist_nvd:cvssMetricV2 .
+_:c14n122 sh:description "What kind of fix is available." ;
+	sh:in _:c14n713 ;
+	sh:maxCount 1 ;
+	sh:order 11 ;
+	sh:path <https://w3id.org/lmodel/cve/remediationLevel> .
+_:c14n123 rdf:first "NVD_CPEMatchString" ;
+	rdf:rest rdf:nil .
+_:c14n124 sh:datatype xsd:string ;
+	sh:description "The UUID that NVD gives this change." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:cveChangeId ;
+	sh:pattern "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" .
+_:c14n125 sh:datatype xsd:float ;
+	sh:description "The base score adjusted for what changes over time, such as a fix appearing." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path <https://w3id.org/lmodel/cve/temporalScore> .
+_:c14n126 rdf:first "Issue Tracking" ;
+	rdf:rest _:c14n71 .
+_:c14n127 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n128 sh:description "How far the flaw's existence and details have been confirmed." ;
+	sh:in _:c14n555 ;
+	sh:maxCount 1 ;
+	sh:order 12 ;
+	sh:path <https://w3id.org/lmodel/cve/reportConfidence> .
+_:c14n129 sh:description "How far the flaw's existence and details have been confirmed." ;
+	sh:in _:c14n20 ;
+	sh:maxCount 1 ;
+	sh:order 7 ;
+	sh:path <https://w3id.org/lmodel/cve/reportConfidence> .
+_:c14n13 sh:datatype xsd:integer ;
+	sh:description "How many results this page holds." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:resultsPerPage .
+_:c14n130 sh:description "How many times an attacker must log in before using the flaw." ;
+	sh:in _:c14n91 ;
+	sh:maxCount 1 ;
+	sh:order 15 ;
+	sh:path <https://w3id.org/lmodel/cve/authentication> .
+_:c14n131 sh:datatype xsd:string ;
+	sh:description "The decision in a short form." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:computed .
+_:c14n132 rdf:first "MODERATE" ;
+	rdf:rest _:c14n786 .
+_:c14n133 sh:description "How much information an attack could expose." ;
+	sh:in _:c14n604 ;
+	sh:maxCount 1 ;
+	sh:order 3 ;
+	sh:path <https://w3id.org/lmodel/cve/confidentialityImpact> .
+_:c14n134 sh:datatype xsd:dateTime ;
+	sh:description "When NVD produced this response or this decision." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:timestamp ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n135 rdf:first "Analyzed" ;
+	rdf:rest _:c14n77 .
+_:c14n136 sh:description "Whether an attack can reach beyond the component that holds the flaw." ;
+	sh:in _:c14n442 ;
+	sh:maxCount 1 ;
+	sh:order 6 ;
+	sh:path <https://w3id.org/lmodel/cve/scope> .
+_:c14n137 sh:description "The kind of this thing, from the list its class names." ;
+	sh:in _:c14n613 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 1 ;
+	sh:path nist_nvd:type .
+_:c14n138 sh:description "How much of the scorer's environment is exposed to the flaw." ;
+	sh:in _:c14n692 ;
+	sh:maxCount 1 ;
+	sh:order 18 ;
+	sh:path <https://w3id.org/lmodel/cve/targetDistribution> .
+_:c14n139 sh:description "The integrity impact as the scorer's own environment changes it." ;
+	sh:in _:c14n652 ;
+	sh:maxCount 1 ;
+	sh:order 24 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedIntegrityImpact> .
+_:c14n14 sh:datatype xsd:string ;
+	sh:description "The first version the match covers." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:versionStartIncluding .
+_:c14n140 sh:description "The privileges needed as the scorer's own environment changes them." ;
+	sh:in _:c14n521 ;
+	sh:maxCount 1 ;
+	sh:order 20 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedPrivilegesRequired> .
+_:c14n141 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:source .
+_:c14n142 sh:description "How much information in the vulnerable system an attack could expose." ;
+	sh:in _:c14n577 ;
+	sh:maxCount 1 ;
+	sh:order 14 ;
+	sh:path <https://w3id.org/lmodel/cve/vulnConfidentialityImpact> .
+_:c14n143 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The confidentiality impact on the vulnerable system, in the scorer's environment." ;
+	sh:in _:c14n696 ;
+	sh:maxCount 1 ;
+	sh:order 22 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedVulnConfidentialityImpact> .
+_:c14n144 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:source .
+_:c14n145 rdf:first "Active" ;
+	rdf:rest _:c14n35 .
+_:c14n146 sh:description "How much integrity matters to the scorer for the affected system." ;
+	sh:in _:c14n737 ;
+	sh:maxCount 1 ;
+	sh:order 16 ;
+	sh:path <https://w3id.org/lmodel/cve/integrityRequirement> .
+_:c14n147 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n148 sh:class nist_nvd:NvdCvssMetricV40 ;
+	sh:description "The CVSS 4.0 scores." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:cvssMetricV40 .
+_:c14n149 sh:description "The whole decision tree that was used." ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path nist_nvd:decisionTree .
+_:c14n15 sh:datatype xsd:string ;
+	sh:description "The version above which the match starts, itself left out." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:versionStartExcluding .
+_:c14n150 sh:description "What level of access an attacker needs before using the flaw." ;
+	sh:in _:c14n514 ;
+	sh:maxCount 1 ;
+	sh:order 4 ;
+	sh:path <https://w3id.org/lmodel/cve/privilegesRequired> .
+_:c14n151 sh:datatype xsd:string ;
+	sh:description "The product's name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:product ;
+	sh:pattern "^[\\s\\S]{1,2048}$" .
+_:c14n152 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n153 sh:class nist_nvd:NvdMatchedCpe ;
+	sh:description "The CPE names this matches." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 10 ;
+	sh:path nist_nvd:matches .
+_:c14n154 rdf:first "URL Repurposed" ;
+	rdf:rest _:c14n384 .
+_:c14n155 sh:datatype xsd:string ;
+	sh:description "The name NVD gives this kind of response." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:format .
+_:c14n156 sh:datatype xsd:integer ;
+	sh:description "The position of this page's first result among all the results." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:startIndex .
+_:c14n157 rdf:first "Vendor Advisory" ;
+	rdf:rest rdf:nil .
+_:c14n158 sh:description "How hard the flaw is to use once the attacker can reach it." ;
+	sh:in _:c14n490 ;
+	sh:maxCount 1 ;
+	sh:order 14 ;
+	sh:path <https://w3id.org/lmodel/cve/accessComplexity> .
+_:c14n159 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n16 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n160 sh:datatype xsd:string ;
+	sh:description "The name CISA gives this vulnerability in its catalog." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 12 ;
+	sh:path nist_nvd:cisaVulnerabilityName .
+_:c14n161 sh:datatype xsd:string ;
+	sh:description "The first version after the range." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:lessThan ;
+	sh:pattern "^[\\s\\S]{1,1024}$" .
+_:c14n162 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n163 sh:datatype xsd:string ;
+	sh:description "What the vulnerability can lead to, from NVD's analyst." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path nist_nvd:evaluatorImpact .
+_:c14n164 rdf:first "Release Notes" ;
+	rdf:rest _:c14n266 .
+_:c14n165 sh:class <https://w3id.org/lmodel/cve/CvssV20> ;
+	sh:description "The CVSS score itself, in FIRST's form for its version." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:cvssData .
+_:c14n166 sh:description "The attack vector as the scorer's own environment changes it." ;
+	sh:in _:c14n423 ;
+	sh:maxCount 1 ;
+	sh:order 18 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAttackVector> .
+_:c14n167 sh:datatype xsd:string ;
+	sh:description "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:cpeName .
+_:c14n168 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The attack vector as the scorer's own environment changes it." ;
+	sh:in _:c14n433 ;
+	sh:maxCount 1 ;
+	sh:order 9 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAttackVector> .
+_:c14n169 rdf:first "Tool Signature" ;
+	rdf:rest _:c14n154 .
+_:c14n17 sh:description "How much availability matters to the scorer for the affected system." ;
+	sh:in _:c14n777 ;
+	sh:maxCount 1 ;
+	sh:order 11 ;
+	sh:path <https://w3id.org/lmodel/cve/availabilityRequirement> .
+_:c14n170 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n171 sh:datatype xsd:string ;
+	sh:description "The version of the response format." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:responseVersion .
+_:c14n172 sh:class <https://w3id.org/lmodel/cve/CvssV30> ;
+	sh:description "The CVSS score itself, in FIRST's form for its version." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:cvssData .
+_:c14n173 rdf:first "Change Log" ;
+	rdf:rest _:c14n792 .
+_:c14n174 sh:description "How much an attack could disrupt other, connected systems." ;
+	sh:in _:c14n565 ;
+	sh:maxCount 1 ;
+	sh:order 19 ;
+	sh:path <https://w3id.org/lmodel/cve/subAvailabilityImpact> .
+_:c14n175 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n176 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n177 rdf:first "Advisory" ;
+	rdf:rest _:c14n173 .
+_:c14n178 sh:datatype xsd:string ;
+	sh:description "The language of the text beside it, as a language code." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:lang .
+_:c14n179 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:sourceIdentifier .
+_:c14n18 sh:class nist_nvd:NvdWeakness ;
+	sh:description "The weaknesses behind the vulnerability, by the source that names them." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 17 ;
+	sh:path nist_nvd:weaknesses .
+_:c14n180 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The integrity impact on the vulnerable system, in the scorer's environment." ;
+	sh:in _:c14n668 ;
+	sh:maxCount 1 ;
+	sh:order 23 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedVulnIntegrityImpact> .
+_:c14n181 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n182 sh:datatype xsd:integer ;
+	sh:description "How many results this page holds." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:resultsPerPage .
+_:c14n183 rdf:first "DIFFUSE" ;
+	rdf:rest _:c14n249 .
+_:c14n184 rdf:first "SINGLE" ;
+	rdf:rest _:c14n615 .
+_:c14n185 sh:datatype xsd:string ;
+	sh:description "The name NVD gives this kind of response." ;
+	sh:in _:c14n39 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:format .
+_:c14n186 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "How the affected system comes back after an attack." ;
+	sh:in _:c14n26 ;
+	sh:maxCount 1 ;
+	sh:order 30 ;
+	sh:path <https://w3id.org/lmodel/cve/Recovery> .
+_:c14n187 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n188 sh:datatype xsd:float ;
+	sh:description "The CVSS impact subscore." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:impactScore .
+_:c14n189 sh:datatype xsd:integer ;
+	sh:description "The position of this page's first result among all the results." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:startIndex .
+_:c14n19 sh:description "How much confidentiality matters to the scorer for the affected system." ;
+	sh:in _:c14n761 ;
+	sh:maxCount 1 ;
+	sh:order 15 ;
+	sh:path <https://w3id.org/lmodel/cve/confidentialityRequirement> .
+_:c14n190 sh:description "How far away an attacker can be when using the flaw, in CVSS 2.0's terms." ;
+	sh:in _:c14n534 ;
+	sh:maxCount 1 ;
+	sh:order 13 ;
+	sh:path <https://w3id.org/lmodel/cve/accessVector> .
+_:c14n191 sh:datatype xsd:string ;
+	sh:description "The vulnerability's CVE identifier." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:id ;
+	sh:pattern "^CVE-[0-9]{4}-[0-9]{4,}$" .
+_:c14n192 sh:description "The rating in words for the environmental score." ;
+	sh:in _:c14n459 ;
+	sh:maxCount 1 ;
+	sh:order 27 ;
+	sh:path <https://w3id.org/lmodel/cve/environmentalSeverity> .
+_:c14n193 sh:class nist_nvd:NvdChangeDetail ;
+	sh:description "What the change did, part by part." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 5 ;
+	sh:path nist_nvd:details .
+_:c14n194 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:source .
+_:c14n195 sh:datatype xsd:float ;
+	sh:description "The CVSS impact subscore." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:impactScore .
+_:c14n196 sh:description "The rating in words for the temporal score." ;
+	sh:in _:c14n469 ;
+	sh:maxCount 1 ;
+	sh:order 14 ;
+	sh:path <https://w3id.org/lmodel/cve/temporalSeverity> .
+_:c14n197 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The privileges needed as the scorer's own environment changes them." ;
+	sh:in _:c14n510 ;
+	sh:maxCount 1 ;
+	sh:order 11 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedPrivilegesRequired> .
+_:c14n198 sh:datatype xsd:string ;
+	sh:description "The version at which the status changes." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:at ;
+	sh:pattern "^[\\s\\S]{1,1024}$" .
+_:c14n199 sh:class nist_nvd:NvdCpeItem ;
+	sh:description "The products on this page." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:products .
+_:c14n2 rdf:first "Version" ;
+	rdf:rest rdf:nil .
+_:c14n20 rdf:first "UNCONFIRMED" ;
+	rdf:rest _:c14n213 .
+_:c14n200 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The availability impact on connected systems, in the scorer's environment." ;
+	sh:in _:c14n648 ;
+	sh:maxCount 1 ;
+	sh:order 27 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedSubAvailabilityImpact> .
+_:c14n201 sh:datatype xsd:dateTime ;
+	sh:description "When NVD produced this response or this decision." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:timestamp ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n202 sh:description "The rating in words for the environmental score." ;
+	sh:in _:c14n454 ;
+	sh:maxCount 1 ;
+	sh:order 27 ;
+	sh:path <https://w3id.org/lmodel/cve/environmentalSeverity> .
+_:c14n203 sh:class nist_nvd:NvdReference ;
+	sh:description "The pages that NVD lists about this vulnerability." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 3 ;
+	sh:path nist_nvd:references .
+_:c14n204 sh:datatype xsd:string ;
+	sh:description "The name NVD gives this kind of response." ;
+	sh:in _:c14n123 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:format .
+_:c14n205 sh:datatype xsd:string ;
+	sh:description "The first version the match covers." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:versionStartIncluding .
+_:c14n206 sh:description "How far away an attacker can be when using the flaw." ;
+	sh:in _:c14n543 ;
+	sh:maxCount 1 ;
+	sh:order 2 ;
+	sh:path <https://w3id.org/lmodel/cve/attackVector> .
+_:c14n207 sh:description "Whether the attack needs conditions in the target that the attacker does not control." ;
+	sh:in _:c14n811 ;
+	sh:maxCount 1 ;
+	sh:order 13 ;
+	sh:path <https://w3id.org/lmodel/cve/attackRequirements> .
+_:c14n208 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n209 rdf:first "LOCAL" ;
+	rdf:rest rdf:nil .
+_:c14n21 sh:description "Whether an attack can reach beyond the component that holds the flaw." ;
+	sh:in _:c14n440 ;
+	sh:maxCount 1 ;
+	sh:order 6 ;
+	sh:path <https://w3id.org/lmodel/cve/scope> .
+_:c14n210 sh:datatype xsd:string ;
+	sh:description "The affected source code files." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path nist_nvd:programFiles ;
+	sh:pattern "^[\\s\\S]{1,1024}$" .
+_:c14n211 sh:datatype xsd:dateTime ;
+	sh:description "When NVD last changed this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:lastModified ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n212 sh:datatype xsd:boolean ;
+	sh:description "Whether exploiting this gains a user's privileges." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path nist_nvd:obtainUserPrivilege .
+_:c14n213 rdf:first "UNCORROBORATED" ;
+	rdf:rest _:c14n547 .
+_:c14n214 sh:class nist_nvd:NvdSsvcOption ;
+	sh:description "The answers given, each as a decision point and its value." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:options .
+_:c14n215 rdf:first "AMBER" ;
+	rdf:rest _:c14n37 .
+_:c14n216 sh:description "The kind of this thing, from the list its class names." ;
+	sh:in _:c14n607 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 1 ;
+	sh:path nist_nvd:type .
+_:c14n217 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "How much availability matters to the scorer for the affected system." ;
+	sh:in _:c14n765 ;
+	sh:maxCount 1 ;
+	sh:order 8 ;
+	sh:path <https://w3id.org/lmodel/cve/availabilityRequirement> .
+_:c14n218 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The attack complexity as the scorer's own environment changes it." ;
+	sh:in _:c14n507 ;
+	sh:maxCount 1 ;
+	sh:order 10 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAttackComplexity> .
+_:c14n219 sh:class nist_nvd:NvdMatchStringItem ;
+	sh:description "The match strings on this page." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:matchStrings .
+_:c14n22 sh:description "The value before the change." ;
+	sh:maxCount 1 ;
+	sh:or _:c14n616 ;
+	sh:order 2 ;
+	sh:path nist_nvd:oldValue .
+_:c14n220 rdf:first "VDB Entry" ;
+	rdf:rest _:c14n157 .
+_:c14n221 sh:description "The rating in words that the base score falls under." ;
+	sh:in _:c14n484 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 1 ;
+	sh:path <https://w3id.org/lmodel/cve/baseSeverity> .
+_:c14n222 sh:datatype xsd:integer ;
+	sh:description "The position of this page's first result among all the results." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:startIndex .
+_:c14n223 sh:datatype xsd:string ;
+	sh:description "The UUID that NVD gives a CPE name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:cpeNameId ;
+	sh:pattern "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" .
+_:c14n224 sh:class nist_nvd:NvdVulnerability ;
+	sh:description "The vulnerabilities on this page." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:vulnerabilities .
+_:c14n225 sh:description "How much information an attack could expose." ;
+	sh:in _:c14n571 ;
+	sh:maxCount 1 ;
+	sh:order 7 ;
+	sh:path <https://w3id.org/lmodel/cve/confidentialityImpact> .
+_:c14n226 sh:description "How much an attack could change in the vulnerable system." ;
+	sh:in _:c14n592 ;
+	sh:maxCount 1 ;
+	sh:order 15 ;
+	sh:path <https://w3id.org/lmodel/cve/vulnIntegrityImpact> .
+_:c14n227 sh:datatype xsd:dateTime ;
+	sh:description "When NVD first recorded this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:created ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n228 sh:description "The state of this thing, from the list its class names." ;
+	sh:in _:c14n145 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 8 ;
+	sh:path nist_nvd:status .
+_:c14n229 sh:datatype xsd:integer ;
+	sh:description "How many results this page holds." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:resultsPerPage .
+_:c14n23 rdf:first "GREEN" ;
+	rdf:rest _:c14n215 .
+_:c14n230 sh:description "How far away an attacker can be when using the flaw." ;
+	sh:in _:c14n538 ;
+	sh:maxCount 1 ;
+	sh:order 2 ;
+	sh:path <https://w3id.org/lmodel/cve/attackVector> .
+_:c14n231 sh:datatype xsd:dateTime ;
+	sh:description "When NVD produced this response or this decision." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:timestamp ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n232 sh:datatype xsd:string ;
+	sh:description "The last version in the range." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:lessThanOrEqual ;
+	sh:pattern "^[\\s\\S]{1,1024}$" .
+_:c14n233 sh:description "How much availability matters to the scorer for the affected system." ;
+	sh:in _:c14n745 ;
+	sh:maxCount 1 ;
+	sh:order 17 ;
+	sh:path <https://w3id.org/lmodel/cve/availabilityRequirement> .
+_:c14n234 sh:class nist_nvd:NvdCpeNameLink ;
+	sh:description "The CPE names that replace this one." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 7 ;
+	sh:path nist_nvd:deprecatedBy .
+_:c14n235 sh:datatype xsd:string ;
+	sh:description "The UUID that NVD gives a CPE match string." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:matchCriteriaId ;
+	sh:pattern "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" .
+_:c14n236 sh:datatype xsd:string ;
+	sh:description "The kind of event, such as Initial Analysis or CVE Modified." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:eventName .
+_:c14n237 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n238 sh:description "The kind of this thing, from the list its class names." ;
+	sh:in _:c14n609 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 1 ;
+	sh:path nist_nvd:type .
+_:c14n239 sh:description "What kind of fix is available." ;
+	sh:in _:c14n708 ;
+	sh:maxCount 1 ;
+	sh:order 11 ;
+	sh:path <https://w3id.org/lmodel/cve/remediationLevel> .
+_:c14n24 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:source .
+_:c14n240 sh:datatype xsd:dateTime ;
+	sh:description "When NVD produced this response or this decision." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:timestamp ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n241 rdf:first "ATTACKED" ;
+	rdf:rest _:c14n791 .
+_:c14n242 rdf:first "Patch" ;
+	rdf:rest _:c14n112 .
+_:c14n243 sh:datatype xsd:dateTime ;
+	sh:description "When NVD produced this response or this decision." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:timestamp ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n244 rdf:first "NO" ;
+	rdf:rest _:c14n83 .
+_:c14n245 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n246 sh:datatype xsd:date ;
+	sh:description "The day CISA added this vulnerability to its Known Exploited Vulnerabilities catalog." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 9 ;
+	sh:path nist_nvd:cisaExploitAdd .
+_:c14n247 sh:description "How far the vulnerability is known to be exploited, such as none, poc or active." ;
+	sh:maxCount 1 ;
+	sh:or _:c14n630 ;
+	sh:order 0 ;
+	sh:path nist_nvd:exploitation .
+_:c14n248 sh:datatype xsd:boolean ;
+	sh:description "Whether NVD lacked the information to rate the access complexity." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:acInsufInfo .
+_:c14n249 rdf:first "CONCENTRATED" ;
+	rdf:rest _:c14n783 .
+_:c14n25 rdf:first "Received" ;
+	rdf:rest _:c14n55 .
+_:c14n250 sh:description "How far away an attacker can be when using the flaw." ;
+	sh:in _:c14n542 ;
+	sh:maxCount 1 ;
+	sh:order 2 ;
+	sh:path <https://w3id.org/lmodel/cve/attackVector> .
+_:c14n251 sh:datatype xsd:string ;
+	sh:description "A version string. On a score it is the CVSS version; on a product entry, the product's." ;
+	sh:in _:c14n416 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path <https://w3id.org/lmodel/cve/version> .
+_:c14n252 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The confidentiality impact on connected systems, in the scorer's environment." ;
+	sh:in _:c14n656 ;
+	sh:maxCount 1 ;
+	sh:order 25 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedSubConfidentialityImpact> .
+_:c14n253 sh:description "The attack complexity as the scorer's own environment changes it." ;
+	sh:in _:c14n493 ;
+	sh:maxCount 1 ;
+	sh:order 19 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAttackComplexity> .
+_:c14n254 sh:class nist_nvd:NvdCpeReference ;
+	sh:description "Pages about the product." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 6 ;
+	sh:path nist_nvd:refs .
+_:c14n255 sh:class nist_nvd:NvdAffected ;
+	sh:description "The affected products, by the source that names them." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 16 ;
+	sh:path nist_nvd:affected .
+_:c14n256 sh:datatype xsd:float ;
+	sh:description "The score from 0 to 10 for what is inherent in the flaw." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minCount 1 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path <https://w3id.org/lmodel/cve/baseScore> .
+_:c14n257 sh:datatype xsd:boolean ;
+	sh:description "Whether what this matches has the vulnerability, rather than only setting the scene." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:vulnerable .
+_:c14n258 rdf:first "Not Applicable" ;
+	rdf:rest _:c14n242 .
+_:c14n259 sh:datatype xsd:string ;
+	sh:description "The tool that wrote this decision." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path nist_nvd:generator .
+_:c14n26 rdf:first "AUTOMATIC" ;
+	rdf:rest _:c14n285 .
+_:c14n260 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n261 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n262 sh:class nist_nvd:NvdVersionChange ;
+	sh:description "Where the status changes within the range." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 5 ;
+	sh:path nist_nvd:changes .
+_:c14n263 sh:description "How the parts of this configuration combine." ;
+	sh:in _:c14n529 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 0 ;
+	sh:path nist_nvd:operator .
+_:c14n264 sh:datatype xsd:string ;
+	sh:description "The package's name within that collection." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:packageName ;
+	sh:pattern "^[\\s\\S]{1,2048}$" .
+_:c14n265 sh:description "How far working attack code has come, in CVSS 2.0's terms." ;
+	sh:in _:c14n722 ;
+	sh:maxCount 1 ;
+	sh:order 16 ;
+	sh:path <https://w3id.org/lmodel/cve/exploitability> .
+_:c14n266 rdf:first "Technical Description" ;
+	rdf:rest _:c14n101 .
+_:c14n267 sh:datatype xsd:integer ;
+	sh:description "How many results the request matched in all." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:totalResults .
+_:c14n268 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n269 sh:datatype xsd:string ;
+	sh:description "A way to resolve the vulnerability, from NVD's analyst." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path nist_nvd:evaluatorSolution .
+_:c14n27 sh:datatype xsd:string ;
+	sh:description "A version string. On a score it is the CVSS version; on a product entry, the product's." ;
+	sh:in _:c14n289 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path <https://w3id.org/lmodel/cve/version> .
+_:c14n270 rdf:first "Modified" ;
+	rdf:rest _:c14n25 .
+_:c14n271 sh:datatype xsd:string ;
+	sh:description "The last version the match covers." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:versionEndIncluding .
+_:c14n272 sh:description "The attack vector as the scorer's own environment changes it." ;
+	sh:in _:c14n428 ;
+	sh:maxCount 1 ;
+	sh:order 18 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAttackVector> .
+_:c14n273 sh:datatype xsd:string ;
+	sh:description "A remark from NVD's analyst." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:evaluatorComment .
+_:c14n274 sh:datatype xsd:string ;
+	sh:description "The language of the text beside it, as a language code." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:lang .
+_:c14n275 sh:description "How much an attack could disrupt the service." ;
+	sh:in _:c14n580 ;
+	sh:maxCount 1 ;
+	sh:order 9 ;
+	sh:path <https://w3id.org/lmodel/cve/availabilityImpact> .
+_:c14n276 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n277 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n278 rdf:first "IRRECOVERABLE" ;
+	rdf:rest _:c14n784 .
+_:c14n279 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n28 sh:datatype xsd:string ;
+	sh:description "The version below which the match ends, itself left out." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:versionEndExcluding .
+_:c14n280 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n281 sh:datatype xsd:boolean ;
+	sh:description "Whether exploiting this gains every privilege." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path nist_nvd:obtainAllPrivilege .
+_:c14n282 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "How much work it takes a consumer to respond to the flaw." ;
+	sh:in _:c14n812 ;
+	sh:maxCount 1 ;
+	sh:order 32 ;
+	sh:path <https://w3id.org/lmodel/cve/vulnerabilityResponseEffort> .
+_:c14n283 rdf:first "UNREPORTED" ;
+	rdf:rest _:c14n723 .
+_:c14n284 sh:datatype xsd:float ;
+	sh:description "The CVSS exploitability subscore." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:exploitabilityScore .
+_:c14n285 rdf:first "USER" ;
+	rdf:rest _:c14n278 .
+_:c14n286 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:sourceIdentifier .
+_:c14n287 sh:datatype xsd:string ;
+	sh:description "The vendor's name." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:organization .
+_:c14n288 sh:description "How much an attack could disrupt the service." ;
+	sh:in _:c14n598 ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path <https://w3id.org/lmodel/cve/availabilityImpact> .
+_:c14n289 rdf:first "3.0" ;
+	rdf:rest rdf:nil .
+_:c14n29 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n290 sh:datatype xsd:string ;
+	sh:description "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:cpeName .
+_:c14n291 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n292 sh:description "The rating in words for the temporal score." ;
+	sh:in _:c14n489 ;
+	sh:maxCount 1 ;
+	sh:order 14 ;
+	sh:path <https://w3id.org/lmodel/cve/temporalSeverity> .
+_:c14n293 sh:datatype xsd:string ;
+	sh:description "The version of the response format." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:responseVersion .
+_:c14n294 sh:class nist_nvd:NvdMatchString ;
+	sh:description "The match string and what NVD holds about it." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:matchString .
+_:c14n295 sh:class nist_nvd:NvdCveTag ;
+	sh:description "The labels the record's sources put on it." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 13 ;
+	sh:path nist_nvd:cveTags .
+_:c14n296 sh:datatype xsd:string ;
+	sh:description "The page's address." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:ref ;
+	sh:pattern "^([A-Za-z][A-Za-z0-9+.-]+):(\\/\\/([^@]+@)?([A-Za-z0-9.\\-_~]+)(:\\d+)?)?((?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27\\[\\]()*+,;=:@])+(?:\\/(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27\\[\\]()*+,;=:@])*)*|(?:\\/(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27()*+,;=:@])+)*)?(\\?(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27\\[\\]()*+,;=:@]|[/?])*)?(\\#(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27\\[\\]()*+,;=:@]|[/?])*)?$" .
+_:c14n297 sh:datatype xsd:dateTime ;
+	sh:description "When NVD first recorded this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:created ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n298 sh:datatype xsd:string ;
+	sh:description "What the vendor said." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:comment .
+_:c14n299 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n3 sh:description "What level of access an attacker needs before using the flaw." ;
+	sh:in _:c14n499 ;
+	sh:maxCount 1 ;
+	sh:order 4 ;
+	sh:path <https://w3id.org/lmodel/cve/privilegesRequired> .
+_:c14n30 sh:datatype xsd:boolean ;
+	sh:description "Whether exploiting this needs a user to act." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path nist_nvd:userInteractionRequired .
+_:c14n300 sh:datatype xsd:float ;
+	sh:description "The CVSS impact subscore." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:impactScore .
+_:c14n301 sh:datatype xsd:float ;
+	sh:description "The score adjusted for the scorer's own environment." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 26 ;
+	sh:path <https://w3id.org/lmodel/cve/environmentalScore> .
+_:c14n302 sh:datatype xsd:string ;
+	sh:description "The affected parts of the product." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:modules ;
+	sh:pattern "^[\\s\\S]{1,4096}$" .
+_:c14n303 rdf:first "Related" ;
+	rdf:rest _:c14n793 .
+_:c14n304 sh:class nist_nvd:NvdChange ;
+	sh:description "The change." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:change .
+_:c14n305 rdf:first "Project" ;
+	rdf:rest _:c14n382 .
+_:c14n306 sh:class nist_nvd:NvdCpeMatch ;
+	sh:description "The CPE matches of this part." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:cpeMatch .
+_:c14n307 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The availability impact on the vulnerable system, in the scorer's environment." ;
+	sh:in _:c14n674 ;
+	sh:maxCount 1 ;
+	sh:order 24 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedVulnAvailabilityImpact> .
+_:c14n308 sh:datatype xsd:string ;
+	sh:description "The scores' metric values written as one compact string." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path <https://w3id.org/lmodel/cve/vectorString> ;
+	sh:pattern "^CVSS:3[.]1/((AV:[NALP]|AC:[LH]|PR:[NLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])/)*(AV:[NALP]|AC:[LH]|PR:[NLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])$" .
+_:c14n309 rdf:first "NEGLIGIBLE" ;
+	rdf:rest _:c14n435 .
+_:c14n31 sh:description "How much loss a successful attack could cause beyond the system itself." ;
+	sh:in _:c14n670 ;
+	sh:maxCount 1 ;
+	sh:order 17 ;
+	sh:path <https://w3id.org/lmodel/cve/collateralDamagePotential> .
+_:c14n310 sh:datatype xsd:string ;
+	sh:description "The product's CPE names, in the 2.2 or the 2.3 form." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:cpes ;
+	sh:pattern "([c][pP][eE]:/[AHOaho]?(:[A-Za-z0-9._\\-~%]*){0,6})|(cpe:2\\.3:[aho*\\-](:(((\\?*|\\*?)([a-zA-Z0-9\\-._]|(\\\\[\\\\*?!\\x22#$%&\\x27()+,/:;<=>@\\[\\]\\^`{|}~]))+(\\?*|\\*?))|[*\\-])){5}(:(([a-zA-Z]{2,3}(-([a-zA-Z]{2}|[0-9]{3}))?)|[*\\-]))(:(((\\?*|\\*?)([a-zA-Z0-9\\-._]|(\\\\[\\\\*?!\\x22#$%&\\x27()+,/:;<=>@\\[\\]\\^`{|}~]))+(\\?*|\\*?))|[*\\-])){4})" .
+_:c14n311 rdf:first "4.0" ;
+	rdf:rest rdf:nil .
+_:c14n312 sh:datatype xsd:boolean ;
+	sh:description "Whether the result of the configuration is reversed." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:negate .
+_:c14n313 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "Whether an attack could put people's safety at risk." ;
+	sh:in _:c14n309 ;
+	sh:maxCount 1 ;
+	sh:order 28 ;
+	sh:path <https://w3id.org/lmodel/cve/Safety> .
+_:c14n314 sh:datatype xsd:string ;
+	sh:description "The scores' metric values written as one compact string." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path <https://w3id.org/lmodel/cve/vectorString> ;
+	sh:pattern "^CVSS:3[.]0/((AV:[NALP]|AC:[LH]|PR:[UNLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XUNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])/)*(AV:[NALP]|AC:[LH]|PR:[UNLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XUNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])$" .
+_:c14n315 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n316 sh:description "The product's Package URL, with no version in it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 12 ;
+	sh:path nist_nvd:packageURL ;
+	sh:pattern "^[\\s\\S]{1,2048}$" .
+_:c14n317 sh:description "How far the flaw's existence and details have been confirmed." ;
+	sh:in _:c14n551 ;
+	sh:maxCount 1 ;
+	sh:order 12 ;
+	sh:path <https://w3id.org/lmodel/cve/reportConfidence> .
+_:c14n318 sh:datatype xsd:string ;
+	sh:description "The platforms the vulnerability is limited to." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 9 ;
+	sh:path nist_nvd:platforms ;
+	sh:pattern "^[\\s\\S]{0,1024}$" .
+_:c14n319 sh:datatype xsd:float ;
+	sh:description "The CVSS exploitability subscore." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:exploitabilityScore .
+_:c14n32 sh:datatype xsd:string ;
+	sh:description "The vulnerability the decision is about, by whatever identifier." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:ssvcSubject .
+_:c14n320 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n321 sh:datatype xsd:dateTime ;
+	sh:description "When NVD last changed the list of CPE names this matches." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 9 ;
+	sh:path nist_nvd:cpeLastModified ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n322 sh:datatype xsd:string ;
+	sh:description "What CISA says agencies must do about this vulnerability." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 11 ;
+	sh:path nist_nvd:cisaRequiredAction .
+_:c14n323 sh:description "What kind of fix is available." ;
+	sh:in _:c14n703 ;
+	sh:maxCount 1 ;
+	sh:order 6 ;
+	sh:path <https://w3id.org/lmodel/cve/remediationLevel> .
+_:c14n324 sh:class nist_nvd:NvdVendorComment ;
+	sh:description "What product vendors have said about this vulnerability." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 19 ;
+	sh:path nist_nvd:vendorComments .
+_:c14n325 sh:datatype xsd:string ;
+	sh:description "The scores' metric values written as one compact string." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path <https://w3id.org/lmodel/cve/vectorString> ;
+	sh:pattern "^((AV:[NAL]|AC:[LMH]|Au:[MSN]|[CIA]:[NPC]|E:(U|POC|F|H|ND)|RL:(OF|TF|W|U|ND)|RC:(UC|UR|C|ND)|CDP:(N|L|LM|MH|H|ND)|TD:(N|L|M|H|ND)|[CIA]R:(L|M|H|ND))/)*(AV:[NAL]|AC:[LMH]|Au:[MSN]|[CIA]:[NPC]|E:(U|POC|F|H|ND)|RL:(OF|TF|W|U|ND)|RC:(UC|UR|C|ND)|CDP:(N|L|LM|MH|H|ND)|TD:(N|L|M|H|ND)|[CIA]R:(L|M|H|ND))$" .
+_:c14n326 rdf:first "Exploit" ;
+	rdf:rest _:c14n126 .
+_:c14n327 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n328 rdf:first "Broken Link" ;
+	rdf:rest _:c14n326 .
+_:c14n329 sh:description "The user interaction as the scorer's own environment changes it." ;
+	sh:in _:c14n698 ;
+	sh:maxCount 1 ;
+	sh:order 21 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedUserInteraction> .
+_:c14n33 rdf:first "NVD_CVE" ;
+	rdf:rest rdf:nil .
+_:c14n330 sh:datatype xsd:string ;
+	sh:description "The version of the response format." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:responseVersion .
+_:c14n331 sh:description "How much control an attacker would gain, as partial or total." ;
+	sh:maxCount 1 ;
+	sh:or _:c14n622 ;
+	sh:order 2 ;
+	sh:path nist_nvd:technicalImpact .
+_:c14n332 sh:datatype xsd:integer ;
+	sh:description "The position of this page's first result among all the results." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:startIndex .
+_:c14n333 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "Whether one successful attack gains the attacker a little or a lot of a resource." ;
+	sh:in _:c14n183 ;
+	sh:maxCount 1 ;
+	sh:order 31 ;
+	sh:path <https://w3id.org/lmodel/cve/valueDensity> .
+_:c14n334 sh:datatype xsd:string ;
+	sh:description "The version below which the match ends, itself left out." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:versionEndExcluding .
+_:c14n335 sh:datatype xsd:string ;
+	sh:description "The name NVD gives this kind of response." ;
+	sh:in _:c14n419 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:format .
+_:c14n336 sh:description "The scope as the scorer's own environment changes it." ;
+	sh:in _:c14n447 ;
+	sh:maxCount 1 ;
+	sh:order 22 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedScope> .
+_:c14n337 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n338 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The user interaction as the scorer's own environment changes it." ;
+	sh:in _:c14n810 ;
+	sh:maxCount 1 ;
+	sh:order 12 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedUserInteraction> .
+_:c14n339 sh:datatype xsd:boolean ;
+	sh:description "Whether exploiting this gains some other privilege." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 9 ;
+	sh:path nist_nvd:obtainOtherPrivilege .
+_:c14n34 sh:datatype xsd:integer ;
+	sh:description "How many results the request matched in all." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:totalResults .
+_:c14n340 sh:description "The state of this thing, from the list its class names." ;
+	sh:in _:c14n797 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 1 ;
+	sh:path nist_nvd:status .
+_:c14n341 sh:datatype xsd:float ;
+	sh:description "The CVSS exploitability subscore." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:exploitabilityScore .
+_:c14n342 sh:description "The severity band of the base score, which CVSS 2.0 leaves to NVD." ;
+	sh:in _:c14n559 ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path nist_nvd:baseSeverity .
+_:c14n343 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n344 sh:datatype xsd:string ;
+	sh:description "The human-readable title." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:title .
+_:c14n345 sh:description "How much is outside the attacker's control when using the flaw." ;
+	sh:in _:c14n527 ;
+	sh:maxCount 1 ;
+	sh:order 3 ;
+	sh:path <https://w3id.org/lmodel/cve/attackComplexity> .
+_:c14n346 sh:datatype xsd:dateTime ;
+	sh:description "When NVD published this vulnerability." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:published ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n347 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:source .
+_:c14n348 sh:datatype xsd:integer ;
+	sh:description "How many results the request matched in all." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:totalResults .
+_:c14n349 sh:description "Whether an attacker could automate the attack, as yes or no." ;
+	sh:maxCount 1 ;
+	sh:or _:c14n626 ;
+	sh:order 1 ;
+	sh:path nist_nvd:automatable .
+_:c14n35 rdf:first "Inactive" ;
+	rdf:rest rdf:nil .
+_:c14n350 sh:description "How much an attack could change that should not change." ;
+	sh:in _:c14n586 ;
+	sh:maxCount 1 ;
+	sh:order 8 ;
+	sh:path <https://w3id.org/lmodel/cve/integrityImpact> .
+_:c14n351 sh:datatype xsd:string ;
+	sh:description "The version, or the start of the range." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path <https://w3id.org/lmodel/cve/version> ;
+	sh:pattern "^[\\s\\S]{1,1024}$" .
+_:c14n352 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "How urgent the product's supplier says the flaw is, as a colour." ;
+	sh:in _:c14n106 ;
+	sh:maxCount 1 ;
+	sh:order 33 ;
+	sh:path <https://w3id.org/lmodel/cve/providerUrgency> .
+_:c14n353 sh:class nist_nvd:NvdSsvcMetricV203 ;
+	sh:description "The SSVC 2.0.3 decisions." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 4 ;
+	sh:path nist_nvd:ssvcV203 .
+_:c14n354 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:source .
+_:c14n355 rdf:first "PRESENT" ;
+	rdf:rest rdf:nil .
+_:c14n356 sh:datatype xsd:integer ;
+	sh:description "How many results the request matched in all." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:totalResults .
+_:c14n357 sh:class <https://w3id.org/lmodel/cve/CvssV31> ;
+	sh:description "The CVSS score itself, in FIRST's form for its version." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:cvssData .
+_:c14n358 sh:datatype xsd:float ;
+	sh:description "The base score adjusted for what changes over time, such as a fix appearing." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 13 ;
+	sh:path <https://w3id.org/lmodel/cve/temporalScore> .
+_:c14n359 sh:description "Labels on this thing, from the list its class names." ;
+	sh:in _:c14n51 ;
+	sh:order 1 ;
+	sh:path nist_nvd:tags .
+_:c14n36 sh:description "Whether someone other than the attacker has to take part." ;
+	sh:in _:c14n804 ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path <https://w3id.org/lmodel/cve/userInteraction> .
+_:c14n360 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "How much is known about attacks on this flaw, in CVSS 4.0's terms." ;
+	sh:in _:c14n283 ;
+	sh:maxCount 1 ;
+	sh:order 20 ;
+	sh:path <https://w3id.org/lmodel/cve/exploitMaturity> .
+_:c14n361 sh:datatype xsd:float ;
+	sh:description "The score from 0 to 10 for what is inherent in the flaw." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minCount 1 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 28 ;
+	sh:path <https://w3id.org/lmodel/cve/baseScore> .
+_:c14n362 sh:description "The rating in words that the base score falls under." ;
+	sh:in _:c14n474 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 35 ;
+	sh:path <https://w3id.org/lmodel/cve/baseSeverity> .
+_:c14n363 sh:datatype xsd:string ;
+	sh:description "A version string. On a score it is the CVSS version; on a product entry, the product's." ;
+	sh:in _:c14n311 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path <https://w3id.org/lmodel/cve/version> .
+_:c14n364 sh:description "What level of access an attacker needs before using the flaw." ;
+	sh:in _:c14n496 ;
+	sh:maxCount 1 ;
+	sh:order 4 ;
+	sh:path <https://w3id.org/lmodel/cve/privilegesRequired> .
+_:c14n365 sh:class <https://w3id.org/lmodel/cve/CvssV40> ;
+	sh:description "The CVSS score itself, in FIRST's form for its version." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:cvssData .
+_:c14n366 sh:datatype xsd:string ;
+	sh:description "A CPE match string, which may hold wildcards." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:criteria .
+_:c14n367 rdf:first "disputed" ;
+	rdf:rest rdf:nil .
+_:c14n368 sh:description "The kind of this thing, from the list its class names." ;
+	sh:in _:c14n611 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 1 ;
+	sh:path nist_nvd:type .
+_:c14n369 sh:description "How much confidentiality matters to the scorer for the affected system." ;
+	sh:in _:c14n773 ;
+	sh:maxCount 1 ;
+	sh:order 9 ;
+	sh:path <https://w3id.org/lmodel/cve/confidentialityRequirement> .
+_:c14n37 rdf:first "RED" ;
+	rdf:rest _:c14n787 .
+_:c14n370 sh:datatype xsd:dateTime ;
+	sh:description "When NVD produced this response or this decision." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:timestamp ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n371 rdf:first "Awaiting Analysis" ;
+	rdf:rest _:c14n270 .
+_:c14n372 sh:datatype xsd:string ;
+	sh:description "A CPE match string, which may hold wildcards." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:criteria .
+_:c14n373 sh:description "The scope as the scorer's own environment changes it." ;
+	sh:in _:c14n444 ;
+	sh:maxCount 1 ;
+	sh:order 22 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedScope> .
+_:c14n374 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "How much integrity matters to the scorer for the affected system." ;
+	sh:in _:c14n769 ;
+	sh:maxCount 1 ;
+	sh:order 7 ;
+	sh:path <https://w3id.org/lmodel/cve/integrityRequirement> .
+_:c14n375 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n376 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "The attack requirements as the scorer's own environment changes them." ;
+	sh:in _:c14n438 ;
+	sh:maxCount 1 ;
+	sh:order 21 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAttackRequirements> .
+_:c14n377 rdf:first "ACTIVE" ;
+	rdf:rest rdf:nil .
+_:c14n378 rdf:first "Rejected" ;
+	rdf:rest rdf:nil .
+_:c14n379 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n38 sh:datatype xsd:string ;
+	sh:description "The version of the response format." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:responseVersion .
+_:c14n380 sh:description "The availability impact as the scorer's own environment changes it." ;
+	sh:in _:c14n664 ;
+	sh:maxCount 1 ;
+	sh:order 25 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAvailabilityImpact> .
+_:c14n381 sh:class nist_nvd:NvdMetrics ;
+	sh:description "The scores that NVD and others give this vulnerability." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 15 ;
+	sh:path nist_nvd:metrics .
+_:c14n382 rdf:first "Vendor" ;
+	rdf:rest _:c14n2 .
+_:c14n383 sh:class nist_nvd:NvdAffectedVersion ;
+	sh:description "The versions or ranges of versions whose status is known." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 11 ;
+	sh:path nist_nvd:versions .
+_:c14n384 rdf:first "US Government Resource" ;
+	rdf:rest _:c14n220 .
+_:c14n385 sh:datatype xsd:dateTime ;
+	sh:description "When NVD last changed this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:lastModified ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n386 sh:description "How much integrity matters to the scorer for the affected system." ;
+	sh:in _:c14n757 ;
+	sh:maxCount 1 ;
+	sh:order 10 ;
+	sh:path <https://w3id.org/lmodel/cve/integrityRequirement> .
+_:c14n387 sh:datatype xsd:float ;
+	sh:description "The score from 0 to 10 for what is inherent in the flaw." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minCount 1 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 28 ;
+	sh:path <https://w3id.org/lmodel/cve/baseScore> .
+_:c14n388 sh:description "The address of the package collection that holds the product." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path nist_nvd:collectionURL ;
+	sh:pattern "^[\\s\\S]{1,2048}$" .
+_:c14n389 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:source .
+_:c14n39 rdf:first "NVD_CPE" ;
+	rdf:rest rdf:nil .
+_:c14n390 sh:description "How far working attack code has come." ;
+	sh:in _:c14n728 ;
+	sh:maxCount 1 ;
+	sh:order 10 ;
+	sh:path <https://w3id.org/lmodel/cve/exploitCodeMaturity> .
+_:c14n391 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n392 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n393 sh:datatype xsd:boolean ;
+	sh:description "Whether NVD has retired this CPE name." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path nist_nvd:deprecated .
+_:c14n394 sh:class nist_nvd:NvdCvssMetricV31 ;
+	sh:description "The CVSS 3.1 scores." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 1 ;
+	sh:path nist_nvd:cvssMetricV31 .
+_:c14n395 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n396 sh:datatype xsd:date ;
+	sh:description "The day by which CISA says federal agencies must act." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path nist_nvd:cisaActionDue .
+_:c14n397 sh:datatype xsd:string ;
+	sh:description "The numbering scheme that orders the versions, such as semver or git." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:versionType ;
+	sh:pattern "^[\\s\\S]{1,128}$" .
+_:c14n398 sh:description "How far working attack code has come." ;
+	sh:in _:c14n733 ;
+	sh:maxCount 1 ;
+	sh:order 10 ;
+	sh:path <https://w3id.org/lmodel/cve/exploitCodeMaturity> .
+_:c14n399 sh:description "How much information in other, connected systems an attack could expose." ;
+	sh:in _:c14n595 ;
+	sh:maxCount 1 ;
+	sh:order 17 ;
+	sh:path <https://w3id.org/lmodel/cve/subConfidentialityImpact> .
+_:c14n4 sh:description "How much integrity matters to the scorer for the affected system." ;
+	sh:in _:c14n749 ;
+	sh:maxCount 1 ;
+	sh:order 16 ;
+	sh:path <https://w3id.org/lmodel/cve/integrityRequirement> .
+_:c14n40 sh:class nist_nvd:NvdConfigurationNode ;
+	sh:description "The parts of the statement." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:nodes .
+_:c14n400 rdf:first "exclusively-hosted-service" ;
+	rdf:rest _:c14n367 .
+_:c14n401 sh:description "The confidentiality impact as the scorer's own environment changes it." ;
+	sh:in _:c14n660 ;
+	sh:maxCount 1 ;
+	sh:order 23 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedConfidentialityImpact> .
+_:c14n402 sh:description "The address of the decision tree that was used." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 7 ;
+	sh:path nist_nvd:decisionTreeUrl .
+_:c14n403 sh:class nist_nvd:NvdProgramRoutine ;
+	sh:description "The affected source code routines." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 8 ;
+	sh:path nist_nvd:programRoutines .
+_:c14n404 sh:datatype xsd:float ;
+	sh:description "The score from 0 to 10 for what is inherent in the flaw." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minCount 1 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path <https://w3id.org/lmodel/cve/baseScore> .
+_:c14n405 sh:datatype xsd:string ;
+	sh:description "The UUID that NVD gives a CPE name." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:cpeNameId ;
+	sh:pattern "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" .
+_:c14n406 sh:description "The state of this thing, from the list its class names." ;
+	sh:in _:c14n794 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 1 ;
+	sh:path nist_nvd:status .
+_:c14n407 sh:datatype xsd:float ;
+	sh:description "The score adjusted for the scorer's own environment." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 26 ;
+	sh:path <https://w3id.org/lmodel/cve/environmentalScore> .
+_:c14n408 sh:class nist_nvd:NvdChangeItem ;
+	sh:description "The changes on this page." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:cveChanges .
+_:c14n409 sh:class nist_nvd:NvdConfiguration ;
+	sh:description "The product configurations that have the vulnerability." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 18 ;
+	sh:path nist_nvd:configurations .
+_:c14n41 sh:datatype xsd:string ;
+	sh:description "The UUID that NVD gives a CPE name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:cpeNameId ;
+	sh:pattern "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" .
+_:c14n410 sh:datatype xsd:string ;
+	sh:description "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:cpeName .
+_:c14n411 sh:description "How much is outside the attacker's control when using the flaw." ;
+	sh:in _:c14n505 ;
+	sh:maxCount 1 ;
+	sh:order 3 ;
+	sh:path <https://w3id.org/lmodel/cve/attackComplexity> .
+_:c14n412 sh:datatype xsd:string ;
+	sh:description "The version of the response format." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path nist_nvd:responseVersion .
+_:c14n413 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n414 sh:class nist_nvd:NvdSsvcData ;
+	sh:description "The decision." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 1 ;
+	sh:path nist_nvd:ssvcData .
+_:c14n415 sh:datatype xsd:dateTime ;
+	sh:description "When NVD last changed this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path nist_nvd:lastModified ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n416 rdf:first "3.1" ;
+	rdf:rest rdf:nil .
+_:c14n417 sh:class nist_nvd:NvdCpe ;
+	sh:description "The CPE name and what NVD holds about it." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:cpe .
+_:c14n418 rdf:first "2.0" ;
+	rdf:rest rdf:nil .
+_:c14n419 rdf:first "NVD_CVEHistory" ;
+	rdf:rest rdf:nil .
+_:c14n42 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n420 rdf:first "PHYSICAL" ;
+	rdf:rest _:c14n424 .
+_:c14n421 rdf:first "LOCAL" ;
+	rdf:rest _:c14n420 .
+_:c14n422 rdf:first "ADJACENT_NETWORK" ;
+	rdf:rest _:c14n421 .
+_:c14n423 rdf:first "NETWORK" ;
+	rdf:rest _:c14n422 .
+_:c14n424 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n425 rdf:first "PHYSICAL" ;
+	rdf:rest _:c14n429 .
+_:c14n426 rdf:first "LOCAL" ;
+	rdf:rest _:c14n425 .
+_:c14n427 rdf:first "ADJACENT_NETWORK" ;
+	rdf:rest _:c14n426 .
+_:c14n428 rdf:first "NETWORK" ;
+	rdf:rest _:c14n427 .
+_:c14n429 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n43 rdf:first "LOW_MEDIUM" ;
+	rdf:rest _:c14n60 .
+_:c14n430 rdf:first "PHYSICAL" ;
+	rdf:rest _:c14n434 .
+_:c14n431 rdf:first "LOCAL" ;
+	rdf:rest _:c14n430 .
+_:c14n432 rdf:first "ADJACENT" ;
+	rdf:rest _:c14n431 .
+_:c14n433 rdf:first "NETWORK" ;
+	rdf:rest _:c14n432 .
+_:c14n434 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n435 rdf:first "PRESENT" ;
+	rdf:rest _:c14n436 .
+_:c14n436 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n437 rdf:first "PRESENT" ;
+	rdf:rest _:c14n439 .
+_:c14n438 rdf:first "NONE" ;
+	rdf:rest _:c14n437 .
+_:c14n439 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n44 sh:description "Where this vulnerability stands in NVD's analysis." ;
+	sh:in _:c14n135 ;
+	sh:maxCount 1 ;
+	sh:order 4 ;
+	sh:path nist_nvd:vulnStatus .
+_:c14n440 rdf:first "UNCHANGED" ;
+	rdf:rest _:c14n441 .
+_:c14n441 rdf:first "CHANGED" ;
+	rdf:rest rdf:nil .
+_:c14n442 rdf:first "UNCHANGED" ;
+	rdf:rest _:c14n443 .
+_:c14n443 rdf:first "CHANGED" ;
+	rdf:rest rdf:nil .
+_:c14n444 rdf:first "UNCHANGED" ;
+	rdf:rest _:c14n445 .
+_:c14n445 rdf:first "CHANGED" ;
+	rdf:rest _:c14n446 .
+_:c14n446 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n447 rdf:first "UNCHANGED" ;
+	rdf:rest _:c14n448 .
+_:c14n448 rdf:first "CHANGED" ;
+	rdf:rest _:c14n449 .
+_:c14n449 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n45 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n450 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ;
+	rdf:rest rdf:nil .
+_:c14n451 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high> ;
+	rdf:rest _:c14n450 .
+_:c14n452 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium> ;
+	rdf:rest _:c14n451 .
+_:c14n453 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low> ;
+	rdf:rest _:c14n452 .
+_:c14n454 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none> ;
+	rdf:rest _:c14n453 .
+_:c14n455 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ;
+	rdf:rest rdf:nil .
+_:c14n456 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high> ;
+	rdf:rest _:c14n455 .
+_:c14n457 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium> ;
+	rdf:rest _:c14n456 .
+_:c14n458 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low> ;
+	rdf:rest _:c14n457 .
+_:c14n459 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none> ;
+	rdf:rest _:c14n458 .
+_:c14n46 sh:datatype xsd:dateTime ;
+	sh:description "When NVD last changed this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path nist_nvd:lastModified ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n460 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ;
+	rdf:rest rdf:nil .
+_:c14n461 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high> ;
+	rdf:rest _:c14n460 .
+_:c14n462 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium> ;
+	rdf:rest _:c14n461 .
+_:c14n463 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low> ;
+	rdf:rest _:c14n462 .
+_:c14n464 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none> ;
+	rdf:rest _:c14n463 .
+_:c14n465 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ;
+	rdf:rest rdf:nil .
+_:c14n466 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high> ;
+	rdf:rest _:c14n465 .
+_:c14n467 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium> ;
+	rdf:rest _:c14n466 .
+_:c14n468 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low> ;
+	rdf:rest _:c14n467 .
+_:c14n469 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none> ;
+	rdf:rest _:c14n468 .
+_:c14n47 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "How much confidentiality matters to the scorer for the affected system." ;
+	sh:in _:c14n781 ;
+	sh:maxCount 1 ;
+	sh:order 6 ;
+	sh:path <https://w3id.org/lmodel/cve/confidentialityRequirement> .
+_:c14n470 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ;
+	rdf:rest rdf:nil .
+_:c14n471 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high> ;
+	rdf:rest _:c14n470 .
+_:c14n472 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium> ;
+	rdf:rest _:c14n471 .
+_:c14n473 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low> ;
+	rdf:rest _:c14n472 .
+_:c14n474 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none> ;
+	rdf:rest _:c14n473 .
+_:c14n475 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ;
+	rdf:rest rdf:nil .
+_:c14n476 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high> ;
+	rdf:rest _:c14n475 .
+_:c14n477 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium> ;
+	rdf:rest _:c14n476 .
+_:c14n478 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low> ;
+	rdf:rest _:c14n477 .
+_:c14n479 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none> ;
+	rdf:rest _:c14n478 .
+_:c14n48 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:sourceIdentifier .
+_:c14n480 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ;
+	rdf:rest rdf:nil .
+_:c14n481 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high> ;
+	rdf:rest _:c14n480 .
+_:c14n482 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium> ;
+	rdf:rest _:c14n481 .
+_:c14n483 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low> ;
+	rdf:rest _:c14n482 .
+_:c14n484 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none> ;
+	rdf:rest _:c14n483 .
+_:c14n485 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ;
+	rdf:rest rdf:nil .
+_:c14n486 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high> ;
+	rdf:rest _:c14n485 .
+_:c14n487 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium> ;
+	rdf:rest _:c14n486 .
+_:c14n488 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low> ;
+	rdf:rest _:c14n487 .
+_:c14n489 rdf:first <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none> ;
+	rdf:rest _:c14n488 .
+_:c14n49 sh:defaultValue "NOT_DEFINED" ;
+	sh:description "Whether an attacker could automate every step of an attack across many targets." ;
+	sh:in _:c14n244 ;
+	sh:maxCount 1 ;
+	sh:order 29 ;
+	sh:path <https://w3id.org/lmodel/cve/Automatable> .
+_:c14n490 rdf:first "HIGH" ;
+	rdf:rest _:c14n491 .
+_:c14n491 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n492 .
+_:c14n492 rdf:first "LOW" ;
+	rdf:rest rdf:nil .
+_:c14n493 rdf:first "HIGH" ;
+	rdf:rest _:c14n494 .
+_:c14n494 rdf:first "LOW" ;
+	rdf:rest _:c14n495 .
+_:c14n495 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n496 rdf:first "HIGH" ;
+	rdf:rest _:c14n497 .
+_:c14n497 rdf:first "LOW" ;
+	rdf:rest _:c14n498 .
+_:c14n498 rdf:first "NONE" ;
+	rdf:rest rdf:nil .
+_:c14n499 rdf:first "HIGH" ;
+	rdf:rest _:c14n500 .
+_:c14n5 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n50 sh:datatype xsd:dateTime ;
+	sh:description "When NVD first recorded this." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:created ;
+	sh:pattern "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$" .
+_:c14n500 rdf:first "LOW" ;
+	rdf:rest _:c14n501 .
+_:c14n501 rdf:first "NONE" ;
+	rdf:rest rdf:nil .
+_:c14n502 rdf:first "HIGH" ;
+	rdf:rest _:c14n503 .
+_:c14n503 rdf:first "LOW" ;
+	rdf:rest _:c14n504 .
+_:c14n504 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n505 rdf:first "HIGH" ;
+	rdf:rest _:c14n506 .
+_:c14n506 rdf:first "LOW" ;
+	rdf:rest rdf:nil .
+_:c14n507 rdf:first "HIGH" ;
+	rdf:rest _:c14n508 .
+_:c14n508 rdf:first "LOW" ;
+	rdf:rest _:c14n509 .
+_:c14n509 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n51 rdf:first "unsupported-when-assigned" ;
+	rdf:rest _:c14n400 .
+_:c14n510 rdf:first "HIGH" ;
+	rdf:rest _:c14n511 .
+_:c14n511 rdf:first "LOW" ;
+	rdf:rest _:c14n512 .
+_:c14n512 rdf:first "NONE" ;
+	rdf:rest _:c14n513 .
+_:c14n513 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n514 rdf:first "HIGH" ;
+	rdf:rest _:c14n515 .
+_:c14n515 rdf:first "LOW" ;
+	rdf:rest _:c14n516 .
+_:c14n516 rdf:first "NONE" ;
+	rdf:rest rdf:nil .
+_:c14n517 rdf:first "HIGH" ;
+	rdf:rest _:c14n518 .
+_:c14n518 rdf:first "LOW" ;
+	rdf:rest _:c14n519 .
+_:c14n519 rdf:first "NONE" ;
+	rdf:rest _:c14n520 .
+_:c14n52 sh:description "The privileges needed as the scorer's own environment changes them." ;
+	sh:in _:c14n517 ;
+	sh:maxCount 1 ;
+	sh:order 20 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedPrivilegesRequired> .
+_:c14n520 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n521 rdf:first "HIGH" ;
+	rdf:rest _:c14n522 .
+_:c14n522 rdf:first "LOW" ;
+	rdf:rest _:c14n523 .
+_:c14n523 rdf:first "NONE" ;
+	rdf:rest _:c14n524 .
+_:c14n524 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n525 rdf:first "HIGH" ;
+	rdf:rest _:c14n526 .
+_:c14n526 rdf:first "LOW" ;
+	rdf:rest rdf:nil .
+_:c14n527 rdf:first "HIGH" ;
+	rdf:rest _:c14n528 .
+_:c14n528 rdf:first "LOW" ;
+	rdf:rest rdf:nil .
+_:c14n529 rdf:first "AND" ;
+	rdf:rest _:c14n530 .
+_:c14n53 sh:datatype xsd:integer ;
+	sh:description "How many results this page holds." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:resultsPerPage .
+_:c14n530 rdf:first "OR" ;
+	rdf:rest rdf:nil .
+_:c14n531 rdf:first "AND" ;
+	rdf:rest _:c14n532 .
+_:c14n532 rdf:first "OR" ;
+	rdf:rest rdf:nil .
+_:c14n533 rdf:first "ADJACENT_NETWORK" ;
+	rdf:rest _:c14n209 .
+_:c14n534 rdf:first "NETWORK" ;
+	rdf:rest _:c14n533 .
+_:c14n535 rdf:first "ADJACENT_NETWORK" ;
+	rdf:rest _:c14n536 .
+_:c14n536 rdf:first "LOCAL" ;
+	rdf:rest _:c14n537 .
+_:c14n537 rdf:first "PHYSICAL" ;
+	rdf:rest rdf:nil .
+_:c14n538 rdf:first "NETWORK" ;
+	rdf:rest _:c14n535 .
+_:c14n539 rdf:first "ADJACENT_NETWORK" ;
+	rdf:rest _:c14n540 .
+_:c14n54 sh:description "The availability impact as the scorer's own environment changes it." ;
+	sh:in _:c14n643 ;
+	sh:maxCount 1 ;
+	sh:order 25 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAvailabilityImpact> .
+_:c14n540 rdf:first "LOCAL" ;
+	rdf:rest _:c14n541 .
+_:c14n541 rdf:first "PHYSICAL" ;
+	rdf:rest rdf:nil .
+_:c14n542 rdf:first "NETWORK" ;
+	rdf:rest _:c14n539 .
+_:c14n543 rdf:first "NETWORK" ;
+	rdf:rest _:c14n544 .
+_:c14n544 rdf:first "ADJACENT" ;
+	rdf:rest _:c14n545 .
+_:c14n545 rdf:first "LOCAL" ;
+	rdf:rest _:c14n546 .
+_:c14n546 rdf:first "PHYSICAL" ;
+	rdf:rest rdf:nil .
+_:c14n547 rdf:first "CONFIRMED" ;
+	rdf:rest _:c14n548 .
+_:c14n548 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n549 rdf:first "CONFIRMED" ;
+	rdf:rest _:c14n552 .
+_:c14n55 rdf:first "Undergoing Analysis" ;
+	rdf:rest _:c14n378 .
+_:c14n550 rdf:first "REASONABLE" ;
+	rdf:rest _:c14n549 .
+_:c14n551 rdf:first "UNKNOWN" ;
+	rdf:rest _:c14n550 .
+_:c14n552 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n553 rdf:first "CONFIRMED" ;
+	rdf:rest _:c14n556 .
+_:c14n554 rdf:first "REASONABLE" ;
+	rdf:rest _:c14n553 .
+_:c14n555 rdf:first "UNKNOWN" ;
+	rdf:rest _:c14n554 .
+_:c14n556 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n557 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n558 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n557 .
+_:c14n559 rdf:first "LOW" ;
+	rdf:rest _:c14n558 .
+_:c14n56 sh:datatype xsd:string ;
+	sh:description "The scores' metric values written as one compact string." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path <https://w3id.org/lmodel/cve/vectorString> ;
+	sh:pattern "^CVSS:4[.]0/AV:[NALP]/AC:[LH]/AT:[NP]/PR:[NLH]/UI:[NPA]/VC:[HLN]/VI:[HLN]/VA:[HLN]/SC:[HLN]/SI:[HLN]/SA:[HLN](/E:[XAPU])?(/CR:[XHML])?(/IR:[XHML])?(/AR:[XHML])?(/MAV:[XNALP])?(/MAC:[XLH])?(/MAT:[XNP])?(/MPR:[XNLH])?(/MUI:[XNPA])?(/MVC:[XNLH])?(/MVI:[XNLH])?(/MVA:[XNLH])?(/MSC:[XNLH])?(/MSI:[XNLHS])?(/MSA:[XNLHS])?(/S:[XNP])?(/AU:[XNY])?(/R:[XAUI])?(/V:[XDC])?(/RE:[XLMH])?(/U:(X|Clear|Green|Amber|Red))?$" .
+_:c14n560 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n561 rdf:first "LOW" ;
+	rdf:rest _:c14n560 .
+_:c14n562 rdf:first "NONE" ;
+	rdf:rest _:c14n561 .
+_:c14n563 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n564 rdf:first "LOW" ;
+	rdf:rest _:c14n563 .
+_:c14n565 rdf:first "NONE" ;
+	rdf:rest _:c14n564 .
+_:c14n566 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n567 rdf:first "LOW" ;
+	rdf:rest _:c14n566 .
+_:c14n568 rdf:first "NONE" ;
+	rdf:rest _:c14n567 .
+_:c14n569 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n57 sh:description "How much an attack could disrupt the service." ;
+	sh:in _:c14n574 ;
+	sh:maxCount 1 ;
+	sh:order 9 ;
+	sh:path <https://w3id.org/lmodel/cve/availabilityImpact> .
+_:c14n570 rdf:first "LOW" ;
+	rdf:rest _:c14n569 .
+_:c14n571 rdf:first "NONE" ;
+	rdf:rest _:c14n570 .
+_:c14n572 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n573 rdf:first "LOW" ;
+	rdf:rest _:c14n572 .
+_:c14n574 rdf:first "NONE" ;
+	rdf:rest _:c14n573 .
+_:c14n575 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n576 rdf:first "LOW" ;
+	rdf:rest _:c14n575 .
+_:c14n577 rdf:first "NONE" ;
+	rdf:rest _:c14n576 .
+_:c14n578 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n579 rdf:first "LOW" ;
+	rdf:rest _:c14n578 .
+_:c14n58 sh:datatype xsd:string ;
+	sh:description "The UUID that NVD gives a CPE match string." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:matchCriteriaId ;
+	sh:pattern "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" .
+_:c14n580 rdf:first "NONE" ;
+	rdf:rest _:c14n579 .
+_:c14n581 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n582 rdf:first "LOW" ;
+	rdf:rest _:c14n581 .
+_:c14n583 rdf:first "NONE" ;
+	rdf:rest _:c14n582 .
+_:c14n584 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n585 rdf:first "LOW" ;
+	rdf:rest _:c14n584 .
+_:c14n586 rdf:first "NONE" ;
+	rdf:rest _:c14n585 .
+_:c14n587 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n588 rdf:first "LOW" ;
+	rdf:rest _:c14n587 .
+_:c14n589 rdf:first "NONE" ;
+	rdf:rest _:c14n588 .
+_:c14n59 sh:class nist_nvd:NvdCvssMetricV30 ;
+	sh:description "The CVSS 3.0 scores." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:cvssMetricV30 .
+_:c14n590 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n591 rdf:first "LOW" ;
+	rdf:rest _:c14n590 .
+_:c14n592 rdf:first "NONE" ;
+	rdf:rest _:c14n591 .
+_:c14n593 rdf:first "HIGH" ;
+	rdf:rest rdf:nil .
+_:c14n594 rdf:first "LOW" ;
+	rdf:rest _:c14n593 .
+_:c14n595 rdf:first "NONE" ;
+	rdf:rest _:c14n594 .
+_:c14n596 rdf:first "PARTIAL" ;
+	rdf:rest _:c14n597 .
+_:c14n597 rdf:first "COMPLETE" ;
+	rdf:rest rdf:nil .
+_:c14n598 rdf:first "NONE" ;
+	rdf:rest _:c14n596 .
+_:c14n599 rdf:first "PARTIAL" ;
+	rdf:rest _:c14n600 .
+_:c14n6 sh:datatype xsd:string ;
+	sh:description "The kind of this thing, from the list its class names." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:type .
+_:c14n60 rdf:first "MEDIUM_HIGH" ;
+	rdf:rest _:c14n790 .
+_:c14n600 rdf:first "COMPLETE" ;
+	rdf:rest rdf:nil .
+_:c14n601 rdf:first "NONE" ;
+	rdf:rest _:c14n599 .
+_:c14n602 rdf:first "PARTIAL" ;
+	rdf:rest _:c14n603 .
+_:c14n603 rdf:first "COMPLETE" ;
+	rdf:rest rdf:nil .
+_:c14n604 rdf:first "NONE" ;
+	rdf:rest _:c14n602 .
+_:c14n605 rdf:first "Primary" ;
+	rdf:rest _:c14n606 .
+_:c14n606 rdf:first "Secondary" ;
+	rdf:rest rdf:nil .
+_:c14n607 rdf:first "Primary" ;
+	rdf:rest _:c14n608 .
+_:c14n608 rdf:first "Secondary" ;
+	rdf:rest rdf:nil .
+_:c14n609 rdf:first "Primary" ;
+	rdf:rest _:c14n610 .
+_:c14n61 sh:datatype xsd:string ;
+	sh:description "Who makes or maintains the product." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:vendor ;
+	sh:pattern "^[\\s\\S]{1,512}$" .
+_:c14n610 rdf:first "Secondary" ;
+	rdf:rest rdf:nil .
+_:c14n611 rdf:first "Primary" ;
+	rdf:rest _:c14n612 .
+_:c14n612 rdf:first "Secondary" ;
+	rdf:rest rdf:nil .
+_:c14n613 rdf:first "Primary" ;
+	rdf:rest _:c14n614 .
+_:c14n614 rdf:first "Secondary" ;
+	rdf:rest rdf:nil .
+_:c14n615 rdf:first "NONE" ;
+	rdf:rest rdf:nil .
+_:c14n616 rdf:first _:c14n621 ;
+	rdf:rest _:c14n617 .
+_:c14n617 rdf:first _:c14n620 ;
+	rdf:rest _:c14n618 .
+_:c14n618 rdf:first _:c14n619 ;
+	rdf:rest rdf:nil .
+_:c14n619 sh:class nist_nvd:NvdChangeObject .
+_:c14n62 sh:datatype xsd:string ;
+	sh:description "A version string. On a score it is the CVSS version; on a product entry, the product's." ;
+	sh:in _:c14n418 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path <https://w3id.org/lmodel/cve/version> .
+_:c14n620 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n621 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n622 rdf:first _:c14n625 ;
+	rdf:rest _:c14n623 .
+_:c14n623 rdf:first _:c14n624 ;
+	rdf:rest rdf:nil .
+_:c14n624 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n625 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n626 rdf:first _:c14n629 ;
+	rdf:rest _:c14n627 .
+_:c14n627 rdf:first _:c14n628 ;
+	rdf:rest rdf:nil .
+_:c14n628 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n629 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n63 sh:datatype xsd:integer ;
+	sh:description "How many results the request matched in all." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:totalResults .
+_:c14n630 rdf:first _:c14n633 ;
+	rdf:rest _:c14n631 .
+_:c14n631 rdf:first _:c14n632 ;
+	rdf:rest rdf:nil .
+_:c14n632 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n633 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n634 rdf:first _:c14n639 ;
+	rdf:rest _:c14n635 .
+_:c14n635 rdf:first _:c14n638 ;
+	rdf:rest _:c14n636 .
+_:c14n636 rdf:first _:c14n637 ;
+	rdf:rest rdf:nil .
+_:c14n637 sh:class nist_nvd:NvdChangeObject .
+_:c14n638 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n639 sh:datatype xsd:string ;
+	sh:nodeKind sh:Literal .
+_:c14n64 sh:datatype xsd:string ;
+	sh:description "The text." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:langStringValue ;
+	sh:pattern "^[\\s\\S]{0,4096}$" .
+_:c14n640 rdf:first "LOW" ;
+	rdf:rest _:c14n641 .
+_:c14n641 rdf:first "HIGH" ;
+	rdf:rest _:c14n642 .
+_:c14n642 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n643 rdf:first "NONE" ;
+	rdf:rest _:c14n640 .
+_:c14n644 rdf:first "LOW" ;
+	rdf:rest _:c14n645 .
+_:c14n645 rdf:first "HIGH" ;
+	rdf:rest _:c14n646 .
+_:c14n646 rdf:first "SAFETY" ;
+	rdf:rest _:c14n647 .
+_:c14n647 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n648 rdf:first "NONE" ;
+	rdf:rest _:c14n644 .
+_:c14n649 rdf:first "LOW" ;
+	rdf:rest _:c14n650 .
+_:c14n65 sh:datatype xsd:float ;
+	sh:description "The score adjusted for the scorer's own environment." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 12 ;
+	sh:path <https://w3id.org/lmodel/cve/environmentalScore> .
+_:c14n650 rdf:first "HIGH" ;
+	rdf:rest _:c14n651 .
+_:c14n651 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n652 rdf:first "NONE" ;
+	rdf:rest _:c14n649 .
+_:c14n653 rdf:first "LOW" ;
+	rdf:rest _:c14n654 .
+_:c14n654 rdf:first "HIGH" ;
+	rdf:rest _:c14n655 .
+_:c14n655 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n656 rdf:first "NONE" ;
+	rdf:rest _:c14n653 .
+_:c14n657 rdf:first "LOW" ;
+	rdf:rest _:c14n658 .
+_:c14n658 rdf:first "HIGH" ;
+	rdf:rest _:c14n659 .
+_:c14n659 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n66 sh:class nist_nvd:NvdCpeNameLink ;
+	sh:description "The CPE names this one replaces." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 8 ;
+	sh:path nist_nvd:deprecates .
+_:c14n660 rdf:first "NONE" ;
+	rdf:rest _:c14n657 .
+_:c14n661 rdf:first "LOW" ;
+	rdf:rest _:c14n662 .
+_:c14n662 rdf:first "HIGH" ;
+	rdf:rest _:c14n663 .
+_:c14n663 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n664 rdf:first "NONE" ;
+	rdf:rest _:c14n661 .
+_:c14n665 rdf:first "LOW" ;
+	rdf:rest _:c14n666 .
+_:c14n666 rdf:first "HIGH" ;
+	rdf:rest _:c14n667 .
+_:c14n667 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n668 rdf:first "NONE" ;
+	rdf:rest _:c14n665 .
+_:c14n669 rdf:first "LOW" ;
+	rdf:rest _:c14n43 .
+_:c14n67 sh:datatype xsd:string ;
+	sh:description "The name NVD gives this kind of response." ;
+	sh:in _:c14n33 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:format .
+_:c14n670 rdf:first "NONE" ;
+	rdf:rest _:c14n669 .
+_:c14n671 rdf:first "LOW" ;
+	rdf:rest _:c14n672 .
+_:c14n672 rdf:first "HIGH" ;
+	rdf:rest _:c14n673 .
+_:c14n673 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n674 rdf:first "NONE" ;
+	rdf:rest _:c14n671 .
+_:c14n675 rdf:first "LOW" ;
+	rdf:rest _:c14n676 .
+_:c14n676 rdf:first "HIGH" ;
+	rdf:rest _:c14n677 .
+_:c14n677 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n678 rdf:first "NONE" ;
+	rdf:rest _:c14n675 .
+_:c14n679 rdf:first "LOW" ;
+	rdf:rest _:c14n680 .
+_:c14n68 sh:datatype xsd:float ;
+	sh:description "The base score adjusted for what changes over time, such as a fix appearing." ;
+	sh:maxCount 1 ;
+	sh:maxInclusive 10 ;
+	sh:minInclusive 0 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 13 ;
+	sh:path <https://w3id.org/lmodel/cve/temporalScore> .
+_:c14n680 rdf:first "HIGH" ;
+	rdf:rest _:c14n681 .
+_:c14n681 rdf:first "SAFETY" ;
+	rdf:rest _:c14n682 .
+_:c14n682 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n683 rdf:first "NONE" ;
+	rdf:rest _:c14n679 .
+_:c14n684 rdf:first "LOW" ;
+	rdf:rest _:c14n685 .
+_:c14n685 rdf:first "HIGH" ;
+	rdf:rest _:c14n686 .
+_:c14n686 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n687 rdf:first "NONE" ;
+	rdf:rest _:c14n684 .
+_:c14n688 rdf:first "LOW" ;
+	rdf:rest _:c14n689 .
+_:c14n689 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n690 .
+_:c14n69 sh:description "Whether someone other than the attacker has to take part." ;
+	sh:in _:c14n808 ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path <https://w3id.org/lmodel/cve/userInteraction> .
+_:c14n690 rdf:first "HIGH" ;
+	rdf:rest _:c14n691 .
+_:c14n691 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n692 rdf:first "NONE" ;
+	rdf:rest _:c14n688 .
+_:c14n693 rdf:first "LOW" ;
+	rdf:rest _:c14n694 .
+_:c14n694 rdf:first "HIGH" ;
+	rdf:rest _:c14n695 .
+_:c14n695 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n696 rdf:first "NONE" ;
+	rdf:rest _:c14n693 .
+_:c14n697 rdf:first "REQUIRED" ;
+	rdf:rest _:c14n699 .
+_:c14n698 rdf:first "NONE" ;
+	rdf:rest _:c14n697 .
+_:c14n699 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n7 sh:description "How much information an attack could expose." ;
+	sh:in _:c14n583 ;
+	sh:maxCount 1 ;
+	sh:order 7 ;
+	sh:path <https://w3id.org/lmodel/cve/confidentialityImpact> .
+_:c14n70 sh:description "How much an attack could change that should not change." ;
+	sh:in _:c14n601 ;
+	sh:maxCount 1 ;
+	sh:order 4 ;
+	sh:path <https://w3id.org/lmodel/cve/integrityImpact> .
+_:c14n700 rdf:first "REQUIRED" ;
+	rdf:rest _:c14n702 .
+_:c14n701 rdf:first "NONE" ;
+	rdf:rest _:c14n700 .
+_:c14n702 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n703 rdf:first "OFFICIAL_FIX" ;
+	rdf:rest _:c14n704 .
+_:c14n704 rdf:first "TEMPORARY_FIX" ;
+	rdf:rest _:c14n705 .
+_:c14n705 rdf:first "WORKAROUND" ;
+	rdf:rest _:c14n706 .
+_:c14n706 rdf:first "UNAVAILABLE" ;
+	rdf:rest _:c14n707 .
+_:c14n707 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n708 rdf:first "OFFICIAL_FIX" ;
+	rdf:rest _:c14n709 .
+_:c14n709 rdf:first "TEMPORARY_FIX" ;
+	rdf:rest _:c14n710 .
+_:c14n71 rdf:first "Mailing List" ;
+	rdf:rest _:c14n82 .
+_:c14n710 rdf:first "WORKAROUND" ;
+	rdf:rest _:c14n711 .
+_:c14n711 rdf:first "UNAVAILABLE" ;
+	rdf:rest _:c14n712 .
+_:c14n712 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n713 rdf:first "OFFICIAL_FIX" ;
+	rdf:rest _:c14n714 .
+_:c14n714 rdf:first "TEMPORARY_FIX" ;
+	rdf:rest _:c14n715 .
+_:c14n715 rdf:first "WORKAROUND" ;
+	rdf:rest _:c14n716 .
+_:c14n716 rdf:first "UNAVAILABLE" ;
+	rdf:rest _:c14n717 .
+_:c14n717 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n718 rdf:first "PROOF_OF_CONCEPT" ;
+	rdf:rest _:c14n719 .
+_:c14n719 rdf:first "FUNCTIONAL" ;
+	rdf:rest _:c14n720 .
+_:c14n72 sh:description "The user interaction as the scorer's own environment changes it." ;
+	sh:in _:c14n701 ;
+	sh:maxCount 1 ;
+	sh:order 21 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedUserInteraction> .
+_:c14n720 rdf:first "HIGH" ;
+	rdf:rest _:c14n721 .
+_:c14n721 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n722 rdf:first "UNPROVEN" ;
+	rdf:rest _:c14n718 .
+_:c14n723 rdf:first "PROOF_OF_CONCEPT" ;
+	rdf:rest _:c14n241 .
+_:c14n724 rdf:first "PROOF_OF_CONCEPT" ;
+	rdf:rest _:c14n725 .
+_:c14n725 rdf:first "FUNCTIONAL" ;
+	rdf:rest _:c14n726 .
+_:c14n726 rdf:first "HIGH" ;
+	rdf:rest _:c14n727 .
+_:c14n727 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n728 rdf:first "UNPROVEN" ;
+	rdf:rest _:c14n724 .
+_:c14n729 rdf:first "PROOF_OF_CONCEPT" ;
+	rdf:rest _:c14n730 .
+_:c14n73 sh:datatype xsd:string ;
+	sh:description "The role of whoever made the decision, such as CISA Coordinator." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path nist_nvd:role .
+_:c14n730 rdf:first "FUNCTIONAL" ;
+	rdf:rest _:c14n731 .
+_:c14n731 rdf:first "HIGH" ;
+	rdf:rest _:c14n732 .
+_:c14n732 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n733 rdf:first "UNPROVEN" ;
+	rdf:rest _:c14n729 .
+_:c14n734 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n735 .
+_:c14n735 rdf:first "HIGH" ;
+	rdf:rest _:c14n736 .
+_:c14n736 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n737 rdf:first "LOW" ;
+	rdf:rest _:c14n734 .
+_:c14n738 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n739 .
+_:c14n739 rdf:first "HIGH" ;
+	rdf:rest _:c14n740 .
+_:c14n74 sh:class nist_nvd:NvdCpeTitle ;
+	sh:description "The product's titles, in one or more languages." ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 5 ;
+	sh:path nist_nvd:titles .
+_:c14n740 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n741 rdf:first "LOW" ;
+	rdf:rest _:c14n738 .
+_:c14n742 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n743 .
+_:c14n743 rdf:first "HIGH" ;
+	rdf:rest _:c14n744 .
+_:c14n744 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n745 rdf:first "LOW" ;
+	rdf:rest _:c14n742 .
+_:c14n746 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n747 .
+_:c14n747 rdf:first "HIGH" ;
+	rdf:rest _:c14n748 .
+_:c14n748 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n749 rdf:first "LOW" ;
+	rdf:rest _:c14n746 .
+_:c14n75 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n750 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n751 .
+_:c14n751 rdf:first "HIGH" ;
+	rdf:rest _:c14n752 .
+_:c14n752 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n753 rdf:first "LOW" ;
+	rdf:rest _:c14n750 .
+_:c14n754 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n755 .
+_:c14n755 rdf:first "HIGH" ;
+	rdf:rest _:c14n756 .
+_:c14n756 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n757 rdf:first "LOW" ;
+	rdf:rest _:c14n754 .
+_:c14n758 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n759 .
+_:c14n759 rdf:first "HIGH" ;
+	rdf:rest _:c14n760 .
+_:c14n76 sh:class nist_nvd:NvdAffectedProduct ;
+	sh:description "The products." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 1 ;
+	sh:path nist_nvd:affectedData .
+_:c14n760 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n761 rdf:first "LOW" ;
+	rdf:rest _:c14n758 .
+_:c14n762 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n763 .
+_:c14n763 rdf:first "HIGH" ;
+	rdf:rest _:c14n764 .
+_:c14n764 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n765 rdf:first "LOW" ;
+	rdf:rest _:c14n762 .
+_:c14n766 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n767 .
+_:c14n767 rdf:first "HIGH" ;
+	rdf:rest _:c14n768 .
+_:c14n768 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n769 rdf:first "LOW" ;
+	rdf:rest _:c14n766 .
+_:c14n77 rdf:first "Deferred" ;
+	rdf:rest _:c14n371 .
+_:c14n770 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n771 .
+_:c14n771 rdf:first "HIGH" ;
+	rdf:rest _:c14n772 .
+_:c14n772 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n773 rdf:first "LOW" ;
+	rdf:rest _:c14n770 .
+_:c14n774 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n775 .
+_:c14n775 rdf:first "HIGH" ;
+	rdf:rest _:c14n776 .
+_:c14n776 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n777 rdf:first "LOW" ;
+	rdf:rest _:c14n774 .
+_:c14n778 rdf:first "MEDIUM" ;
+	rdf:rest _:c14n779 .
+_:c14n779 rdf:first "HIGH" ;
+	rdf:rest _:c14n780 .
+_:c14n78 rdf:first "Press/Media Coverage" ;
+	rdf:rest _:c14n303 .
+_:c14n780 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n781 rdf:first "LOW" ;
+	rdf:rest _:c14n778 .
+_:c14n782 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n783 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n784 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n785 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n786 rdf:first "HIGH" ;
+	rdf:rest _:c14n785 .
+_:c14n787 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n788 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n789 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n79 sh:datatype xsd:boolean ;
+	sh:description "Whether the result of the configuration is reversed." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path nist_nvd:negate .
+_:c14n790 rdf:first "HIGH" ;
+	rdf:rest _:c14n789 .
+_:c14n791 rdf:first "NOT_DEFINED" ;
+	rdf:rest rdf:nil .
+_:c14n792 rdf:first "Product" ;
+	rdf:rest _:c14n305 .
+_:c14n793 rdf:first "Product" ;
+	rdf:rest _:c14n164 .
+_:c14n794 rdf:first "affected" ;
+	rdf:rest _:c14n795 .
+_:c14n795 rdf:first "unaffected" ;
+	rdf:rest _:c14n796 .
+_:c14n796 rdf:first "unknown" ;
+	rdf:rest rdf:nil .
+_:c14n797 rdf:first "affected" ;
+	rdf:rest _:c14n798 .
+_:c14n798 rdf:first "unaffected" ;
+	rdf:rest _:c14n799 .
+_:c14n799 rdf:first "unknown" ;
+	rdf:rest rdf:nil .
+_:c14n8 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n80 sh:description "The kind of this thing, from the list its class names." ;
+	sh:in _:c14n177 ;
+	sh:maxCount 1 ;
+	sh:order 0 ;
+	sh:path nist_nvd:type .
+_:c14n800 rdf:first "affected" ;
+	rdf:rest _:c14n801 .
+_:c14n801 rdf:first "unaffected" ;
+	rdf:rest _:c14n802 .
+_:c14n802 rdf:first "unknown" ;
+	rdf:rest rdf:nil .
+_:c14n803 rdf:first "REQUIRED" ;
+	rdf:rest rdf:nil .
+_:c14n804 rdf:first "NONE" ;
+	rdf:rest _:c14n803 .
+_:c14n805 rdf:first "REQUIRED" ;
+	rdf:rest rdf:nil .
+_:c14n806 rdf:first "NONE" ;
+	rdf:rest _:c14n805 .
+_:c14n807 rdf:first "PASSIVE" ;
+	rdf:rest _:c14n377 .
+_:c14n808 rdf:first "NONE" ;
+	rdf:rest _:c14n807 .
+_:c14n809 rdf:first "PASSIVE" ;
+	rdf:rest _:c14n95 .
+_:c14n81 sh:description "The confidentiality impact as the scorer's own environment changes it." ;
+	sh:in _:c14n678 ;
+	sh:maxCount 1 ;
+	sh:order 23 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedConfidentialityImpact> .
+_:c14n810 rdf:first "NONE" ;
+	rdf:rest _:c14n809 .
+_:c14n811 rdf:first "NONE" ;
+	rdf:rest _:c14n355 .
+_:c14n812 rdf:first "LOW" ;
+	rdf:rest _:c14n132 .
+_:c14n82 rdf:first "Mitigation" ;
+	rdf:rest _:c14n258 .
+_:c14n83 rdf:first "YES" ;
+	rdf:rest _:c14n782 .
+_:c14n84 sh:description "The rating in words that the base score falls under." ;
+	sh:in _:c14n464 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 29 ;
+	sh:path <https://w3id.org/lmodel/cve/baseSeverity> .
+_:c14n85 sh:description "How much an attack could disrupt the vulnerable system." ;
+	sh:in _:c14n568 ;
+	sh:maxCount 1 ;
+	sh:order 16 ;
+	sh:path <https://w3id.org/lmodel/cve/vulnAvailabilityImpact> .
+_:c14n86 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n87 sh:class nist_nvd:NvdLangString ;
+	sh:description "What the vulnerability is, in one or more languages." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 14 ;
+	sh:path nist_nvd:descriptions .
+_:c14n88 sh:description "How much an attack could change that should not change." ;
+	sh:in _:c14n562 ;
+	sh:maxCount 1 ;
+	sh:order 8 ;
+	sh:path <https://w3id.org/lmodel/cve/integrityImpact> .
+_:c14n89 sh:datatype xsd:string ;
+	sh:description "The email address or UUID of the organization that supplied this." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path nist_nvd:source .
+_:c14n9 sh:description "The attack complexity as the scorer's own environment changes it." ;
+	sh:in _:c14n502 ;
+	sh:maxCount 1 ;
+	sh:order 19 ;
+	sh:path <https://w3id.org/lmodel/cve/modifiedAttackComplexity> .
+_:c14n90 sh:class nist_nvd:NvdLangString ;
+	sh:description "The weakness, as language-tagged text, usually a CWE identifier." ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 2 ;
+	sh:path nist_nvd:description .
+_:c14n91 rdf:first "MULTIPLE" ;
+	rdf:rest _:c14n184 .
+_:c14n92 sh:description "The address of the page." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path nist_nvd:url ;
+	sh:pattern "^[\\s\\S]{1,2048}$" .
+_:c14n93 sh:description "The value after the change." ;
+	sh:maxCount 1 ;
+	sh:or _:c14n634 ;
+	sh:order 3 ;
+	sh:path nist_nvd:newValue .
+_:c14n94 sh:description "How much is outside the attacker's control when using the flaw." ;
+	sh:in _:c14n525 ;
+	sh:maxCount 1 ;
+	sh:order 3 ;
+	sh:path <https://w3id.org/lmodel/cve/attackComplexity> .
+_:c14n95 rdf:first "ACTIVE" ;
+	rdf:rest _:c14n788 .
+_:c14n96 sh:datatype xsd:string ;
+	sh:description "The last version the match covers." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path nist_nvd:versionEndIncluding .
+_:c14n97 sh:description "The kind of this thing, from the list its class names." ;
+	sh:in _:c14n605 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 1 ;
+	sh:path nist_nvd:type .
+_:c14n98 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n99 sh:description "How much an attack could change in other, connected systems." ;
+	sh:in _:c14n589 ;
+	sh:maxCount 1 ;
+	sh:order 18 ;
+	sh:path <https://w3id.org/lmodel/cve/subIntegrityImpact> .

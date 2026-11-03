@@ -1,0 +1,1131 @@
+---
+id: https://w3id.org/lmodel/nist-nvd/nvd_cve
+name: nvd_cve
+title: NVD vulnerabilities
+description: >-
+  The response of the NVD vulnerability API and of NVD's data feeds: each
+  vulnerability as NVD holds it, with NVD's own analysis status, its scores and
+  those of others, the weaknesses and the affected configurations.
+version: 2.2.4
+source: https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema
+license: Apache-2.0
+see_also:
+  - https://lmodel.github.io/nist-nvd
+  - https://nvd.nist.gov/developers/vulnerabilities
+annotations:
+  upstream_sha256: 2b9c4e8ab7e6e42aa17ea787f58167beff47c119c6f291405f86ac19c6149e01
+comments:
+  - >-
+    The version is the one in the title of NVD's JSON schema, which NIST changes
+    in place at the address in source. upstream/ holds the file, and
+    scripts/check_upstream_release.py reports when it moves.
+  - >-
+    The classes are closed, though NVD's schema leaves some objects open: a key
+    NVD adds fails validation, so the feed test finds it. tests/test_upstream.py
+    lists those objects.
+default_prefix: nist_nvd
+default_range: string
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  nist_nvd: https://w3id.org/lmodel/nist-nvd/
+  cve: https://w3id.org/lmodel/cve/
+  kev_catalog: https://w3id.org/lmodel/kev-catalog/
+  stix: https://w3id.org/lmodel/stix/
+  spdx3: https://spdx.org/rdf/3.0.1/terms/
+  sepses_cve: http://w3id.org/sepses/vocab/ref/cve#
+  sepses_cvss: http://w3id.org/sepses/vocab/ref/cvss#
+  wd: http://www.wikidata.org/entity/
+  schema: http://schema.org/
+  dcterms: http://purl.org/dc/terms/
+  dcat: http://www.w3.org/ns/dcat#
+
+imports:
+  - linkml:types
+  - ./nvd_core
+  - ./cve/cve_cvss
+
+enums:
+
+  NvdVulnStatus:
+    description: Where a vulnerability stands in NVD's own analysis.
+    comments:
+      - >-
+        NVD's schema says only that vulnStatus is a string. This list comes from
+        the data: the seven values of the 33,378 records read on 2026-11-03, which
+        are the modified feed, the records the API marks as known exploited, and
+        eight pages of its results spread across all its years. NVD's page that
+        defines them refuses a plain client, so each description says only what
+        the value's name and the data show. A new value fails validation, and the
+        feed test reports it.
+    permissible_values:
+      Analyzed:
+        description: NVD has finished its analysis of the record.
+      Deferred:
+        description: NVD has put off analysing the record.
+      Awaiting Analysis:
+        description: NVD has the record and has not begun to analyse it.
+      Modified:
+        description: The record has changed since NVD analysed it.
+      Received:
+        description: The record has just reached NVD.
+      Undergoing Analysis:
+        description: NVD is analysing the record now.
+      Rejected:
+        description: The CVE identifier has been rejected.
+
+  NvdCveTagName:
+    description: A label that a CVE record's source puts on the record.
+    permissible_values:
+      unsupported-when-assigned:
+        description: The product had lost its support when the identifier was assigned.
+      exclusively-hosted-service:
+        description: The product exists only as a hosted service.
+      disputed:
+        description: A party disputes that this is a vulnerability.
+
+  NvdReferenceTag:
+    description: NVD's label for what a reference is.
+    comments:
+      - >-
+        NVD's schema says only that a tag is a string. This list comes from the
+        data, the same 33,378 records as NvdVulnStatus. A new value fails
+        validation, and the feed test reports it.
+      - >-
+        This is NVD's own vocabulary, not the CVE Program's reference tags, which
+        differ in spelling and in membership. The two lists are not mapped to
+        each other, and tests/test_mappings.py holds that.
+    permissible_values:
+      Broken Link:
+        description: The address no longer leads to the content.
+      Exploit:
+        description: The page shows or gives a way to exploit the vulnerability.
+      Issue Tracking:
+        description: An entry in a bug or issue tracker.
+      Mailing List:
+        description: A message in a mailing list archive.
+      Mitigation:
+        description: The page says how to reduce the risk without a fix.
+      Not Applicable:
+        description: The page does not bear on the vulnerability.
+      Patch:
+        description: The page holds or points to a fix.
+      Permissions Required:
+        description: Reading the page takes an account or some other access.
+      Press/Media Coverage:
+        description: A report in the press or other media.
+      Related:
+        description: A page on a related matter.
+      Product:
+        description: A page about the affected product.
+      Release Notes:
+        description: The notes of a product release.
+      Technical Description:
+        description: A technical account of the vulnerability.
+      Third Party Advisory:
+        description: An advisory from someone other than the vendor.
+      Tool Signature:
+        description: A signature that a detection tool can use.
+      URL Repurposed:
+        description: The address now leads to something else.
+      US Government Resource:
+        description: A page from a body of the United States government.
+      VDB Entry:
+        description: An entry in a vulnerability database.
+      Vendor Advisory:
+        description: An advisory from the product's vendor.
+
+  NvdSourceType:
+    description: Whether a score or a weakness comes from the party NVD treats as first.
+    comments:
+      - >-
+        NVD's schema fixes this list for a score. For a weakness it says only
+        string, and the data holds the same two values.
+    permissible_values:
+      Primary:
+        description: NVD's first source for the record.
+      Secondary:
+        description: Any other source.
+
+  NvdCvssV2Severity:
+    description: The severity band NVD gives a CVSS 2.0 base score.
+    comments:
+      - >-
+        NVD's schema says only that this is a string. The data holds these three
+        values, in the same 33,378 records as NvdVulnStatus.
+    permissible_values:
+      LOW:
+        description: The low band of CVSS 2.0 base scores.
+      MEDIUM:
+        description: The middle band of CVSS 2.0 base scores.
+      HIGH:
+        description: The high band of CVSS 2.0 base scores.
+
+  NvdVersionStatus:
+    description: Whether a version of a product has the vulnerability.
+    permissible_values:
+      affected:
+        description: This version has the vulnerability.
+      unaffected:
+        description: This version does not have the vulnerability.
+      unknown:
+        description: Nobody has said whether this version has the vulnerability.
+
+  NvdOperator:
+    description: How the parts of a configuration combine.
+    permissible_values:
+      AND:
+        description: Every part must hold.
+      OR:
+        description: At least one part must hold.
+
+slots:
+
+  id:
+    identifier: true
+    description: The vulnerability's CVE identifier.
+    range: nvd_cve_identifier
+    slot_uri: nist_nvd:id
+    exact_mappings:
+      - cve:cveId
+      - kev_catalog:cveID
+    close_mappings:
+      - dcterms:identifier
+    comments:
+      - >-
+        Every CVE identifier in the KEV catalog of 2026-11-03 is the id of one
+        record the API marks as known exploited, and the reverse.
+
+  references:
+    description: The pages that NVD lists about this vulnerability.
+    range: NvdReference
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    required: true
+    slot_uri: nist_nvd:references
+    close_mappings:
+      - cve:references
+      - sepses_cve:hasReference
+
+  description:
+    description: The weakness, as language-tagged text, usually a CWE identifier.
+    range: NvdLangString
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    required: true
+    slot_uri: nist_nvd:description
+
+  tags:
+    description: Labels on this thing, from the list its class names.
+    multivalued: true
+    slot_uri: nist_nvd:tags
+
+  url:
+    description: The address of the page.
+    required: true
+    range: uri
+    pattern: ^[\s\S]{1,2048}$
+    slot_uri: nist_nvd:url
+    close_mappings:
+      - schema:url
+      - sepses_cve:referenceUrl
+
+  name:
+    description: The name of the source code routine.
+    required: true
+    pattern: ^[\s\S]{1,4096}$
+    slot_uri: nist_nvd:name
+
+  at:
+    description: The version at which the status changes.
+    required: true
+    pattern: ^[\s\S]{1,1024}$
+    slot_uri: nist_nvd:at
+
+  operator:
+    description: How the parts of this configuration combine.
+    range: NvdOperator
+    slot_uri: nist_nvd:operator
+
+  negate:
+    description: Whether the result of the configuration is reversed.
+    range: boolean
+    slot_uri: nist_nvd:negate
+
+  cvssData:
+    description: The CVSS score itself, in FIRST's form for its version.
+    required: true
+    inlined: true
+    slot_uri: nist_nvd:cvssData
+
+  exploitabilityScore:
+    description: The CVSS exploitability subscore.
+    range: float
+    minimum_value: 0
+    maximum_value: 10
+    slot_uri: nist_nvd:exploitabilityScore
+    close_mappings:
+      - sepses_cvss:exploitabilityScore
+
+  impactScore:
+    description: The CVSS impact subscore.
+    range: float
+    minimum_value: 0
+    maximum_value: 10
+    slot_uri: nist_nvd:impactScore
+    close_mappings:
+      - sepses_cvss:impactScore
+
+  defaultStatus:
+    description: The status of any version the versions list does not name.
+    range: NvdVersionStatus
+    slot_uri: nist_nvd:defaultStatus
+
+classes:
+
+  NvdCveResponse:
+    tree_root: true
+    description: A page of the vulnerability API's results, or a whole data feed.
+    mixins:
+      - NvdResponseMixin
+    slot_usage:
+      format:
+        equals_string: NVD_CVE
+    attributes:
+      vulnerabilities:
+        description: The vulnerabilities on this page.
+        range: NvdVulnerability
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        required: true
+    close_mappings:
+      - schema:DataFeed
+    related_mappings:
+      - dcat:Distribution
+    comments:
+      - >-
+        A feed file is one representation of NVD's data, so it relates to a DCAT
+        distribution, but this class also covers one page of an API answer.
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#"
+
+  NvdVulnerability:
+    description: One entry of a response, which only wraps the vulnerability.
+    attributes:
+      cve:
+        description: The vulnerability.
+        range: NvdCve
+        inlined: true
+        required: true
+    close_mappings:
+      - schema:DataFeedItem
+    aliases:
+      - def_cve_item
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/def_cve_item"
+
+  NvdCve:
+    description: A vulnerability as NVD holds it, under its CVE identifier.
+    slots:
+      - id
+      - sourceIdentifier
+      - lastModified
+      - references
+    slot_usage:
+      lastModified:
+        required: true
+    attributes:
+      vulnStatus:
+        description: Where this vulnerability stands in NVD's analysis.
+        range: NvdVulnStatus
+      published:
+        description: When NVD published this vulnerability.
+        range: nvd_timestamp
+        required: true
+        close_mappings:
+          - dcterms:issued
+          - schema:datePublished
+          - spdx3:Security/publishedTime
+        related_mappings:
+          - cve:datePublished
+        comments:
+          - >-
+            This is NVD's own time, not the CVE record's datePublished. For
+            CVE-2021-44228 the CVE record says 2021-12-10T00:00:00.000Z and NVD
+            2021-12-10T10:15:09.143, so the mapping is only a related one.
+      evaluatorComment:
+        description: A remark from NVD's analyst.
+      evaluatorSolution:
+        description: A way to resolve the vulnerability, from NVD's analyst.
+      evaluatorImpact:
+        description: What the vulnerability can lead to, from NVD's analyst.
+      cisaExploitAdd:
+        description: The day CISA added this vulnerability to its Known Exploited Vulnerabilities catalog.
+        range: date
+        exact_mappings:
+          - kev_catalog:dateAdded
+        comments:
+          - >-
+            Equal to the catalog's value for all 1,766 entries of the catalog of
+            2026-11-03, read through the API.
+      cisaActionDue:
+        description: The day by which CISA says federal agencies must act.
+        range: date
+        exact_mappings:
+          - kev_catalog:dueDate
+        comments:
+          - >-
+            Equal to the catalog's value for all 1,766 entries of the catalog of
+            2026-11-03, read through the API.
+      cisaRequiredAction:
+        description: What CISA says agencies must do about this vulnerability.
+        exact_mappings:
+          - kev_catalog:requiredAction
+        comments:
+          - >-
+            Equal to the catalog's value for all 1,766 entries of the catalog of
+            2026-11-03, read through the API.
+      cisaVulnerabilityName:
+        description: The name CISA gives this vulnerability in its catalog.
+        exact_mappings:
+          - kev_catalog:vulnerabilityName
+        comments:
+          - >-
+            Equal to the catalog's value for all 1,766 entries of the catalog of
+            2026-11-03, read through the API.
+      cveTags:
+        description: The labels the record's sources put on it.
+        range: NvdCveTag
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        close_mappings:
+          - cve:tags
+      descriptions:
+        description: What the vulnerability is, in one or more languages.
+        range: NvdLangString
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        required: true
+        minimum_cardinality: 1
+        close_mappings:
+          - cve:descriptions
+      metrics:
+        description: The scores that NVD and others give this vulnerability.
+        range: NvdMetrics
+        inlined: true
+        close_mappings:
+          - cve:metrics
+        related_mappings:
+          - sepses_cvss:hasCVSS
+      affected:
+        description: The affected products, by the source that names them.
+        range: NvdAffected
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        close_mappings:
+          - cve:affected
+      weaknesses:
+        description: The weaknesses behind the vulnerability, by the source that names them.
+        range: NvdWeakness
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        close_mappings:
+          - cve:problemTypes
+        related_mappings:
+          - sepses_cve:hasCWE
+      configurations:
+        description: The product configurations that have the vulnerability.
+        range: NvdConfiguration
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        close_mappings:
+          - cve:cpeApplicability
+          - sepses_cve:hasVulnerableConfiguration
+      vendorComments:
+        description: What product vendors have said about this vulnerability.
+        range: NvdVendorComment
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+    close_mappings:
+      - cve:CveRecord
+      - stix:StixVulnerability
+      - spdx3:Security/Vulnerability
+      - sepses_cve:CVE
+      - wd:Q631425
+    comments:
+      - >-
+        NVD republishes CVE records and adds its own analysis, so this is close
+        to a CVE record and not the same thing. A record of this class also
+        repeats four fields of the CISA Known Exploited Vulnerabilities catalog
+        when the catalog lists it.
+    aliases:
+      - cve_item
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/cve_item"
+
+  NvdCveTag:
+    description: The labels that one source puts on a record.
+    slots:
+      - sourceIdentifier
+      - tags
+    slot_usage:
+      tags:
+        range: NvdCveTagName
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/cve_item/properties/cveTags/items"
+
+  NvdLangString:
+    description: A piece of text and the language it is in.
+    slots:
+      - lang
+    attributes:
+      value:
+        description: The text.
+        required: true
+        pattern: ^[\s\S]{0,4096}$
+        slot_uri: nist_nvd:langStringValue
+    close_mappings:
+      - cve:CveDescription
+    aliases:
+      - lang_string
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/lang_string"
+
+  NvdReference:
+    description: A page about a vulnerability, with NVD's labels for what it is.
+    slots:
+      - url
+      - source
+      - tags
+    slot_usage:
+      tags:
+        range: NvdReferenceTag
+      source:
+        close_mappings:
+          - sepses_cve:referenceSource
+    close_mappings:
+      - cve:CveReference
+      - sepses_cve:Reference
+    aliases:
+      - reference
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/reference"
+
+  NvdMetrics:
+    description: The scores of a vulnerability, in a list per scoring system and version.
+    attributes:
+      cvssMetricV40:
+        description: The CVSS 4.0 scores.
+        range: NvdCvssMetricV40
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+      cvssMetricV31:
+        description: The CVSS 3.1 scores.
+        range: NvdCvssMetricV31
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+      cvssMetricV30:
+        description: The CVSS 3.0 scores.
+        range: NvdCvssMetricV30
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+      cvssMetricV2:
+        description: The CVSS 2.0 scores.
+        range: NvdCvssMetricV2
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+      ssvcV203:
+        description: The SSVC 2.0.3 decisions.
+        range: NvdSsvcMetricV203
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/cve_item/properties/metrics"
+
+  NvdCvssMetricV2:
+    description: A CVSS 2.0 score, who gave it, and NVD's figures beside it.
+    slots:
+      - source
+      - type
+      - cvssData
+      - exploitabilityScore
+      - impactScore
+    slot_usage:
+      source:
+        required: true
+      type:
+        required: true
+        range: NvdSourceType
+      cvssData:
+        range: CvssV20
+    attributes:
+      baseSeverity:
+        description: The severity band of the base score, which CVSS 2.0 leaves to NVD.
+        range: NvdCvssV2Severity
+        slot_uri: nist_nvd:baseSeverity
+        close_mappings:
+          - sepses_cvss:severity
+      acInsufInfo:
+        description: Whether NVD lacked the information to rate the access complexity.
+        range: boolean
+      obtainAllPrivilege:
+        description: Whether exploiting this gains every privilege.
+        range: boolean
+      obtainUserPrivilege:
+        description: Whether exploiting this gains a user's privileges.
+        range: boolean
+      obtainOtherPrivilege:
+        description: Whether exploiting this gains some other privilege.
+        range: boolean
+      userInteractionRequired:
+        description: Whether exploiting this needs a user to act.
+        range: boolean
+    close_mappings:
+      - sepses_cvss:CVSS2BaseMetric
+    related_mappings:
+      - spdx3:Security/CvssV2VulnAssessmentRelationship
+    aliases:
+      - cvss-v2
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/cvss-v2"
+
+  NvdCvssMetricV30:
+    description: A CVSS 3.0 score, who gave it, and its subscores.
+    slots:
+      - source
+      - type
+      - cvssData
+      - exploitabilityScore
+      - impactScore
+    slot_usage:
+      source:
+        required: true
+      type:
+        required: true
+        range: NvdSourceType
+      cvssData:
+        range: CvssV30
+    close_mappings:
+      - sepses_cvss:CVSS3BaseMetric
+    related_mappings:
+      - spdx3:Security/CvssV3VulnAssessmentRelationship
+    aliases:
+      - cvss-v30
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/cvss-v30"
+
+  NvdCvssMetricV31:
+    description: A CVSS 3.1 score, who gave it, and its subscores.
+    slots:
+      - source
+      - type
+      - cvssData
+      - exploitabilityScore
+      - impactScore
+    slot_usage:
+      source:
+        required: true
+      type:
+        required: true
+        range: NvdSourceType
+      cvssData:
+        range: CvssV31
+    close_mappings:
+      - sepses_cvss:CVSS3BaseMetric
+    related_mappings:
+      - spdx3:Security/CvssV3VulnAssessmentRelationship
+    aliases:
+      - cvss-v31
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/cvss-v31"
+
+  NvdCvssMetricV40:
+    description: A CVSS 4.0 score and who gave it.
+    slots:
+      - source
+      - type
+      - cvssData
+    slot_usage:
+      source:
+        required: true
+      type:
+        required: true
+        range: NvdSourceType
+      cvssData:
+        range: CvssV40
+    related_mappings:
+      - spdx3:Security/CvssV4VulnAssessmentRelationship
+    aliases:
+      - cvss-v40
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/cvss-v40"
+
+  NvdSsvcMetricV203:
+    description: A Stakeholder-Specific Vulnerability Categorization (SSVC) decision and who made it.
+    slots:
+      - source
+    slot_usage:
+      source:
+        required: true
+    attributes:
+      ssvcData:
+        description: The decision.
+        range: NvdSsvcData
+        inlined: true
+        required: true
+    related_mappings:
+      - spdx3:Security/SsvcVulnAssessmentRelationship
+    comments:
+      - >-
+        SPDX records the outcome of an SSVC decision, and NVD the path to it, so
+        the mapping is only a related one.
+    aliases:
+      - ssvc-v203
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/ssvc-v203"
+
+  NvdSsvcData:
+    description: One SSVC decision, as the answers chosen on the way through a decision tree.
+    slots:
+      - timestamp
+    attributes:
+      computed:
+        description: The decision in a short form.
+      options:
+        description: The answers given, each as a decision point and its value.
+        range: NvdSsvcOption
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        required: true
+        minimum_cardinality: 1
+        list_elements_unique: true
+      role:
+        description: The role of whoever made the decision, such as CISA Coordinator.
+        required: true
+      version:
+        description: The version of SSVC used.
+        required: true
+        slot_uri: nist_nvd:ssvcVersion
+      decisionTree:
+        description: The whole decision tree that was used.
+        range: NvdSsvcDecisionTree
+        inlined: true
+      id:
+        description: The vulnerability the decision is about, by whatever identifier.
+        slot_uri: nist_nvd:ssvcSubject
+      decisionTreeUrl:
+        description: The address of the decision tree that was used.
+        range: uri
+      generator:
+        description: The tool that wrote this decision.
+    comments:
+      - >-
+        This class renders the structure of NVD's ssvc-v2.0.3.json. NVD's file also
+        names a $schema key, which LinkML's Python generators cannot spell. No
+        record of the modified feed of 2026-11-03 holds it, and
+        tests/test_upstream.py lists the departure.
+    annotations:
+      upstream_definition: "ssvc-v2.0.3.json#"
+
+  NvdSsvcOption:
+    description: One answer on the way through a decision tree, keyed by its decision point.
+    attributes:
+      exploitation:
+        description: How far the vulnerability is known to be exploited, such as none, poc or active.
+        any_of:
+          - range: string
+          - range: string
+            multivalued: true
+      automatable:
+        description: Whether an attacker could automate the attack, as yes or no.
+        notes:
+          - >-
+            CVSS 4.0's Automatable differs from this key only by case, so the two
+            share one page of the generated docs on a case-insensitive filesystem.
+            Both are real keys, so neither is renamed, and tests/test_schema_rules.py
+            pins this as the one such pair.
+        any_of:
+          - range: string
+          - range: string
+            multivalued: true
+      technicalImpact:
+        description: How much control an attacker would gain, as partial or total.
+        any_of:
+          - range: string
+          - range: string
+            multivalued: true
+    extra_slots:
+      range_expression:
+        any_of:
+          - range: string
+          - range: string
+            multivalued: true
+    comments:
+      - >-
+        NVD's file allows any key, with a string or a list of strings as its value,
+        and extra_slots states that. The real data holds one key per object, and
+        only these three, each with a string. They are named here because LinkML's
+        Pydantic generator ignores extra_slots, so without them the Pydantic model
+        refuses every SSVC decision.
+    annotations:
+      upstream_definition: "ssvc-v2.0.3.json#/properties/options/items"
+
+  NvdSsvcDecisionTree:
+    class_uri: linkml:Any
+    description: A whole SSVC decision tree, in the form of the schema NVD's file names.
+    comments:
+      - >-
+        NVD's file refers to a schema at democert.org for this object, and this
+        project does not render that schema. No record of the modified feed of
+        2026-11-03 holds a decision tree, and tests/test_upstream.py lists the
+        departure.
+
+  NvdAffected:
+    description: The products that one source says the vulnerability affects.
+    slots:
+      - source
+    slot_usage:
+      source:
+        required: true
+    attributes:
+      affectedData:
+        description: The products.
+        range: NvdAffectedProduct
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        required: true
+        minimum_cardinality: 1
+    aliases:
+      - affected
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/affected"
+
+  NvdAffectedProduct:
+    description: A product and which of its versions have the vulnerability.
+    slots:
+      - defaultStatus
+    attributes:
+      vendor:
+        description: Who makes or maintains the product.
+        pattern: ^[\s\S]{1,512}$
+        close_mappings:
+          - cve:vendor
+      product:
+        description: The product's name.
+        pattern: ^[\s\S]{1,2048}$
+        close_mappings:
+          - cve:product
+      collectionURL:
+        description: The address of the package collection that holds the product.
+        range: uri
+        pattern: ^[\s\S]{1,2048}$
+        close_mappings:
+          - cve:collectionURL
+      packageName:
+        description: The package's name within that collection.
+        pattern: ^[\s\S]{1,2048}$
+        close_mappings:
+          - cve:packageName
+      cpes:
+        description: The product's CPE names, in the 2.2 or the 2.3 form.
+        multivalued: true
+        list_elements_unique: true
+        pattern: ([c][pP][eE]:/[AHOaho]?(:[A-Za-z0-9._\-~%]*){0,6})|(cpe:2\.3:[aho*\-](:(((\?*|\*?)([a-zA-Z0-9\-._]|(\\[\\*?!\x22#$%&\x27()+,/:;<=>@\[\]\^`{|}~]))+(\?*|\*?))|[*\-])){5}(:(([a-zA-Z]{2,3}(-([a-zA-Z]{2}|[0-9]{3}))?)|[*\-]))(:(((\?*|\*?)([a-zA-Z0-9\-._]|(\\[\\*?!\x22#$%&\x27()+,/:;<=>@\[\]\^`{|}~]))+(\?*|\*?))|[*\-])){4})
+        comments:
+          - >-
+            NVD's own pattern, with its quotes written as \x22 and \x27, which mean
+            the same. The Python generators cut a raw string at a quote.
+        close_mappings:
+          - cve:cpes
+      modules:
+        description: The affected parts of the product.
+        multivalued: true
+        list_elements_unique: true
+        pattern: ^[\s\S]{1,4096}$
+        close_mappings:
+          - cve:modules
+      programFiles:
+        description: The affected source code files.
+        multivalued: true
+        list_elements_unique: true
+        pattern: ^[\s\S]{1,1024}$
+        close_mappings:
+          - cve:programFiles
+      programRoutines:
+        description: The affected source code routines.
+        range: NvdProgramRoutine
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        list_elements_unique: true
+        close_mappings:
+          - cve:programRoutines
+      platforms:
+        description: The platforms the vulnerability is limited to.
+        multivalued: true
+        minimum_cardinality: 1
+        list_elements_unique: true
+        pattern: ^[\s\S]{0,1024}$
+        close_mappings:
+          - cve:platforms
+      repo:
+        description: The address of the product's source code repository.
+        pattern: ^[\s\S]{1,2048}$
+        close_mappings:
+          - cve:repo
+        comments:
+          - >-
+            NVD's file says format uri. Some records write an address that RFC 3986
+            refuses, such as git://git@gitlab.com:gitlab-org/gitlab.git, so this is a
+            string and tests/test_upstream.py lists the departure.
+      versions:
+        description: The versions or ranges of versions whose status is known.
+        range: NvdAffectedVersion
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        minimum_cardinality: 1
+        list_elements_unique: true
+        close_mappings:
+          - cve:versions
+      packageURL:
+        description: The product's Package URL, with no version in it.
+        range: uri
+        pattern: ^[\s\S]{1,2048}$
+        close_mappings:
+          - cve:packageURL
+    close_mappings:
+      - cve:CveProduct
+    notes:
+      - >-
+        NVD's file has the same keys as the CVE Record Format's product. It drops
+        the two rules that the CVE format states, that a product names a vendor and
+        product or a collection and package, and that it has versions or a default
+        status, so this class does not state them. The default status keeps NVD's
+        own enum beside it, so nvd_cve needs no second copy of the CVE module.
+    annotations:
+      upstream_definition: "cve_affected_1.0.json#"
+
+  NvdProgramRoutine:
+    description: One affected source code routine.
+    slots:
+      - name
+    close_mappings:
+      - cve:CveProgramRoutine
+    annotations:
+      upstream_definition: "cve_affected_1.0.json#/properties/programRoutines/items"
+
+  NvdAffectedVersion:
+    description: The status of one version of a product, or of a range of its versions.
+    slots:
+      - version
+      - status
+    slot_usage:
+      version:
+        description: The version, or the start of the range.
+        required: true
+        pattern: ^[\s\S]{1,1024}$
+      status:
+        required: true
+        range: NvdVersionStatus
+    attributes:
+      versionType:
+        description: The numbering scheme that orders the versions, such as semver or git.
+        pattern: ^[\s\S]{1,128}$
+      lessThan:
+        description: The first version after the range.
+        pattern: ^[\s\S]{1,1024}$
+      lessThanOrEqual:
+        description: The last version in the range.
+        pattern: ^[\s\S]{1,1024}$
+      changes:
+        description: Where the status changes within the range.
+        range: NvdVersionChange
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        minimum_cardinality: 1
+        list_elements_unique: true
+    rules:
+      - description: A range with a less-than limit names the numbering scheme.
+        preconditions:
+          slot_conditions:
+            lessThan:
+              value_presence: PRESENT
+        postconditions:
+          slot_conditions:
+            versionType:
+              value_presence: PRESENT
+      - description: A range with a less-than-or-equal limit names the numbering scheme.
+        preconditions:
+          slot_conditions:
+            lessThanOrEqual:
+              value_presence: PRESENT
+        postconditions:
+          slot_conditions:
+            versionType:
+              value_presence: PRESENT
+      - description: A range has one upper limit, not two.
+        preconditions:
+          slot_conditions:
+            lessThan:
+              value_presence: PRESENT
+        postconditions:
+          slot_conditions:
+            lessThanOrEqual:
+              value_presence: ABSENT
+      - description: Status changes belong to a range, so they need an upper limit.
+        preconditions:
+          slot_conditions:
+            changes:
+              value_presence: PRESENT
+            lessThan:
+              value_presence: ABSENT
+        postconditions:
+          slot_conditions:
+            lessThanOrEqual:
+              value_presence: PRESENT
+    close_mappings:
+      - cve:CveProductVersion
+    notes:
+      - >-
+        These four rules state the oneOf of NVD's file, which has four branches: a
+        version and a status alone, those with a numbering scheme, and those with a
+        scheme and one of the two limits.
+    annotations:
+      upstream_definition: "cve_affected_1.0.json#/properties/versions/items"
+
+  NvdVersionChange:
+    description: A point within a range of versions where the status changes.
+    slots:
+      - at
+      - status
+    slot_usage:
+      status:
+        required: true
+        range: NvdVersionStatus
+    close_mappings:
+      - cve:CveVersionChange
+    annotations:
+      upstream_definition: "cve_affected_1.0.json#/properties/versions/items/properties/changes/items"
+
+  NvdWeakness:
+    description: The weaknesses that one source says lie behind a vulnerability.
+    slots:
+      - source
+      - type
+      - description
+    slot_usage:
+      source:
+        required: true
+      type:
+        required: true
+        range: NvdSourceType
+    close_mappings:
+      - cve:CveProblemType
+    aliases:
+      - weakness
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/weakness"
+
+  NvdConfiguration:
+    description: A statement of which product configurations have the vulnerability.
+    slots:
+      - operator
+      - negate
+    attributes:
+      nodes:
+        description: The parts of the statement.
+        range: NvdConfigurationNode
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        required: true
+    close_mappings:
+      - cve:CveCpeApplicabilityElement
+      - sepses_cve:VulnerableConfiguration
+    aliases:
+      - config
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/config"
+
+  NvdConfigurationNode:
+    description: One part of a configuration statement, as a set of CPE matches.
+    slots:
+      - operator
+      - negate
+    slot_usage:
+      operator:
+        required: true
+    attributes:
+      cpeMatch:
+        description: The CPE matches of this part.
+        range: NvdCpeMatch
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        required: true
+    close_mappings:
+      - cve:CveCpeNode
+    aliases:
+      - node
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/node"
+
+  NvdCpeMatch:
+    description: A CPE match string or range, and whether what it matches is vulnerable.
+    slots:
+      - criteria
+      - matchCriteriaId
+      - versionStartExcluding
+      - versionStartIncluding
+      - versionEndExcluding
+      - versionEndIncluding
+    attributes:
+      vulnerable:
+        description: Whether what this matches has the vulnerability, rather than only setting the scene.
+        range: boolean
+        required: true
+    close_mappings:
+      - cve:CveCpeMatch
+    aliases:
+      - cpe_match
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/cpe_match"
+
+  NvdVendorComment:
+    description: What a product's vendor has said about a vulnerability.
+    slots:
+      - lastModified
+    slot_usage:
+      lastModified:
+        required: true
+    attributes:
+      organization:
+        description: The vendor's name.
+        required: true
+      comment:
+        description: What the vendor said.
+        required: true
+    close_mappings:
+      - schema:Comment
+    aliases:
+      - vendorComment
+    annotations:
+      upstream_definition: "cve_api_json_2.0.schema#/definitions/vendorComment"

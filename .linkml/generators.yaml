@@ -37,6 +37,13 @@ generator_args:
     mergeimports: true
   jsonschema:
     mergeimports: true
+    # NVD has four kinds of response and no document that holds them, so the
+    # file's top is the vulnerability response, and `$defs` holds the other
+    # three, which tests/test_generated_json_schema.py validates against. An
+    # optional key here is absent or holds a value, as in NVD's own schemas,
+    # never null.
+    top_class: NvdCveResponse
+    include_null: false
   jsonldcontext:
     mergeimports: true
   # gen-pydantic is not yet supported by gen-project.

@@ -1,0 +1,138 @@
+---
+id: https://w3id.org/lmodel/nist-nvd/nvd_cpematch
+name: nvd_cpematch
+title: NVD match strings
+description: >-
+  The response of the NVD match-string API: the CPE match strings that CVE
+  applicability statements use, and the CPE names each one matches.
+version: "2.0"
+source: https://csrc.nist.gov/schema/nvd/api/2.0/cpematch_api_json_2.0.schema
+license: Apache-2.0
+see_also:
+  - https://lmodel.github.io/nist-nvd
+  - https://nvd.nist.gov/developers/products
+annotations:
+  upstream_sha256: 3e0bbadfe51a7f73f9fb4417889a9f5fe37ed47de1e3cd125db97b3b130e15c0
+default_prefix: nist_nvd
+default_range: string
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  nist_nvd: https://w3id.org/lmodel/nist-nvd/
+  schema: http://schema.org/
+
+imports:
+  - linkml:types
+  - ./nvd_core
+
+enums:
+
+  NvdMatchStringStatus:
+    description: Whether NVD still uses a match string.
+    comments:
+      - >-
+        NVD's schema says only that status is a string. This list comes from the
+        data: 400 match strings the API returned on 2026-11-03, in two pages of its
+        results. Nothing in this repository checks more of them, so a further value
+        would fail validation here.
+    permissible_values:
+      Active:
+        description: NVD uses this match string.
+      Inactive:
+        description: NVD no longer uses this match string.
+
+classes:
+
+  NvdCpeMatchResponse:
+    tree_root: true
+    description: A page of the match-string API's results.
+    mixins:
+      - NvdResponseMixin
+    slot_usage:
+      format:
+        equals_string: NVD_CPEMatchString
+    attributes:
+      matchStrings:
+        description: The match strings on this page.
+        range: NvdMatchStringItem
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        required: true
+    close_mappings:
+      - schema:DataFeed
+    annotations:
+      upstream_definition: "cpematch_api_json_2.0.schema#"
+
+  NvdMatchStringItem:
+    description: One entry of a match-string response, which only wraps the match string.
+    attributes:
+      matchString:
+        description: The match string and what NVD holds about it.
+        range: NvdMatchString
+        inlined: true
+        required: true
+    close_mappings:
+      - schema:DataFeedItem
+    aliases:
+      - def_matchstring
+    annotations:
+      upstream_definition: "cpematch_api_json_2.0.schema#/definitions/def_matchstring"
+
+  NvdMatchString:
+    description: A CPE match string or range as NVD holds it, and the CPE names it matches.
+    slots:
+      - criteria
+      - matchCriteriaId
+      - versionStartExcluding
+      - versionStartIncluding
+      - versionEndExcluding
+      - versionEndIncluding
+      - created
+      - lastModified
+      - status
+    slot_usage:
+      matchCriteriaId:
+        identifier: true
+      created:
+        required: true
+      lastModified:
+        required: true
+      status:
+        required: true
+        range: NvdMatchStringStatus
+    attributes:
+      cpeLastModified:
+        description: When NVD last changed the list of CPE names this matches.
+        range: nvd_timestamp
+      matches:
+        description: The CPE names this matches.
+        range: NvdMatchedCpe
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+    notes:
+      - >-
+        The identifier is set on this class alone, because matchCriteriaId also
+        appears in a vulnerability's configurations, where the same match string can
+        recur with a different vulnerable flag. So it identifies a match string here
+        and not a use of one there.
+    aliases:
+      - def_match_data
+    annotations:
+      upstream_definition: "cpematch_api_json_2.0.schema#/definitions/def_match_data"
+
+  NvdMatchedCpe:
+    description: A CPE name that a match string matches.
+    slots:
+      - cpeName
+      - cpeNameId
+    slot_usage:
+      cpeName:
+        required: true
+      cpeNameId:
+        required: true
+    aliases:
+      - def_cpe_name
+    annotations:
+      upstream_definition: "cpematch_api_json_2.0.schema#/definitions/def_cpe_name"
