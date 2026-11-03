@@ -69,3 +69,42 @@ jobs:
 
       - name: Run test suite
         run: just test
+
+  # NVD's modified feed moves about every two hours and stays out of git: this
+  # job fetches it, checks it against the feed's own .meta file, and validates
+  # every record on its own. Because the feed is live, a red job can be NVD's
+  # change and not the pull request's: a new status, tag or key, which the job
+  # exists to report. So keep it out of a ruleset's required checks.
+  nvd-feed:
+    name: Validate NVD's modified feed
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
+        with:
+          egress-policy: audit
+
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.13"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install just
+        run: |
+          uv tool install rust-just==1.47.0
+
+      - name: Install project
+        run: uv sync --locked --group dev
+
+      - name: Fetch and validate the feed
+        run: just test-nvd-feed
