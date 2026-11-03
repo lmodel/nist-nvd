@@ -1,0 +1,53 @@
+# The IRIs of the terms the schema's mappings name outside lmodel, each read at its
+# source on 2026-11-03. tests/test_mappings.py holds every mapping to this list.
+#
+# - dcterms: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.ttl
+# - schema: https://schema.org/version/latest/schemaorg-current-http.ttl
+# - dcat: https://www.w3.org/ns/dcat.ttl (DCAT 3)
+# - prov: https://www.w3.org/ns/prov-o.ttl
+# - spdx3: https://spdx.org/rdf/3.0.1/spdx-model.ttl
+# - sepses_cve, sepses_cvss, sepses_cpe: the ontology.ttl of each vocabulary under
+#   https://www.sepses.org/vocab/ref/ (w3id.org/sepses/vocab/ref/ redirects there)
+# - wd: https://www.wikidata.org/wiki/Special:EntityData/Q631425.json
+http://purl.org/dc/terms/created
+http://purl.org/dc/terms/identifier
+http://purl.org/dc/terms/isReplacedBy
+http://purl.org/dc/terms/issued
+http://purl.org/dc/terms/language
+http://purl.org/dc/terms/modified
+http://purl.org/dc/terms/references
+http://purl.org/dc/terms/replaces
+http://purl.org/dc/terms/title
+http://schema.org/Comment
+http://schema.org/DataFeed
+http://schema.org/DataFeedItem
+http://schema.org/dateCreated
+http://schema.org/dateModified
+http://schema.org/datePublished
+http://schema.org/inLanguage
+http://schema.org/url
+http://w3id.org/sepses/vocab/ref/cpe#CPE
+http://w3id.org/sepses/vocab/ref/cve#CVE
+http://w3id.org/sepses/vocab/ref/cve#Reference
+http://w3id.org/sepses/vocab/ref/cve#VulnerableConfiguration
+http://w3id.org/sepses/vocab/ref/cve#hasCWE
+http://w3id.org/sepses/vocab/ref/cve#hasReference
+http://w3id.org/sepses/vocab/ref/cve#hasVulnerableConfiguration
+http://w3id.org/sepses/vocab/ref/cve#referenceSource
+http://w3id.org/sepses/vocab/ref/cve#referenceUrl
+http://w3id.org/sepses/vocab/ref/cvss#CVSS2BaseMetric
+http://w3id.org/sepses/vocab/ref/cvss#CVSS3BaseMetric
+http://w3id.org/sepses/vocab/ref/cvss#exploitabilityScore
+http://w3id.org/sepses/vocab/ref/cvss#hasCVSS
+http://w3id.org/sepses/vocab/ref/cvss#impactScore
+http://w3id.org/sepses/vocab/ref/cvss#severity
+http://www.w3.org/ns/dcat#Distribution
+http://www.w3.org/ns/prov#Activity
+http://www.wikidata.org/entity/Q631425
+https://spdx.org/rdf/3.0.1/terms/Security/CvssV2VulnAssessmentRelationship
+https://spdx.org/rdf/3.0.1/terms/Security/CvssV3VulnAssessmentRelationship
+https://spdx.org/rdf/3.0.1/terms/Security/CvssV4VulnAssessmentRelationship
+https://spdx.org/rdf/3.0.1/terms/Security/SsvcVulnAssessmentRelationship
+https://spdx.org/rdf/3.0.1/terms/Security/Vulnerability
+https://spdx.org/rdf/3.0.1/terms/Security/modifiedTime
+https://spdx.org/rdf/3.0.1/terms/Security/publishedTime
