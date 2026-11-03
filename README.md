@@ -2,7 +2,7 @@
 
 # nist-nvd
 
-NIST National Vunerability Database (NVD) LinkML Schema
+NIST National Vulnerability Database (NVD) API 2.0 (LinkML)
 
 ## Documentation Website
 

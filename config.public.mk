@@ -8,7 +8,7 @@
 # - just works fine with quoted variables of dot-env files like this one
 LINKML_SCHEMA_NAME="nist_nvd"
 LINKML_SCHEMA_AUTHOR="Noel McLoughlin <noel.mcloughlin@gmail.com>"
-LINKML_SCHEMA_DESCRIPTION="NIST National Vunerability Database (NVD) LinkML Schema"
+LINKML_SCHEMA_DESCRIPTION="NIST National Vulnerability Database (NVD) API 2.0 (LinkML)"
 LINKML_SCHEMA_SOURCE_DIR="src/nist_nvd/schema"
 
 ###### linkml generator variables, used by justfile

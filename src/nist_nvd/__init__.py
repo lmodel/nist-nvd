@@ -1,3 +1,8 @@
+"""nist-nvd.
+
+NIST National Vulnerability Database (NVD) API 2.0 (LinkML)
+"""
+
 try:
     from nist_nvd._version import __version__, __version_tuple__
 except ImportError:  # pragma: no cover
