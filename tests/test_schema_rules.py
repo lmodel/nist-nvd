@@ -343,6 +343,20 @@ def test_copy_roots_the_concept_class():
     assert doc["imports"] == ["linkml:types", "lokf"]
 
 
+def test_the_readme_names_the_known_lokf_types():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    block = readme.split("```text\n", 1)[1].split("```", 1)[0]
+    assert {name.strip() for name in block.split(",")} == ROOTS
+
+
+def test_the_readme_and_notice_carry_nvds_notice():
+    """NVD's terms ask a product that uses its data to say so, and to say that NVD
+    does not endorse it."""
+    wanted = "This product uses data from the NVD API but is not endorsed or certified by the NVD."
+    assert wanted in (ROOT / "README.md").read_text(encoding="utf-8")
+    assert wanted in " ".join((ROOT / "NOTICE").read_text(encoding="utf-8").split())
+
+
 def test_the_copy_keeps_the_enum_values():
     """YAML reads some plain words as other types, so this holds the copy's values to
     NVD's spelling after adapt has rewritten the file."""

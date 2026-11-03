@@ -212,6 +212,17 @@ def test_no_old_mapping_file_comes_back():
     assert not list((ROOT / "src").rglob("*.sssom.tsv"))
 
 
+def test_the_readme_names_each_target_prefix():
+    """The README's Mappings section names what the schema crosses to, by each
+    prefix the mappings use, and says the old file is gone."""
+    section = (ROOT / "README.md").read_text(encoding="utf-8").split("## Mappings")[1]
+    section = section.split("\n## ")[0]
+    for prefix in {m[2].partition(":")[0] for m in MAPPINGS} - {"dcterms", "schema"}:
+        assert f"{prefix}:" in section, prefix
+    assert "Dublin Core" in section and "schema.org" in section
+    assert "SSSOM" in section
+
+
 def test_every_listed_term_is_used():
     """A term read at its source and no longer mapped leaves the list."""
     used = {BOUND[m[2].partition(":")[0]] + m[2].partition(":")[2] for m in MAPPINGS}
