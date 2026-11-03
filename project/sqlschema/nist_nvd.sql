@@ -5,7 +5,7 @@
 --     * Slot: resultsPerPage Description: How many results this page holds.
 --     * Slot: startIndex Description: The position of this page's first result among all the results.
 --     * Slot: totalResults Description: How many results the request matched in all.
---     * Slot: version Description: The version of the response format.
+--     * Slot: version Description: The response format's version.
 -- # Class: CvssSeverityBandsMixin Description: The base score and base severity of a CVSS version with severity bands, and the bands that tie one to the other.
 --     * Slot: id
 --     * Slot: baseScore Description: The score from 0 to 10 for what is inherent in the flaw.
@@ -140,7 +140,7 @@
 --     * Slot: resultsPerPage Description: How many results this page holds.
 --     * Slot: startIndex Description: The position of this page's first result among all the results.
 --     * Slot: totalResults Description: How many results the request matched in all.
---     * Slot: version Description: The version of the response format.
+--     * Slot: version Description: The response format's version.
 -- # Class: NvdVulnerability Description: One entry of a response, which only wraps the vulnerability.
 --     * Slot: id
 --     * Slot: NvdCveResponse_id Description: Autocreated FK slot
@@ -222,11 +222,11 @@
 --     * Slot: timestamp Description: When NVD produced this response or this decision.
 --     * Slot: computed Description: The decision in a short form.
 --     * Slot: role Description: The role of whoever made the decision, such as CISA Coordinator.
---     * Slot: version Description: The version of SSVC used.
+--     * Slot: version Description: Which SSVC release this decision follows.
 --     * Slot: id Description: The vulnerability the decision is about, by whatever identifier.
---     * Slot: decisionTreeUrl Description: The address of the decision tree that was used.
+--     * Slot: decisionTreeUrl Description: Where to find the tree this decision came from.
 --     * Slot: generator Description: The tool that wrote this decision.
---     * Slot: decisionTree_id Description: The whole decision tree that was used.
+--     * Slot: decisionTree_id Description: The whole tree this decision came from.
 -- # Class: NvdSsvcOption Description: One answer on the way through a decision tree, keyed by its decision point.
 --     * Slot: id
 --     * Slot: exploitation Description: How far the vulnerability is known to be exploited, such as none, poc or active.
@@ -304,7 +304,7 @@
 --     * Slot: resultsPerPage Description: How many results this page holds.
 --     * Slot: startIndex Description: The position of this page's first result among all the results.
 --     * Slot: totalResults Description: How many results the request matched in all.
---     * Slot: version Description: The version of the response format.
+--     * Slot: version Description: The response format's version.
 -- # Class: NvdCpeItem Description: One entry of a product response, which only wraps the CPE name.
 --     * Slot: id
 --     * Slot: NvdCpeResponse_id Description: Autocreated FK slot
@@ -337,7 +337,7 @@
 --     * Slot: resultsPerPage Description: How many results this page holds.
 --     * Slot: startIndex Description: The position of this page's first result among all the results.
 --     * Slot: totalResults Description: How many results the request matched in all.
---     * Slot: version Description: The version of the response format.
+--     * Slot: version Description: The response format's version.
 -- # Class: NvdMatchStringItem Description: One entry of a match-string response, which only wraps the match string.
 --     * Slot: id
 --     * Slot: NvdCpeMatchResponse_id Description: Autocreated FK slot
@@ -365,7 +365,7 @@
 --     * Slot: resultsPerPage Description: How many results this page holds.
 --     * Slot: startIndex Description: The position of this page's first result among all the results.
 --     * Slot: totalResults Description: How many results the request matched in all.
---     * Slot: version Description: The version of the response format.
+--     * Slot: version Description: The response format's version.
 -- # Class: NvdChangeItem Description: One entry of a change-history response, which only wraps the change.
 --     * Slot: id
 --     * Slot: NvdHistoryResponse_id Description: Autocreated FK slot
@@ -975,8 +975,8 @@ CREATE TABLE "NvdCveTag_tags" (
 	PRIMARY KEY ("NvdCveTag_id", tags),
 	FOREIGN KEY("NvdCveTag_id") REFERENCES "NvdCveTag" (id)
 );
-CREATE INDEX "ix_NvdCveTag_tags_tags" ON "NvdCveTag_tags" (tags);
 CREATE INDEX "ix_NvdCveTag_tags_NvdCveTag_id" ON "NvdCveTag_tags" ("NvdCveTag_id");
+CREATE INDEX "ix_NvdCveTag_tags_tags" ON "NvdCveTag_tags" (tags);
 
 CREATE TABLE "NvdReference_tags" (
 	"NvdReference_id" INTEGER,
@@ -1039,8 +1039,8 @@ CREATE TABLE "NvdAffectedProduct_modules" (
 	PRIMARY KEY ("NvdAffectedProduct_id", modules),
 	FOREIGN KEY("NvdAffectedProduct_id") REFERENCES "NvdAffectedProduct" (id)
 );
-CREATE INDEX "ix_NvdAffectedProduct_modules_modules" ON "NvdAffectedProduct_modules" (modules);
 CREATE INDEX "ix_NvdAffectedProduct_modules_NvdAffectedProduct_id" ON "NvdAffectedProduct_modules" ("NvdAffectedProduct_id");
+CREATE INDEX "ix_NvdAffectedProduct_modules_modules" ON "NvdAffectedProduct_modules" (modules);
 
 CREATE TABLE "NvdAffectedProduct_programFiles" (
 	"NvdAffectedProduct_id" INTEGER,
@@ -1048,8 +1048,8 @@ CREATE TABLE "NvdAffectedProduct_programFiles" (
 	PRIMARY KEY ("NvdAffectedProduct_id", "programFiles"),
 	FOREIGN KEY("NvdAffectedProduct_id") REFERENCES "NvdAffectedProduct" (id)
 );
-CREATE INDEX "ix_NvdAffectedProduct_programFiles_NvdAffectedProduct_id" ON "NvdAffectedProduct_programFiles" ("NvdAffectedProduct_id");
 CREATE INDEX "ix_NvdAffectedProduct_programFiles_programFiles" ON "NvdAffectedProduct_programFiles" ("programFiles");
+CREATE INDEX "ix_NvdAffectedProduct_programFiles_NvdAffectedProduct_id" ON "NvdAffectedProduct_programFiles" ("NvdAffectedProduct_id");
 
 CREATE TABLE "NvdAffectedProduct_platforms" (
 	"NvdAffectedProduct_id" INTEGER,
@@ -1057,8 +1057,8 @@ CREATE TABLE "NvdAffectedProduct_platforms" (
 	PRIMARY KEY ("NvdAffectedProduct_id", platforms),
 	FOREIGN KEY("NvdAffectedProduct_id") REFERENCES "NvdAffectedProduct" (id)
 );
-CREATE INDEX "ix_NvdAffectedProduct_platforms_NvdAffectedProduct_id" ON "NvdAffectedProduct_platforms" ("NvdAffectedProduct_id");
 CREATE INDEX "ix_NvdAffectedProduct_platforms_platforms" ON "NvdAffectedProduct_platforms" (platforms);
+CREATE INDEX "ix_NvdAffectedProduct_platforms_NvdAffectedProduct_id" ON "NvdAffectedProduct_platforms" ("NvdAffectedProduct_id");
 
 CREATE TABLE "NvdVersionChange" (
 	id INTEGER NOT NULL,
