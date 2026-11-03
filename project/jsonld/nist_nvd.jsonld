@@ -3161,7 +3161,7 @@
     },
     {
       "name": "nvdResponseMixin__version",
-      "description": "The version of the response format.",
+      "description": "The response format's version.",
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
         "https://w3id.org/lmodel/nist-nvd/responseVersion"
@@ -3745,7 +3745,7 @@
     },
     {
       "name": "nvdSsvcData__version",
-      "description": "The version of SSVC used.",
+      "description": "Which SSVC release this decision follows.",
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_cve",
       "mappings": [
         "https://w3id.org/lmodel/nist-nvd/ssvcVersion"
@@ -3762,7 +3762,7 @@
     },
     {
       "name": "nvdSsvcData__decisionTree",
-      "description": "The whole decision tree that was used.",
+      "description": "The whole tree this decision came from.",
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_cve",
       "slot_uri": "https://w3id.org/lmodel/nist-nvd/decisionTree",
       "alias": "decisionTree",
@@ -3793,7 +3793,7 @@
     },
     {
       "name": "nvdSsvcData__decisionTreeUrl",
-      "description": "The address of the decision tree that was used.",
+      "description": "Where to find the tree this decision came from.",
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_cve",
       "slot_uri": "https://w3id.org/lmodel/nist-nvd/decisionTreeUrl",
       "alias": "decisionTreeUrl",
@@ -8105,7 +8105,7 @@
         },
         {
           "name": "version",
-          "description": "The version of the response format.",
+          "description": "The response format's version.",
           "slot_uri": "nist_nvd:responseVersion",
           "required": true,
           "@type": "SlotDefinition"
@@ -8842,14 +8842,14 @@
         },
         {
           "name": "version",
-          "description": "The version of SSVC used.",
+          "description": "Which SSVC release this decision follows.",
           "slot_uri": "nist_nvd:ssvcVersion",
           "required": true,
           "@type": "SlotDefinition"
         },
         {
           "name": "decisionTree",
-          "description": "The whole decision tree that was used.",
+          "description": "The whole tree this decision came from.",
           "range": "NvdSsvcDecisionTree",
           "inlined": true,
           "@type": "SlotDefinition"
@@ -8862,7 +8862,7 @@
         },
         {
           "name": "decisionTreeUrl",
-          "description": "The address of the decision tree that was used.",
+          "description": "Where to find the tree this decision came from.",
           "range": "uri",
           "@type": "SlotDefinition"
         },

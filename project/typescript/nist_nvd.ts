@@ -674,7 +674,7 @@ export interface NvdResponseMixin {
     startIndex: number,
     /** How many results the request matched in all. */
     totalResults: number,
-    /** The version of the response format. */
+    /** The response format's version. */
     version: string,
 }
 
@@ -1152,13 +1152,13 @@ export interface NvdSsvcData {
     options: NvdSsvcOption[],
     /** The role of whoever made the decision, such as CISA Coordinator. */
     role: string,
-    /** The version of SSVC used. */
+    /** Which SSVC release this decision follows. */
     version: string,
-    /** The whole decision tree that was used. */
+    /** The whole tree this decision came from. */
     decisionTree?: NvdSsvcDecisionTree,
     /** The vulnerability the decision is about, by whatever identifier. */
     id?: string,
-    /** The address of the decision tree that was used. */
+    /** Where to find the tree this decision came from. */
     decisionTreeUrl?: string,
     /** The tool that wrote this decision. */
     generator?: string,

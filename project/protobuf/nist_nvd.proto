@@ -411,7 +411,7 @@ message NvdCpeMatchResponse {
   int32 startIndex = 5;
   // How many results the request matched in all.
   int32 totalResults = 6;
-  // The version of the response format.
+  // The response format's version.
   string version = 7;
 }
 // A pointer from one CPE name to another.
@@ -442,7 +442,7 @@ message NvdCpeResponse {
   int32 startIndex = 5;
   // How many results the request matched in all.
   int32 totalResults = 6;
-  // The version of the response format.
+  // The response format's version.
   string version = 7;
 }
 // A product's title in one language.
@@ -509,7 +509,7 @@ message NvdCveResponse {
   int32 startIndex = 5;
   // How many results the request matched in all.
   int32 totalResults = 6;
-  // The version of the response format.
+  // The response format's version.
   string version = 7;
 }
 // The labels that one source puts on a record.
@@ -593,7 +593,7 @@ message NvdHistoryResponse {
   int32 startIndex = 5;
   // How many results the request matched in all.
   int32 totalResults = 6;
-  // The version of the response format.
+  // The response format's version.
   string version = 7;
 }
 // A piece of text and the language it is in.
@@ -679,7 +679,7 @@ message NvdResponseMixin {
   int32 startIndex = 4;
   // How many results the request matched in all.
   int32 totalResults = 5;
-  // The version of the response format.
+  // The response format's version.
   string version = 6;
 }
 // One SSVC decision, as the answers chosen on the way through a decision tree.
@@ -692,13 +692,13 @@ message NvdSsvcData {
   repeated NvdSsvcOption options = 3;
   // The role of whoever made the decision, such as CISA Coordinator.
   string role = 4;
-  // The version of SSVC used.
+  // Which SSVC release this decision follows.
   string version = 5;
-  // The whole decision tree that was used.
+  // The whole tree this decision came from.
   NvdSsvcDecisionTree decisionTree = 6;
   // The vulnerability the decision is about, by whatever identifier.
   string id = 7;
-  // The address of the decision tree that was used.
+  // Where to find the tree this decision came from.
   string decisionTreeUrl = 8;
   // The tool that wrote this decision.
   string generator = 9;

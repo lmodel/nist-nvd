@@ -2476,7 +2476,7 @@ slots:
     required: true
   nvdResponseMixin__version:
     name: nvdResponseMixin__version
-    description: The version of the response format.
+    description: The response format's version.
     from_schema: https://w3id.org/lmodel/nist-nvd/nvd_core
     mappings:
     - nist_nvd:responseVersion
@@ -2941,7 +2941,7 @@ slots:
     required: true
   nvdSsvcData__version:
     name: nvdSsvcData__version
-    description: The version of SSVC used.
+    description: Which SSVC release this decision follows.
     from_schema: https://w3id.org/lmodel/nist-nvd/nvd_cve
     mappings:
     - nist_nvd:ssvcVersion
@@ -2954,7 +2954,7 @@ slots:
     required: true
   nvdSsvcData__decisionTree:
     name: nvdSsvcData__decisionTree
-    description: The whole decision tree that was used.
+    description: The whole tree this decision came from.
     from_schema: https://w3id.org/lmodel/nist-nvd/nvd_cve
     slot_uri: nist_nvd:decisionTree
     alias: decisionTree
@@ -2978,7 +2978,7 @@ slots:
     range: string
   nvdSsvcData__decisionTreeUrl:
     name: nvdSsvcData__decisionTreeUrl
-    description: The address of the decision tree that was used.
+    description: Where to find the tree this decision came from.
     from_schema: https://w3id.org/lmodel/nist-nvd/nvd_cve
     slot_uri: nist_nvd:decisionTreeUrl
     alias: decisionTreeUrl
@@ -6342,7 +6342,7 @@ classes:
         required: true
       version:
         name: version
-        description: The version of the response format.
+        description: The response format's version.
         slot_uri: nist_nvd:responseVersion
         required: true
     class_uri: nist_nvd:NvdResponseMixin
@@ -6949,12 +6949,12 @@ classes:
         required: true
       version:
         name: version
-        description: The version of SSVC used.
+        description: Which SSVC release this decision follows.
         slot_uri: nist_nvd:ssvcVersion
         required: true
       decisionTree:
         name: decisionTree
-        description: The whole decision tree that was used.
+        description: The whole tree this decision came from.
         range: NvdSsvcDecisionTree
         inlined: true
       id:
@@ -6963,7 +6963,7 @@ classes:
         slot_uri: nist_nvd:ssvcSubject
       decisionTreeUrl:
         name: decisionTreeUrl
-        description: The address of the decision tree that was used.
+        description: Where to find the tree this decision came from.
         range: uri
       generator:
         name: generator

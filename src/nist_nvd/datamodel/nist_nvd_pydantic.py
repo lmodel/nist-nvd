@@ -1153,7 +1153,7 @@ class NvdResponseMixin(ConfiguredBaseModel):
     resultsPerPage: int = Field(default=..., description="""How many results this page holds.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:resultsPerPage'} })
     startIndex: int = Field(default=..., description="""The position of this page's first result among all the results.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:startIndex'} })
     totalResults: int = Field(default=..., description="""How many results the request matched in all.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:totalResults'} })
-    version: str = Field(default=..., description="""The version of the response format.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
+    version: str = Field(default=..., description="""The response format's version.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
                        'CvssV20',
                        'CvssV30',
                        'CvssV31',
@@ -2136,7 +2136,7 @@ class NvdCveResponse(NvdResponseMixin):
     resultsPerPage: int = Field(default=..., description="""How many results this page holds.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:resultsPerPage'} })
     startIndex: int = Field(default=..., description="""The position of this page's first result among all the results.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:startIndex'} })
     totalResults: int = Field(default=..., description="""How many results the request matched in all.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:totalResults'} })
-    version: str = Field(default=..., description="""The version of the response format.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
+    version: str = Field(default=..., description="""The response format's version.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
                        'CvssV20',
                        'CvssV30',
                        'CvssV31',
@@ -2572,7 +2572,7 @@ class NvdSsvcData(ConfiguredBaseModel):
     computed: Optional[str] = Field(default=None, description="""The decision in a short form.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdSsvcData']} })
     options: list[NvdSsvcOption] = Field(default=..., description="""The answers given, each as a decision point and its value.""", min_length=1, json_schema_extra = { "linkml_meta": {'domain_of': ['NvdSsvcData'], 'list_elements_unique': True} })
     role: str = Field(default=..., description="""The role of whoever made the decision, such as CISA Coordinator.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdSsvcData']} })
-    version: str = Field(default=..., description="""The version of SSVC used.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
+    version: str = Field(default=..., description="""Which SSVC release this decision follows.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
                        'CvssV20',
                        'CvssV30',
                        'CvssV31',
@@ -2580,9 +2580,9 @@ class NvdSsvcData(ConfiguredBaseModel):
                        'NvdSsvcData',
                        'NvdAffectedVersion'],
          'slot_uri': 'nist_nvd:ssvcVersion'} })
-    decisionTree: Optional[Any] = Field(default=None, description="""The whole decision tree that was used.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdSsvcData']} })
+    decisionTree: Optional[Any] = Field(default=None, description="""The whole tree this decision came from.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdSsvcData']} })
     id: Optional[str] = Field(default=None, description="""The vulnerability the decision is about, by whatever identifier.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCve', 'NvdSsvcData'], 'slot_uri': 'nist_nvd:ssvcSubject'} })
-    decisionTreeUrl: Optional[str] = Field(default=None, description="""The address of the decision tree that was used.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdSsvcData']} })
+    decisionTreeUrl: Optional[str] = Field(default=None, description="""Where to find the tree this decision came from.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdSsvcData']} })
     generator: Optional[str] = Field(default=None, description="""The tool that wrote this decision.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdSsvcData']} })
 
 
@@ -3135,7 +3135,7 @@ class NvdCpeResponse(NvdResponseMixin):
     resultsPerPage: int = Field(default=..., description="""How many results this page holds.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:resultsPerPage'} })
     startIndex: int = Field(default=..., description="""The position of this page's first result among all the results.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:startIndex'} })
     totalResults: int = Field(default=..., description="""How many results the request matched in all.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:totalResults'} })
-    version: str = Field(default=..., description="""The version of the response format.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
+    version: str = Field(default=..., description="""The response format's version.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
                        'CvssV20',
                        'CvssV30',
                        'CvssV31',
@@ -3291,7 +3291,7 @@ class NvdCpeMatchResponse(NvdResponseMixin):
     resultsPerPage: int = Field(default=..., description="""How many results this page holds.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:resultsPerPage'} })
     startIndex: int = Field(default=..., description="""The position of this page's first result among all the results.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:startIndex'} })
     totalResults: int = Field(default=..., description="""How many results the request matched in all.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:totalResults'} })
-    version: str = Field(default=..., description="""The version of the response format.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
+    version: str = Field(default=..., description="""The response format's version.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
                        'CvssV20',
                        'CvssV30',
                        'CvssV31',
@@ -3406,7 +3406,7 @@ class NvdHistoryResponse(NvdResponseMixin):
     resultsPerPage: int = Field(default=..., description="""How many results this page holds.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:resultsPerPage'} })
     startIndex: int = Field(default=..., description="""The position of this page's first result among all the results.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:startIndex'} })
     totalResults: int = Field(default=..., description="""How many results the request matched in all.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin'], 'slot_uri': 'nist_nvd:totalResults'} })
-    version: str = Field(default=..., description="""The version of the response format.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
+    version: str = Field(default=..., description="""The response format's version.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdResponseMixin',
                        'CvssV20',
                        'CvssV30',
                        'CvssV31',

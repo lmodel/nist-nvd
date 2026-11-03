@@ -194,6 +194,6 @@ classes:
         required: true
         slot_uri: nist_nvd:totalResults
       version:
-        description: The version of the response format.
+        description: The response format's version.
         required: true
         slot_uri: nist_nvd:responseVersion

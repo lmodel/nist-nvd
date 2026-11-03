@@ -718,18 +718,18 @@ classes:
         description: The role of whoever made the decision, such as CISA Coordinator.
         required: true
       version:
-        description: The version of SSVC used.
+        description: Which SSVC release this decision follows.
         required: true
         slot_uri: nist_nvd:ssvcVersion
       decisionTree:
-        description: The whole decision tree that was used.
+        description: The whole tree this decision came from.
         range: NvdSsvcDecisionTree
         inlined: true
       id:
         description: The vulnerability the decision is about, by whatever identifier.
         slot_uri: nist_nvd:ssvcSubject
       decisionTreeUrl:
-        description: The address of the decision tree that was used.
+        description: Where to find the tree this decision came from.
         range: uri
       generator:
         description: The tool that wrote this decision.

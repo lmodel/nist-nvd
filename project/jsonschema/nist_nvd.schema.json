@@ -2012,7 +2012,7 @@
                     "type": "integer"
                 },
                 "version": {
-                    "description": "The version of the response format.",
+                    "description": "The response format's version.",
                     "type": "string"
                 }
             },
@@ -2112,7 +2112,7 @@
                     "type": "integer"
                 },
                 "version": {
-                    "description": "The version of the response format.",
+                    "description": "The response format's version.",
                     "type": "string"
                 }
             },
@@ -2297,7 +2297,7 @@
                     "type": "integer"
                 },
                 "version": {
-                    "description": "The version of the response format.",
+                    "description": "The response format's version.",
                     "type": "string"
                 },
                 "vulnerabilities": {
@@ -2553,7 +2553,7 @@
                     "type": "integer"
                 },
                 "version": {
-                    "description": "The version of the response format.",
+                    "description": "The response format's version.",
                     "type": "string"
                 }
             },
@@ -2848,7 +2848,7 @@
                     "type": "integer"
                 },
                 "version": {
-                    "description": "The version of the response format.",
+                    "description": "The response format's version.",
                     "type": "string"
                 }
             },
@@ -2882,10 +2882,10 @@
                 },
                 "decisionTree": {
                     "$ref": "#/$defs/NvdSsvcDecisionTree",
-                    "description": "The whole decision tree that was used."
+                    "description": "The whole tree this decision came from."
                 },
                 "decisionTreeUrl": {
-                    "description": "The address of the decision tree that was used.",
+                    "description": "Where to find the tree this decision came from.",
                     "format": "uri",
                     "type": "string"
                 },
@@ -2915,7 +2915,7 @@
                     "type": "string"
                 },
                 "version": {
-                    "description": "The version of SSVC used.",
+                    "description": "Which SSVC release this decision follows.",
                     "type": "string"
                 }
             },
@@ -3168,7 +3168,7 @@
             "type": "integer"
         },
         "version": {
-            "description": "The version of the response format.",
+            "description": "The response format's version.",
             "type": "string"
         },
         "vulnerabilities": {

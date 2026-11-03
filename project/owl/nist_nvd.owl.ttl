@@ -1918,11 +1918,11 @@ nist_nvd:cvssMetricV40 a owl:ObjectProperty ;
 	skos:inScheme nist_nvd:nvd_cve .
 nist_nvd:decisionTree a owl:ObjectProperty ;
 	rdfs:label "decisionTree" ;
-	skos:definition "The whole decision tree that was used." ;
+	skos:definition "The whole tree this decision came from." ;
 	skos:inScheme nist_nvd:nvd_cve .
 nist_nvd:decisionTreeUrl a owl:DatatypeProperty ;
 	rdfs:label "decisionTreeUrl" ;
-	skos:definition "The address of the decision tree that was used." ;
+	skos:definition "Where to find the tree this decision came from." ;
 	skos:inScheme nist_nvd:nvd_cve .
 nist_nvd:defaultStatus a owl:ObjectProperty ;
 	rdfs:label "defaultStatus" ;
@@ -2254,7 +2254,7 @@ nist_nvd:vendorComments a owl:ObjectProperty ;
 	skos:inScheme nist_nvd:nvd_cve .
 nist_nvd:version a owl:DatatypeProperty ;
 	rdfs:label "version" ;
-	skos:definition "The version of SSVC used." , "The version of the response format." ;
+	skos:definition "The response format's version." , "Which SSVC release this decision follows." ;
 	skos:inScheme nist_nvd:nvd_core , nist_nvd:nvd_cve .
 nist_nvd:versionEndExcluding a owl:DatatypeProperty ;
 	rdfs:label "versionEndExcluding" ;
