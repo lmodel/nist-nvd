@@ -16,6 +16,7 @@ import pytest
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml.validator import validate
+from linkml.validator.loaders import JsonLoader
 from linkml_runtime import SchemaView
 from linkml_runtime.loaders import yaml_loader
 
@@ -184,6 +185,23 @@ def test_the_validator_checks_a_real_timestamp_as_nvd_writes_it():
     assert not validate(
         load(DATA / "valid" / "NvdCve-smallest.yaml"), str(SCHEMA), "NvdCve"
     ).results
+
+
+def test_linkml_validates_a_rejected_record_but_its_json_loader_drops_the_list():
+    """A rejected record's `references` is an empty list, which NIST's schema and this
+    one accept. linkml-validate reads a .json file through a loader that drops every
+    empty list, and then reports the required key as missing. docs/index.md says so.
+    This fails once a LinkML release changes it, and that sentence goes then."""
+    path = DATA / "nvd" / "cve-CVE-2025-0998.json"
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    assert raw["vulnerabilities"][0]["cve"]["references"] == []
+    assert not validate(raw, str(SCHEMA), "NvdCveResponse").results
+    loaded = next(iter(JsonLoader(str(path)).iter_instances()))
+    assert "references" not in loaded["vulnerabilities"][0]["cve"]
+    report = validate(loaded, str(SCHEMA), "NvdCveResponse")
+    assert [r.message for r in report.results] == [
+        "'references' is a required property in /vulnerabilities/0/cve"
+    ]
 
 
 @pytest.mark.parametrize("path", EXTRACT, ids=lambda p: p.stem)

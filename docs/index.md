@@ -19,7 +19,11 @@ linkml-validate -s src/nist_nvd/schema/nist_nvd.yaml -C NvdCpeMatchResponse resp
 linkml-validate -s src/nist_nvd/schema/nist_nvd.yaml -C NvdHistoryResponse response.json
 ```
 
-A whole feed works, though the validator's messages make it slow and large; `tests/test_nvd_feed.py` validates a feed one record at a time, as the class `NvdCve`. `tests/test_data.py` holds every example to the same checks. The validator checks:
+`tests/test_nvd_feed.py` validates a feed one record at a time, as the class `NvdCve`, and `tests/test_data.py` holds every example to the same checks.
+
+`linkml-validate` reads a `.json` file through a LinkML loader that drops every empty list. So it reports `'references' is a required property` on each rejected record, whose `references` NVD writes as an empty list: all 306 rejected records of the modified feed of 2026-11-03. NIST's schema accepts such a record, and so does this one. The same response validates as a `.yaml` file, through `linkml.validator.validate`, and against `project/jsonschema/nist_nvd.schema.json`. `tests/test_data.py` holds this, and fails once a LinkML release changes it.
+
+The validator checks:
 
 - each key, value list, pattern, cardinality and bound of NIST's files, and refuses a key they do not name;
 - that a `NvdAffectedVersion` is a single version or a range, as NIST's `oneOf` has it: a limit needs a numbering scheme, a range has one upper limit, and status changes need one;
