@@ -2015,11 +2015,10 @@ nist_nvd:lang a owl:DatatypeProperty ;
 nist_nvd:lastModified a owl:DatatypeProperty ;
 	rdfs:label "lastModified" ;
 	rdfs:range xsd:dateTime ;
-	skos:closeMatch dcterms:modified , <http://schema.org/dateModified> , <https://spdx.org/rdf/3.0.1/terms/Security/modifiedTime> ;
+	skos:closeMatch dcterms:modified , <http://schema.org/dateModified> ;
 	skos:definition "When NVD last changed this." ;
 	skos:inScheme nist_nvd:nvd_core ;
-	skos:note "On a vulnerability this is NVD's own time, not the CVE record's dateUpdated: the two are set by different parties and often differ, so the mapping to it is only a related one." ;
-	skos:relatedMatch <https://w3id.org/lmodel/cve/dateUpdated> .
+	skos:note "A CPE name, a match string and a vendor comment carry this too, so the mappings that hold only of a vulnerability sit on NvdCve's use of it." .
 nist_nvd:lessThan a owl:DatatypeProperty ;
 	rdfs:label "lessThan" ;
 	skos:definition "The first version after the range." ;

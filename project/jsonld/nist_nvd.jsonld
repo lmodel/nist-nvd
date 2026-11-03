@@ -1832,7 +1832,7 @@
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/lastModified",
       "description": "When NVD last changed this.",
       "comments": [
-        "On a vulnerability this is NVD's own time, not the CVE record's dateUpdated: the two are set by different parties and often differ, so the mapping to it is only a related one."
+        "A CPE name, a match string and a vendor comment carry this too, so the mappings that hold only of a vulnerability sit on NvdCve's use of it."
       ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
@@ -1840,11 +1840,7 @@
       ],
       "close_mappings": [
         "http://purl.org/dc/terms/modified",
-        "http://schema.org/dateModified",
-        "https://spdx.org/rdf/3.0.1/terms/Security/modifiedTime"
-      ],
-      "related_mappings": [
-        "https://w3id.org/lmodel/cve/dateUpdated"
+        "http://schema.org/dateModified"
       ],
       "slot_uri": "https://w3id.org/lmodel/nist-nvd/lastModified",
       "owner": "NvdMatchString",
@@ -5237,15 +5233,13 @@
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/lastModified",
       "description": "When NVD last changed this.",
       "comments": [
-        "On a vulnerability this is NVD's own time, not the CVE record's dateUpdated: the two are set by different parties and often differ, so the mapping to it is only a related one."
+        "This is NVD's own time, not the CVE record's dateUpdated: the two are set by different parties and often differ, so the mapping to it is only a related one."
       ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
         "https://w3id.org/lmodel/nist-nvd/lastModified"
       ],
       "close_mappings": [
-        "http://purl.org/dc/terms/modified",
-        "http://schema.org/dateModified",
         "https://spdx.org/rdf/3.0.1/terms/Security/modifiedTime"
       ],
       "related_mappings": [
@@ -5798,7 +5792,7 @@
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/lastModified",
       "description": "When NVD last changed this.",
       "comments": [
-        "On a vulnerability this is NVD's own time, not the CVE record's dateUpdated: the two are set by different parties and often differ, so the mapping to it is only a related one."
+        "A CPE name, a match string and a vendor comment carry this too, so the mappings that hold only of a vulnerability sit on NvdCve's use of it."
       ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
@@ -5806,11 +5800,7 @@
       ],
       "close_mappings": [
         "http://purl.org/dc/terms/modified",
-        "http://schema.org/dateModified",
-        "https://spdx.org/rdf/3.0.1/terms/Security/modifiedTime"
-      ],
-      "related_mappings": [
-        "https://w3id.org/lmodel/cve/dateUpdated"
+        "http://schema.org/dateModified"
       ],
       "is_a": "lastModified",
       "domain": "NvdVendorComment",
@@ -5927,7 +5917,7 @@
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/lastModified",
       "description": "When NVD last changed this.",
       "comments": [
-        "On a vulnerability this is NVD's own time, not the CVE record's dateUpdated: the two are set by different parties and often differ, so the mapping to it is only a related one."
+        "A CPE name, a match string and a vendor comment carry this too, so the mappings that hold only of a vulnerability sit on NvdCve's use of it."
       ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
@@ -5935,11 +5925,7 @@
       ],
       "close_mappings": [
         "http://purl.org/dc/terms/modified",
-        "http://schema.org/dateModified",
-        "https://spdx.org/rdf/3.0.1/terms/Security/modifiedTime"
-      ],
-      "related_mappings": [
-        "https://w3id.org/lmodel/cve/dateUpdated"
+        "http://schema.org/dateModified"
       ],
       "is_a": "lastModified",
       "domain": "NvdCpe",
@@ -6055,7 +6041,7 @@
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/lastModified",
       "description": "When NVD last changed this.",
       "comments": [
-        "On a vulnerability this is NVD's own time, not the CVE record's dateUpdated: the two are set by different parties and often differ, so the mapping to it is only a related one."
+        "A CPE name, a match string and a vendor comment carry this too, so the mappings that hold only of a vulnerability sit on NvdCve's use of it."
       ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
@@ -6063,11 +6049,7 @@
       ],
       "close_mappings": [
         "http://purl.org/dc/terms/modified",
-        "http://schema.org/dateModified",
-        "https://spdx.org/rdf/3.0.1/terms/Security/modifiedTime"
-      ],
-      "related_mappings": [
-        "https://w3id.org/lmodel/cve/dateUpdated"
+        "http://schema.org/dateModified"
       ],
       "is_a": "lastModified",
       "domain": "NvdMatchString",

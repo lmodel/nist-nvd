@@ -337,6 +337,17 @@ classes:
     slot_usage:
       lastModified:
         required: true
+        close_mappings:
+          - dcterms:modified
+          - schema:dateModified
+          - spdx3:Security/modifiedTime
+        related_mappings:
+          - cve:dateUpdated
+        comments:
+          - >-
+            This is NVD's own time, not the CVE record's dateUpdated: the two
+            are set by different parties and often differ, so the mapping to it
+            is only a related one.
     attributes:
       vulnStatus:
         description: Where this vulnerability stands in NVD's analysis.

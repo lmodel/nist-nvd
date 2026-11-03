@@ -1030,8 +1030,8 @@ CREATE TABLE "NvdAffectedProduct_cpes" (
 	PRIMARY KEY ("NvdAffectedProduct_id", cpes),
 	FOREIGN KEY("NvdAffectedProduct_id") REFERENCES "NvdAffectedProduct" (id)
 );
-CREATE INDEX "ix_NvdAffectedProduct_cpes_NvdAffectedProduct_id" ON "NvdAffectedProduct_cpes" ("NvdAffectedProduct_id");
 CREATE INDEX "ix_NvdAffectedProduct_cpes_cpes" ON "NvdAffectedProduct_cpes" (cpes);
+CREATE INDEX "ix_NvdAffectedProduct_cpes_NvdAffectedProduct_id" ON "NvdAffectedProduct_cpes" ("NvdAffectedProduct_id");
 
 CREATE TABLE "NvdAffectedProduct_modules" (
 	"NvdAffectedProduct_id" INTEGER,

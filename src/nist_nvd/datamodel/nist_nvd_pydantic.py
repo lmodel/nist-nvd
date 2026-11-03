@@ -2176,7 +2176,18 @@ class NvdCve(ConfiguredBaseModel):
                       'this class also repeats four fields of the CISA Known Exploited '
                       'Vulnerabilities catalog when the catalog lists it.'],
          'from_schema': 'https://w3id.org/lmodel/nist-nvd/nvd_cve',
-         'slot_usage': {'lastModified': {'name': 'lastModified', 'required': True}}})
+         'slot_usage': {'lastModified': {'close_mappings': ['dcterms:modified',
+                                                            'schema:dateModified',
+                                                            'spdx3:Security/modifiedTime'],
+                                         'comments': ["This is NVD's own time, not the "
+                                                      "CVE record's dateUpdated: the "
+                                                      'two are set by different '
+                                                      'parties and often differ, so '
+                                                      'the mapping to it is only a '
+                                                      'related one.'],
+                                         'name': 'lastModified',
+                                         'related_mappings': ['cve:dateUpdated'],
+                                         'required': True}}})
 
     id: str = Field(default=..., description="""The vulnerability's CVE identifier.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:identifier'],
          'comments': ['Every CVE identifier in the KEV catalog of 2026-11-03 is the id '
@@ -2190,9 +2201,9 @@ class NvdCve(ConfiguredBaseModel):
     lastModified: str = Field(default=..., description="""When NVD last changed this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:modified',
                             'schema:dateModified',
                             'spdx3:Security/modifiedTime'],
-         'comments': ["On a vulnerability this is NVD's own time, not the CVE record's "
-                      'dateUpdated: the two are set by different parties and often '
-                      'differ, so the mapping to it is only a related one.'],
+         'comments': ["This is NVD's own time, not the CVE record's dateUpdated: the "
+                      'two are set by different parties and often differ, so the '
+                      'mapping to it is only a related one.'],
          'domain_of': ['NvdCve', 'NvdVendorComment', 'NvdCpe', 'NvdMatchString'],
          'related_mappings': ['cve:dateUpdated'],
          'slot_uri': 'nist_nvd:lastModified'} })
@@ -3098,14 +3109,11 @@ class NvdVendorComment(ConfiguredBaseModel):
          'from_schema': 'https://w3id.org/lmodel/nist-nvd/nvd_cve',
          'slot_usage': {'lastModified': {'name': 'lastModified', 'required': True}}})
 
-    lastModified: str = Field(default=..., description="""When NVD last changed this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:modified',
-                            'schema:dateModified',
-                            'spdx3:Security/modifiedTime'],
-         'comments': ["On a vulnerability this is NVD's own time, not the CVE record's "
-                      'dateUpdated: the two are set by different parties and often '
-                      'differ, so the mapping to it is only a related one.'],
+    lastModified: str = Field(default=..., description="""When NVD last changed this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:modified', 'schema:dateModified'],
+         'comments': ['A CPE name, a match string and a vendor comment carry this too, '
+                      'so the mappings that hold only of a vulnerability sit on '
+                      "NvdCve's use of it."],
          'domain_of': ['NvdCve', 'NvdVendorComment', 'NvdCpe', 'NvdMatchString'],
-         'related_mappings': ['cve:dateUpdated'],
          'slot_uri': 'nist_nvd:lastModified'} })
     organization: str = Field(default=..., description="""The vendor's name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdVendorComment']} })
     comment: str = Field(default=..., description="""What the vendor said.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdVendorComment']} })
@@ -3182,14 +3190,11 @@ class NvdCpe(ConfiguredBaseModel):
     created: str = Field(default=..., description="""When NVD first recorded this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:created'],
          'domain_of': ['NvdCpe', 'NvdMatchString', 'NvdChange'],
          'slot_uri': 'nist_nvd:created'} })
-    lastModified: str = Field(default=..., description="""When NVD last changed this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:modified',
-                            'schema:dateModified',
-                            'spdx3:Security/modifiedTime'],
-         'comments': ["On a vulnerability this is NVD's own time, not the CVE record's "
-                      'dateUpdated: the two are set by different parties and often '
-                      'differ, so the mapping to it is only a related one.'],
+    lastModified: str = Field(default=..., description="""When NVD last changed this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:modified', 'schema:dateModified'],
+         'comments': ['A CPE name, a match string and a vendor comment carry this too, '
+                      'so the mappings that hold only of a vulnerability sit on '
+                      "NvdCve's use of it."],
          'domain_of': ['NvdCve', 'NvdVendorComment', 'NvdCpe', 'NvdMatchString'],
-         'related_mappings': ['cve:dateUpdated'],
          'slot_uri': 'nist_nvd:lastModified'} })
     deprecated: bool = Field(default=..., description="""Whether NVD has retired this CPE name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCpe']} })
     titles: Optional[list[NvdCpeTitle]] = Field(default=None, description="""The product's titles, in one or more languages.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCpe']} })
@@ -3349,14 +3354,11 @@ class NvdMatchString(ConfiguredBaseModel):
     created: str = Field(default=..., description="""When NVD first recorded this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:created'],
          'domain_of': ['NvdCpe', 'NvdMatchString', 'NvdChange'],
          'slot_uri': 'nist_nvd:created'} })
-    lastModified: str = Field(default=..., description="""When NVD last changed this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:modified',
-                            'schema:dateModified',
-                            'spdx3:Security/modifiedTime'],
-         'comments': ["On a vulnerability this is NVD's own time, not the CVE record's "
-                      'dateUpdated: the two are set by different parties and often '
-                      'differ, so the mapping to it is only a related one.'],
+    lastModified: str = Field(default=..., description="""When NVD last changed this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:modified', 'schema:dateModified'],
+         'comments': ['A CPE name, a match string and a vendor comment carry this too, '
+                      'so the mappings that hold only of a vulnerability sit on '
+                      "NvdCve's use of it."],
          'domain_of': ['NvdCve', 'NvdVendorComment', 'NvdCpe', 'NvdMatchString'],
-         'related_mappings': ['cve:dateUpdated'],
          'slot_uri': 'nist_nvd:lastModified'} })
     status: NvdMatchStringStatus = Field(default=..., description="""The state of this thing, from the list its class names.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdAffectedVersion', 'NvdVersionChange', 'NvdMatchString'],
          'slot_uri': 'nist_nvd:status'} })

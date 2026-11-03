@@ -625,6 +625,15 @@ classes:
     slot_usage:
       lastModified:
         required: true
+        close_mappings:
+        - dcterms:modified
+        - schema:dateModified
+        - spdx3:Security/modifiedTime
+        related_mappings:
+        - cve:dateUpdated
+        comments:
+        - 'This is NVD''s own time, not the CVE record''s dateUpdated: the two are set by different parties
+          and often differ, so the mapping to it is only a related one.'
     attributes:
       vulnStatus:
         description: Where this vulnerability stands in NVD's analysis.
@@ -1730,12 +1739,9 @@ slots:
     close_mappings:
     - dcterms:modified
     - schema:dateModified
-    - spdx3:Security/modifiedTime
-    related_mappings:
-    - cve:dateUpdated
     comments:
-    - 'On a vulnerability this is NVD''s own time, not the CVE record''s dateUpdated: the two are set
-      by different parties and often differ, so the mapping to it is only a related one.'
+    - A CPE name, a match string and a vendor comment carry this too, so the mappings that hold only of
+      a vulnerability sit on NvdCve's use of it.
   sourceIdentifier:
     description: The email address or UUID of the organization that supplied this.
     slot_uri: nist_nvd:sourceIdentifier
