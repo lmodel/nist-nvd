@@ -29,7 +29,7 @@ The code is under the Apache License 2.0, and the bundle under CC BY 4.0.[^readm
 
 `NOTICE` carries:[^notice]
 
-- NVD's notice: this product uses data from the NVD API but is not endorsed or certified by the NVD. The README carries it too.
+- NVD's notice: this product uses the NVD API but is not endorsed or certified by the NVD. The README carries it too.
 - NIST's statement on its data and works, which it asks a distribution to carry.
 - Why NIST's SSVC file is held only as its structure.
 - FIRST's copyright notice and licence, which stay inside each CVSS file.

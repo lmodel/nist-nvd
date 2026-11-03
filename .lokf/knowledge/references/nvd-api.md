@@ -28,7 +28,7 @@ status: draft
 
 The extract comes from `services.nvd.nist.gov/rest/json/`, by the requests its README names.[^extract-readme] The feed test reads `https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-modified.json.gz`, and checks it against the size and the SHA-256 that its `.meta` file gives.[^fetch]
 
-NVD's terms of use, at `https://nvd.nist.gov/developers/terms-of-use`, refused a plain client with 403 on 2026-11-03. This project cites them by address and date, and has not read them for itself. They ask a product that uses NVD's data for a notice, which NOTICE and the README carry.[^notice]
+NVD's terms of use, at `https://nvd.nist.gov/developers/terms-of-use`, refused a plain client with 403 on 2026-11-03. This project cites them by address and date, and read them that day in the copy at `https://scancode-licensedb.aboutcode.org/nist-nvd-api-tou.html`. They ask a service that uses or accesses the API for a notice, which NOTICE and the README carry.[^notice]
 
 [^extract-readme]: tests/data/nvd/README.md, the whole file
 [^fetch]: scripts/fetch_nvd_feed.py, the docstring
