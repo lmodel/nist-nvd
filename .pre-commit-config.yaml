@@ -1,13 +1,31 @@
 ---
 # https://pre-commit.com/
+# No hook may rewrite a file this repository does not write by hand: what
+# the LinkML generators and `lokf adapt` write, which the next run would
+# rewrite back; NIST's JSON schemas and the extract of its responses, copied
+# unchanged; lmodel/cve's module, which a test holds to its git object hash;
+# the neighbours' released copies, which tests hold to their checksums; npm's
+# lockfile for the release tools; and the KTL sidecar's scripts, which the
+# weekly sync replaces.
+exclude: >-
+  (?x)^(
+    upstream/|
+    tests/data/nvd/|
+    src/nist_nvd/schema/cve/|
+    src/nist_nvd/datamodel/|
+    project/|
+    docs/schema/|
+    \.lokf/(scripts|m365)/|
+    \.lokf/(lokf|nist_nvd)\.yaml$|
+    \.github/release/package-lock\.json$|
+    tests/neighbours/
+  )
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-toml
       - id: check-yaml
-        # mkdocs.yml uses !!python/name tags unsupported by the safe YAML loader
-        exclude: ^mkdocs\.yml$
       - id: end-of-file-fixer
         exclude: ^\.copier-answers\.yml$
       - id: trailing-whitespace

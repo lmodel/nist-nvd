@@ -1,0 +1,15 @@
+# linkml-lint reads this file from the directory `just lint` runs in.
+# The recommended rules apply, with two exceptions, both so that a real NVD
+# response validates unchanged. Slots keep NVD's and FIRST's JSON keys:
+# lowerCamelCase (sourceIdentifier, cvssData, vulnStatus), and in the vendored
+# CVSS module the three capitalised keys of CVSS 4.0 (Safety, Automatable,
+# Recovery). Permissible values keep the spelling NVD's data writes, spaces and
+# capitals included (Awaiting Analysis, Press/Media Coverage, NETWORK).
+# Classes, enums and types still follow the rule.
+extends: recommended
+rules:
+  standard_naming:
+    level: error
+    slot_pattern: "^[A-Za-z][A-Za-z0-9]*$"
+    exclude_type:
+      - permissible_value

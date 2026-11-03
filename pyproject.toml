@@ -11,7 +11,7 @@ authors = [
   {name = "Noel McLoughlin", email = "noel.mcloughlin@gmail.com"},
 ]
 license = "Apache-2.0"
-license-files = ["LICENSE"]
+license-files = ["LICENSE", "NOTICE"]
 readme = "README.md"
 requires-python = ">=3.10"
 dynamic = ["version"]
@@ -66,6 +66,15 @@ skip = [
   "project/*",
   "src/nist_nvd/datamodel/nist_nvd_pydantic.py",
   "src/nist_nvd/datamodel/nist_nvd.py",
+  # The neighbours' adapt copies, copied as released, and files copied in by
+  # the KTL sidecar sync or written by npm, not by hand.
+  "tests/neighbours/*",
+  ".lokf/scripts/*",
+  "website/package-lock.json",
+  # NIST's schemas and responses, and lmodel/cve's module, copied unchanged.
+  "upstream/*",
+  "tests/data/nvd/*",
+  "src/nist_nvd/schema/cve/*",
 ]
 
 # Reminder: words have to be lowercased for the ignore-words-list
@@ -84,4 +93,10 @@ extend-exclude = [
   "project/*",
   "src/nist_nvd/datamodel/nist_nvd_pydantic.py",
   "src/nist_nvd/datamodel/nist_nvd.py",
+  "tests/neighbours/*",
+  ".lokf/scripts/*",
+  "website/package-lock.json",
+  "upstream/*",
+  "tests/data/nvd/*",
+  "src/nist_nvd/schema/cve/*",
 ]
