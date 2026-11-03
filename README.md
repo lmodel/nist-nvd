@@ -8,7 +8,7 @@ National Vulnerability Database (NVD) API 2.0 (LinkML)
 >
 > **Agents:** if `.lokf/knowledge/index.md` exists, read it first. `llms.txt` says how to weigh it.
 
-This product uses data from the NVD API but is not endorsed or certified by the NVD.
+This product uses the NVD API but is not endorsed or certified by the NVD.
 
 ## Documentation Website
 

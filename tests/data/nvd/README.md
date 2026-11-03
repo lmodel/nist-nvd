@@ -7,4 +7,4 @@ Each file here is one answer of the NVD API 2.0, read on 2026-11-03 and unchange
 - `cpematch-<UUID>.json` comes from `cpematch/2.0?matchCriteriaId=`: a range with matches, an inactive string and a string with no matches.
 - `history-<CVE identifier>.json` comes from `cvehistory/2.0?cveId=`.
 
-This product uses data from the NVD API but is not endorsed or certified by the NVD. [NOTICE](../../../NOTICE) gives NIST's statement on its data.
+This product uses the NVD API but is not endorsed or certified by the NVD. [NOTICE](../../../NOTICE) gives NIST's statement on its data.

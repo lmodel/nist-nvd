@@ -2,7 +2,7 @@
 
 This project is a LinkML model of the JSON responses of the National Vulnerability Database (NVD) API 2.0, from the JSON schemas that the National Institute of Standards and Technology (NIST) publishes. It covers the vulnerability response, which NVD's data feeds share, and the product, match-string and change-history responses. NVD's own keys and values are the schema's, so a real response validates unchanged.
 
-This product uses data from the NVD API but is not endorsed or certified by the NVD.
+This product uses the NVD API but is not endorsed or certified by the NVD.
 
 - [Schema documentation](elements/index.md), generated from the schema
 - [About](about.md): how the model is named, where it departs from NIST's files and what it leaves out

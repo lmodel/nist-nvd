@@ -356,7 +356,7 @@ def test_the_readme_names_the_known_lokf_types():
 def test_the_readme_and_notice_carry_nvds_notice():
     """NVD's terms ask a product that uses its data to say so, and to say that NVD
     does not endorse it."""
-    wanted = "This product uses data from the NVD API but is not endorsed or certified by the NVD."
+    wanted = "This product uses the NVD API but is not endorsed or certified by the NVD."
     assert wanted in (ROOT / "README.md").read_text(encoding="utf-8")
     assert wanted in " ".join((ROOT / "NOTICE").read_text(encoding="utf-8").split())
 

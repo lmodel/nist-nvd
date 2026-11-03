@@ -5,13 +5,13 @@ The code in this repository is licensed under the Apache License,
 Version 2.0 (see LICENSE). Some of the content it carries is third-party
 work under its own terms, listed below.
 
-This product uses data from the NVD API but is not endorsed or certified by
-the NVD.
+This product uses the NVD API but is not endorsed or certified by the NVD.
 
-NVD's terms of use ask for that notice from a product that uses its data or
-API. They are at https://nvd.nist.gov/developers/terms-of-use. That address
-refused a plain client with 403 when it was tried on 2026-11-03, so this
-project cites it by address and date and has not read it for itself.
+NVD's terms of use ask a service that uses or accesses the API to display
+that notice. They are at https://nvd.nist.gov/developers/terms-of-use. That
+address refused a plain client with 403 when it was tried on 2026-11-03, so
+this project read them that day in the copy at
+https://scancode-licensedb.aboutcode.org/nist-nvd-api-tou.html.
 
 The National Vulnerability Database
 -----------------------------------
