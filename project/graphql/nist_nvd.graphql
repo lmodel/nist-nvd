@@ -547,11 +547,11 @@ type NvdAffectedVersion
 
 type NvdChange
   {
+    cveChangeId: NvdUuid!
     sourceIdentifier: String!
     created: NvdTimestamp
     cveId: NvdCve!
     eventName: String!
-    cveChangeId: NvdUuid!
     details: [NvdChangeDetail]
   }
 

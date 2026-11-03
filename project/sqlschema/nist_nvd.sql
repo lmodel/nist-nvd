@@ -371,11 +371,11 @@
 --     * Slot: NvdHistoryResponse_id Description: Autocreated FK slot
 --     * Slot: change_cveChangeId Description: The change.
 -- # Class: NvdChange Description: One change to a vulnerability's record at NVD.
+--     * Slot: cveChangeId Description: The UUID that NVD gives this change.
 --     * Slot: sourceIdentifier Description: The email address or UUID of the organization that supplied this.
 --     * Slot: created Description: When NVD first recorded this.
 --     * Slot: cveId Description: The vulnerability the change is to.
 --     * Slot: eventName Description: The kind of event, such as Initial Analysis or CVE Modified.
---     * Slot: cveChangeId Description: The UUID that NVD gives this change.
 -- # Class: NvdChangeDetail Description: One part of a change, naming what kind of data changed and how.
 --     * Slot: id
 --     * Slot: type Description: The kind of this thing, from the list its class names.
@@ -900,11 +900,11 @@ CREATE TABLE "NvdVendorComment" (
 CREATE INDEX "ix_NvdVendorComment_id" ON "NvdVendorComment" (id);
 
 CREATE TABLE "NvdChange" (
+	"cveChangeId" TEXT NOT NULL,
 	"sourceIdentifier" TEXT NOT NULL,
 	created TEXT,
 	"cveId" TEXT NOT NULL,
 	"eventName" TEXT NOT NULL,
-	"cveChangeId" TEXT NOT NULL,
 	PRIMARY KEY ("cveChangeId"),
 	FOREIGN KEY("cveId") REFERENCES "NvdCve" (id)
 );
@@ -975,8 +975,8 @@ CREATE TABLE "NvdCveTag_tags" (
 	PRIMARY KEY ("NvdCveTag_id", tags),
 	FOREIGN KEY("NvdCveTag_id") REFERENCES "NvdCveTag" (id)
 );
-CREATE INDEX "ix_NvdCveTag_tags_NvdCveTag_id" ON "NvdCveTag_tags" ("NvdCveTag_id");
 CREATE INDEX "ix_NvdCveTag_tags_tags" ON "NvdCveTag_tags" (tags);
+CREATE INDEX "ix_NvdCveTag_tags_NvdCveTag_id" ON "NvdCveTag_tags" ("NvdCveTag_id");
 
 CREATE TABLE "NvdReference_tags" (
 	"NvdReference_id" INTEGER,
@@ -1030,8 +1030,8 @@ CREATE TABLE "NvdAffectedProduct_cpes" (
 	PRIMARY KEY ("NvdAffectedProduct_id", cpes),
 	FOREIGN KEY("NvdAffectedProduct_id") REFERENCES "NvdAffectedProduct" (id)
 );
-CREATE INDEX "ix_NvdAffectedProduct_cpes_cpes" ON "NvdAffectedProduct_cpes" (cpes);
 CREATE INDEX "ix_NvdAffectedProduct_cpes_NvdAffectedProduct_id" ON "NvdAffectedProduct_cpes" ("NvdAffectedProduct_id");
+CREATE INDEX "ix_NvdAffectedProduct_cpes_cpes" ON "NvdAffectedProduct_cpes" (cpes);
 
 CREATE TABLE "NvdAffectedProduct_modules" (
 	"NvdAffectedProduct_id" INTEGER,
@@ -1039,8 +1039,8 @@ CREATE TABLE "NvdAffectedProduct_modules" (
 	PRIMARY KEY ("NvdAffectedProduct_id", modules),
 	FOREIGN KEY("NvdAffectedProduct_id") REFERENCES "NvdAffectedProduct" (id)
 );
-CREATE INDEX "ix_NvdAffectedProduct_modules_NvdAffectedProduct_id" ON "NvdAffectedProduct_modules" ("NvdAffectedProduct_id");
 CREATE INDEX "ix_NvdAffectedProduct_modules_modules" ON "NvdAffectedProduct_modules" (modules);
+CREATE INDEX "ix_NvdAffectedProduct_modules_NvdAffectedProduct_id" ON "NvdAffectedProduct_modules" ("NvdAffectedProduct_id");
 
 CREATE TABLE "NvdAffectedProduct_programFiles" (
 	"NvdAffectedProduct_id" INTEGER,
@@ -1048,8 +1048,8 @@ CREATE TABLE "NvdAffectedProduct_programFiles" (
 	PRIMARY KEY ("NvdAffectedProduct_id", "programFiles"),
 	FOREIGN KEY("NvdAffectedProduct_id") REFERENCES "NvdAffectedProduct" (id)
 );
-CREATE INDEX "ix_NvdAffectedProduct_programFiles_programFiles" ON "NvdAffectedProduct_programFiles" ("programFiles");
 CREATE INDEX "ix_NvdAffectedProduct_programFiles_NvdAffectedProduct_id" ON "NvdAffectedProduct_programFiles" ("NvdAffectedProduct_id");
+CREATE INDEX "ix_NvdAffectedProduct_programFiles_programFiles" ON "NvdAffectedProduct_programFiles" ("programFiles");
 
 CREATE TABLE "NvdAffectedProduct_platforms" (
 	"NvdAffectedProduct_id" INTEGER,
@@ -1057,8 +1057,8 @@ CREATE TABLE "NvdAffectedProduct_platforms" (
 	PRIMARY KEY ("NvdAffectedProduct_id", platforms),
 	FOREIGN KEY("NvdAffectedProduct_id") REFERENCES "NvdAffectedProduct" (id)
 );
-CREATE INDEX "ix_NvdAffectedProduct_platforms_platforms" ON "NvdAffectedProduct_platforms" (platforms);
 CREATE INDEX "ix_NvdAffectedProduct_platforms_NvdAffectedProduct_id" ON "NvdAffectedProduct_platforms" ("NvdAffectedProduct_id");
+CREATE INDEX "ix_NvdAffectedProduct_platforms_platforms" ON "NvdAffectedProduct_platforms" (platforms);
 
 CREATE TABLE "NvdVersionChange" (
 	id INTEGER NOT NULL,

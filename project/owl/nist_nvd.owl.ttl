@@ -1226,6 +1226,7 @@ nist_nvd:NvdChange a owl:Class ;
 	rdfs:subClassOf _:c14n1033 , _:c14n161 , _:c14n211 , _:c14n240 , _:c14n406 , _:c14n442 , _:c14n49 , _:c14n524 , _:c14n535 , _:c14n558 , _:c14n668 , _:c14n725 , _:c14n780 , _:c14n837 , _:c14n859 , _:c14n868 , _:c14n884 ;
 	skos:altLabel "changeItem" ;
 	skos:definition "One change to a vulnerability's record at NVD." ;
+	skos:editorialNote "The identifier is set on this class and not on the slot, so that lokf adapt keeps the key beside LOKF's id, as it does for cpeNameId and matchCriteriaId." ;
 	skos:inScheme nist_nvd:nvd_history ;
 	skos:note "A change is something that happened to a record, so it relates to a PROV activity, but NVD records only when and by whom, not the entities it used." ;
 	skos:relatedMatch prov:Activity ;
@@ -1271,7 +1272,7 @@ nist_nvd:NvdCpe a owl:Class ;
 	rdfs:subClassOf _:c14n1006 , _:c14n1011 , _:c14n108 , _:c14n112 , _:c14n154 , _:c14n155 , _:c14n25 , _:c14n258 , _:c14n268 , _:c14n273 , _:c14n31 , _:c14n458 , _:c14n474 , _:c14n544 , _:c14n712 , _:c14n817 , _:c14n827 , _:c14n887 , _:c14n894 , _:c14n942 , _:c14n945 , _:c14n956 , _:c14n97 ;
 	skos:closeMatch <http://w3id.org/sepses/vocab/ref/cpe#CPE> ;
 	skos:definition "A CPE name as NVD holds it, with its UUID." ;
-	skos:editorialNote "The identifier is set on this class alone, because cpeNameId also appears where one CPE name points to another. lokf adapt replaces a slot that is an identifier everywhere with LOKF's id, which would rename those keys too." ;
+	skos:editorialNote "The identifier is set on this class alone, because cpeNameId also appears where one CPE name points to another. lokf adapt replaces a slot that is an identifier with LOKF's id everywhere, which would rename those keys too." ;
 	skos:inScheme nist_nvd:nvd_cpe ;
 	nist_nvd:upstream_definition "cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe" .
 nist_nvd:NvdCpeItem a owl:Class ;
@@ -1879,6 +1880,7 @@ nist_nvd:cve a owl:ObjectProperty ;
 	skos:inScheme nist_nvd:nvd_cve .
 nist_nvd:cveChangeId a owl:DatatypeProperty ;
 	rdfs:label "cveChangeId" ;
+	rdfs:range xsd:string ;
 	skos:definition "The UUID that NVD gives this change." ;
 	skos:inScheme nist_nvd:nvd_history .
 nist_nvd:cveChanges a owl:ObjectProperty ;

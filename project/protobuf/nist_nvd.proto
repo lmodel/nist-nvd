@@ -304,16 +304,16 @@ message NvdAffectedVersion {
 }
 // One change to a vulnerability's record at NVD.
 message NvdChange {
-  // The email address or UUID of the organization that supplied this.
-  string sourceIdentifier = 1;
-  // When NVD first recorded this.
-  string created = 2;
-  // The vulnerability the change is to.
-  NvdCve cveId = 3;
-  // The kind of event, such as Initial Analysis or CVE Modified.
-  string eventName = 4;
   // The UUID that NVD gives this change.
-  string cveChangeId = 5;
+  string cveChangeId = 1;
+  // The email address or UUID of the organization that supplied this.
+  string sourceIdentifier = 2;
+  // When NVD first recorded this.
+  string created = 3;
+  // The vulnerability the change is to.
+  NvdCve cveId = 4;
+  // The kind of event, such as Initial Analysis or CVE Modified.
+  string eventName = 5;
   // What the change did, part by part.
   repeated NvdChangeDetail details = 6;
 }

@@ -16,11 +16,11 @@ import lombok.*;
 @EqualsAndHashCode(callSuper=false)
 public class NvdChange  {
 
+  private String cveChangeId;
   private String sourceIdentifier;
   private ZonedDateTime created;
   private NvdCve cveId;
   private String eventName;
-  private String cveChangeId;
   private List<NvdChangeDetail> details;
 
 

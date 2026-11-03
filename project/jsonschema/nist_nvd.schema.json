@@ -1720,10 +1720,10 @@
                 }
             },
             "required": [
+                "cveChangeId",
                 "sourceIdentifier",
                 "cveId",
-                "eventName",
-                "cveChangeId"
+                "eventName"
             ],
             "title": "NvdChange",
             "type": "object"

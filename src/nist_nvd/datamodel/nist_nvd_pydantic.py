@@ -3168,7 +3168,7 @@ class NvdCpe(ConfiguredBaseModel):
          'from_schema': 'https://w3id.org/lmodel/nist-nvd/nvd_cpe',
          'notes': ['The identifier is set on this class alone, because cpeNameId also '
                    'appears where one CPE name points to another. lokf adapt replaces '
-                   "a slot that is an identifier everywhere with LOKF's id, which "
+                   "a slot that is an identifier with LOKF's id everywhere, which "
                    'would rename those keys too.'],
          'slot_usage': {'cpeName': {'name': 'cpeName', 'required': True},
                         'cpeNameId': {'identifier': True, 'name': 'cpeNameId'},
@@ -3440,10 +3440,15 @@ class NvdChange(ConfiguredBaseModel):
                       'to a PROV activity, but NVD records only when and by whom, not '
                       'the entities it used.'],
          'from_schema': 'https://w3id.org/lmodel/nist-nvd/nvd_history',
+         'notes': ['The identifier is set on this class and not on the slot, so that '
+                   "lokf adapt keeps the key beside LOKF's id, as it does for "
+                   'cpeNameId and matchCriteriaId.'],
          'related_mappings': ['prov:Activity'],
-         'slot_usage': {'sourceIdentifier': {'name': 'sourceIdentifier',
+         'slot_usage': {'cveChangeId': {'identifier': True, 'name': 'cveChangeId'},
+                        'sourceIdentifier': {'name': 'sourceIdentifier',
                                              'required': True}}})
 
+    cveChangeId: str = Field(default=..., description="""The UUID that NVD gives this change.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdChange'], 'slot_uri': 'nist_nvd:cveChangeId'} })
     sourceIdentifier: str = Field(default=..., description="""The email address or UUID of the organization that supplied this.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCve', 'NvdCveTag', 'NvdChange'],
          'slot_uri': 'nist_nvd:sourceIdentifier'} })
     created: Optional[str] = Field(default=None, description="""When NVD first recorded this.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:created'],
@@ -3454,7 +3459,6 @@ class NvdChange(ConfiguredBaseModel):
                       'here hold too little of a list of 2.4 million changes to close '
                       'it, so it stays a string.'],
          'domain_of': ['NvdChange']} })
-    cveChangeId: str = Field(default=..., description="""The UUID that NVD gives this change.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdChange']} })
     details: Optional[list[NvdChangeDetail]] = Field(default=None, description="""What the change did, part by part.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdChange']} })
 
     @field_validator('cveId')

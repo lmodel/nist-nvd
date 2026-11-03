@@ -1880,6 +1880,19 @@ slots:
     - NvdCpeTitle
     range: string
     required: true
+  cveChangeId:
+    name: cveChangeId
+    definition_uri: https://w3id.org/lmodel/nist-nvd/cveChangeId
+    description: The UUID that NVD gives this change.
+    from_schema: https://w3id.org/lmodel/nist-nvd/nvd_history
+    mappings:
+    - nist_nvd:cveChangeId
+    slot_uri: nist_nvd:cveChangeId
+    owner: NvdChange
+    domain_of:
+    - NvdChange
+    range: nvd_uuid
+    required: true
   version:
     name: version
     definition_uri: https://w3id.org/lmodel/cve/version
@@ -3549,18 +3562,6 @@ slots:
     - NvdChange
     range: string
     required: true
-  nvdChange__cveChangeId:
-    name: nvdChange__cveChangeId
-    description: The UUID that NVD gives this change.
-    from_schema: https://w3id.org/lmodel/nist-nvd/nvd_history
-    slot_uri: nist_nvd:cveChangeId
-    identifier: true
-    alias: cveChangeId
-    owner: NvdChange
-    domain_of:
-    - NvdChange
-    range: nvd_uuid
-    required: true
   nvdChange__details:
     name: nvdChange__details
     description: What the change did, part by part.
@@ -4839,6 +4840,25 @@ slots:
     range: string
     required: true
     equals_string: NVD_CVEHistory
+  NvdChange_cveChangeId:
+    name: NvdChange_cveChangeId
+    definition_uri: https://w3id.org/lmodel/nist-nvd/cveChangeId
+    description: The UUID that NVD gives this change.
+    from_schema: https://w3id.org/lmodel/nist-nvd/nvd_history
+    mappings:
+    - nist_nvd:cveChangeId
+    is_a: cveChangeId
+    domain: NvdChange
+    slot_uri: nist_nvd:cveChangeId
+    identifier: true
+    alias: cveChangeId
+    owner: NvdChange
+    domain_of:
+    - NvdChange
+    is_usage_slot: true
+    usage_slot_name: cveChangeId
+    range: nvd_uuid
+    required: true
   NvdChange_sourceIdentifier:
     name: NvdChange_sourceIdentifier
     definition_uri: https://w3id.org/lmodel/nist-nvd/sourceIdentifier
@@ -7531,7 +7551,7 @@ classes:
     notes:
     - The identifier is set on this class alone, because cpeNameId also appears where
       one CPE name points to another. lokf adapt replaces a slot that is an identifier
-      everywhere with LOKF's id, which would rename those keys too.
+      with LOKF's id everywhere, which would rename those keys too.
     from_schema: https://w3id.org/lmodel/nist-nvd/nvd_cpe
     close_mappings:
     - sepses_cpe:CPE
@@ -7859,6 +7879,9 @@ classes:
         tag: upstream_definition
         value: cve_history_api_json_2.0.schema#/definitions/changeItem
     description: One change to a vulnerability's record at NVD.
+    notes:
+    - The identifier is set on this class and not on the slot, so that lokf adapt
+      keeps the key beside LOKF's id, as it does for cpeNameId and matchCriteriaId.
     comments:
     - A change is something that happened to a record, so it relates to a PROV activity,
       but NVD records only when and by whom, not the entities it used.
@@ -7868,13 +7891,16 @@ classes:
     related_mappings:
     - prov:Activity
     slots:
+    - NvdChange_cveChangeId
     - NvdChange_sourceIdentifier
     - created
     - nvdChange__cveId
     - nvdChange__eventName
-    - nvdChange__cveChangeId
     - nvdChange__details
     slot_usage:
+      cveChangeId:
+        name: cveChangeId
+        identifier: true
       sourceIdentifier:
         name: sourceIdentifier
         required: true
@@ -7892,11 +7918,6 @@ classes:
         - NVD's schema says only that this is a string. The samples read here hold
           too little of a list of 2.4 million changes to close it, so it stays a string.
         required: true
-      cveChangeId:
-        name: cveChangeId
-        description: The UUID that NVD gives this change.
-        identifier: true
-        range: nvd_uuid
       details:
         name: details
         description: What the change did, part by part.

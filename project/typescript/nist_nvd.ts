@@ -1497,6 +1497,8 @@ export interface NvdChangeItem {
  * One change to a vulnerability's record at NVD.
  */
 export interface NvdChange {
+    /** The UUID that NVD gives this change. */
+    cveChangeId: string,
     /** The email address or UUID of the organization that supplied this. */
     sourceIdentifier: string,
     /** When NVD first recorded this. */
@@ -1505,8 +1507,6 @@ export interface NvdChange {
     cveId: NvdCveId,
     /** The kind of event, such as Initial Analysis or CVE Modified. */
     eventName: string,
-    /** The UUID that NVD gives this change. */
-    cveChangeId: string,
     /** What the change did, part by part. */
     details?: NvdChangeDetail[],
 }

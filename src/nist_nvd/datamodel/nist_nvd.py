@@ -3547,6 +3547,9 @@ slots.defaultStatus = Slot(uri=NIST_NVD.defaultStatus, name="defaultStatus", cur
 slots.title = Slot(uri=NIST_NVD.title, name="title", curie=NIST_NVD.curie('title'),
                    model_uri=NIST_NVD.title, domain=None, range=str)
 
+slots.cveChangeId = Slot(uri=NIST_NVD.cveChangeId, name="cveChangeId", curie=NIST_NVD.curie('cveChangeId'),
+                   model_uri=NIST_NVD.cveChangeId, domain=None, range=Union[str, NvdUuid])
+
 slots.version = Slot(uri=CVE.version, name="version", curie=CVE.curie('version'),
                    model_uri=NIST_NVD.version, domain=None, range=Optional[str])
 
@@ -3905,9 +3908,6 @@ slots.nvdChange__cveId = Slot(uri=NIST_NVD.cveId, name="nvdChange__cveId", curie
 slots.nvdChange__eventName = Slot(uri=NIST_NVD.eventName, name="nvdChange__eventName", curie=NIST_NVD.curie('eventName'),
                    model_uri=NIST_NVD.nvdChange__eventName, domain=None, range=str)
 
-slots.nvdChange__cveChangeId = Slot(uri=NIST_NVD.cveChangeId, name="nvdChange__cveChangeId", curie=NIST_NVD.curie('cveChangeId'),
-                   model_uri=NIST_NVD.nvdChange__cveChangeId, domain=None, range=URIRef)
-
 slots.nvdChange__details = Slot(uri=NIST_NVD.details, name="nvdChange__details", curie=NIST_NVD.curie('details'),
                    model_uri=NIST_NVD.nvdChange__details, domain=None, range=Optional[Union[Union[dict, NvdChangeDetail], list[Union[dict, NvdChangeDetail]]]])
 
@@ -4124,6 +4124,9 @@ slots.NvdMatchedCpe_cpeNameId = Slot(uri=NIST_NVD.cpeNameId, name="NvdMatchedCpe
 
 slots.NvdHistoryResponse_format = Slot(uri=NIST_NVD.format, name="NvdHistoryResponse_format", curie=NIST_NVD.curie('format'),
                    model_uri=NIST_NVD.NvdHistoryResponse_format, domain=NvdHistoryResponse, range=str)
+
+slots.NvdChange_cveChangeId = Slot(uri=NIST_NVD.cveChangeId, name="NvdChange_cveChangeId", curie=NIST_NVD.curie('cveChangeId'),
+                   model_uri=NIST_NVD.NvdChange_cveChangeId, domain=NvdChange, range=Union[str, NvdChangeCveChangeId])
 
 slots.NvdChange_sourceIdentifier = Slot(uri=NIST_NVD.sourceIdentifier, name="NvdChange_sourceIdentifier", curie=NIST_NVD.curie('sourceIdentifier'),
                    model_uri=NIST_NVD.NvdChange_sourceIdentifier, domain=NvdChange, range=str)

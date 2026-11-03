@@ -2386,6 +2386,23 @@
       "@type": "SlotDefinition"
     },
     {
+      "name": "cveChangeId",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/cveChangeId",
+      "description": "The UUID that NVD gives this change.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_history",
+      "mappings": [
+        "https://w3id.org/lmodel/nist-nvd/cveChangeId"
+      ],
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cveChangeId",
+      "owner": "NvdChange",
+      "domain_of": [
+        "NvdChange"
+      ],
+      "range": "nvd_uuid",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
       "name": "version",
       "definition_uri": "https://w3id.org/lmodel/cve/version",
       "annotations": [
@@ -4517,21 +4534,6 @@
       "@type": "SlotDefinition"
     },
     {
-      "name": "nvdChange__cveChangeId",
-      "description": "The UUID that NVD gives this change.",
-      "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_history",
-      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cveChangeId",
-      "identifier": true,
-      "alias": "cveChangeId",
-      "owner": "NvdChange",
-      "domain_of": [
-        "NvdChange"
-      ],
-      "range": "nvd_uuid",
-      "required": true,
-      "@type": "SlotDefinition"
-    },
-    {
       "name": "nvdChange__details",
       "description": "What the change did, part by part.",
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_history",
@@ -6171,6 +6173,29 @@
       "range": "string",
       "required": true,
       "equals_string": "NVD_CVEHistory",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "NvdChange_cveChangeId",
+      "definition_uri": "https://w3id.org/lmodel/nist-nvd/cveChangeId",
+      "description": "The UUID that NVD gives this change.",
+      "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_history",
+      "mappings": [
+        "https://w3id.org/lmodel/nist-nvd/cveChangeId"
+      ],
+      "is_a": "cveChangeId",
+      "domain": "NvdChange",
+      "slot_uri": "https://w3id.org/lmodel/nist-nvd/cveChangeId",
+      "identifier": true,
+      "alias": "cveChangeId",
+      "owner": "NvdChange",
+      "domain_of": [
+        "NvdChange"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "cveChangeId",
+      "range": "nvd_uuid",
+      "required": true,
       "@type": "SlotDefinition"
     },
     {
@@ -9655,7 +9680,7 @@
       ],
       "description": "A CPE name as NVD holds it, with its UUID.",
       "notes": [
-        "The identifier is set on this class alone, because cpeNameId also appears where one CPE name points to another. lokf adapt replaces a slot that is an identifier everywhere with LOKF's id, which would rename those keys too."
+        "The identifier is set on this class alone, because cpeNameId also appears where one CPE name points to another. lokf adapt replaces a slot that is an identifier with LOKF's id everywhere, which would rename those keys too."
       ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_cpe",
       "close_mappings": [
@@ -10051,6 +10076,9 @@
         }
       ],
       "description": "One change to a vulnerability's record at NVD.",
+      "notes": [
+        "The identifier is set on this class and not on the slot, so that lokf adapt keeps the key beside LOKF's id, as it does for cpeNameId and matchCriteriaId."
+      ],
       "comments": [
         "A change is something that happened to a record, so it relates to a PROV activity, but NVD records only when and by whom, not the entities it used."
       ],
@@ -10062,11 +10090,11 @@
         "prov:Activity"
       ],
       "slots": [
+        "NvdChange_cveChangeId",
         "NvdChange_sourceIdentifier",
         "created",
         "nvdChange__cveId",
         "nvdChange__eventName",
-        "nvdChange__cveChangeId",
         "nvdChange__details"
       ],
       "slot_usage": {},
@@ -10086,13 +10114,6 @@
             "NVD's schema says only that this is a string. The samples read here hold too little of a list of 2.4 million changes to close it, so it stays a string."
           ],
           "required": true,
-          "@type": "SlotDefinition"
-        },
-        {
-          "name": "cveChangeId",
-          "description": "The UUID that NVD gives this change.",
-          "identifier": true,
-          "range": "nvd_uuid",
           "@type": "SlotDefinition"
         },
         {
