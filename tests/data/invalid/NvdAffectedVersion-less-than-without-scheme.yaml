@@ -1,0 +1,4 @@
+# Fails at: /versionType
+version: '1.0'
+status: affected
+lessThan: '2.0'

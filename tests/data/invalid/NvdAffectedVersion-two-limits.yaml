@@ -1,0 +1,6 @@
+# Fails at: /
+version: '1.0'
+status: affected
+versionType: semver
+lessThan: '2.0'
+lessThanOrEqual: '1.9'

@@ -1,0 +1,20 @@
+# Fails at: /type
+source: nvd@nist.gov
+cvssData:
+  version: '2.0'
+  vectorString: AV:N/AC:L/Au:N/C:P/I:P/A:P
+  baseScore: 7.5
+  accessVector: NETWORK
+  accessComplexity: LOW
+  authentication: NONE
+  confidentialityImpact: PARTIAL
+  integrityImpact: PARTIAL
+  availabilityImpact: PARTIAL
+baseSeverity: HIGH
+exploitabilityScore: 10.0
+impactScore: 6.4
+acInsufInfo: false
+obtainAllPrivilege: false
+obtainUserPrivilege: false
+obtainOtherPrivilege: false
+userInteractionRequired: false

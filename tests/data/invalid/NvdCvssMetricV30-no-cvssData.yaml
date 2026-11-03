@@ -1,0 +1,5 @@
+# Fails at: /cvssData
+source: nvd@nist.gov
+type: Primary
+exploitabilityScore: 3.9
+impactScore: 5.9

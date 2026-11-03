@@ -1,0 +1,7 @@
+# Fails at: /lessThanOrEqual
+version: '1.0'
+status: affected
+versionType: semver
+changes:
+  - at: '1.5'
+    status: unaffected

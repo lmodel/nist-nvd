@@ -1,0 +1,4 @@
+action: Added
+type: CWE
+newValue:
+  - CWE-79

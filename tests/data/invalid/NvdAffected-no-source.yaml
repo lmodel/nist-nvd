@@ -1,0 +1,27 @@
+# Fails at: /source
+affectedData:
+  - vendor: Example
+    product: Widget
+    collectionURL: https://packages.example.org
+    packageName: widget
+    cpes:
+      - cpe:2.3:a:example:widget:1.2.3:*:*:*:*:*:*:*
+    modules:
+      - parser
+    programFiles:
+      - src/parser.c
+    programRoutines:
+      - name: parse_header
+    platforms:
+      - Linux
+    repo: https://git.example.org/widget
+    defaultStatus: unaffected
+    versions:
+      - version: '1.0'
+        status: affected
+        versionType: semver
+        lessThan: 1.2.4
+        changes:
+          - at: 1.2.0
+            status: unaffected
+    packageURL: pkg:generic/example/widget

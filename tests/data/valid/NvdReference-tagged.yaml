@@ -1,0 +1,5 @@
+url: https://www.example.org/advisory/1
+source: cna@example.org
+tags:
+  - Vendor Advisory
+  - Patch

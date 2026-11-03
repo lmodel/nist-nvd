@@ -1,0 +1,11 @@
+# Fails at: /version
+computed: SSVCv2/E:N/A:N/T:P
+options:
+  - exploitation: none
+  - automatable: 'no'
+  - technicalImpact: partial
+timestamp: '2026-03-02T10:15:30.000000Z'
+role: CISA Coordinator
+id: CVE-2026-0001
+decisionTreeUrl: https://example.org/ssvc/tree.json
+generator: an example tool 1.0

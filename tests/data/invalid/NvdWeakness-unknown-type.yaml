@@ -1,0 +1,6 @@
+# Fails at: /type
+source: nvd@nist.gov
+type: Tertiary
+description:
+  - lang: en
+    value: CWE-79
