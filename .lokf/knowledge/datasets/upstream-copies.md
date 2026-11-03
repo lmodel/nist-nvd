@@ -30,7 +30,7 @@ status: draft
 
 `ssvc-v2.0.3.structure.json` is NIST's SSVC file with every description, title and example removed. NIST's file states no licence, and its subject is the CERT Coordination Center's work, whose repository places its material under other terms, so this project copies none of those words.[^notice]
 
-`scripts/check_upstream_release.py` pins each file's SHA-256, and `tests/test_upstream.py` holds the copies and the schema headers to those pins.[^watch]
+`scripts/check_upstream_release.py` pins each file's SHA-256, and `tests/test_upstream.py` checks the copies and the schema headers against those pins.[^watch]
 
 [^upstream-readme]: upstream/README.md, the whole file
 [^notice]: NOTICE, NIST's SSVC schema

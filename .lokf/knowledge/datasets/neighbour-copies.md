@@ -25,7 +25,7 @@ status: draft
 
 `tests/neighbours/` holds the adapt copies of lmodel/slsa, github-actions, in-toto, oscal, spdx, stix and uco, each the schema asset of its newest release that carries one, and checked against its `.sha256` and attestation. It holds lmodel/cve's and lmodel/kev-catalog's copies from their `feat/first-release` branches until those two release.[^rules]
 
-`tests/test_schema_rules.py` pins each by SHA-256, and fails on a key shared under another IRI that it does not list. `tests/test_mappings.py` holds each mapping into lmodel/cve, lmodel/kev-catalog and lmodel/stix to the copy of that neighbour.[^mappings]
+`tests/test_schema_rules.py` pins each by SHA-256, and fails on a key shared under another IRI that it does not list. `tests/test_mappings.py` checks each mapping into lmodel/cve, lmodel/kev-catalog and lmodel/stix against the copy of that neighbour.[^mappings]
 
 [^rules]: tests/test_schema_rules.py, NEIGHBOURS and SHARED_WITH_NEIGHBOURS
 [^mappings]: tests/test_mappings.py, LMODEL

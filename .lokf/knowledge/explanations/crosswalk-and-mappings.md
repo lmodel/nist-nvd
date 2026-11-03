@@ -33,9 +33,9 @@ NVD republishes CVE and KEV, and the schema says so with mappings, which point f
 - `published` and `lastModified` are only in `related_mappings` to `cve:datePublished` and `cve:dateUpdated`, because they are NVD's own times. For CVE-2021-44228 the CVE record says 2021-12-10T00:00:00.000Z and NVD says 2021-12-10T10:15:09.143.[^nvd_cve.yaml]
 - A reference's `tags` map to nothing. They are NVD's own vocabulary, not the CVE Program's.[^test_mappings.py]
 
-`tests/test_mappings.py` holds each mapping to a prefix the schema binds, and to a term read at its source or in a neighbour's copy.[^test_mappings.py]
+`tests/test_mappings.py` checks that each mapping uses a prefix the schema binds, and names a term read at its source or in a neighbour's copy.[^test_mappings.py]
 
-An SSSOM file once kept beside the schema is gone. Its rows named elements that no longer exist and rested on language-model matches that no source confirmed.[^readme]
+An SSSOM file once kept beside the schema was deleted. Its rows named elements that no longer exist, and came from language-model matches that no source confirmed.[^readme]
 
 [^readme]: README.md, Mappings
 [^test_mappings.py]: tests/test_mappings.py, CROSSWALK and its tests

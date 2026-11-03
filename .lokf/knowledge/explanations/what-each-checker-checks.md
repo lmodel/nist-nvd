@@ -22,7 +22,7 @@ status: draft
 
 `linkml-validate` checks each key, value list, pattern, cardinality and bound of NIST's files, and refuses a key they do not name. It checks that a `NvdAffectedVersion` is a single version or a range, as NIST's `oneOf` has it, and each CVSS score against the CVSS module.[^index.md]
 
-LinkML writes two of NIST's statements into no JSON Schema, so `tests/nvd_rules.py` checks them over the examples and the feed: that a list NIST marks unique has no repeats, and that a CVSS 4.0 score is a multiple of 0.1.[^index.md]
+The generated JSON Schema leaves out two of NIST's statements, so `tests/nvd_rules.py` checks them over the examples and the feed: that a list NIST marks unique has no repeats, and that a CVSS 4.0 score is a multiple of 0.1.[^index.md]
 
 The generated Python models check less. The dataclasses refuse an empty list for a required key, as a rejected record's `references` has, and neither model checks a pattern from a type or applies a rule. The dataclasses turn a change's list value into a string, and the Pydantic model refuses a change's list or object value and any SSVC decision point beyond the three the data holds.[^index.md]
 

@@ -24,7 +24,7 @@ status: draft
 
 `tests/vocabulary-terms.txt` lists the IRI of each term outside lmodel that a mapping names. Its header names the file each was read from on 2026-11-03.[^terms]
 
-`tests/test_mappings.py` holds every such mapping to this list, and fails when a listed term is no longer used.[^mappings]
+`tests/test_mappings.py` checks every such mapping against this list, and fails when a listed term is no longer used.[^mappings]
 
 [^terms]: tests/vocabulary-terms.txt, the header
 [^mappings]: tests/test_mappings.py, test_mapping_names_a_term_that_exists

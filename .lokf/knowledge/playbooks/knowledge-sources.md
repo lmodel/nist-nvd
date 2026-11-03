@@ -122,4 +122,4 @@ status: draft
 | `.github/workflows`, `.github/scripts` | one concept under `workflows/` per workflow | the on key and the jobs |
 | `website` | `services/documentation-site.md` | `website/README.md` and `site.config.mjs` |
 
-The modified feed moves about every two hours, and the extract and the enums' comments are dated, so the bundle's numbers follow the dates they name and not NVD's latest data.
+The modified feed changes about every two hours, and the extract and the enums' comments are dated, so the bundle's numbers follow the dates they name and not NVD's latest data.

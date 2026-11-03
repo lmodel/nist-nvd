@@ -27,11 +27,11 @@ status: draft
 
 `src/nist_nvd/schema/cve/cve_cvss.yaml` is lmodel/cve's module, copied unchanged. `nvd_cve` imports it, and NVD's wrapper classes, such as `NvdCvssMetricV31`, range their `cvssData` over its classes.[^test_cve_import.py]
 
-`tests/test_cve_import.py` holds the file to the git object hash it pins, and names the commit of lmodel/cve it came from. lmodel/cve has no release yet, so the commit is on its `feat/first-release` branch.[^test_cve_import.py]
+`tests/test_cve_import.py` checks the file against the git object hash it pins, and names the commit of lmodel/cve it came from. lmodel/cve has no release yet, so the commit is on its `feat/first-release` branch.[^test_cve_import.py]
 
-The same test walks NVD's copies of the CVSS schemas against the module, and fails on a key or a value NVD has that the module lacks. It lists what NVD's CVSS 4.0 file allows and the module refuses: the keys `threatScore`, `threatSeverity`, `environmentalScore` and `environmentalSeverity`, and the value `NEGLIGIBLE` of the three modified impacts on connected systems. The CVE Program's copy differs there, and no record read on 2026-11-03 holds any of them.[^test_cve_import.py]
+The same test compares NVD's copies of the CVSS schemas with the module, and fails on a key or a value NVD has that the module lacks. It lists what NVD's CVSS 4.0 file allows and the module refuses: the keys `threatScore`, `threatSeverity`, `environmentalScore` and `environmentalSeverity`, and the value `NEGLIGIBLE` of the three modified impacts on connected systems. The CVE Program's copy differs there, and no record read on 2026-11-03 holds any of them.[^test_cve_import.py]
 
-The file is lmodel/cve's. A change to it goes there, and this repository then copies it from a release.[^contributing]
+The file belongs to lmodel/cve. Make a change to it in lmodel/cve, and this repository then copies it from a release.[^contributing]
 
 [^test_cve_import.py]: tests/test_cve_import.py, the pins and KNOWN_MISSING_KEYS
 [^contributing]: CONTRIBUTING.md, Before opening a pull request

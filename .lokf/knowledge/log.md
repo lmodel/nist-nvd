@@ -2,6 +2,7 @@
 
 ## 2026-11-03
 
+* **Prose**: reworded 9 concept bodies in plain English. No fact, link, number or frontmatter changed.
 * **Changed**: the playbook says why `linkml-validate` reports a rejected record in a `.json` file.
 * **Removal**: the sidecar's example service.
 * **Added**: NVD LinkML schema.
