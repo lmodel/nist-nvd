@@ -1,6 +1,6 @@
 # NIST's JSON schemas
 
-This folder holds the JSON schemas of the National Vulnerability Database (NVD) API 2.0, as NIST publishes them at <https://csrc.nist.gov/schema/nvd/api/2.0/>, read on 2026-11-03. Every file is unchanged but one.
+This folder holds the JSON schemas of the National Vulnerability Database (NVD) API 2.0, as NIST publishes them under `https://csrc.nist.gov/schema/nvd/api/2.0/`, read on 2026-11-03. Every file is unchanged but one.
 
 | File | What it defines | Edition its title names |
 | --- | --- | --- |
