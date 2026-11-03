@@ -2,6 +2,7 @@
 
 ## 2026-11-03
 
+* **Changed**: the playbook says why `linkml-validate` reports a rejected record in a `.json` file.
 * **Removal**: the sidecar's example service.
 * **Added**: NVD LinkML schema.
 * **Added**: Vendored CVSS module.

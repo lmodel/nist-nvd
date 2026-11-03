@@ -12,7 +12,7 @@ sources:
     title: Validating data
 generated:
   by: process:ktl-librarian
-  at: "2026-11-03T22:34:15Z"
+  at: "2026-11-03T22:45:03Z"
 status: draft
 ---
 
@@ -26,6 +26,8 @@ linkml-validate -s src/nist_nvd/schema/nist_nvd.yaml -C NvdCveResponse response.
 
 Use `NvdCpeResponse` for the product API, `NvdCpeMatchResponse` for the match-string API and `NvdHistoryResponse` for the change-history API.[^index.md]
 
-A whole feed works, though the validator's messages make it slow and large. `tests/test_nvd_feed.py` validates a feed one record at a time, as the class `NvdCve`.[^index.md]
+`linkml-validate` reads a `.json` file through a LinkML loader that drops every empty list. So it reports `references` as missing on each rejected record, whose `references` NVD writes as an empty list. The same response validates as a `.yaml` file, and against `project/jsonschema/nist_nvd.schema.json`.[^index.md]
+
+`tests/test_nvd_feed.py` validates a feed one record at a time, as the class `NvdCve`.[^index.md]
 
 [^index.md]: docs/index.md, Validating data
