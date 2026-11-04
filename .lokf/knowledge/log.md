@@ -1,5 +1,11 @@
 # Change Log
 
+## 2026-11-04
+
+* **Changed**: the description names lmodel/cve and lmodel/kev-catalog as released.
+* **Changed**: lmodel/cve's and lmodel/kev-catalog's neighbour copies are their v0.1.0 release assets.
+* **Changed**: the vendored CVSS module comes from lmodel/cve's release v0.1.0.
+
 ## 2026-11-03
 
 * **Prose**: reworded 9 concept bodies in plain English. No fact, link, number or frontmatter changed.
