@@ -17,6 +17,13 @@
     "https://lmodel.github.io/nist-nvd",
     "https://nvd.nist.gov/developers/start-here"
   ],
+  "keywords": [
+    "vulnerability",
+    "NVD",
+    "CVE",
+    "CPE",
+    "CVSS"
+  ],
   "id": "https://w3id.org/lmodel/nist-nvd",
   "version": "2.2.4",
   "imports": [
@@ -1960,9 +1967,15 @@
       "name": "cpeName",
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/cpeName",
       "description": "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.",
+      "comments": [
+        "SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. That term is the kind, not a property that holds the name, so it is only related."
+      ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
         "https://w3id.org/lmodel/nist-nvd/cpeName"
+      ],
+      "related_mappings": [
+        "https://spdx.org/rdf/3.0.1/terms/Core/ExternalIdentifierType/cpe23"
       ],
       "slot_uri": "https://w3id.org/lmodel/nist-nvd/cpeName",
       "owner": "NvdMatchedCpe",
@@ -2101,7 +2114,8 @@
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/id",
       "description": "The vulnerability's CVE identifier.",
       "comments": [
-        "Every CVE identifier in the KEV catalog of 2026-11-03 is the id of one record the API marks as known exploited, and the reverse."
+        "Every CVE identifier in the KEV catalog of 2026-11-03 is the id of one record the API marks as known exploited, and the reverse.",
+        "Wikidata's P3587 holds the same identifier in the same form, on the item for the vulnerability."
       ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_cve",
       "mappings": [
@@ -2109,7 +2123,8 @@
       ],
       "exact_mappings": [
         "https://w3id.org/lmodel/cve/cveId",
-        "https://w3id.org/lmodel/kev-catalog/cveID"
+        "https://w3id.org/lmodel/kev-catalog/cveID",
+        "http://www.wikidata.org/prop/direct/P3587"
       ],
       "close_mappings": [
         "http://purl.org/dc/terms/identifier"
@@ -5240,6 +5255,8 @@
         "https://w3id.org/lmodel/nist-nvd/lastModified"
       ],
       "close_mappings": [
+        "http://purl.org/dc/terms/modified",
+        "http://schema.org/dateModified",
         "https://spdx.org/rdf/3.0.1/terms/Security/modifiedTime"
       ],
       "related_mappings": [
@@ -5846,9 +5863,15 @@
       "name": "NvdCpe_cpeName",
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/cpeName",
       "description": "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.",
+      "comments": [
+        "SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. That term is the kind, not a property that holds the name, so it is only related."
+      ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
         "https://w3id.org/lmodel/nist-nvd/cpeName"
+      ],
+      "related_mappings": [
+        "https://spdx.org/rdf/3.0.1/terms/Core/ExternalIdentifierType/cpe23"
       ],
       "is_a": "cpeName",
       "domain": "NvdCpe",
@@ -6091,9 +6114,15 @@
       "name": "NvdMatchedCpe_cpeName",
       "definition_uri": "https://w3id.org/lmodel/nist-nvd/cpeName",
       "description": "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.",
+      "comments": [
+        "SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. That term is the kind, not a property that holds the name, so it is only related."
+      ],
       "from_schema": "https://w3id.org/lmodel/nist-nvd/nvd_core",
       "mappings": [
         "https://w3id.org/lmodel/nist-nvd/cpeName"
+      ],
+      "related_mappings": [
+        "https://spdx.org/rdf/3.0.1/terms/Core/ExternalIdentifierType/cpe23"
       ],
       "is_a": "cpeName",
       "domain": "NvdMatchedCpe",
@@ -10959,8 +10988,8 @@
   ],
   "metamodel_version": "1.12.0",
   "source_file": "nist_nvd.yaml",
-  "source_file_date": "2026-11-03T21:41:46",
-  "source_file_size": 1569,
+  "source_file_date": "2026-11-04T00:01:17",
+  "source_file_size": 1630,
   "@type": "SchemaDefinition",
   "@context": [
     "project/jsonld/nist_nvd.context.jsonld",

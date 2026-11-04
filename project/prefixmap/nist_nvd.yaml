@@ -14,6 +14,7 @@
    "spdx_security": "https://spdx.org/rdf/3.0.1/terms/Security/",
    "stix": "https://w3id.org/lmodel/stix/",
    "wd": "http://www.wikidata.org/entity/",
+   "wdt": "http://www.wikidata.org/prop/direct/",
    "CvssSeverityBandsMixin": {
       "@id": "cve:CvssSeverityBandsMixin"
    },

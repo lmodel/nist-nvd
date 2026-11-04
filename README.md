@@ -24,7 +24,7 @@ NVD's keys and values are the schema's, such as `vulnStatus` and `Awaiting Analy
 
 The schema's mappings are the one home for what it crosses to. The hand-kept SSSOM file this repository once held is gone, since its rows named removed elements and rested on language-model matches that no source confirmed. `tests/test_mappings.py` holds each mapping to a prefix the schema binds, and to a term read at its source or in a neighbour's copy under `tests/neighbours/`.
 
-* `id`: `cve:cveId` and `kev_catalog:cveID` in `exact_mappings`, and `dcterms:identifier` in `close_mappings`.
+* `id`: `cve:cveId`, `kev_catalog:cveID` and Wikidata's property `wdt:P3587` in `exact_mappings`, and `dcterms:identifier` in `close_mappings`.
 * `cisaExploitAdd`, `cisaActionDue`, `cisaRequiredAction` and `cisaVulnerabilityName`: `kev_catalog:dateAdded`, `dueDate`, `requiredAction` and `vulnerabilityName` in `exact_mappings`. Each equals the catalog's value for all 1,766 entries of the catalog of 2026-11-03.
 * `published` and `lastModified`: `cve:datePublished` and `cve:dateUpdated` in `related_mappings`, as they are NVD's own times, and Dublin Core, schema.org and SPDX 3.0.1 `publishedTime` and `modifiedTime` in `close_mappings`.
 * `descriptions`, `references`, `weaknesses`, `configurations`, `affected`, `metrics` and `cveTags`: `cve:descriptions`, `references`, `problemTypes`, `cpeApplicability`, `affected`, `metrics` and `tags` in `close_mappings`.
@@ -32,7 +32,7 @@ The schema's mappings are the one home for what it crosses to. The hand-kept SSS
 * `NvdAffectedProduct`, `NvdAffectedVersion`, `NvdVersionChange`, `NvdProgramRoutine`, `NvdReference`, `NvdWeakness`, `NvdLangString`, `NvdConfiguration`, `NvdConfigurationNode` and `NvdCpeMatch`: their `cve:` classes in `close_mappings`, and each product key its `cve:` key.
 * The CVSS and SSVC wrappers: `sepses_cvss:` metrics in `close_mappings`, and SPDX 3.0.1's assessment relationships in `related_mappings`.
 * The four responses and their items: `schema:DataFeed` and `schema:DataFeedItem` in `close_mappings`, and `dcat:Distribution` in `related_mappings` for a vulnerability response.
-* `NvdCpe`, `NvdConfiguration` and `NvdReference`: `sepses_cpe:CPE` and the `sepses_cve:` classes in `close_mappings`.
+* `NvdCpe`, `NvdConfiguration` and `NvdReference`: `sepses_cpe:CPE` and the `sepses_cve:` classes in `close_mappings`, and `cpeName`: SPDX 3.0.1's `spdx3:Core/ExternalIdentifierType/cpe23` in `related_mappings`.
 * `NvdChange`: `prov:Activity` in `related_mappings`.
 * `deprecatedBy`, `deprecates`, `refs`, `title`, `created` and `lang`: Dublin Core in `close_mappings`, and `NvdVendorComment`: `schema:Comment`.
 

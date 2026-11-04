@@ -9,6 +9,8 @@
 # - sepses_cve, sepses_cvss, sepses_cpe: the ontology.ttl of each vocabulary under
 #   https://www.sepses.org/vocab/ref/ (w3id.org/sepses/vocab/ref/ redirects there)
 # - wd: https://www.wikidata.org/wiki/Special:EntityData/Q631425.json
+# - wdt: https://www.wikidata.org/wiki/Special:EntityData/P3587.json, whose format
+#   constraint is CVE-(19|20)\d{2}-\d+
 http://purl.org/dc/terms/created
 http://purl.org/dc/terms/identifier
 http://purl.org/dc/terms/isReplacedBy
@@ -44,6 +46,8 @@ http://w3id.org/sepses/vocab/ref/cvss#severity
 http://www.w3.org/ns/dcat#Distribution
 http://www.w3.org/ns/prov#Activity
 http://www.wikidata.org/entity/Q631425
+http://www.wikidata.org/prop/direct/P3587
+https://spdx.org/rdf/3.0.1/terms/Core/ExternalIdentifierType/cpe23
 https://spdx.org/rdf/3.0.1/terms/Security/CvssV2VulnAssessmentRelationship
 https://spdx.org/rdf/3.0.1/terms/Security/CvssV3VulnAssessmentRelationship
 https://spdx.org/rdf/3.0.1/terms/Security/CvssV4VulnAssessmentRelationship

@@ -386,6 +386,7 @@ xsd:string a rdfs:Datatype ;
 	dcterms:source <https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema> ;
 	dcterms:title "National Vulnerability Database (NVD)" ;
 	pav:version "2.2.4" ;
+	<http://schema.org/keywords> "CPE" , "CVE" , "CVSS" , "NVD" , "vulnerability" ;
 	a owl:Ontology ;
 	rdfs:label "nist_nvd" ;
 	rdfs:seeAlso <https://lmodel.github.io/nist-nvd> , <https://nvd.nist.gov/developers/start-here> ;
@@ -1852,7 +1853,9 @@ nist_nvd:cpeMatch a owl:ObjectProperty ;
 nist_nvd:cpeName a owl:DatatypeProperty ;
 	rdfs:label "cpeName" ;
 	skos:definition "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string." ;
-	skos:inScheme nist_nvd:nvd_core .
+	skos:inScheme nist_nvd:nvd_core ;
+	skos:note "SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. That term is the kind, not a property that holds the name, so it is only related." ;
+	skos:relatedMatch <https://spdx.org/rdf/3.0.1/terms/Core/ExternalIdentifierType/cpe23> .
 nist_nvd:cpeNameId a owl:DatatypeProperty ;
 	rdfs:label "cpeNameId" ;
 	rdfs:range xsd:string ;
@@ -1998,9 +2001,9 @@ nist_nvd:id a owl:DatatypeProperty ;
 	rdfs:range xsd:string ;
 	skos:closeMatch dcterms:identifier ;
 	skos:definition "The vulnerability the decision is about, by whatever identifier." , "The vulnerability's CVE identifier." ;
-	skos:exactMatch <https://w3id.org/lmodel/cve/cveId> , <https://w3id.org/lmodel/kev-catalog/cveID> ;
+	skos:exactMatch <http://www.wikidata.org/prop/direct/P3587> , <https://w3id.org/lmodel/cve/cveId> , <https://w3id.org/lmodel/kev-catalog/cveID> ;
 	skos:inScheme nist_nvd:nvd_cve ;
-	skos:note "Every CVE identifier in the KEV catalog of 2026-11-03 is the id of one record the API marks as known exploited, and the reverse." .
+	skos:note "Every CVE identifier in the KEV catalog of 2026-11-03 is the id of one record the API marks as known exploited, and the reverse." , "Wikidata's P3587 holds the same identifier in the same form, on the item for the vulnerability." .
 nist_nvd:impactScore a owl:DatatypeProperty ;
 	rdfs:label "impactScore" ;
 	rdfs:range _:c14n961 ;

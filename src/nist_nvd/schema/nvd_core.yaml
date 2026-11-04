@@ -129,6 +129,12 @@ slots:
   cpeName:
     description: A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.
     slot_uri: nist_nvd:cpeName
+    related_mappings:
+      - spdx3:Core/ExternalIdentifierType/cpe23
+    comments:
+      - >-
+        SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. That term is
+        the kind, not a property that holds the name, so it is only related.
 
   cpeNameId:
     description: The UUID that NVD gives a CPE name.

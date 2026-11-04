@@ -92,6 +92,7 @@ linkml_meta = LinkMLMeta({'annotations': {'upstream_sha256': {'tag': 'upstream_s
                  './nvd_cpe',
                  './nvd_cpematch',
                  './nvd_history'],
+     'keywords': ['vulnerability', 'NVD', 'CVE', 'CPE', 'CVSS'],
      'license': 'Apache-2.0',
      'name': 'nist_nvd',
      'prefixes': {'linkml': {'prefix_prefix': 'linkml',
@@ -2192,9 +2193,11 @@ class NvdCve(ConfiguredBaseModel):
     id: str = Field(default=..., description="""The vulnerability's CVE identifier.""", json_schema_extra = { "linkml_meta": {'close_mappings': ['dcterms:identifier'],
          'comments': ['Every CVE identifier in the KEV catalog of 2026-11-03 is the id '
                       'of one record the API marks as known exploited, and the '
-                      'reverse.'],
+                      'reverse.',
+                      "Wikidata's P3587 holds the same identifier in the same form, on "
+                      'the item for the vulnerability.'],
          'domain_of': ['NvdCve', 'NvdSsvcData'],
-         'exact_mappings': ['cve:cveId', 'kev_catalog:cveID'],
+         'exact_mappings': ['cve:cveId', 'kev_catalog:cveID', 'wdt:P3587'],
          'slot_uri': 'nist_nvd:id'} })
     sourceIdentifier: Optional[str] = Field(default=None, description="""The email address or UUID of the organization that supplied this.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCve', 'NvdCveTag', 'NvdChange'],
          'slot_uri': 'nist_nvd:sourceIdentifier'} })
@@ -3183,7 +3186,11 @@ class NvdCpe(ConfiguredBaseModel):
                         'created': {'name': 'created', 'required': True},
                         'lastModified': {'name': 'lastModified', 'required': True}}})
 
-    cpeName: str = Field(default=..., description="""A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
+    cpeName: str = Field(default=..., description="""A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.""", json_schema_extra = { "linkml_meta": {'comments': ['SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. '
+                      'That term is the kind, not a property that holds the name, so '
+                      'it is only related.'],
+         'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
+         'related_mappings': ['spdx3:Core/ExternalIdentifierType/cpe23'],
          'slot_uri': 'nist_nvd:cpeName'} })
     cpeNameId: str = Field(default=..., description="""The UUID that NVD gives a CPE name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
          'slot_uri': 'nist_nvd:cpeNameId'} })
@@ -3265,7 +3272,11 @@ class NvdCpeNameLink(ConfiguredBaseModel):
                                                  'value': 'cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe/properties/deprecatedBy/items'}},
          'from_schema': 'https://w3id.org/lmodel/nist-nvd/nvd_cpe'})
 
-    cpeName: Optional[str] = Field(default=None, description="""A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
+    cpeName: Optional[str] = Field(default=None, description="""A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.""", json_schema_extra = { "linkml_meta": {'comments': ['SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. '
+                      'That term is the kind, not a property that holds the name, so '
+                      'it is only related.'],
+         'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
+         'related_mappings': ['spdx3:Core/ExternalIdentifierType/cpe23'],
          'slot_uri': 'nist_nvd:cpeName'} })
     cpeNameId: Optional[str] = Field(default=None, description="""The UUID that NVD gives a CPE name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
          'slot_uri': 'nist_nvd:cpeNameId'} })
@@ -3377,7 +3388,11 @@ class NvdMatchedCpe(ConfiguredBaseModel):
          'slot_usage': {'cpeName': {'name': 'cpeName', 'required': True},
                         'cpeNameId': {'name': 'cpeNameId', 'required': True}}})
 
-    cpeName: str = Field(default=..., description="""A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
+    cpeName: str = Field(default=..., description="""A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.""", json_schema_extra = { "linkml_meta": {'comments': ['SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. '
+                      'That term is the kind, not a property that holds the name, so '
+                      'it is only related.'],
+         'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
+         'related_mappings': ['spdx3:Core/ExternalIdentifierType/cpe23'],
          'slot_uri': 'nist_nvd:cpeName'} })
     cpeNameId: str = Field(default=..., description="""The UUID that NVD gives a CPE name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NvdCpe', 'NvdCpeNameLink', 'NvdMatchedCpe'],
          'slot_uri': 'nist_nvd:cpeNameId'} })

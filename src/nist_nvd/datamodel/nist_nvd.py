@@ -77,6 +77,7 @@ SPDX3 = CurieNamespace('spdx3', 'https://spdx.org/rdf/3.0.1/terms/')
 SPDX_SECURITY = CurieNamespace('spdx_security', 'https://spdx.org/rdf/3.0.1/terms/Security/')
 STIX = CurieNamespace('stix', 'https://w3id.org/lmodel/stix/')
 WD = CurieNamespace('wd', 'http://www.wikidata.org/entity/')
+WDT = CurieNamespace('wdt', 'http://www.wikidata.org/prop/direct/')
 XSD = CurieNamespace('xsd', 'http://www.w3.org/2001/XMLSchema#')
 DEFAULT_ = NIST_NVD
 

@@ -9,6 +9,12 @@ description: >-
 version: 2.2.4
 source: https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema
 license: Apache-2.0
+keywords:
+  - vulnerability
+  - NVD
+  - CVE
+  - CPE
+  - CVSS
 see_also:
   - https://lmodel.github.io/nist-nvd
   - https://nvd.nist.gov/developers/start-here

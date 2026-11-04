@@ -36,6 +36,7 @@ prefixes:
   sepses_cve: http://w3id.org/sepses/vocab/ref/cve#
   sepses_cvss: http://w3id.org/sepses/vocab/ref/cvss#
   wd: http://www.wikidata.org/entity/
+  wdt: http://www.wikidata.org/prop/direct/
   schema: http://schema.org/
   dcterms: http://purl.org/dc/terms/
   dcat: http://www.w3.org/ns/dcat#
@@ -189,12 +190,16 @@ slots:
     exact_mappings:
       - cve:cveId
       - kev_catalog:cveID
+      - wdt:P3587
     close_mappings:
       - dcterms:identifier
     comments:
       - >-
         Every CVE identifier in the KEV catalog of 2026-11-03 is the id of one
         record the API marks as known exploited, and the reverse.
+      - >-
+        Wikidata's P3587 holds the same identifier in the same form, on the item
+        for the vulnerability.
 
   references:
     description: The pages that NVD lists about this vulnerability.
