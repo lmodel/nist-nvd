@@ -19,11 +19,9 @@ ROOT = Path(__file__).parent.parent
 COPY = ROOT / "src" / "nist_nvd" / "schema" / "cve"
 EXTERNAL = ROOT / "upstream" / "external"
 
-# The commit of lmodel/cve that the copy equals, and the git object hash of the
-# module there, under src/cve/schema/. lmodel/cve has no release yet, so this is
-# the head of its feat/first-release branch when the file was last read. Move both
-# with the copy, from lmodel/cve v0.1.0 once it is released.
-CVE_COMMIT = "c66cd5d72932b77173526dc65bb7497814af6548"
+# The commit of lmodel/cve that the copy equals, which is its release v0.1.0, and the
+# git object hash of the module there, under src/cve/schema/. Move both with the copy.
+CVE_COMMIT = "f989265b18f26dd19b47715791408a86768288c1"
 PINNED_BLOBS = {"cve_cvss.yaml": "54829e1452fba5ddd6e7a9f30c5de7077b7e3c0f"}
 
 CLASSES = {
