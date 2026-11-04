@@ -6,6 +6,8 @@ The `v0.0.0` tag is a baseline, not a release: it marks where versioning starts 
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-04
+
 ### Added
 
 - **A LinkML model of the JSON responses of the NVD API 2.0, from the JSON schemas NIST publishes: the vulnerability response at edition 2.2.4, the product and match-string responses at 2.0, and the change history at 2.0.1.** NVD's own keys and values are the schema's, so a real response validates unchanged.
