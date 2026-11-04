@@ -1,0 +1,5 @@
+# Fails at: /type
+source: nvd@nist.gov
+description:
+  - lang: en
+    value: CWE-79

@@ -1,155 +1,1130 @@
- syntax="proto3";
- package
-// metamodel_version: 1.7.0
-// Logical grouping of CPE match expressions.
-message Configuration
- {
-  string cpeUri = 0
-  string operator = 0
- }
-// Logical grouping of CPE match criteria for affected software.
-message CPEConfiguration
- {
-  string configurationId = 0
-  configurationType configurationType = 0
-  string operator = 0
- repeated  cPEConfiguration children = 0
- repeated  cPEMatch matches = 0
-  string summary = 0
- }
-// Leaf-level CPE match criterion and optional version bounds.
-message CPEMatch
- {
-  string matchCriteriaId = 0
-  string criteria = 0
-  string cpe23Uri = 0
-  boolean vulnerable = 0
-  string versionStartIncluding = 0
-  string versionStartExcluding = 0
-  string versionEndIncluding = 0
-  string versionEndExcluding = 0
- repeated  string matchedCpeNames = 0
- }
-// Individual CVSS vector and score attribution.
-message CVSSMetric
- {
-  string version = 0
-  string vectorString = 0
-  float baseScore = 0
-  impactSeverity baseSeverity = 0
-  scoreSource source = 0
-  string providerLabel = 0
-  string scoringJustification = 0
- }
-// Additional explanatory note for CVSS display conditions.
-message CVSSScoreNote
- {
-  string noteId = 0
-  string message = 0
-  string source = 0
-  datetime created = 0
- }
-// Assessment of the vulnerability's impact and severity.
-message Impact
- {
-  impactSeverity severity = 0
-  string vector = 0
-  float score = 0
- }
-// CISA KEV information rendered on the NVD detail page.
-message KnownExploitedVulnerability
- {
-  date dateAdded = 0
-  date dueDate = 0
-  string requiredAction = 0
-  uri kevReference = 0
- }
-// Container for all metric views across CVSS versions.
-message MetricSet
- {
- repeated  cVSSMetric cvssV4Metrics = 0
- repeated  cVSSMetric cvssV3Metrics = 0
- repeated  cVSSMetric cvssV2Metrics = 0
- repeated  cVSSScoreNote scoreNotes = 0
- }
-// Enriched NVD representation of a CVE entry.
-message NVDEntry
- {
-  cveId cveId = 0
-  string title = 0
-  datetime publishedDate = 0
-  datetime lastModifiedDate = 0
- repeated  product products = 0
-  impact impact = 0
-  string descriptionSource = 0
-  string analysisDescription = 0
-  metricSet metrics = 0
- repeated  cPEConfiguration configurations = 0
- repeated  nVDReference references = 0
- repeated  nVDWeakness weaknesses = 0
- repeated  vendorComment vendorComments = 0
- repeated  nVDTag nvdTags = 0
- repeated  string cveTags = 0
-  nVDWorkflowStatus workflowStatus = 0
- repeated  statusTransition statusTransitions = 0
-  knownExploitedVulnerability knownExploited = 0
-  string cweView = 0
-  datetime dateReceived = 0
-  nVDWorkflowStatus status = 0
-  string description = 0
- }
-// Reference URL with NVD resource tags.
-message NVDReference
- {
-  string name = 0
- repeated  referenceTag resourceTags = 0
-  uri url = 0
-  string source = 0
- }
-// Weakness row as presented on the NVD detail page.
-message NVDWeakness
- {
-  string description = 0
-  string source = 0
-  string cweId = 0
-  string name = 0
- }
-// Software or hardware entity affected by the vulnerability.
-message Product
- {
-  string vendor = 0
-  string name = 0
-  string version = 0
- repeated  string platforms = 0
- }
-// External reference such as an advisory or article.
-message Reference
- {
-  uri url = 0
-  string name = 0
-  string source = 0
- }
-// State transition event in NVD enrichment workflow.
-message StatusTransition
- {
-  string transitionId = 0
-  nVDWorkflowStatus fromStatus = 0
-  nVDWorkflowStatus toStatus = 0
-  nVDWorkflowEventSource eventSource = 0
-  datetime transitionTime = 0
-  string rationale = 0
- }
-// Comment provided by vendor during NVD analysis.
-message VendorComment
- {
-  string vendor = 0
-  string comment = 0
-  datetime lastModifiedDate = 0
- }
-// Weakness classification from CWE or a similar taxonomy.
-message Weakness
- {
-  string cweId = 0
-  string name = 0
-  string description = 0
- }
+syntax = "proto3";
+package nist_nvd;
+// metamodel_version: 1.12.0
+// version: 2.2.4
+// The base score and base severity of a CVSS version with severity bands, and the bands that tie one to the other.
+message CvssSeverityBandsMixin {
+  // The score from 0 to 10 for what is inherent in the flaw.
+  float baseScore = 1;
+  // The rating in words that the base score falls under.
+  CvssSeverity baseSeverity = 2;
+}
+// A score under CVSS version 2.0, which has no severity bands.
+message CvssV20 {
+  // A version string. On a score it is the CVSS version; on a product entry, the product's.
+  string version = 1;
+  // The scores' metric values written as one compact string.
+  string vectorString = 2;
+  // The score from 0 to 10 for what is inherent in the flaw.
+  float baseScore = 3;
+  // How much information an attack could expose.
+  CvssV2Impact confidentialityImpact = 4;
+  // How much an attack could change that should not change.
+  CvssV2Impact integrityImpact = 5;
+  // How much an attack could disrupt the service.
+  CvssV2Impact availabilityImpact = 6;
+  // What kind of fix is available.
+  CvssRemediationLevel remediationLevel = 7;
+  // How far the flaw's existence and details have been confirmed.
+  CvssV2ReportConfidence reportConfidence = 8;
+  // The base score adjusted for what changes over time, such as a fix appearing.
+  float temporalScore = 9;
+  // How much confidentiality matters to the scorer for the affected system.
+  CvssRequirement confidentialityRequirement = 10;
+  // How much integrity matters to the scorer for the affected system.
+  CvssRequirement integrityRequirement = 11;
+  // How much availability matters to the scorer for the affected system.
+  CvssRequirement availabilityRequirement = 12;
+  // The score adjusted for the scorer's own environment.
+  float environmentalScore = 13;
+  // How far away an attacker can be when using the flaw, in CVSS 2.0's terms.
+  CvssV2AccessVector accessVector = 14;
+  // How hard the flaw is to use once the attacker can reach it.
+  CvssV2AccessComplexity accessComplexity = 15;
+  // How many times an attacker must log in before using the flaw.
+  CvssV2Authentication authentication = 16;
+  // How far working attack code has come, in CVSS 2.0's terms.
+  CvssExploitCodeMaturity exploitability = 17;
+  // How much loss a successful attack could cause beyond the system itself.
+  CvssV2CollateralDamagePotential collateralDamagePotential = 18;
+  // How much of the scorer's environment is exposed to the flaw.
+  CvssV2TargetDistribution targetDistribution = 19;
+}
+// A score under CVSS version 3.0.
+message CvssV30 {
+  // A version string. On a score it is the CVSS version; on a product entry, the product's.
+  string version = 1;
+  // The scores' metric values written as one compact string.
+  string vectorString = 2;
+  // How far away an attacker can be when using the flaw.
+  CvssV3AttackVector attackVector = 3;
+  // How much is outside the attacker's control when using the flaw.
+  CvssAttackComplexity attackComplexity = 4;
+  // What level of access an attacker needs before using the flaw.
+  CvssPrivilegesRequired privilegesRequired = 5;
+  // Whether someone other than the attacker has to take part.
+  CvssV3UserInteraction userInteraction = 6;
+  // Whether an attack can reach beyond the component that holds the flaw.
+  CvssV3Scope scope = 7;
+  // How much information an attack could expose.
+  CvssImpact confidentialityImpact = 8;
+  // How much an attack could change that should not change.
+  CvssImpact integrityImpact = 9;
+  // How much an attack could disrupt the service.
+  CvssImpact availabilityImpact = 10;
+  // How far working attack code has come.
+  CvssExploitCodeMaturity exploitCodeMaturity = 11;
+  // What kind of fix is available.
+  CvssRemediationLevel remediationLevel = 12;
+  // How far the flaw's existence and details have been confirmed.
+  CvssV3ReportConfidence reportConfidence = 13;
+  // The base score adjusted for what changes over time, such as a fix appearing.
+  float temporalScore = 14;
+  // The rating in words for the temporal score.
+  CvssSeverity temporalSeverity = 15;
+  // How much confidentiality matters to the scorer for the affected system.
+  CvssRequirement confidentialityRequirement = 16;
+  // How much integrity matters to the scorer for the affected system.
+  CvssRequirement integrityRequirement = 17;
+  // How much availability matters to the scorer for the affected system.
+  CvssRequirement availabilityRequirement = 18;
+  // The attack vector as the scorer's own environment changes it.
+  CvssV3ModifiedAttackVector modifiedAttackVector = 19;
+  // The attack complexity as the scorer's own environment changes it.
+  CvssModifiedAttackComplexity modifiedAttackComplexity = 20;
+  // The privileges needed as the scorer's own environment changes them.
+  CvssModifiedPrivilegesRequired modifiedPrivilegesRequired = 21;
+  // The user interaction as the scorer's own environment changes it.
+  CvssV3ModifiedUserInteraction modifiedUserInteraction = 22;
+  // The scope as the scorer's own environment changes it.
+  CvssV3ModifiedScope modifiedScope = 23;
+  // The confidentiality impact as the scorer's own environment changes it.
+  CvssModifiedImpact modifiedConfidentialityImpact = 24;
+  // The integrity impact as the scorer's own environment changes it.
+  CvssModifiedImpact modifiedIntegrityImpact = 25;
+  // The availability impact as the scorer's own environment changes it.
+  CvssModifiedImpact modifiedAvailabilityImpact = 26;
+  // The score adjusted for the scorer's own environment.
+  float environmentalScore = 27;
+  // The rating in words for the environmental score.
+  CvssSeverity environmentalSeverity = 28;
+  // The score from 0 to 10 for what is inherent in the flaw.
+  float baseScore = 29;
+  // The rating in words that the base score falls under.
+  CvssSeverity baseSeverity = 30;
+}
+// A score under CVSS version 3.1.
+message CvssV31 {
+  // A version string. On a score it is the CVSS version; on a product entry, the product's.
+  string version = 1;
+  // The scores' metric values written as one compact string.
+  string vectorString = 2;
+  // How far away an attacker can be when using the flaw.
+  CvssV3AttackVector attackVector = 3;
+  // How much is outside the attacker's control when using the flaw.
+  CvssAttackComplexity attackComplexity = 4;
+  // What level of access an attacker needs before using the flaw.
+  CvssPrivilegesRequired privilegesRequired = 5;
+  // Whether someone other than the attacker has to take part.
+  CvssV3UserInteraction userInteraction = 6;
+  // Whether an attack can reach beyond the component that holds the flaw.
+  CvssV3Scope scope = 7;
+  // How much information an attack could expose.
+  CvssImpact confidentialityImpact = 8;
+  // How much an attack could change that should not change.
+  CvssImpact integrityImpact = 9;
+  // How much an attack could disrupt the service.
+  CvssImpact availabilityImpact = 10;
+  // How far working attack code has come.
+  CvssExploitCodeMaturity exploitCodeMaturity = 11;
+  // What kind of fix is available.
+  CvssRemediationLevel remediationLevel = 12;
+  // How far the flaw's existence and details have been confirmed.
+  CvssV3ReportConfidence reportConfidence = 13;
+  // The base score adjusted for what changes over time, such as a fix appearing.
+  float temporalScore = 14;
+  // The rating in words for the temporal score.
+  CvssSeverity temporalSeverity = 15;
+  // How much confidentiality matters to the scorer for the affected system.
+  CvssRequirement confidentialityRequirement = 16;
+  // How much integrity matters to the scorer for the affected system.
+  CvssRequirement integrityRequirement = 17;
+  // How much availability matters to the scorer for the affected system.
+  CvssRequirement availabilityRequirement = 18;
+  // The attack vector as the scorer's own environment changes it.
+  CvssV3ModifiedAttackVector modifiedAttackVector = 19;
+  // The attack complexity as the scorer's own environment changes it.
+  CvssModifiedAttackComplexity modifiedAttackComplexity = 20;
+  // The privileges needed as the scorer's own environment changes them.
+  CvssModifiedPrivilegesRequired modifiedPrivilegesRequired = 21;
+  // The user interaction as the scorer's own environment changes it.
+  CvssV3ModifiedUserInteraction modifiedUserInteraction = 22;
+  // The scope as the scorer's own environment changes it.
+  CvssV3ModifiedScope modifiedScope = 23;
+  // The confidentiality impact as the scorer's own environment changes it.
+  CvssModifiedImpact modifiedConfidentialityImpact = 24;
+  // The integrity impact as the scorer's own environment changes it.
+  CvssModifiedImpact modifiedIntegrityImpact = 25;
+  // The availability impact as the scorer's own environment changes it.
+  CvssModifiedImpact modifiedAvailabilityImpact = 26;
+  // The score adjusted for the scorer's own environment.
+  float environmentalScore = 27;
+  // The rating in words for the environmental score.
+  CvssSeverity environmentalSeverity = 28;
+  // The score from 0 to 10 for what is inherent in the flaw.
+  float baseScore = 29;
+  // The rating in words that the base score falls under.
+  CvssSeverity baseSeverity = 30;
+}
+// A score under CVSS version 4.0.
+message CvssV40 {
+  // A version string. On a score it is the CVSS version; on a product entry, the product's.
+  string version = 1;
+  // The scores' metric values written as one compact string.
+  string vectorString = 2;
+  // How far away an attacker can be when using the flaw.
+  CvssV4AttackVector attackVector = 3;
+  // How much is outside the attacker's control when using the flaw.
+  CvssAttackComplexity attackComplexity = 4;
+  // What level of access an attacker needs before using the flaw.
+  CvssPrivilegesRequired privilegesRequired = 5;
+  // Whether someone other than the attacker has to take part.
+  CvssV4UserInteraction userInteraction = 6;
+  // How much confidentiality matters to the scorer for the affected system.
+  CvssRequirement confidentialityRequirement = 7;
+  // How much integrity matters to the scorer for the affected system.
+  CvssRequirement integrityRequirement = 8;
+  // How much availability matters to the scorer for the affected system.
+  CvssRequirement availabilityRequirement = 9;
+  // The attack vector as the scorer's own environment changes it.
+  CvssV4ModifiedAttackVector modifiedAttackVector = 10;
+  // The attack complexity as the scorer's own environment changes it.
+  CvssModifiedAttackComplexity modifiedAttackComplexity = 11;
+  // The privileges needed as the scorer's own environment changes them.
+  CvssModifiedPrivilegesRequired modifiedPrivilegesRequired = 12;
+  // The user interaction as the scorer's own environment changes it.
+  CvssV4ModifiedUserInteraction modifiedUserInteraction = 13;
+  // Whether the attack needs conditions in the target that the attacker does not control.
+  CvssV4AttackRequirements attackRequirements = 14;
+  // How much information in the vulnerable system an attack could expose.
+  CvssImpact vulnConfidentialityImpact = 15;
+  // How much an attack could change in the vulnerable system.
+  CvssImpact vulnIntegrityImpact = 16;
+  // How much an attack could disrupt the vulnerable system.
+  CvssImpact vulnAvailabilityImpact = 17;
+  // How much information in other, connected systems an attack could expose.
+  CvssImpact subConfidentialityImpact = 18;
+  // How much an attack could change in other, connected systems.
+  CvssImpact subIntegrityImpact = 19;
+  // How much an attack could disrupt other, connected systems.
+  CvssImpact subAvailabilityImpact = 20;
+  // How much is known about attacks on this flaw, in CVSS 4.0's terms.
+  CvssV4ExploitMaturity exploitMaturity = 21;
+  // The attack requirements as the scorer's own environment changes them.
+  CvssV4ModifiedAttackRequirements modifiedAttackRequirements = 22;
+  // The confidentiality impact on the vulnerable system, in the scorer's environment.
+  CvssModifiedImpact modifiedVulnConfidentialityImpact = 23;
+  // The integrity impact on the vulnerable system, in the scorer's environment.
+  CvssModifiedImpact modifiedVulnIntegrityImpact = 24;
+  // The availability impact on the vulnerable system, in the scorer's environment.
+  CvssModifiedImpact modifiedVulnAvailabilityImpact = 25;
+  // The confidentiality impact on connected systems, in the scorer's environment.
+  CvssModifiedImpact modifiedSubConfidentialityImpact = 26;
+  // The integrity impact on connected systems, in the scorer's environment.
+  CvssV4ModifiedSubsequentImpact modifiedSubIntegrityImpact = 27;
+  // The availability impact on connected systems, in the scorer's environment.
+  CvssV4ModifiedSubsequentImpact modifiedSubAvailabilityImpact = 28;
+  // Whether an attack could put people's safety at risk.
+  CvssV4Safety Safety = 29;
+  // Whether an attacker could automate every step of an attack across many targets.
+  CvssV4Automatable Automatable = 30;
+  // How the affected system comes back after an attack.
+  CvssV4Recovery Recovery = 31;
+  // Whether one successful attack gains the attacker a little or a lot of a resource.
+  CvssV4ValueDensity valueDensity = 32;
+  // How much work it takes a consumer to respond to the flaw.
+  CvssV4ResponseEffort vulnerabilityResponseEffort = 33;
+  // How urgent the product's supplier says the flaw is, as a colour.
+  CvssV4ProviderUrgency providerUrgency = 34;
+  // The score from 0 to 10 for what is inherent in the flaw.
+  float baseScore = 35;
+  // The rating in words that the base score falls under.
+  CvssSeverity baseSeverity = 36;
+}
+// The products that one source says the vulnerability affects.
+message NvdAffected {
+  // The email address or UUID of the organization that supplied this.
+  string source = 1;
+  // The products.
+  repeated NvdAffectedProduct affectedData = 2;
+}
+// A product and which of its versions have the vulnerability.
+message NvdAffectedProduct {
+  // The status of any version the versions list does not name.
+  NvdVersionStatus defaultStatus = 1;
+  // Who makes or maintains the product.
+  string vendor = 2;
+  // The product's name.
+  string product = 3;
+  // The address of the package collection that holds the product.
+  string collectionURL = 4;
+  // The package's name within that collection.
+  string packageName = 5;
+  // The product's CPE names, in the 2.2 or the 2.3 form.
+  repeated string cpes = 6;
+  // The affected parts of the product.
+  repeated string modules = 7;
+  // The affected source code files.
+  repeated string programFiles = 8;
+  // The affected source code routines.
+  repeated NvdProgramRoutine programRoutines = 9;
+  // The platforms the vulnerability is limited to.
+  repeated string platforms = 10;
+  // The address of the product's source code repository.
+  string repo = 11;
+  // The versions or ranges of versions whose status is known.
+  repeated NvdAffectedVersion versions = 12;
+  // The product's Package URL, with no version in it.
+  string packageURL = 13;
+}
+// The status of one version of a product, or of a range of its versions.
+message NvdAffectedVersion {
+  // The version, or the start of the range.
+  string version = 1;
+  // The state of this thing, from the list its class names.
+  NvdVersionStatus status = 2;
+  // The numbering scheme that orders the versions, such as semver or git.
+  string versionType = 3;
+  // The first version after the range.
+  string lessThan = 4;
+  // The last version in the range.
+  string lessThanOrEqual = 5;
+  // Where the status changes within the range.
+  repeated NvdVersionChange changes = 6;
+}
+// One change to a vulnerability's record at NVD.
+message NvdChange {
+  // The UUID that NVD gives this change.
+  string cveChangeId = 1;
+  // The email address or UUID of the organization that supplied this.
+  string sourceIdentifier = 2;
+  // When NVD first recorded this.
+  string created = 3;
+  // The vulnerability the change is to.
+  NvdCve cveId = 4;
+  // The kind of event, such as Initial Analysis or CVE Modified.
+  string eventName = 5;
+  // What the change did, part by part.
+  repeated NvdChangeDetail details = 6;
+}
+// One part of a change, naming what kind of data changed and how.
+message NvdChangeDetail {
+  // The kind of this thing, from the list its class names.
+  string type = 1;
+  // How the data changed, such as Added.
+  string action = 2;
+  // The value before the change.
+  string oldValue = 3;
+  // The value after the change.
+  string newValue = 4;
+}
+// One entry of a change-history response, which only wraps the change.
+message NvdChangeItem {
+  // The change.
+  NvdChange change = 1;
+}
+// A value before or after a change that is an object, with any keys.
+message NvdChangeObject {
+}
+// A statement of which product configurations have the vulnerability.
+message NvdConfiguration {
+  // How the parts of this configuration combine.
+  NvdOperator operator = 1;
+  // Whether the result of the configuration is reversed.
+  bool negate = 2;
+  // The parts of the statement.
+  repeated NvdConfigurationNode nodes = 3;
+}
+// One part of a configuration statement, as a set of CPE matches.
+message NvdConfigurationNode {
+  // How the parts of this configuration combine.
+  NvdOperator operator = 1;
+  // Whether the result of the configuration is reversed.
+  bool negate = 2;
+  // The CPE matches of this part.
+  repeated NvdCpeMatch cpeMatch = 3;
+}
+// A CPE name as NVD holds it, with its UUID.
+message NvdCpe {
+  // A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.
+  string cpeName = 1;
+  // The UUID that NVD gives a CPE name.
+  string cpeNameId = 2;
+  // When NVD first recorded this.
+  string created = 3;
+  // When NVD last changed this.
+  string lastModified = 4;
+  // Whether NVD has retired this CPE name.
+  bool deprecated = 5;
+  // The product's titles, in one or more languages.
+  repeated NvdCpeTitle titles = 6;
+  // Pages about the product.
+  repeated NvdCpeReference refs = 7;
+  // The CPE names that replace this one.
+  repeated NvdCpeNameLink deprecatedBy = 8;
+  // The CPE names this one replaces.
+  repeated NvdCpeNameLink deprecates = 9;
+}
+// One entry of a product response, which only wraps the CPE name.
+message NvdCpeItem {
+  // The CPE name and what NVD holds about it.
+  NvdCpe cpe = 1;
+}
+// A CPE match string or range, and whether what it matches is vulnerable.
+message NvdCpeMatch {
+  // A CPE match string, which may hold wildcards.
+  string criteria = 1;
+  // The UUID that NVD gives a CPE match string.
+  string matchCriteriaId = 2;
+  // The version above which the match starts, itself left out.
+  string versionStartExcluding = 3;
+  // The first version the match covers.
+  string versionStartIncluding = 4;
+  // The version below which the match ends, itself left out.
+  string versionEndExcluding = 5;
+  // The last version the match covers.
+  string versionEndIncluding = 6;
+  // Whether what this matches has the vulnerability, rather than only setting the scene.
+  bool vulnerable = 7;
+}
+// A page of the match-string API's results.
+message NvdCpeMatchResponse {
+  // The match strings on this page.
+  repeated NvdMatchStringItem matchStrings = 1;
+  // The name NVD gives this kind of response.
+  string format = 2;
+  // When NVD produced this response or this decision.
+  string timestamp = 3;
+  // How many results this page holds.
+  int32 resultsPerPage = 4;
+  // The position of this page's first result among all the results.
+  int32 startIndex = 5;
+  // How many results the request matched in all.
+  int32 totalResults = 6;
+  // The response format's version.
+  string version = 7;
+}
+// A pointer from one CPE name to another.
+message NvdCpeNameLink {
+  // A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.
+  string cpeName = 1;
+  // The UUID that NVD gives a CPE name.
+  string cpeNameId = 2;
+}
+// A page about a product, and what kind of page it is.
+message NvdCpeReference {
+  // The kind of this thing, from the list its class names.
+  NvdCpeReferenceType type = 1;
+  // The page's address.
+  string ref = 2;
+}
+// A page of the product API's results.
+message NvdCpeResponse {
+  // The products on this page.
+  repeated NvdCpeItem products = 1;
+  // The name NVD gives this kind of response.
+  string format = 2;
+  // When NVD produced this response or this decision.
+  string timestamp = 3;
+  // How many results this page holds.
+  int32 resultsPerPage = 4;
+  // The position of this page's first result among all the results.
+  int32 startIndex = 5;
+  // How many results the request matched in all.
+  int32 totalResults = 6;
+  // The response format's version.
+  string version = 7;
+}
+// A product's title in one language.
+message NvdCpeTitle {
+  // The human-readable title.
+  string title = 1;
+  // The language of the text beside it, as a language code.
+  string lang = 2;
+}
+// A vulnerability as NVD holds it, under its CVE identifier.
+message NvdCve {
+  // The vulnerability's CVE identifier.
+  string id = 1;
+  // The email address or UUID of the organization that supplied this.
+  string sourceIdentifier = 2;
+  // When NVD last changed this.
+  string lastModified = 3;
+  // The pages that NVD lists about this vulnerability.
+  repeated NvdReference references = 4;
+  // Where this vulnerability stands in NVD's analysis.
+  NvdVulnStatus vulnStatus = 5;
+  // When NVD published this vulnerability.
+  string published = 6;
+  // A remark from NVD's analyst.
+  string evaluatorComment = 7;
+  // A way to resolve the vulnerability, from NVD's analyst.
+  string evaluatorSolution = 8;
+  // What the vulnerability can lead to, from NVD's analyst.
+  string evaluatorImpact = 9;
+  // The day CISA added this vulnerability to its Known Exploited Vulnerabilities catalog.
+  string cisaExploitAdd = 10;
+  // The day by which CISA says federal agencies must act.
+  string cisaActionDue = 11;
+  // What CISA says agencies must do about this vulnerability.
+  string cisaRequiredAction = 12;
+  // The name CISA gives this vulnerability in its catalog.
+  string cisaVulnerabilityName = 13;
+  // The labels the record's sources put on it.
+  repeated NvdCveTag cveTags = 14;
+  // What the vulnerability is, in one or more languages.
+  repeated NvdLangString descriptions = 15;
+  // The scores that NVD and others give this vulnerability.
+  NvdMetrics metrics = 16;
+  // The affected products, by the source that names them.
+  repeated NvdAffected affected = 17;
+  // The weaknesses behind the vulnerability, by the source that names them.
+  repeated NvdWeakness weaknesses = 18;
+  // The product configurations that have the vulnerability.
+  repeated NvdConfiguration configurations = 19;
+  // What product vendors have said about this vulnerability.
+  repeated NvdVendorComment vendorComments = 20;
+}
+// A page of the vulnerability API's results, or a whole data feed.
+message NvdCveResponse {
+  // The vulnerabilities on this page.
+  repeated NvdVulnerability vulnerabilities = 1;
+  // The name NVD gives this kind of response.
+  string format = 2;
+  // When NVD produced this response or this decision.
+  string timestamp = 3;
+  // How many results this page holds.
+  int32 resultsPerPage = 4;
+  // The position of this page's first result among all the results.
+  int32 startIndex = 5;
+  // How many results the request matched in all.
+  int32 totalResults = 6;
+  // The response format's version.
+  string version = 7;
+}
+// The labels that one source puts on a record.
+message NvdCveTag {
+  // The email address or UUID of the organization that supplied this.
+  string sourceIdentifier = 1;
+  // Labels on this thing, from the list its class names.
+  repeated NvdCveTagName tags = 2;
+}
+// A CVSS 2.0 score, who gave it, and NVD's figures beside it.
+message NvdCvssMetricV2 {
+  // The email address or UUID of the organization that supplied this.
+  string source = 1;
+  // The kind of this thing, from the list its class names.
+  NvdSourceType type = 2;
+  // The CVSS score itself, in FIRST's form for its version.
+  CvssV20 cvssData = 3;
+  // The CVSS exploitability subscore.
+  float exploitabilityScore = 4;
+  // The CVSS impact subscore.
+  float impactScore = 5;
+  // The severity band of the base score, which CVSS 2.0 leaves to NVD.
+  NvdCvssV2Severity baseSeverity = 6;
+  // Whether NVD lacked the information to rate the access complexity.
+  bool acInsufInfo = 7;
+  // Whether exploiting this gains every privilege.
+  bool obtainAllPrivilege = 8;
+  // Whether exploiting this gains a user's privileges.
+  bool obtainUserPrivilege = 9;
+  // Whether exploiting this gains some other privilege.
+  bool obtainOtherPrivilege = 10;
+  // Whether exploiting this needs a user to act.
+  bool userInteractionRequired = 11;
+}
+// A CVSS 3.0 score, who gave it, and its subscores.
+message NvdCvssMetricV30 {
+  // The email address or UUID of the organization that supplied this.
+  string source = 1;
+  // The kind of this thing, from the list its class names.
+  NvdSourceType type = 2;
+  // The CVSS score itself, in FIRST's form for its version.
+  CvssV30 cvssData = 3;
+  // The CVSS exploitability subscore.
+  float exploitabilityScore = 4;
+  // The CVSS impact subscore.
+  float impactScore = 5;
+}
+// A CVSS 3.1 score, who gave it, and its subscores.
+message NvdCvssMetricV31 {
+  // The email address or UUID of the organization that supplied this.
+  string source = 1;
+  // The kind of this thing, from the list its class names.
+  NvdSourceType type = 2;
+  // The CVSS score itself, in FIRST's form for its version.
+  CvssV31 cvssData = 3;
+  // The CVSS exploitability subscore.
+  float exploitabilityScore = 4;
+  // The CVSS impact subscore.
+  float impactScore = 5;
+}
+// A CVSS 4.0 score and who gave it.
+message NvdCvssMetricV40 {
+  // The email address or UUID of the organization that supplied this.
+  string source = 1;
+  // The kind of this thing, from the list its class names.
+  NvdSourceType type = 2;
+  // The CVSS score itself, in FIRST's form for its version.
+  CvssV40 cvssData = 3;
+}
+// A page of the change-history API's results.
+message NvdHistoryResponse {
+  // The changes on this page.
+  repeated NvdChangeItem cveChanges = 1;
+  // The name NVD gives this kind of response.
+  string format = 2;
+  // When NVD produced this response or this decision.
+  string timestamp = 3;
+  // How many results this page holds.
+  int32 resultsPerPage = 4;
+  // The position of this page's first result among all the results.
+  int32 startIndex = 5;
+  // How many results the request matched in all.
+  int32 totalResults = 6;
+  // The response format's version.
+  string version = 7;
+}
+// A piece of text and the language it is in.
+message NvdLangString {
+  // The language of the text beside it, as a language code.
+  string lang = 1;
+  // The text.
+  string value = 2;
+}
+// A CPE name that a match string matches.
+message NvdMatchedCpe {
+  // A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.
+  string cpeName = 1;
+  // The UUID that NVD gives a CPE name.
+  string cpeNameId = 2;
+}
+// A CPE match string or range as NVD holds it, and the CPE names it matches.
+message NvdMatchString {
+  // A CPE match string, which may hold wildcards.
+  string criteria = 1;
+  // The UUID that NVD gives a CPE match string.
+  string matchCriteriaId = 2;
+  // The version above which the match starts, itself left out.
+  string versionStartExcluding = 3;
+  // The first version the match covers.
+  string versionStartIncluding = 4;
+  // The version below which the match ends, itself left out.
+  string versionEndExcluding = 5;
+  // The last version the match covers.
+  string versionEndIncluding = 6;
+  // When NVD first recorded this.
+  string created = 7;
+  // When NVD last changed this.
+  string lastModified = 8;
+  // The state of this thing, from the list its class names.
+  NvdMatchStringStatus status = 9;
+  // When NVD last changed the list of CPE names this matches.
+  string cpeLastModified = 10;
+  // The CPE names this matches.
+  repeated NvdMatchedCpe matches = 11;
+}
+// One entry of a match-string response, which only wraps the match string.
+message NvdMatchStringItem {
+  // The match string and what NVD holds about it.
+  NvdMatchString matchString = 1;
+}
+// The scores of a vulnerability, in a list per scoring system and version.
+message NvdMetrics {
+  // The CVSS 4.0 scores.
+  repeated NvdCvssMetricV40 cvssMetricV40 = 1;
+  // The CVSS 3.1 scores.
+  repeated NvdCvssMetricV31 cvssMetricV31 = 2;
+  // The CVSS 3.0 scores.
+  repeated NvdCvssMetricV30 cvssMetricV30 = 3;
+  // The CVSS 2.0 scores.
+  repeated NvdCvssMetricV2 cvssMetricV2 = 4;
+  // The SSVC 2.0.3 decisions.
+  repeated NvdSsvcMetricV203 ssvcV203 = 5;
+}
+// One affected source code routine.
+message NvdProgramRoutine {
+  // The name of the source code routine.
+  string name = 1;
+}
+// A page about a vulnerability, with NVD's labels for what it is.
+message NvdReference {
+  // The address of the page.
+  string url = 1;
+  // The email address or UUID of the organization that supplied this.
+  string source = 2;
+  // Labels on this thing, from the list its class names.
+  repeated NvdReferenceTag tags = 3;
+}
+// The fields of a page of results, which every NVD API response carries.
+message NvdResponseMixin {
+  // The name NVD gives this kind of response.
+  string format = 1;
+  // When NVD produced this response or this decision.
+  string timestamp = 2;
+  // How many results this page holds.
+  int32 resultsPerPage = 3;
+  // The position of this page's first result among all the results.
+  int32 startIndex = 4;
+  // How many results the request matched in all.
+  int32 totalResults = 5;
+  // The response format's version.
+  string version = 6;
+}
+// One SSVC decision, as the answers chosen on the way through a decision tree.
+message NvdSsvcData {
+  // When NVD produced this response or this decision.
+  string timestamp = 1;
+  // The decision in a short form.
+  string computed = 2;
+  // The answers given, each as a decision point and its value.
+  repeated NvdSsvcOption options = 3;
+  // The role of whoever made the decision, such as CISA Coordinator.
+  string role = 4;
+  // Which SSVC release this decision follows.
+  string version = 5;
+  // The whole tree this decision came from.
+  NvdSsvcDecisionTree decisionTree = 6;
+  // The vulnerability the decision is about, by whatever identifier.
+  string id = 7;
+  // Where to find the tree this decision came from.
+  string decisionTreeUrl = 8;
+  // The tool that wrote this decision.
+  string generator = 9;
+}
+// A whole SSVC decision tree, in the form of the schema NVD's file names.
+message NvdSsvcDecisionTree {
+}
+// A Stakeholder-Specific Vulnerability Categorization (SSVC) decision and who made it.
+message NvdSsvcMetricV203 {
+  // The email address or UUID of the organization that supplied this.
+  string source = 1;
+  // The decision.
+  NvdSsvcData ssvcData = 2;
+}
+// One answer on the way through a decision tree, keyed by its decision point.
+message NvdSsvcOption {
+  // How far the vulnerability is known to be exploited, such as none, poc or active.
+  string exploitation = 1;
+  // Whether an attacker could automate the attack, as yes or no.
+  string automatable = 2;
+  // How much control an attacker would gain, as partial or total.
+  string technicalImpact = 3;
+}
+// What a product's vendor has said about a vulnerability.
+message NvdVendorComment {
+  // When NVD last changed this.
+  string lastModified = 1;
+  // The vendor's name.
+  string organization = 2;
+  // What the vendor said.
+  string comment = 3;
+}
+// A point within a range of versions where the status changes.
+message NvdVersionChange {
+  // The version at which the status changes.
+  string at = 1;
+  // The state of this thing, from the list its class names.
+  NvdVersionStatus status = 2;
+}
+// One entry of a response, which only wraps the vulnerability.
+message NvdVulnerability {
+  // The vulnerability.
+  NvdCve cve = 1;
+}
+// The weaknesses that one source says lie behind a vulnerability.
+message NvdWeakness {
+  // The email address or UUID of the organization that supplied this.
+  string source = 1;
+  // The kind of this thing, from the list its class names.
+  NvdSourceType type = 2;
+  // The weakness, as language-tagged text, usually a CWE identifier.
+  repeated NvdLangString description = 3;
+}
+
+// How much is outside the attacker's control.
+enum CvssAttackComplexity {
+  CVSS_ATTACK_COMPLEXITY_UNSPECIFIED = 0;
+  CVSS_ATTACK_COMPLEXITY_HIGH = 1;
+  CVSS_ATTACK_COMPLEXITY_LOW = 2;
+}
+// How far working attack code has come.
+enum CvssExploitCodeMaturity {
+  CVSS_EXPLOIT_CODE_MATURITY_UNSPECIFIED = 0;
+  CVSS_EXPLOIT_CODE_MATURITY_UNPROVEN = 1;
+  CVSS_EXPLOIT_CODE_MATURITY_PROOF_OF_CONCEPT = 2;
+  CVSS_EXPLOIT_CODE_MATURITY_FUNCTIONAL = 3;
+  CVSS_EXPLOIT_CODE_MATURITY_HIGH = 4;
+  CVSS_EXPLOIT_CODE_MATURITY_NOT_DEFINED = 5;
+}
+// How much of one security property an attack could cost.
+enum CvssImpact {
+  CVSS_IMPACT_UNSPECIFIED = 0;
+  CVSS_IMPACT_NONE = 1;
+  CVSS_IMPACT_LOW = 2;
+  CVSS_IMPACT_HIGH = 3;
+}
+// The attack complexity as the scorer's environment changes it.
+enum CvssModifiedAttackComplexity {
+  CVSS_MODIFIED_ATTACK_COMPLEXITY_UNSPECIFIED = 0;
+  CVSS_MODIFIED_ATTACK_COMPLEXITY_HIGH = 1;
+  CVSS_MODIFIED_ATTACK_COMPLEXITY_LOW = 2;
+  CVSS_MODIFIED_ATTACK_COMPLEXITY_NOT_DEFINED = 3;
+}
+// The impact on one security property as the scorer's environment changes it.
+enum CvssModifiedImpact {
+  CVSS_MODIFIED_IMPACT_UNSPECIFIED = 0;
+  CVSS_MODIFIED_IMPACT_NONE = 1;
+  CVSS_MODIFIED_IMPACT_LOW = 2;
+  CVSS_MODIFIED_IMPACT_HIGH = 3;
+  CVSS_MODIFIED_IMPACT_NOT_DEFINED = 4;
+}
+// The access needed as the scorer's environment changes it.
+enum CvssModifiedPrivilegesRequired {
+  CVSS_MODIFIED_PRIVILEGES_REQUIRED_UNSPECIFIED = 0;
+  CVSS_MODIFIED_PRIVILEGES_REQUIRED_HIGH = 1;
+  CVSS_MODIFIED_PRIVILEGES_REQUIRED_LOW = 2;
+  CVSS_MODIFIED_PRIVILEGES_REQUIRED_NONE = 3;
+  CVSS_MODIFIED_PRIVILEGES_REQUIRED_NOT_DEFINED = 4;
+}
+// What access an attacker needs beforehand.
+enum CvssPrivilegesRequired {
+  CVSS_PRIVILEGES_REQUIRED_UNSPECIFIED = 0;
+  CVSS_PRIVILEGES_REQUIRED_HIGH = 1;
+  CVSS_PRIVILEGES_REQUIRED_LOW = 2;
+  CVSS_PRIVILEGES_REQUIRED_NONE = 3;
+}
+// What kind of fix is available.
+enum CvssRemediationLevel {
+  CVSS_REMEDIATION_LEVEL_UNSPECIFIED = 0;
+  CVSS_REMEDIATION_LEVEL_OFFICIAL_FIX = 1;
+  CVSS_REMEDIATION_LEVEL_TEMPORARY_FIX = 2;
+  CVSS_REMEDIATION_LEVEL_WORKAROUND = 3;
+  CVSS_REMEDIATION_LEVEL_UNAVAILABLE = 4;
+  CVSS_REMEDIATION_LEVEL_NOT_DEFINED = 5;
+}
+// How much one security property matters to the scorer.
+enum CvssRequirement {
+  CVSS_REQUIREMENT_UNSPECIFIED = 0;
+  CVSS_REQUIREMENT_LOW = 1;
+  CVSS_REQUIREMENT_MEDIUM = 2;
+  CVSS_REQUIREMENT_HIGH = 3;
+  CVSS_REQUIREMENT_NOT_DEFINED = 4;
+}
+// A CVSS rating in words.
+enum CvssSeverity {
+  CVSS_SEVERITY_UNSPECIFIED = 0;
+  CVSS_SEVERITY_NONE = 1;
+  CVSS_SEVERITY_LOW = 2;
+  CVSS_SEVERITY_MEDIUM = 3;
+  CVSS_SEVERITY_HIGH = 4;
+  CVSS_SEVERITY_CRITICAL = 5;
+}
+// How hard the flaw is to use, in CVSS 2.0's terms.
+enum CvssV2AccessComplexity {
+  CVSS_V2_ACCESS_COMPLEXITY_UNSPECIFIED = 0;
+  CVSS_V2_ACCESS_COMPLEXITY_HIGH = 1;
+  CVSS_V2_ACCESS_COMPLEXITY_MEDIUM = 2;
+  CVSS_V2_ACCESS_COMPLEXITY_LOW = 3;
+}
+// How far away an attacker can be, in CVSS 2.0's terms.
+enum CvssV2AccessVector {
+  CVSS_V2_ACCESS_VECTOR_UNSPECIFIED = 0;
+  CVSS_V2_ACCESS_VECTOR_NETWORK = 1;
+  CVSS_V2_ACCESS_VECTOR_ADJACENT_NETWORK = 2;
+  CVSS_V2_ACCESS_VECTOR_LOCAL = 3;
+}
+// How many logins an attacker needs, in CVSS 2.0's terms.
+enum CvssV2Authentication {
+  CVSS_V2_AUTHENTICATION_UNSPECIFIED = 0;
+  CVSS_V2_AUTHENTICATION_MULTIPLE = 1;
+  CVSS_V2_AUTHENTICATION_SINGLE = 2;
+  CVSS_V2_AUTHENTICATION_NONE = 3;
+}
+// How much loss could follow beyond the system itself.
+enum CvssV2CollateralDamagePotential {
+  CVSS_V2_COLLATERAL_DAMAGE_POTENTIAL_UNSPECIFIED = 0;
+  CVSS_V2_COLLATERAL_DAMAGE_POTENTIAL_NONE = 1;
+  CVSS_V2_COLLATERAL_DAMAGE_POTENTIAL_LOW = 2;
+  CVSS_V2_COLLATERAL_DAMAGE_POTENTIAL_LOW_MEDIUM = 3;
+  CVSS_V2_COLLATERAL_DAMAGE_POTENTIAL_MEDIUM_HIGH = 4;
+  CVSS_V2_COLLATERAL_DAMAGE_POTENTIAL_HIGH = 5;
+  CVSS_V2_COLLATERAL_DAMAGE_POTENTIAL_NOT_DEFINED = 6;
+}
+// How much of one security property an attack could cost, in CVSS 2.0's terms.
+enum CvssV2Impact {
+  CVSS_V2_IMPACT_UNSPECIFIED = 0;
+  CVSS_V2_IMPACT_NONE = 1;
+  CVSS_V2_IMPACT_PARTIAL = 2;
+  CVSS_V2_IMPACT_COMPLETE = 3;
+}
+// How far the flaw has been confirmed, in CVSS 2.0's terms.
+enum CvssV2ReportConfidence {
+  CVSS_V2_REPORT_CONFIDENCE_UNSPECIFIED = 0;
+  CVSS_V2_REPORT_CONFIDENCE_UNCONFIRMED = 1;
+  CVSS_V2_REPORT_CONFIDENCE_UNCORROBORATED = 2;
+  CVSS_V2_REPORT_CONFIDENCE_CONFIRMED = 3;
+  CVSS_V2_REPORT_CONFIDENCE_NOT_DEFINED = 4;
+}
+// How much of the environment the flaw exposes.
+enum CvssV2TargetDistribution {
+  CVSS_V2_TARGET_DISTRIBUTION_UNSPECIFIED = 0;
+  CVSS_V2_TARGET_DISTRIBUTION_NONE = 1;
+  CVSS_V2_TARGET_DISTRIBUTION_LOW = 2;
+  CVSS_V2_TARGET_DISTRIBUTION_MEDIUM = 3;
+  CVSS_V2_TARGET_DISTRIBUTION_HIGH = 4;
+  CVSS_V2_TARGET_DISTRIBUTION_NOT_DEFINED = 5;
+}
+// How far away an attacker can be, in CVSS 3's terms.
+enum CvssV3AttackVector {
+  CVSS_V3_ATTACK_VECTOR_UNSPECIFIED = 0;
+  CVSS_V3_ATTACK_VECTOR_NETWORK = 1;
+  CVSS_V3_ATTACK_VECTOR_ADJACENT_NETWORK = 2;
+  CVSS_V3_ATTACK_VECTOR_LOCAL = 3;
+  CVSS_V3_ATTACK_VECTOR_PHYSICAL = 4;
+}
+// The attack vector as the scorer's environment changes it, in CVSS 3's terms.
+enum CvssV3ModifiedAttackVector {
+  CVSS_V3_MODIFIED_ATTACK_VECTOR_UNSPECIFIED = 0;
+  CVSS_V3_MODIFIED_ATTACK_VECTOR_NETWORK = 1;
+  CVSS_V3_MODIFIED_ATTACK_VECTOR_ADJACENT_NETWORK = 2;
+  CVSS_V3_MODIFIED_ATTACK_VECTOR_LOCAL = 3;
+  CVSS_V3_MODIFIED_ATTACK_VECTOR_PHYSICAL = 4;
+  CVSS_V3_MODIFIED_ATTACK_VECTOR_NOT_DEFINED = 5;
+}
+// The scope as the scorer's environment changes it.
+enum CvssV3ModifiedScope {
+  CVSS_V3_MODIFIED_SCOPE_UNSPECIFIED = 0;
+  CVSS_V3_MODIFIED_SCOPE_UNCHANGED = 1;
+  CVSS_V3_MODIFIED_SCOPE_CHANGED = 2;
+  CVSS_V3_MODIFIED_SCOPE_NOT_DEFINED = 3;
+}
+// The user interaction as the scorer's environment changes it, in CVSS 3's terms.
+enum CvssV3ModifiedUserInteraction {
+  CVSS_V3_MODIFIED_USER_INTERACTION_UNSPECIFIED = 0;
+  CVSS_V3_MODIFIED_USER_INTERACTION_NONE = 1;
+  CVSS_V3_MODIFIED_USER_INTERACTION_REQUIRED = 2;
+  CVSS_V3_MODIFIED_USER_INTERACTION_NOT_DEFINED = 3;
+}
+// How far the flaw has been confirmed, in CVSS 3's terms.
+enum CvssV3ReportConfidence {
+  CVSS_V3_REPORT_CONFIDENCE_UNSPECIFIED = 0;
+  CVSS_V3_REPORT_CONFIDENCE_UNKNOWN = 1;
+  CVSS_V3_REPORT_CONFIDENCE_REASONABLE = 2;
+  CVSS_V3_REPORT_CONFIDENCE_CONFIRMED = 3;
+  CVSS_V3_REPORT_CONFIDENCE_NOT_DEFINED = 4;
+}
+// Whether an attack can reach beyond the flawed component.
+enum CvssV3Scope {
+  CVSS_V3_SCOPE_UNSPECIFIED = 0;
+  CVSS_V3_SCOPE_UNCHANGED = 1;
+  CVSS_V3_SCOPE_CHANGED = 2;
+}
+// Whether someone else has to take part, in CVSS 3's terms.
+enum CvssV3UserInteraction {
+  CVSS_V3_USER_INTERACTION_UNSPECIFIED = 0;
+  CVSS_V3_USER_INTERACTION_NONE = 1;
+  CVSS_V3_USER_INTERACTION_REQUIRED = 2;
+}
+// Whether the attack needs conditions in the target beyond the attacker's control.
+enum CvssV4AttackRequirements {
+  CVSS_V4_ATTACK_REQUIREMENTS_UNSPECIFIED = 0;
+  CVSS_V4_ATTACK_REQUIREMENTS_NONE = 1;
+  CVSS_V4_ATTACK_REQUIREMENTS_PRESENT = 2;
+}
+// How far away an attacker can be, in CVSS 4.0's terms.
+enum CvssV4AttackVector {
+  CVSS_V4_ATTACK_VECTOR_UNSPECIFIED = 0;
+  CVSS_V4_ATTACK_VECTOR_NETWORK = 1;
+  CVSS_V4_ATTACK_VECTOR_ADJACENT = 2;
+  CVSS_V4_ATTACK_VECTOR_LOCAL = 3;
+  CVSS_V4_ATTACK_VECTOR_PHYSICAL = 4;
+}
+// Whether every step of an attack could be automated across many targets.
+enum CvssV4Automatable {
+  CVSS_V4_AUTOMATABLE_UNSPECIFIED = 0;
+  CVSS_V4_AUTOMATABLE_NO = 1;
+  CVSS_V4_AUTOMATABLE_YES = 2;
+  CVSS_V4_AUTOMATABLE_NOT_DEFINED = 3;
+}
+// How much is known about attacks on the flaw.
+enum CvssV4ExploitMaturity {
+  CVSS_V4_EXPLOIT_MATURITY_UNSPECIFIED = 0;
+  CVSS_V4_EXPLOIT_MATURITY_UNREPORTED = 1;
+  CVSS_V4_EXPLOIT_MATURITY_PROOF_OF_CONCEPT = 2;
+  CVSS_V4_EXPLOIT_MATURITY_ATTACKED = 3;
+  CVSS_V4_EXPLOIT_MATURITY_NOT_DEFINED = 4;
+}
+// The attack requirements as the scorer's environment changes them.
+enum CvssV4ModifiedAttackRequirements {
+  CVSS_V4_MODIFIED_ATTACK_REQUIREMENTS_UNSPECIFIED = 0;
+  CVSS_V4_MODIFIED_ATTACK_REQUIREMENTS_NONE = 1;
+  CVSS_V4_MODIFIED_ATTACK_REQUIREMENTS_PRESENT = 2;
+  CVSS_V4_MODIFIED_ATTACK_REQUIREMENTS_NOT_DEFINED = 3;
+}
+// The attack vector as the scorer's environment changes it, in CVSS 4.0's terms.
+enum CvssV4ModifiedAttackVector {
+  CVSS_V4_MODIFIED_ATTACK_VECTOR_UNSPECIFIED = 0;
+  CVSS_V4_MODIFIED_ATTACK_VECTOR_NETWORK = 1;
+  CVSS_V4_MODIFIED_ATTACK_VECTOR_ADJACENT = 2;
+  CVSS_V4_MODIFIED_ATTACK_VECTOR_LOCAL = 3;
+  CVSS_V4_MODIFIED_ATTACK_VECTOR_PHYSICAL = 4;
+  CVSS_V4_MODIFIED_ATTACK_VECTOR_NOT_DEFINED = 5;
+}
+// The integrity or availability impact on connected systems as the scorer's environment changes it, which may include a risk to safety.
+enum CvssV4ModifiedSubsequentImpact {
+  CVSS_V4_MODIFIED_SUBSEQUENT_IMPACT_UNSPECIFIED = 0;
+  CVSS_V4_MODIFIED_SUBSEQUENT_IMPACT_NONE = 1;
+  CVSS_V4_MODIFIED_SUBSEQUENT_IMPACT_LOW = 2;
+  CVSS_V4_MODIFIED_SUBSEQUENT_IMPACT_HIGH = 3;
+  CVSS_V4_MODIFIED_SUBSEQUENT_IMPACT_SAFETY = 4;
+  CVSS_V4_MODIFIED_SUBSEQUENT_IMPACT_NOT_DEFINED = 5;
+}
+// The user interaction as the scorer's environment changes it, in CVSS 4.0's terms.
+enum CvssV4ModifiedUserInteraction {
+  CVSS_V4_MODIFIED_USER_INTERACTION_UNSPECIFIED = 0;
+  CVSS_V4_MODIFIED_USER_INTERACTION_NONE = 1;
+  CVSS_V4_MODIFIED_USER_INTERACTION_PASSIVE = 2;
+  CVSS_V4_MODIFIED_USER_INTERACTION_ACTIVE = 3;
+  CVSS_V4_MODIFIED_USER_INTERACTION_NOT_DEFINED = 4;
+}
+// How urgent the product's supplier says the flaw is, as a colour.
+enum CvssV4ProviderUrgency {
+  CVSS_V4_PROVIDER_URGENCY_UNSPECIFIED = 0;
+  CVSS_V4_PROVIDER_URGENCY_CLEAR = 1;
+  CVSS_V4_PROVIDER_URGENCY_GREEN = 2;
+  CVSS_V4_PROVIDER_URGENCY_AMBER = 3;
+  CVSS_V4_PROVIDER_URGENCY_RED = 4;
+  CVSS_V4_PROVIDER_URGENCY_NOT_DEFINED = 5;
+}
+// How the affected system comes back after an attack.
+enum CvssV4Recovery {
+  CVSS_V4_RECOVERY_UNSPECIFIED = 0;
+  CVSS_V4_RECOVERY_AUTOMATIC = 1;
+  CVSS_V4_RECOVERY_USER = 2;
+  CVSS_V4_RECOVERY_IRRECOVERABLE = 3;
+  CVSS_V4_RECOVERY_NOT_DEFINED = 4;
+}
+// How much work it takes a consumer to respond to the flaw.
+enum CvssV4ResponseEffort {
+  CVSS_V4_RESPONSE_EFFORT_UNSPECIFIED = 0;
+  CVSS_V4_RESPONSE_EFFORT_LOW = 1;
+  CVSS_V4_RESPONSE_EFFORT_MODERATE = 2;
+  CVSS_V4_RESPONSE_EFFORT_HIGH = 3;
+  CVSS_V4_RESPONSE_EFFORT_NOT_DEFINED = 4;
+}
+// Whether an attack could put people's safety at risk.
+enum CvssV4Safety {
+  CVSS_V4_SAFETY_UNSPECIFIED = 0;
+  CVSS_V4_SAFETY_NEGLIGIBLE = 1;
+  CVSS_V4_SAFETY_PRESENT = 2;
+  CVSS_V4_SAFETY_NOT_DEFINED = 3;
+}
+// Whether someone else has to take part, in CVSS 4.0's terms.
+enum CvssV4UserInteraction {
+  CVSS_V4_USER_INTERACTION_UNSPECIFIED = 0;
+  CVSS_V4_USER_INTERACTION_NONE = 1;
+  CVSS_V4_USER_INTERACTION_PASSIVE = 2;
+  CVSS_V4_USER_INTERACTION_ACTIVE = 3;
+}
+// How much of a resource one successful attack gains the attacker.
+enum CvssV4ValueDensity {
+  CVSS_V4_VALUE_DENSITY_UNSPECIFIED = 0;
+  CVSS_V4_VALUE_DENSITY_DIFFUSE = 1;
+  CVSS_V4_VALUE_DENSITY_CONCENTRATED = 2;
+  CVSS_V4_VALUE_DENSITY_NOT_DEFINED = 3;
+}
+// What a CPE name's reference points to.
+enum NvdCpeReferenceType {
+  NVD_CPE_REFERENCE_TYPE_UNSPECIFIED = 0;
+  NVD_CPE_REFERENCE_TYPE_ADVISORY = 1;
+  NVD_CPE_REFERENCE_TYPE_CHANGE_LOG = 2;
+  NVD_CPE_REFERENCE_TYPE_PRODUCT = 3;
+  NVD_CPE_REFERENCE_TYPE_PROJECT = 4;
+  NVD_CPE_REFERENCE_TYPE_VENDOR = 5;
+  NVD_CPE_REFERENCE_TYPE_VERSION = 6;
+}
+// A label that a CVE record's source puts on the record.
+enum NvdCveTagName {
+  NVD_CVE_TAG_NAME_UNSPECIFIED = 0;
+  NVD_CVE_TAG_NAME_UNSUPPORTED_WHEN_ASSIGNED = 1;
+  NVD_CVE_TAG_NAME_EXCLUSIVELY_HOSTED_SERVICE = 2;
+  NVD_CVE_TAG_NAME_DISPUTED = 3;
+}
+// The severity band NVD gives a CVSS 2.0 base score.
+enum NvdCvssV2Severity {
+  NVD_CVSS_V2_SEVERITY_UNSPECIFIED = 0;
+  NVD_CVSS_V2_SEVERITY_LOW = 1;
+  NVD_CVSS_V2_SEVERITY_MEDIUM = 2;
+  NVD_CVSS_V2_SEVERITY_HIGH = 3;
+}
+// Whether NVD still uses a match string.
+enum NvdMatchStringStatus {
+  NVD_MATCH_STRING_STATUS_UNSPECIFIED = 0;
+  NVD_MATCH_STRING_STATUS_ACTIVE = 1;
+  NVD_MATCH_STRING_STATUS_INACTIVE = 2;
+}
+// How the parts of a configuration combine.
+enum NvdOperator {
+  NVD_OPERATOR_UNSPECIFIED = 0;
+  NVD_OPERATOR_AND = 1;
+  NVD_OPERATOR_OR = 2;
+}
+// NVD's label for what a reference is.
+enum NvdReferenceTag {
+  NVD_REFERENCE_TAG_UNSPECIFIED = 0;
+  NVD_REFERENCE_TAG_BROKEN_LINK = 1;
+  NVD_REFERENCE_TAG_EXPLOIT = 2;
+  NVD_REFERENCE_TAG_ISSUE_TRACKING = 3;
+  NVD_REFERENCE_TAG_MAILING_LIST = 4;
+  NVD_REFERENCE_TAG_MITIGATION = 5;
+  NVD_REFERENCE_TAG_NOT_APPLICABLE = 6;
+  NVD_REFERENCE_TAG_PATCH = 7;
+  NVD_REFERENCE_TAG_PERMISSIONS_REQUIRED = 8;
+  NVD_REFERENCE_TAG_PRESS_MEDIA_COVERAGE = 9;
+  NVD_REFERENCE_TAG_RELATED = 10;
+  NVD_REFERENCE_TAG_PRODUCT = 11;
+  NVD_REFERENCE_TAG_RELEASE_NOTES = 12;
+  NVD_REFERENCE_TAG_TECHNICAL_DESCRIPTION = 13;
+  NVD_REFERENCE_TAG_THIRD_PARTY_ADVISORY = 14;
+  NVD_REFERENCE_TAG_TOOL_SIGNATURE = 15;
+  NVD_REFERENCE_TAG_URL_REPURPOSED = 16;
+  NVD_REFERENCE_TAG_US_GOVERNMENT_RESOURCE = 17;
+  NVD_REFERENCE_TAG_VDB_ENTRY = 18;
+  NVD_REFERENCE_TAG_VENDOR_ADVISORY = 19;
+}
+// Whether a score or a weakness comes from the party NVD treats as first.
+enum NvdSourceType {
+  NVD_SOURCE_TYPE_UNSPECIFIED = 0;
+  NVD_SOURCE_TYPE_PRIMARY = 1;
+  NVD_SOURCE_TYPE_SECONDARY = 2;
+}
+// Whether a version of a product has the vulnerability.
+enum NvdVersionStatus {
+  NVD_VERSION_STATUS_UNSPECIFIED = 0;
+  NVD_VERSION_STATUS_AFFECTED = 1;
+  NVD_VERSION_STATUS_UNAFFECTED = 2;
+  NVD_VERSION_STATUS_UNKNOWN = 3;
+}
+// Where a vulnerability stands in NVD's own analysis.
+enum NvdVulnStatus {
+  NVD_VULN_STATUS_UNSPECIFIED = 0;
+  NVD_VULN_STATUS_ANALYZED = 1;
+  NVD_VULN_STATUS_DEFERRED = 2;
+  NVD_VULN_STATUS_AWAITING_ANALYSIS = 3;
+  NVD_VULN_STATUS_MODIFIED = 4;
+  NVD_VULN_STATUS_RECEIVED = 5;
+  NVD_VULN_STATUS_UNDERGOING_ANALYSIS = 6;
+  NVD_VULN_STATUS_REJECTED = 7;
+}

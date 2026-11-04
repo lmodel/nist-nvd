@@ -1,0 +1,17 @@
+# Fails at: /cpeNameId
+deprecated: true
+cpeName: cpe:2.3:a:example:widget:1.2.3:*:*:*:*:*:*:*
+created: '2026-03-02T10:15:30.123'
+lastModified: '2026-03-05T08:00:00.000'
+titles:
+  - title: Example Widget 1.2.3
+    lang: en
+refs:
+  - ref: https://www.example.org/widget
+    type: Product
+deprecatedBy:
+  - cpeName: cpe:2.3:a:example:widget2:1.2.3:*:*:*:*:*:*:*
+    cpeNameId: A1B2C3D4-E5F6-4789-90AB-CDEF01234567
+deprecates:
+  - cpeName: cpe:2.3:a:example:gadget:1.2.3:*:*:*:*:*:*:*
+    cpeNameId: A1B2C3D4-E5F6-4789-90AB-CDEF01234567

@@ -1,0 +1,5 @@
+# Explanations
+
+* [Where the schema departs from NIST's files](departures-from-nists-files.md) - The places where the schema and NIST's JSON schemas part, each with its reason: timestamps with no UTC offset, a repository address RFC 3986 refuses, SSVC's `$schema` and decision tree, closed classes, and the enums the data fixes. `tests/test_upstream.py` lists each.
+* [The crosswalk to CVE and KEV, and other mappings](crosswalk-and-mappings.md) - How the schema maps to lmodel/cve, lmodel/kev-catalog and public vocabularies, and which mappings rest on data: the `id` and the four CISA fields are exact, NVD's timestamps only related. The hand-kept SSSOM file is gone, and the schema is the one home for mappings.
+* [What each checker checks](what-each-checker-checks.md) - What the validator, the Python rules and the generated Python models each check: `linkml-validate` covers NIST's keys, value lists, patterns and bounds and the version rule, `tests/nvd_rules.py` covers uniqueness and the CVSS 4.0 score step, and the generated models check less.

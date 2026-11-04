@@ -1,901 +1,3194 @@
 {
     "$defs": {
-        "CPEConfiguration": {
-            "additionalProperties": false,
-            "description": "Logical grouping of CPE match criteria for affected software.",
-            "properties": {
-                "children": {
-                    "description": "Child configuration nodes.",
-                    "items": {
-                        "$ref": "#/$defs/CPEConfiguration"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "configuration_id": {
-                    "description": "Display identifier, for example Configuration 1.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "configuration_type": {
-                    "$ref": "#/$defs/ConfigurationType",
-                    "description": "Simplified configuration rendering type."
-                },
-                "matches": {
-                    "description": "Match criteria for this configuration node.",
-                    "items": {
-                        "$ref": "#/$defs/CPEMatch"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "operator": {
-                    "description": "Logical operator (AND/OR) used in configuration node groupings.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "summary": {
-                    "description": "Human-oriented explanation of configuration logic.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                }
-            },
-            "title": "CPEConfiguration",
-            "type": "object"
-        },
-        "CPEMatch": {
-            "additionalProperties": false,
-            "description": "Leaf-level CPE match criterion and optional version bounds.",
-            "properties": {
-                "cpe23_uri": {
-                    "description": "Concrete CPE 2.3 URI.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "criteria": {
-                    "description": "CPE 2.3 match criterion expression.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "match_criteria_id": {
-                    "description": "Identifier for a match criterion.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "matched_cpe_names": {
-                    "description": "Expanded list of matching CPE names shown in detail UI.",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "version_end_excluding": {
-                    "description": "Exclusive upper version bound.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "version_end_including": {
-                    "description": "Inclusive upper version bound.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "version_start_excluding": {
-                    "description": "Exclusive lower version bound.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "version_start_including": {
-                    "description": "Inclusive lower version bound.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "vulnerable": {
-                    "description": "Whether the criterion indicates a vulnerable product context.",
-                    "type": [
-                        "boolean",
-                        "null"
-                    ]
-                }
-            },
-            "title": "CPEMatch",
-            "type": "object"
-        },
-        "CVSSMetric": {
-            "additionalProperties": false,
-            "description": "Individual CVSS vector and score attribution.",
-            "properties": {
-                "base_score": {
-                    "maximum": 10,
-                    "minimum": 0,
-                    "type": [
-                        "number",
-                        "null"
-                    ]
-                },
-                "base_severity": {
-                    "$ref": "#/$defs/ImpactSeverity"
-                },
-                "provider_label": {
-                    "description": "Display label for score source, such as NIST NVD or CNA Example.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "scoring_justification": {
-                    "description": "Supplemental rationale or caveat for a CVSS score.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "source": {
-                    "$ref": "#/$defs/ScoreSource",
-                    "description": "Source or origin of the reference or data."
-                },
-                "vector_string": {
-                    "description": "Serialized CVSS vector string.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "version": {
-                    "description": "Version string of the affected product.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                }
-            },
-            "title": "CVSSMetric",
-            "type": "object"
-        },
-        "CVSSScoreNote": {
-            "additionalProperties": false,
-            "description": "Additional explanatory note for CVSS display conditions.",
-            "properties": {
-                "created": {
-                    "format": "date-time",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "message": {
-                    "description": "Human-readable explanatory note text.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "note_id": {
-                    "type": "string"
-                },
-                "source": {
-                    "description": "Source or origin of the reference or data.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                }
-            },
-            "required": [
-                "note_id"
-            ],
-            "title": "CVSSScoreNote",
-            "type": "object"
-        },
-        "CVSSVersion": {
-            "description": "Supported CVSS versions displayed in NVD metrics tabs.",
+        "CvssAttackComplexity": {
+            "description": "How much is outside the attacker's control.",
             "enum": [
-                "V2_0",
-                "V3_0",
-                "V3_1",
-                "V4_0"
+                "HIGH",
+                "LOW"
             ],
-            "title": "CVSSVersion",
+            "title": "CvssAttackComplexity",
             "type": "string"
         },
-        "Configuration": {
-            "additionalProperties": false,
-            "description": "Logical grouping of CPE match expressions.",
-            "properties": {
-                "cpe_uri": {
-                    "description": "CPE 2.2 URI identifying an affected product configuration.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "operator": {
-                    "description": "Logical operator (AND/OR) used in configuration node groupings.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                }
-            },
-            "title": "Configuration",
-            "type": "object"
-        },
-        "ConfigurationType": {
-            "description": "NVD configuration rendering category.",
+        "CvssExploitCodeMaturity": {
+            "description": "How far working attack code has come.",
             "enum": [
-                "BASIC",
-                "RUNNING_ON_WITH",
-                "ADVANCED"
+                "UNPROVEN",
+                "PROOF_OF_CONCEPT",
+                "FUNCTIONAL",
+                "HIGH",
+                "NOT_DEFINED"
             ],
-            "title": "ConfigurationType",
+            "title": "CvssExploitCodeMaturity",
             "type": "string"
         },
-        "Impact": {
-            "additionalProperties": false,
-            "description": "Assessment of the vulnerability's impact and severity.",
-            "properties": {
-                "score": {
-                    "description": "Numeric vulnerability score (e.g. CVSS base score).",
-                    "type": [
-                        "number",
-                        "null"
-                    ]
-                },
-                "severity": {
-                    "$ref": "#/$defs/ImpactSeverity",
-                    "description": "Qualitative severity rating."
-                },
-                "vector": {
-                    "description": "CVSS vector string or equivalent scoring vector expression.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                }
-            },
-            "title": "Impact",
-            "type": "object"
+        "CvssImpact": {
+            "description": "How much of one security property an attack could cost.",
+            "enum": [
+                "NONE",
+                "LOW",
+                "HIGH"
+            ],
+            "title": "CvssImpact",
+            "type": "string"
         },
-        "ImpactSeverity": {
-            "description": "CVSS qualitative severity rating.",
+        "CvssModifiedAttackComplexity": {
+            "description": "The attack complexity as the scorer's environment changes it.",
+            "enum": [
+                "HIGH",
+                "LOW",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssModifiedAttackComplexity",
+            "type": "string"
+        },
+        "CvssModifiedImpact": {
+            "description": "The impact on one security property as the scorer's environment changes it.",
+            "enum": [
+                "NONE",
+                "LOW",
+                "HIGH",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssModifiedImpact",
+            "type": "string"
+        },
+        "CvssModifiedPrivilegesRequired": {
+            "description": "The access needed as the scorer's environment changes it.",
+            "enum": [
+                "HIGH",
+                "LOW",
+                "NONE",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssModifiedPrivilegesRequired",
+            "type": "string"
+        },
+        "CvssPrivilegesRequired": {
+            "description": "What access an attacker needs beforehand.",
+            "enum": [
+                "HIGH",
+                "LOW",
+                "NONE"
+            ],
+            "title": "CvssPrivilegesRequired",
+            "type": "string"
+        },
+        "CvssRemediationLevel": {
+            "description": "What kind of fix is available.",
+            "enum": [
+                "OFFICIAL_FIX",
+                "TEMPORARY_FIX",
+                "WORKAROUND",
+                "UNAVAILABLE",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssRemediationLevel",
+            "type": "string"
+        },
+        "CvssRequirement": {
+            "description": "How much one security property matters to the scorer.",
+            "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssRequirement",
+            "type": "string"
+        },
+        "CvssSeverity": {
+            "description": "A CVSS rating in words.",
             "enum": [
                 "NONE",
                 "LOW",
                 "MEDIUM",
                 "HIGH",
-                "CRITICAL",
-                "UNKNOWN"
+                "CRITICAL"
             ],
-            "title": "ImpactSeverity",
+            "title": "CvssSeverity",
             "type": "string"
         },
-        "KnownExploitedVulnerability": {
+        "CvssSeverityBandsMixin": {
             "additionalProperties": false,
-            "description": "CISA KEV information rendered on the NVD detail page.",
-            "properties": {
-                "date_added": {
-                    "format": "date",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "NONE"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 0,
+                                "minimum": 0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
                 },
-                "due_date": {
-                    "format": "date",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "LOW"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 3.9,
+                                "minimum": 0.1
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
                 },
-                "kev_reference": {
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "MEDIUM"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 6.9,
+                                "minimum": 4.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
                 },
-                "required_action": {
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "HIGH"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 8.9,
+                                "minimum": 7.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "CRITICAL"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 10.0,
+                                "minimum": 9.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
                 }
-            },
-            "title": "KnownExploitedVulnerability",
-            "type": "object"
-        },
-        "MetricSet": {
-            "additionalProperties": false,
-            "description": "Container for all metric views across CVSS versions.",
+            ],
+            "description": "The base score and base severity of a CVSS version with severity bands, and the bands that tie one to the other.",
             "properties": {
-                "cvss_v2_metrics": {
-                    "description": "CVSS v2.0 metrics.",
-                    "items": {
-                        "$ref": "#/$defs/CVSSMetric"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
+                "baseScore": {
+                    "description": "The score from 0 to 10 for what is inherent in the flaw.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
                 },
-                "cvss_v3_metrics": {
-                    "description": "CVSS v3.x metrics.",
-                    "items": {
-                        "$ref": "#/$defs/CVSSMetric"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "cvss_v4_metrics": {
-                    "description": "CVSS v4.0 metrics.",
-                    "items": {
-                        "$ref": "#/$defs/CVSSMetric"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "score_notes": {
-                    "description": "Notes about CVSS display behavior and data provenance.",
-                    "items": {
-                        "$ref": "#/$defs/CVSSScoreNote"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                }
-            },
-            "title": "MetricSet",
-            "type": "object"
-        },
-        "NVDEntry": {
-            "additionalProperties": false,
-            "description": "Enriched NVD representation of a CVE entry.",
-            "properties": {
-                "analysis_description": {
-                    "description": "Description available at enrichment time and shown under Analysis Description.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "configurations": {
-                    "description": "Affected software configuration statements.",
-                    "items": {
-                        "$ref": "#/$defs/CPEConfiguration"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "cve_id": {
-                    "description": "The CVE identifier assigned by a CVE Numbering Authority (CNA). Format: CVE-YYYY-NNNNN.",
-                    "pattern": "^CVE-[0-9]{4}-[0-9]+$",
-                    "type": "string"
-                },
-                "cve_tags": {
-                    "description": "CVE tags passed through the CVE List and rendered by NVD.",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "cwe_view": {
-                    "description": "CWE view used for weakness mapping, typically CWE-1003.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "date_received": {
-                    "description": "Date/time when NVD received the CVE record for processing.",
-                    "format": "date-time",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "description": {
-                    "description": "Current Description shown on the NVD detail page.",
-                    "type": "string"
-                },
-                "description_source": {
-                    "description": "Source attribution shown beneath Current Description.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "impact": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/$defs/Impact"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "description": "Impact and severity assessment for this vulnerability."
-                },
-                "known_exploited": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/$defs/KnownExploitedVulnerability"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "description": "KEV banner details when this CVE is listed by CISA."
-                },
-                "last_modified_date": {
-                    "description": "Date and time the vulnerability record was last modified.",
-                    "format": "date-time",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "metrics": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/$defs/MetricSet"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "description": "Grouped CVSS displays and notes for this entry."
-                },
-                "nvd_tags": {
-                    "description": "NVD analysis tag values.",
-                    "items": {
-                        "$ref": "#/$defs/NVDTag"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "products": {
-                    "description": "Products affected by this vulnerability.",
-                    "items": {
-                        "$ref": "#/$defs/Product"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "published_date": {
-                    "description": "Date and time the vulnerability was first published.",
-                    "format": "date-time",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "references": {
-                    "description": "External references such as advisories and articles.",
-                    "items": {
-                        "$ref": "#/$defs/NVDReference"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "status": {
-                    "$ref": "#/$defs/NVDWorkflowStatus",
-                    "description": "Current lifecycle state of the vulnerability record."
-                },
-                "status_transitions": {
-                    "description": "Timeline of status transitions in NVD workflow.",
-                    "items": {
-                        "$ref": "#/$defs/StatusTransition"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "title": {
-                    "description": "Short human-readable title or name for this entity.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "vendor_comments": {
-                    "description": "Vendor comments associated with the vulnerability record.",
-                    "items": {
-                        "$ref": "#/$defs/VendorComment"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "weaknesses": {
-                    "description": "Weakness classifications (e.g. CWE) associated with this vulnerability.",
-                    "items": {
-                        "$ref": "#/$defs/NVDWeakness"
-                    },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
-                },
-                "workflow_status": {
-                    "$ref": "#/$defs/NVDWorkflowStatus",
-                    "description": "Current NVD workflow status for the CVE."
+                "baseSeverity": {
+                    "$ref": "#/$defs/CvssSeverity",
+                    "description": "The rating in words that the base score falls under."
                 }
             },
             "required": [
-                "cve_id",
-                "description"
+                "baseScore",
+                "baseSeverity"
             ],
-            "title": "NVDEntry",
+            "title": "CvssSeverityBandsMixin",
             "type": "object"
         },
-        "NVDReference": {
+        "CvssV20": {
             "additionalProperties": false,
-            "description": "Reference URL with NVD resource tags.",
+            "description": "A score under CVSS version 2.0, which has no severity bands.",
             "properties": {
-                "name": {
-                    "description": "Name of the entity (product, weakness, reference, etc.).",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                "accessComplexity": {
+                    "$ref": "#/$defs/CvssV2AccessComplexity",
+                    "description": "How hard the flaw is to use once the attacker can reach it."
                 },
-                "resource_tags": {
-                    "description": "NVD resource categories attached to references.",
-                    "items": {
-                        "$ref": "#/$defs/ReferenceTag"
+                "accessVector": {
+                    "$ref": "#/$defs/CvssV2AccessVector",
+                    "description": "How far away an attacker can be when using the flaw, in CVSS 2.0's terms."
+                },
+                "authentication": {
+                    "$ref": "#/$defs/CvssV2Authentication",
+                    "description": "How many times an attacker must log in before using the flaw."
+                },
+                "availabilityImpact": {
+                    "$ref": "#/$defs/CvssV2Impact",
+                    "description": "How much an attack could disrupt the service."
+                },
+                "availabilityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much availability matters to the scorer for the affected system."
+                },
+                "baseScore": {
+                    "description": "The score from 0 to 10 for what is inherent in the flaw.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "collateralDamagePotential": {
+                    "$ref": "#/$defs/CvssV2CollateralDamagePotential",
+                    "description": "How much loss a successful attack could cause beyond the system itself."
+                },
+                "confidentialityImpact": {
+                    "$ref": "#/$defs/CvssV2Impact",
+                    "description": "How much information an attack could expose."
+                },
+                "confidentialityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much confidentiality matters to the scorer for the affected system."
+                },
+                "environmentalScore": {
+                    "description": "The score adjusted for the scorer's own environment.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "exploitability": {
+                    "$ref": "#/$defs/CvssExploitCodeMaturity",
+                    "description": "How far working attack code has come, in CVSS 2.0's terms."
+                },
+                "integrityImpact": {
+                    "$ref": "#/$defs/CvssV2Impact",
+                    "description": "How much an attack could change that should not change."
+                },
+                "integrityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much integrity matters to the scorer for the affected system."
+                },
+                "remediationLevel": {
+                    "$ref": "#/$defs/CvssRemediationLevel",
+                    "description": "What kind of fix is available."
+                },
+                "reportConfidence": {
+                    "$ref": "#/$defs/CvssV2ReportConfidence",
+                    "description": "How far the flaw's existence and details have been confirmed."
+                },
+                "targetDistribution": {
+                    "$ref": "#/$defs/CvssV2TargetDistribution",
+                    "description": "How much of the scorer's environment is exposed to the flaw."
+                },
+                "temporalScore": {
+                    "description": "The base score adjusted for what changes over time, such as a fix appearing.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "vectorString": {
+                    "description": "The scores' metric values written as one compact string.",
+                    "pattern": "^((AV:[NAL]|AC:[LMH]|Au:[MSN]|[CIA]:[NPC]|E:(U|POC|F|H|ND)|RL:(OF|TF|W|U|ND)|RC:(UC|UR|C|ND)|CDP:(N|L|LM|MH|H|ND)|TD:(N|L|M|H|ND)|[CIA]R:(L|M|H|ND))/)*(AV:[NAL]|AC:[LMH]|Au:[MSN]|[CIA]:[NPC]|E:(U|POC|F|H|ND)|RL:(OF|TF|W|U|ND)|RC:(UC|UR|C|ND)|CDP:(N|L|LM|MH|H|ND)|TD:(N|L|M|H|ND)|[CIA]R:(L|M|H|ND))$",
+                    "type": "string"
+                },
+                "version": {
+                    "const": "2.0",
+                    "description": "A version string. On a score it is the CVSS version; on a product entry, the product's.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "version",
+                "vectorString",
+                "baseScore"
+            ],
+            "title": "CvssV20",
+            "type": "object"
+        },
+        "CvssV2AccessComplexity": {
+            "description": "How hard the flaw is to use, in CVSS 2.0's terms.",
+            "enum": [
+                "HIGH",
+                "MEDIUM",
+                "LOW"
+            ],
+            "title": "CvssV2AccessComplexity",
+            "type": "string"
+        },
+        "CvssV2AccessVector": {
+            "description": "How far away an attacker can be, in CVSS 2.0's terms.",
+            "enum": [
+                "NETWORK",
+                "ADJACENT_NETWORK",
+                "LOCAL"
+            ],
+            "title": "CvssV2AccessVector",
+            "type": "string"
+        },
+        "CvssV2Authentication": {
+            "description": "How many logins an attacker needs, in CVSS 2.0's terms.",
+            "enum": [
+                "MULTIPLE",
+                "SINGLE",
+                "NONE"
+            ],
+            "title": "CvssV2Authentication",
+            "type": "string"
+        },
+        "CvssV2CollateralDamagePotential": {
+            "description": "How much loss could follow beyond the system itself.",
+            "enum": [
+                "NONE",
+                "LOW",
+                "LOW_MEDIUM",
+                "MEDIUM_HIGH",
+                "HIGH",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV2CollateralDamagePotential",
+            "type": "string"
+        },
+        "CvssV2Impact": {
+            "description": "How much of one security property an attack could cost, in CVSS 2.0's terms.",
+            "enum": [
+                "NONE",
+                "PARTIAL",
+                "COMPLETE"
+            ],
+            "title": "CvssV2Impact",
+            "type": "string"
+        },
+        "CvssV2ReportConfidence": {
+            "description": "How far the flaw has been confirmed, in CVSS 2.0's terms.",
+            "enum": [
+                "UNCONFIRMED",
+                "UNCORROBORATED",
+                "CONFIRMED",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV2ReportConfidence",
+            "type": "string"
+        },
+        "CvssV2TargetDistribution": {
+            "description": "How much of the environment the flaw exposes.",
+            "enum": [
+                "NONE",
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV2TargetDistribution",
+            "type": "string"
+        },
+        "CvssV30": {
+            "additionalProperties": false,
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "NONE"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
                     },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 0,
+                                "minimum": 0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "LOW"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 3.9,
+                                "minimum": 0.1
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "MEDIUM"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 6.9,
+                                "minimum": 4.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "HIGH"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 8.9,
+                                "minimum": 7.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "CRITICAL"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 10.0,
+                                "minimum": 9.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                }
+            ],
+            "description": "A score under CVSS version 3.0.",
+            "properties": {
+                "attackComplexity": {
+                    "$ref": "#/$defs/CvssAttackComplexity",
+                    "description": "How much is outside the attacker's control when using the flaw."
+                },
+                "attackVector": {
+                    "$ref": "#/$defs/CvssV3AttackVector",
+                    "description": "How far away an attacker can be when using the flaw."
+                },
+                "availabilityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much an attack could disrupt the service."
+                },
+                "availabilityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much availability matters to the scorer for the affected system."
+                },
+                "baseScore": {
+                    "description": "The score from 0 to 10 for what is inherent in the flaw.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "baseSeverity": {
+                    "$ref": "#/$defs/CvssSeverity",
+                    "description": "The rating in words that the base score falls under."
+                },
+                "confidentialityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much information an attack could expose."
+                },
+                "confidentialityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much confidentiality matters to the scorer for the affected system."
+                },
+                "environmentalScore": {
+                    "description": "The score adjusted for the scorer's own environment.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "environmentalSeverity": {
+                    "$ref": "#/$defs/CvssSeverity",
+                    "description": "The rating in words for the environmental score."
+                },
+                "exploitCodeMaturity": {
+                    "$ref": "#/$defs/CvssExploitCodeMaturity",
+                    "description": "How far working attack code has come."
+                },
+                "integrityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much an attack could change that should not change."
+                },
+                "integrityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much integrity matters to the scorer for the affected system."
+                },
+                "modifiedAttackComplexity": {
+                    "$ref": "#/$defs/CvssModifiedAttackComplexity",
+                    "description": "The attack complexity as the scorer's own environment changes it."
+                },
+                "modifiedAttackVector": {
+                    "$ref": "#/$defs/CvssV3ModifiedAttackVector",
+                    "description": "The attack vector as the scorer's own environment changes it."
+                },
+                "modifiedAvailabilityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The availability impact as the scorer's own environment changes it."
+                },
+                "modifiedConfidentialityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The confidentiality impact as the scorer's own environment changes it."
+                },
+                "modifiedIntegrityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The integrity impact as the scorer's own environment changes it."
+                },
+                "modifiedPrivilegesRequired": {
+                    "$ref": "#/$defs/CvssModifiedPrivilegesRequired",
+                    "description": "The privileges needed as the scorer's own environment changes them."
+                },
+                "modifiedScope": {
+                    "$ref": "#/$defs/CvssV3ModifiedScope",
+                    "description": "The scope as the scorer's own environment changes it."
+                },
+                "modifiedUserInteraction": {
+                    "$ref": "#/$defs/CvssV3ModifiedUserInteraction",
+                    "description": "The user interaction as the scorer's own environment changes it."
+                },
+                "privilegesRequired": {
+                    "$ref": "#/$defs/CvssPrivilegesRequired",
+                    "description": "What level of access an attacker needs before using the flaw."
+                },
+                "remediationLevel": {
+                    "$ref": "#/$defs/CvssRemediationLevel",
+                    "description": "What kind of fix is available."
+                },
+                "reportConfidence": {
+                    "$ref": "#/$defs/CvssV3ReportConfidence",
+                    "description": "How far the flaw's existence and details have been confirmed."
+                },
+                "scope": {
+                    "$ref": "#/$defs/CvssV3Scope",
+                    "description": "Whether an attack can reach beyond the component that holds the flaw."
+                },
+                "temporalScore": {
+                    "description": "The base score adjusted for what changes over time, such as a fix appearing.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "temporalSeverity": {
+                    "$ref": "#/$defs/CvssSeverity",
+                    "description": "The rating in words for the temporal score."
+                },
+                "userInteraction": {
+                    "$ref": "#/$defs/CvssV3UserInteraction",
+                    "description": "Whether someone other than the attacker has to take part."
+                },
+                "vectorString": {
+                    "description": "The scores' metric values written as one compact string.",
+                    "pattern": "^CVSS:3[.]0/((AV:[NALP]|AC:[LH]|PR:[UNLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XUNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])/)*(AV:[NALP]|AC:[LH]|PR:[UNLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XUNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])$",
+                    "type": "string"
+                },
+                "version": {
+                    "const": "3.0",
+                    "description": "A version string. On a score it is the CVSS version; on a product entry, the product's.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "version",
+                "vectorString",
+                "baseScore",
+                "baseSeverity"
+            ],
+            "title": "CvssV30",
+            "type": "object"
+        },
+        "CvssV31": {
+            "additionalProperties": false,
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "NONE"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 0,
+                                "minimum": 0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "LOW"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 3.9,
+                                "minimum": 0.1
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "MEDIUM"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 6.9,
+                                "minimum": 4.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "HIGH"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 8.9,
+                                "minimum": 7.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "CRITICAL"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 10.0,
+                                "minimum": 9.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                }
+            ],
+            "description": "A score under CVSS version 3.1.",
+            "properties": {
+                "attackComplexity": {
+                    "$ref": "#/$defs/CvssAttackComplexity",
+                    "description": "How much is outside the attacker's control when using the flaw."
+                },
+                "attackVector": {
+                    "$ref": "#/$defs/CvssV3AttackVector",
+                    "description": "How far away an attacker can be when using the flaw."
+                },
+                "availabilityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much an attack could disrupt the service."
+                },
+                "availabilityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much availability matters to the scorer for the affected system."
+                },
+                "baseScore": {
+                    "description": "The score from 0 to 10 for what is inherent in the flaw.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "baseSeverity": {
+                    "$ref": "#/$defs/CvssSeverity",
+                    "description": "The rating in words that the base score falls under."
+                },
+                "confidentialityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much information an attack could expose."
+                },
+                "confidentialityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much confidentiality matters to the scorer for the affected system."
+                },
+                "environmentalScore": {
+                    "description": "The score adjusted for the scorer's own environment.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "environmentalSeverity": {
+                    "$ref": "#/$defs/CvssSeverity",
+                    "description": "The rating in words for the environmental score."
+                },
+                "exploitCodeMaturity": {
+                    "$ref": "#/$defs/CvssExploitCodeMaturity",
+                    "description": "How far working attack code has come."
+                },
+                "integrityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much an attack could change that should not change."
+                },
+                "integrityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much integrity matters to the scorer for the affected system."
+                },
+                "modifiedAttackComplexity": {
+                    "$ref": "#/$defs/CvssModifiedAttackComplexity",
+                    "description": "The attack complexity as the scorer's own environment changes it."
+                },
+                "modifiedAttackVector": {
+                    "$ref": "#/$defs/CvssV3ModifiedAttackVector",
+                    "description": "The attack vector as the scorer's own environment changes it."
+                },
+                "modifiedAvailabilityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The availability impact as the scorer's own environment changes it."
+                },
+                "modifiedConfidentialityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The confidentiality impact as the scorer's own environment changes it."
+                },
+                "modifiedIntegrityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The integrity impact as the scorer's own environment changes it."
+                },
+                "modifiedPrivilegesRequired": {
+                    "$ref": "#/$defs/CvssModifiedPrivilegesRequired",
+                    "description": "The privileges needed as the scorer's own environment changes them."
+                },
+                "modifiedScope": {
+                    "$ref": "#/$defs/CvssV3ModifiedScope",
+                    "description": "The scope as the scorer's own environment changes it."
+                },
+                "modifiedUserInteraction": {
+                    "$ref": "#/$defs/CvssV3ModifiedUserInteraction",
+                    "description": "The user interaction as the scorer's own environment changes it."
+                },
+                "privilegesRequired": {
+                    "$ref": "#/$defs/CvssPrivilegesRequired",
+                    "description": "What level of access an attacker needs before using the flaw."
+                },
+                "remediationLevel": {
+                    "$ref": "#/$defs/CvssRemediationLevel",
+                    "description": "What kind of fix is available."
+                },
+                "reportConfidence": {
+                    "$ref": "#/$defs/CvssV3ReportConfidence",
+                    "description": "How far the flaw's existence and details have been confirmed."
+                },
+                "scope": {
+                    "$ref": "#/$defs/CvssV3Scope",
+                    "description": "Whether an attack can reach beyond the component that holds the flaw."
+                },
+                "temporalScore": {
+                    "description": "The base score adjusted for what changes over time, such as a fix appearing.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "temporalSeverity": {
+                    "$ref": "#/$defs/CvssSeverity",
+                    "description": "The rating in words for the temporal score."
+                },
+                "userInteraction": {
+                    "$ref": "#/$defs/CvssV3UserInteraction",
+                    "description": "Whether someone other than the attacker has to take part."
+                },
+                "vectorString": {
+                    "description": "The scores' metric values written as one compact string.",
+                    "pattern": "^CVSS:3[.]1/((AV:[NALP]|AC:[LH]|PR:[NLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])/)*(AV:[NALP]|AC:[LH]|PR:[NLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])$",
+                    "type": "string"
+                },
+                "version": {
+                    "const": "3.1",
+                    "description": "A version string. On a score it is the CVSS version; on a product entry, the product's.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "version",
+                "vectorString",
+                "baseScore",
+                "baseSeverity"
+            ],
+            "title": "CvssV31",
+            "type": "object"
+        },
+        "CvssV3AttackVector": {
+            "description": "How far away an attacker can be, in CVSS 3's terms.",
+            "enum": [
+                "NETWORK",
+                "ADJACENT_NETWORK",
+                "LOCAL",
+                "PHYSICAL"
+            ],
+            "title": "CvssV3AttackVector",
+            "type": "string"
+        },
+        "CvssV3ModifiedAttackVector": {
+            "description": "The attack vector as the scorer's environment changes it, in CVSS 3's terms.",
+            "enum": [
+                "NETWORK",
+                "ADJACENT_NETWORK",
+                "LOCAL",
+                "PHYSICAL",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV3ModifiedAttackVector",
+            "type": "string"
+        },
+        "CvssV3ModifiedScope": {
+            "description": "The scope as the scorer's environment changes it.",
+            "enum": [
+                "UNCHANGED",
+                "CHANGED",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV3ModifiedScope",
+            "type": "string"
+        },
+        "CvssV3ModifiedUserInteraction": {
+            "description": "The user interaction as the scorer's environment changes it, in CVSS 3's terms.",
+            "enum": [
+                "NONE",
+                "REQUIRED",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV3ModifiedUserInteraction",
+            "type": "string"
+        },
+        "CvssV3ReportConfidence": {
+            "description": "How far the flaw has been confirmed, in CVSS 3's terms.",
+            "enum": [
+                "UNKNOWN",
+                "REASONABLE",
+                "CONFIRMED",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV3ReportConfidence",
+            "type": "string"
+        },
+        "CvssV3Scope": {
+            "description": "Whether an attack can reach beyond the flawed component.",
+            "enum": [
+                "UNCHANGED",
+                "CHANGED"
+            ],
+            "title": "CvssV3Scope",
+            "type": "string"
+        },
+        "CvssV3UserInteraction": {
+            "description": "Whether someone else has to take part, in CVSS 3's terms.",
+            "enum": [
+                "NONE",
+                "REQUIRED"
+            ],
+            "title": "CvssV3UserInteraction",
+            "type": "string"
+        },
+        "CvssV40": {
+            "additionalProperties": false,
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "NONE"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 0,
+                                "minimum": 0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "LOW"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 3.9,
+                                "minimum": 0.1
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "MEDIUM"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 6.9,
+                                "minimum": 4.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "HIGH"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 8.9,
+                                "minimum": 7.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "baseSeverity": {
+                                "const": "CRITICAL"
+                            }
+                        },
+                        "required": [
+                            "baseSeverity"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "baseScore": {
+                                "maximum": 10.0,
+                                "minimum": 9.0
+                            }
+                        },
+                        "required": [
+                            "baseScore"
+                        ]
+                    }
+                }
+            ],
+            "description": "A score under CVSS version 4.0.",
+            "properties": {
+                "Automatable": {
+                    "$ref": "#/$defs/CvssV4Automatable",
+                    "description": "Whether an attacker could automate every step of an attack across many targets."
+                },
+                "Recovery": {
+                    "$ref": "#/$defs/CvssV4Recovery",
+                    "description": "How the affected system comes back after an attack."
+                },
+                "Safety": {
+                    "$ref": "#/$defs/CvssV4Safety",
+                    "description": "Whether an attack could put people's safety at risk."
+                },
+                "attackComplexity": {
+                    "$ref": "#/$defs/CvssAttackComplexity",
+                    "description": "How much is outside the attacker's control when using the flaw."
+                },
+                "attackRequirements": {
+                    "$ref": "#/$defs/CvssV4AttackRequirements",
+                    "description": "Whether the attack needs conditions in the target that the attacker does not control."
+                },
+                "attackVector": {
+                    "$ref": "#/$defs/CvssV4AttackVector",
+                    "description": "How far away an attacker can be when using the flaw."
+                },
+                "availabilityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much availability matters to the scorer for the affected system."
+                },
+                "baseScore": {
+                    "description": "The score from 0 to 10 for what is inherent in the flaw.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "baseSeverity": {
+                    "$ref": "#/$defs/CvssSeverity",
+                    "description": "The rating in words that the base score falls under."
+                },
+                "confidentialityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much confidentiality matters to the scorer for the affected system."
+                },
+                "exploitMaturity": {
+                    "$ref": "#/$defs/CvssV4ExploitMaturity",
+                    "description": "How much is known about attacks on this flaw, in CVSS 4.0's terms."
+                },
+                "integrityRequirement": {
+                    "$ref": "#/$defs/CvssRequirement",
+                    "description": "How much integrity matters to the scorer for the affected system."
+                },
+                "modifiedAttackComplexity": {
+                    "$ref": "#/$defs/CvssModifiedAttackComplexity",
+                    "description": "The attack complexity as the scorer's own environment changes it."
+                },
+                "modifiedAttackRequirements": {
+                    "$ref": "#/$defs/CvssV4ModifiedAttackRequirements",
+                    "description": "The attack requirements as the scorer's own environment changes them."
+                },
+                "modifiedAttackVector": {
+                    "$ref": "#/$defs/CvssV4ModifiedAttackVector",
+                    "description": "The attack vector as the scorer's own environment changes it."
+                },
+                "modifiedPrivilegesRequired": {
+                    "$ref": "#/$defs/CvssModifiedPrivilegesRequired",
+                    "description": "The privileges needed as the scorer's own environment changes them."
+                },
+                "modifiedSubAvailabilityImpact": {
+                    "$ref": "#/$defs/CvssV4ModifiedSubsequentImpact",
+                    "description": "The availability impact on connected systems, in the scorer's environment."
+                },
+                "modifiedSubConfidentialityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The confidentiality impact on connected systems, in the scorer's environment."
+                },
+                "modifiedSubIntegrityImpact": {
+                    "$ref": "#/$defs/CvssV4ModifiedSubsequentImpact",
+                    "description": "The integrity impact on connected systems, in the scorer's environment."
+                },
+                "modifiedUserInteraction": {
+                    "$ref": "#/$defs/CvssV4ModifiedUserInteraction",
+                    "description": "The user interaction as the scorer's own environment changes it."
+                },
+                "modifiedVulnAvailabilityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The availability impact on the vulnerable system, in the scorer's environment."
+                },
+                "modifiedVulnConfidentialityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The confidentiality impact on the vulnerable system, in the scorer's environment."
+                },
+                "modifiedVulnIntegrityImpact": {
+                    "$ref": "#/$defs/CvssModifiedImpact",
+                    "description": "The integrity impact on the vulnerable system, in the scorer's environment."
+                },
+                "privilegesRequired": {
+                    "$ref": "#/$defs/CvssPrivilegesRequired",
+                    "description": "What level of access an attacker needs before using the flaw."
+                },
+                "providerUrgency": {
+                    "$ref": "#/$defs/CvssV4ProviderUrgency",
+                    "description": "How urgent the product's supplier says the flaw is, as a colour."
+                },
+                "subAvailabilityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much an attack could disrupt other, connected systems."
+                },
+                "subConfidentialityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much information in other, connected systems an attack could expose."
+                },
+                "subIntegrityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much an attack could change in other, connected systems."
+                },
+                "userInteraction": {
+                    "$ref": "#/$defs/CvssV4UserInteraction",
+                    "description": "Whether someone other than the attacker has to take part."
+                },
+                "valueDensity": {
+                    "$ref": "#/$defs/CvssV4ValueDensity",
+                    "description": "Whether one successful attack gains the attacker a little or a lot of a resource."
+                },
+                "vectorString": {
+                    "description": "The scores' metric values written as one compact string.",
+                    "pattern": "^CVSS:4[.]0/AV:[NALP]/AC:[LH]/AT:[NP]/PR:[NLH]/UI:[NPA]/VC:[HLN]/VI:[HLN]/VA:[HLN]/SC:[HLN]/SI:[HLN]/SA:[HLN](/E:[XAPU])?(/CR:[XHML])?(/IR:[XHML])?(/AR:[XHML])?(/MAV:[XNALP])?(/MAC:[XLH])?(/MAT:[XNP])?(/MPR:[XNLH])?(/MUI:[XNPA])?(/MVC:[XNLH])?(/MVI:[XNLH])?(/MVA:[XNLH])?(/MSC:[XNLH])?(/MSI:[XNLHS])?(/MSA:[XNLHS])?(/S:[XNP])?(/AU:[XNY])?(/R:[XAUI])?(/V:[XDC])?(/RE:[XLMH])?(/U:(X|Clear|Green|Amber|Red))?$",
+                    "type": "string"
+                },
+                "version": {
+                    "const": "4.0",
+                    "description": "A version string. On a score it is the CVSS version; on a product entry, the product's.",
+                    "type": "string"
+                },
+                "vulnAvailabilityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much an attack could disrupt the vulnerable system."
+                },
+                "vulnConfidentialityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much information in the vulnerable system an attack could expose."
+                },
+                "vulnIntegrityImpact": {
+                    "$ref": "#/$defs/CvssImpact",
+                    "description": "How much an attack could change in the vulnerable system."
+                },
+                "vulnerabilityResponseEffort": {
+                    "$ref": "#/$defs/CvssV4ResponseEffort",
+                    "description": "How much work it takes a consumer to respond to the flaw."
+                }
+            },
+            "required": [
+                "version",
+                "vectorString",
+                "baseScore",
+                "baseSeverity"
+            ],
+            "title": "CvssV40",
+            "type": "object"
+        },
+        "CvssV4AttackRequirements": {
+            "description": "Whether the attack needs conditions in the target beyond the attacker's control.",
+            "enum": [
+                "NONE",
+                "PRESENT"
+            ],
+            "title": "CvssV4AttackRequirements",
+            "type": "string"
+        },
+        "CvssV4AttackVector": {
+            "description": "How far away an attacker can be, in CVSS 4.0's terms.",
+            "enum": [
+                "NETWORK",
+                "ADJACENT",
+                "LOCAL",
+                "PHYSICAL"
+            ],
+            "title": "CvssV4AttackVector",
+            "type": "string"
+        },
+        "CvssV4Automatable": {
+            "description": "Whether every step of an attack could be automated across many targets.",
+            "enum": [
+                "NO",
+                "YES",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4Automatable",
+            "type": "string"
+        },
+        "CvssV4ExploitMaturity": {
+            "description": "How much is known about attacks on the flaw.",
+            "enum": [
+                "UNREPORTED",
+                "PROOF_OF_CONCEPT",
+                "ATTACKED",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4ExploitMaturity",
+            "type": "string"
+        },
+        "CvssV4ModifiedAttackRequirements": {
+            "description": "The attack requirements as the scorer's environment changes them.",
+            "enum": [
+                "NONE",
+                "PRESENT",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4ModifiedAttackRequirements",
+            "type": "string"
+        },
+        "CvssV4ModifiedAttackVector": {
+            "description": "The attack vector as the scorer's environment changes it, in CVSS 4.0's terms.",
+            "enum": [
+                "NETWORK",
+                "ADJACENT",
+                "LOCAL",
+                "PHYSICAL",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4ModifiedAttackVector",
+            "type": "string"
+        },
+        "CvssV4ModifiedSubsequentImpact": {
+            "description": "The integrity or availability impact on connected systems as the scorer's environment changes it, which may include a risk to safety.",
+            "enum": [
+                "NONE",
+                "LOW",
+                "HIGH",
+                "SAFETY",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4ModifiedSubsequentImpact",
+            "type": "string"
+        },
+        "CvssV4ModifiedUserInteraction": {
+            "description": "The user interaction as the scorer's environment changes it, in CVSS 4.0's terms.",
+            "enum": [
+                "NONE",
+                "PASSIVE",
+                "ACTIVE",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4ModifiedUserInteraction",
+            "type": "string"
+        },
+        "CvssV4ProviderUrgency": {
+            "description": "How urgent the product's supplier says the flaw is, as a colour.",
+            "enum": [
+                "CLEAR",
+                "GREEN",
+                "AMBER",
+                "RED",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4ProviderUrgency",
+            "type": "string"
+        },
+        "CvssV4Recovery": {
+            "description": "How the affected system comes back after an attack.",
+            "enum": [
+                "AUTOMATIC",
+                "USER",
+                "IRRECOVERABLE",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4Recovery",
+            "type": "string"
+        },
+        "CvssV4ResponseEffort": {
+            "description": "How much work it takes a consumer to respond to the flaw.",
+            "enum": [
+                "LOW",
+                "MODERATE",
+                "HIGH",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4ResponseEffort",
+            "type": "string"
+        },
+        "CvssV4Safety": {
+            "description": "Whether an attack could put people's safety at risk.",
+            "enum": [
+                "NEGLIGIBLE",
+                "PRESENT",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4Safety",
+            "type": "string"
+        },
+        "CvssV4UserInteraction": {
+            "description": "Whether someone else has to take part, in CVSS 4.0's terms.",
+            "enum": [
+                "NONE",
+                "PASSIVE",
+                "ACTIVE"
+            ],
+            "title": "CvssV4UserInteraction",
+            "type": "string"
+        },
+        "CvssV4ValueDensity": {
+            "description": "How much of a resource one successful attack gains the attacker.",
+            "enum": [
+                "DIFFUSE",
+                "CONCENTRATED",
+                "NOT_DEFINED"
+            ],
+            "title": "CvssV4ValueDensity",
+            "type": "string"
+        },
+        "NvdAffected": {
+            "additionalProperties": false,
+            "description": "The products that one source says the vulnerability affects.",
+            "properties": {
+                "affectedData": {
+                    "description": "The products.",
+                    "items": {
+                        "$ref": "#/$defs/NvdAffectedProduct"
+                    },
+                    "minItems": 1,
+                    "type": "array"
                 },
                 "source": {
-                    "description": "Source or origin of the reference or data.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "source",
+                "affectedData"
+            ],
+            "title": "NvdAffected",
+            "type": "object"
+        },
+        "NvdAffectedProduct": {
+            "additionalProperties": false,
+            "description": "A product and which of its versions have the vulnerability.",
+            "properties": {
+                "collectionURL": {
+                    "description": "The address of the package collection that holds the product.",
+                    "format": "uri",
+                    "pattern": "^[\\s\\S]{1,2048}$",
+                    "type": "string"
+                },
+                "cpes": {
+                    "description": "The product's CPE names, in the 2.2 or the 2.3 form.",
+                    "items": {
+                        "pattern": "([c][pP][eE]:/[AHOaho]?(:[A-Za-z0-9._\\-~%]*){0,6})|(cpe:2\\.3:[aho*\\-](:(((\\?*|\\*?)([a-zA-Z0-9\\-._]|(\\\\[\\\\*?!\\x22#$%&\\x27()+,/:;<=>@\\[\\]\\^`{|}~]))+(\\?*|\\*?))|[*\\-])){5}(:(([a-zA-Z]{2,3}(-([a-zA-Z]{2}|[0-9]{3}))?)|[*\\-]))(:(((\\?*|\\*?)([a-zA-Z0-9\\-._]|(\\\\[\\\\*?!\\x22#$%&\\x27()+,/:;<=>@\\[\\]\\^`{|}~]))+(\\?*|\\*?))|[*\\-])){4})",
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "defaultStatus": {
+                    "$ref": "#/$defs/NvdVersionStatus",
+                    "description": "The status of any version the versions list does not name."
+                },
+                "modules": {
+                    "description": "The affected parts of the product.",
+                    "items": {
+                        "pattern": "^[\\s\\S]{1,4096}$",
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "packageName": {
+                    "description": "The package's name within that collection.",
+                    "pattern": "^[\\s\\S]{1,2048}$",
+                    "type": "string"
+                },
+                "packageURL": {
+                    "description": "The product's Package URL, with no version in it.",
+                    "format": "uri",
+                    "pattern": "^[\\s\\S]{1,2048}$",
+                    "type": "string"
+                },
+                "platforms": {
+                    "description": "The platforms the vulnerability is limited to.",
+                    "items": {
+                        "pattern": "^[\\s\\S]{0,1024}$",
+                        "type": "string"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                },
+                "product": {
+                    "description": "The product's name.",
+                    "pattern": "^[\\s\\S]{1,2048}$",
+                    "type": "string"
+                },
+                "programFiles": {
+                    "description": "The affected source code files.",
+                    "items": {
+                        "pattern": "^[\\s\\S]{1,1024}$",
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "programRoutines": {
+                    "description": "The affected source code routines.",
+                    "items": {
+                        "$ref": "#/$defs/NvdProgramRoutine"
+                    },
+                    "type": "array"
+                },
+                "repo": {
+                    "description": "The address of the product's source code repository.",
+                    "pattern": "^[\\s\\S]{1,2048}$",
+                    "type": "string"
+                },
+                "vendor": {
+                    "description": "Who makes or maintains the product.",
+                    "pattern": "^[\\s\\S]{1,512}$",
+                    "type": "string"
+                },
+                "versions": {
+                    "description": "The versions or ranges of versions whose status is known.",
+                    "items": {
+                        "$ref": "#/$defs/NvdAffectedVersion"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                }
+            },
+            "title": "NvdAffectedProduct",
+            "type": "object"
+        },
+        "NvdAffectedVersion": {
+            "additionalProperties": false,
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "lessThan": {}
+                        },
+                        "required": [
+                            "lessThan"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "versionType": {}
+                        },
+                        "required": [
+                            "versionType"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "lessThanOrEqual": {}
+                        },
+                        "required": [
+                            "lessThanOrEqual"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "versionType": {}
+                        },
+                        "required": [
+                            "versionType"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "lessThan": {}
+                        },
+                        "required": [
+                            "lessThan"
+                        ]
+                    },
+                    "then": {
+                        "not": {
+                            "required": [
+                                "lessThanOrEqual"
+                            ]
+                        },
+                        "properties": {
+                            "lessThanOrEqual": {}
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "not": {
+                            "required": [
+                                "lessThan"
+                            ]
+                        },
+                        "properties": {
+                            "changes": {
+                                "items": {},
+                                "type": "array"
+                            },
+                            "lessThan": {}
+                        },
+                        "required": [
+                            "changes"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "lessThanOrEqual": {}
+                        },
+                        "required": [
+                            "lessThanOrEqual"
+                        ]
+                    }
+                }
+            ],
+            "description": "The status of one version of a product, or of a range of its versions.",
+            "properties": {
+                "changes": {
+                    "description": "Where the status changes within the range.",
+                    "items": {
+                        "$ref": "#/$defs/NvdVersionChange"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                },
+                "lessThan": {
+                    "description": "The first version after the range.",
+                    "pattern": "^[\\s\\S]{1,1024}$",
+                    "type": "string"
+                },
+                "lessThanOrEqual": {
+                    "description": "The last version in the range.",
+                    "pattern": "^[\\s\\S]{1,1024}$",
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/$defs/NvdVersionStatus",
+                    "description": "The state of this thing, from the list its class names."
+                },
+                "version": {
+                    "description": "The version, or the start of the range.",
+                    "pattern": "^[\\s\\S]{1,1024}$",
+                    "type": "string"
+                },
+                "versionType": {
+                    "description": "The numbering scheme that orders the versions, such as semver or git.",
+                    "pattern": "^[\\s\\S]{1,128}$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "version",
+                "status"
+            ],
+            "title": "NvdAffectedVersion",
+            "type": "object"
+        },
+        "NvdChange": {
+            "additionalProperties": false,
+            "description": "One change to a vulnerability's record at NVD.",
+            "properties": {
+                "created": {
+                    "description": "When NVD first recorded this.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "cveChangeId": {
+                    "description": "The UUID that NVD gives this change.",
+                    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                    "type": "string"
+                },
+                "cveId": {
+                    "description": "The vulnerability the change is to.",
+                    "pattern": "^CVE-[0-9]{4}-[0-9]{4,}$",
+                    "type": "string"
+                },
+                "details": {
+                    "description": "What the change did, part by part.",
+                    "items": {
+                        "$ref": "#/$defs/NvdChangeDetail"
+                    },
+                    "type": "array"
+                },
+                "eventName": {
+                    "description": "The kind of event, such as Initial Analysis or CVE Modified.",
+                    "type": "string"
+                },
+                "sourceIdentifier": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "cveChangeId",
+                "sourceIdentifier",
+                "cveId",
+                "eventName"
+            ],
+            "title": "NvdChange",
+            "type": "object"
+        },
+        "NvdChangeDetail": {
+            "additionalProperties": false,
+            "description": "One part of a change, naming what kind of data changed and how.",
+            "properties": {
+                "action": {
+                    "description": "How the data changed, such as Added.",
+                    "type": "string"
+                },
+                "newValue": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "$ref": "#/$defs/NvdChangeObject"
+                        }
+                    ],
+                    "description": "The value after the change."
+                },
+                "oldValue": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "$ref": "#/$defs/NvdChangeObject"
+                        }
+                    ],
+                    "description": "The value before the change."
+                },
+                "type": {
+                    "description": "The kind of this thing, from the list its class names.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "NvdChangeDetail",
+            "type": "object"
+        },
+        "NvdChangeItem": {
+            "additionalProperties": false,
+            "description": "One entry of a change-history response, which only wraps the change.",
+            "properties": {
+                "change": {
+                    "$ref": "#/$defs/NvdChange",
+                    "description": "The change."
+                }
+            },
+            "required": [
+                "change"
+            ],
+            "title": "NvdChangeItem",
+            "type": "object"
+        },
+        "NvdChangeObject": {
+            "additionalProperties": true,
+            "description": "A value before or after a change that is an object, with any keys.",
+            "title": "NvdChangeObject",
+            "type": "object"
+        },
+        "NvdConfiguration": {
+            "additionalProperties": false,
+            "description": "A statement of which product configurations have the vulnerability.",
+            "properties": {
+                "negate": {
+                    "description": "Whether the result of the configuration is reversed.",
+                    "type": "boolean"
+                },
+                "nodes": {
+                    "description": "The parts of the statement.",
+                    "items": {
+                        "$ref": "#/$defs/NvdConfigurationNode"
+                    },
+                    "type": "array"
+                },
+                "operator": {
+                    "$ref": "#/$defs/NvdOperator",
+                    "description": "How the parts of this configuration combine."
+                }
+            },
+            "required": [
+                "nodes"
+            ],
+            "title": "NvdConfiguration",
+            "type": "object"
+        },
+        "NvdConfigurationNode": {
+            "additionalProperties": false,
+            "description": "One part of a configuration statement, as a set of CPE matches.",
+            "properties": {
+                "cpeMatch": {
+                    "description": "The CPE matches of this part.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCpeMatch"
+                    },
+                    "type": "array"
+                },
+                "negate": {
+                    "description": "Whether the result of the configuration is reversed.",
+                    "type": "boolean"
+                },
+                "operator": {
+                    "$ref": "#/$defs/NvdOperator",
+                    "description": "How the parts of this configuration combine."
+                }
+            },
+            "required": [
+                "operator",
+                "cpeMatch"
+            ],
+            "title": "NvdConfigurationNode",
+            "type": "object"
+        },
+        "NvdCpe": {
+            "additionalProperties": false,
+            "description": "A CPE name as NVD holds it, with its UUID.",
+            "properties": {
+                "cpeName": {
+                    "description": "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.",
+                    "type": "string"
+                },
+                "cpeNameId": {
+                    "description": "The UUID that NVD gives a CPE name.",
+                    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "When NVD first recorded this.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "deprecated": {
+                    "description": "Whether NVD has retired this CPE name.",
+                    "type": "boolean"
+                },
+                "deprecatedBy": {
+                    "description": "The CPE names that replace this one.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCpeNameLink"
+                    },
+                    "type": "array"
+                },
+                "deprecates": {
+                    "description": "The CPE names this one replaces.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCpeNameLink"
+                    },
+                    "type": "array"
+                },
+                "lastModified": {
+                    "description": "When NVD last changed this.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "refs": {
+                    "description": "Pages about the product.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCpeReference"
+                    },
+                    "type": "array"
+                },
+                "titles": {
+                    "description": "The product's titles, in one or more languages.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCpeTitle"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "cpeName",
+                "cpeNameId",
+                "created",
+                "lastModified",
+                "deprecated"
+            ],
+            "title": "NvdCpe",
+            "type": "object"
+        },
+        "NvdCpeItem": {
+            "additionalProperties": false,
+            "description": "One entry of a product response, which only wraps the CPE name.",
+            "properties": {
+                "cpe": {
+                    "$ref": "#/$defs/NvdCpe",
+                    "description": "The CPE name and what NVD holds about it."
+                }
+            },
+            "required": [
+                "cpe"
+            ],
+            "title": "NvdCpeItem",
+            "type": "object"
+        },
+        "NvdCpeMatch": {
+            "additionalProperties": false,
+            "description": "A CPE match string or range, and whether what it matches is vulnerable.",
+            "properties": {
+                "criteria": {
+                    "description": "A CPE match string, which may hold wildcards.",
+                    "type": "string"
+                },
+                "matchCriteriaId": {
+                    "description": "The UUID that NVD gives a CPE match string.",
+                    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                    "type": "string"
+                },
+                "versionEndExcluding": {
+                    "description": "The version below which the match ends, itself left out.",
+                    "type": "string"
+                },
+                "versionEndIncluding": {
+                    "description": "The last version the match covers.",
+                    "type": "string"
+                },
+                "versionStartExcluding": {
+                    "description": "The version above which the match starts, itself left out.",
+                    "type": "string"
+                },
+                "versionStartIncluding": {
+                    "description": "The first version the match covers.",
+                    "type": "string"
+                },
+                "vulnerable": {
+                    "description": "Whether what this matches has the vulnerability, rather than only setting the scene.",
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "criteria",
+                "matchCriteriaId",
+                "vulnerable"
+            ],
+            "title": "NvdCpeMatch",
+            "type": "object"
+        },
+        "NvdCpeMatchResponse": {
+            "additionalProperties": false,
+            "description": "A page of the match-string API's results.",
+            "properties": {
+                "format": {
+                    "const": "NVD_CPEMatchString",
+                    "description": "The name NVD gives this kind of response.",
+                    "type": "string"
+                },
+                "matchStrings": {
+                    "description": "The match strings on this page.",
+                    "items": {
+                        "$ref": "#/$defs/NvdMatchStringItem"
+                    },
+                    "type": "array"
+                },
+                "resultsPerPage": {
+                    "description": "How many results this page holds.",
+                    "type": "integer"
+                },
+                "startIndex": {
+                    "description": "The position of this page's first result among all the results.",
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "description": "When NVD produced this response or this decision.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "totalResults": {
+                    "description": "How many results the request matched in all.",
+                    "type": "integer"
+                },
+                "version": {
+                    "description": "The response format's version.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "matchStrings",
+                "format",
+                "timestamp",
+                "resultsPerPage",
+                "startIndex",
+                "totalResults",
+                "version"
+            ],
+            "title": "NvdCpeMatchResponse",
+            "type": "object"
+        },
+        "NvdCpeNameLink": {
+            "additionalProperties": false,
+            "description": "A pointer from one CPE name to another.",
+            "properties": {
+                "cpeName": {
+                    "description": "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.",
+                    "type": "string"
+                },
+                "cpeNameId": {
+                    "description": "The UUID that NVD gives a CPE name.",
+                    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                    "type": "string"
+                }
+            },
+            "title": "NvdCpeNameLink",
+            "type": "object"
+        },
+        "NvdCpeReference": {
+            "additionalProperties": false,
+            "description": "A page about a product, and what kind of page it is.",
+            "properties": {
+                "ref": {
+                    "description": "The page's address.",
+                    "pattern": "^([A-Za-z][A-Za-z0-9+.-]+):(\\/\\/([^@]+@)?([A-Za-z0-9.\\-_~]+)(:\\d+)?)?((?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27\\[\\]()*+,;=:@])+(?:\\/(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27\\[\\]()*+,;=:@])*)*|(?:\\/(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27()*+,;=:@])+)*)?(\\?(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27\\[\\]()*+,;=:@]|[/?])*)?(\\#(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\\x27\\[\\]()*+,;=:@]|[/?])*)?$",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/$defs/NvdCpeReferenceType",
+                    "description": "The kind of this thing, from the list its class names."
+                }
+            },
+            "required": [
+                "ref"
+            ],
+            "title": "NvdCpeReference",
+            "type": "object"
+        },
+        "NvdCpeReferenceType": {
+            "description": "What a CPE name's reference points to.",
+            "enum": [
+                "Advisory",
+                "Change Log",
+                "Product",
+                "Project",
+                "Vendor",
+                "Version"
+            ],
+            "title": "NvdCpeReferenceType",
+            "type": "string"
+        },
+        "NvdCpeResponse": {
+            "additionalProperties": false,
+            "description": "A page of the product API's results.",
+            "properties": {
+                "format": {
+                    "const": "NVD_CPE",
+                    "description": "The name NVD gives this kind of response.",
+                    "type": "string"
+                },
+                "products": {
+                    "description": "The products on this page.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCpeItem"
+                    },
+                    "type": "array"
+                },
+                "resultsPerPage": {
+                    "description": "How many results this page holds.",
+                    "type": "integer"
+                },
+                "startIndex": {
+                    "description": "The position of this page's first result among all the results.",
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "description": "When NVD produced this response or this decision.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "totalResults": {
+                    "description": "How many results the request matched in all.",
+                    "type": "integer"
+                },
+                "version": {
+                    "description": "The response format's version.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "products",
+                "format",
+                "timestamp",
+                "resultsPerPage",
+                "startIndex",
+                "totalResults",
+                "version"
+            ],
+            "title": "NvdCpeResponse",
+            "type": "object"
+        },
+        "NvdCpeTitle": {
+            "additionalProperties": false,
+            "description": "A product's title in one language.",
+            "properties": {
+                "lang": {
+                    "description": "The language of the text beside it, as a language code.",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "The human-readable title.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "title",
+                "lang"
+            ],
+            "title": "NvdCpeTitle",
+            "type": "object"
+        },
+        "NvdCve": {
+            "additionalProperties": false,
+            "description": "A vulnerability as NVD holds it, under its CVE identifier.",
+            "properties": {
+                "affected": {
+                    "description": "The affected products, by the source that names them.",
+                    "items": {
+                        "$ref": "#/$defs/NvdAffected"
+                    },
+                    "type": "array"
+                },
+                "cisaActionDue": {
+                    "description": "The day by which CISA says federal agencies must act.",
+                    "format": "date",
+                    "type": "string"
+                },
+                "cisaExploitAdd": {
+                    "description": "The day CISA added this vulnerability to its Known Exploited Vulnerabilities catalog.",
+                    "format": "date",
+                    "type": "string"
+                },
+                "cisaRequiredAction": {
+                    "description": "What CISA says agencies must do about this vulnerability.",
+                    "type": "string"
+                },
+                "cisaVulnerabilityName": {
+                    "description": "The name CISA gives this vulnerability in its catalog.",
+                    "type": "string"
+                },
+                "configurations": {
+                    "description": "The product configurations that have the vulnerability.",
+                    "items": {
+                        "$ref": "#/$defs/NvdConfiguration"
+                    },
+                    "type": "array"
+                },
+                "cveTags": {
+                    "description": "The labels the record's sources put on it.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCveTag"
+                    },
+                    "type": "array"
+                },
+                "descriptions": {
+                    "description": "What the vulnerability is, in one or more languages.",
+                    "items": {
+                        "$ref": "#/$defs/NvdLangString"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                },
+                "evaluatorComment": {
+                    "description": "A remark from NVD's analyst.",
+                    "type": "string"
+                },
+                "evaluatorImpact": {
+                    "description": "What the vulnerability can lead to, from NVD's analyst.",
+                    "type": "string"
+                },
+                "evaluatorSolution": {
+                    "description": "A way to resolve the vulnerability, from NVD's analyst.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "The vulnerability's CVE identifier.",
+                    "pattern": "^CVE-[0-9]{4}-[0-9]{4,}$",
+                    "type": "string"
+                },
+                "lastModified": {
+                    "description": "When NVD last changed this.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "metrics": {
+                    "$ref": "#/$defs/NvdMetrics",
+                    "description": "The scores that NVD and others give this vulnerability."
+                },
+                "published": {
+                    "description": "When NVD published this vulnerability.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "references": {
+                    "description": "The pages that NVD lists about this vulnerability.",
+                    "items": {
+                        "$ref": "#/$defs/NvdReference"
+                    },
+                    "type": "array"
+                },
+                "sourceIdentifier": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                },
+                "vendorComments": {
+                    "description": "What product vendors have said about this vulnerability.",
+                    "items": {
+                        "$ref": "#/$defs/NvdVendorComment"
+                    },
+                    "type": "array"
+                },
+                "vulnStatus": {
+                    "$ref": "#/$defs/NvdVulnStatus",
+                    "description": "Where this vulnerability stands in NVD's analysis."
+                },
+                "weaknesses": {
+                    "description": "The weaknesses behind the vulnerability, by the source that names them.",
+                    "items": {
+                        "$ref": "#/$defs/NvdWeakness"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "id",
+                "lastModified",
+                "references",
+                "published",
+                "descriptions"
+            ],
+            "title": "NvdCve",
+            "type": "object"
+        },
+        "NvdCveResponse": {
+            "additionalProperties": false,
+            "description": "A page of the vulnerability API's results, or a whole data feed.",
+            "properties": {
+                "format": {
+                    "const": "NVD_CVE",
+                    "description": "The name NVD gives this kind of response.",
+                    "type": "string"
+                },
+                "resultsPerPage": {
+                    "description": "How many results this page holds.",
+                    "type": "integer"
+                },
+                "startIndex": {
+                    "description": "The position of this page's first result among all the results.",
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "description": "When NVD produced this response or this decision.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "totalResults": {
+                    "description": "How many results the request matched in all.",
+                    "type": "integer"
+                },
+                "version": {
+                    "description": "The response format's version.",
+                    "type": "string"
+                },
+                "vulnerabilities": {
+                    "description": "The vulnerabilities on this page.",
+                    "items": {
+                        "$ref": "#/$defs/NvdVulnerability"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "vulnerabilities",
+                "format",
+                "timestamp",
+                "resultsPerPage",
+                "startIndex",
+                "totalResults",
+                "version"
+            ],
+            "title": "NvdCveResponse",
+            "type": "object"
+        },
+        "NvdCveTag": {
+            "additionalProperties": false,
+            "description": "The labels that one source puts on a record.",
+            "properties": {
+                "sourceIdentifier": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                },
+                "tags": {
+                    "description": "Labels on this thing, from the list its class names.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCveTagName"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "NvdCveTag",
+            "type": "object"
+        },
+        "NvdCveTagName": {
+            "description": "A label that a CVE record's source puts on the record.",
+            "enum": [
+                "unsupported-when-assigned",
+                "exclusively-hosted-service",
+                "disputed"
+            ],
+            "title": "NvdCveTagName",
+            "type": "string"
+        },
+        "NvdCvssMetricV2": {
+            "additionalProperties": false,
+            "description": "A CVSS 2.0 score, who gave it, and NVD's figures beside it.",
+            "properties": {
+                "acInsufInfo": {
+                    "description": "Whether NVD lacked the information to rate the access complexity.",
+                    "type": "boolean"
+                },
+                "baseSeverity": {
+                    "$ref": "#/$defs/NvdCvssV2Severity",
+                    "description": "The severity band of the base score, which CVSS 2.0 leaves to NVD."
+                },
+                "cvssData": {
+                    "$ref": "#/$defs/CvssV20",
+                    "description": "The CVSS score itself, in FIRST's form for its version."
+                },
+                "exploitabilityScore": {
+                    "description": "The CVSS exploitability subscore.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "impactScore": {
+                    "description": "The CVSS impact subscore.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "obtainAllPrivilege": {
+                    "description": "Whether exploiting this gains every privilege.",
+                    "type": "boolean"
+                },
+                "obtainOtherPrivilege": {
+                    "description": "Whether exploiting this gains some other privilege.",
+                    "type": "boolean"
+                },
+                "obtainUserPrivilege": {
+                    "description": "Whether exploiting this gains a user's privileges.",
+                    "type": "boolean"
+                },
+                "source": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/$defs/NvdSourceType",
+                    "description": "The kind of this thing, from the list its class names."
+                },
+                "userInteractionRequired": {
+                    "description": "Whether exploiting this needs a user to act.",
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "source",
+                "type",
+                "cvssData"
+            ],
+            "title": "NvdCvssMetricV2",
+            "type": "object"
+        },
+        "NvdCvssMetricV30": {
+            "additionalProperties": false,
+            "description": "A CVSS 3.0 score, who gave it, and its subscores.",
+            "properties": {
+                "cvssData": {
+                    "$ref": "#/$defs/CvssV30",
+                    "description": "The CVSS score itself, in FIRST's form for its version."
+                },
+                "exploitabilityScore": {
+                    "description": "The CVSS exploitability subscore.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "impactScore": {
+                    "description": "The CVSS impact subscore.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "source": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/$defs/NvdSourceType",
+                    "description": "The kind of this thing, from the list its class names."
+                }
+            },
+            "required": [
+                "source",
+                "type",
+                "cvssData"
+            ],
+            "title": "NvdCvssMetricV30",
+            "type": "object"
+        },
+        "NvdCvssMetricV31": {
+            "additionalProperties": false,
+            "description": "A CVSS 3.1 score, who gave it, and its subscores.",
+            "properties": {
+                "cvssData": {
+                    "$ref": "#/$defs/CvssV31",
+                    "description": "The CVSS score itself, in FIRST's form for its version."
+                },
+                "exploitabilityScore": {
+                    "description": "The CVSS exploitability subscore.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "impactScore": {
+                    "description": "The CVSS impact subscore.",
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "source": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/$defs/NvdSourceType",
+                    "description": "The kind of this thing, from the list its class names."
+                }
+            },
+            "required": [
+                "source",
+                "type",
+                "cvssData"
+            ],
+            "title": "NvdCvssMetricV31",
+            "type": "object"
+        },
+        "NvdCvssMetricV40": {
+            "additionalProperties": false,
+            "description": "A CVSS 4.0 score and who gave it.",
+            "properties": {
+                "cvssData": {
+                    "$ref": "#/$defs/CvssV40",
+                    "description": "The CVSS score itself, in FIRST's form for its version."
+                },
+                "source": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/$defs/NvdSourceType",
+                    "description": "The kind of this thing, from the list its class names."
+                }
+            },
+            "required": [
+                "source",
+                "type",
+                "cvssData"
+            ],
+            "title": "NvdCvssMetricV40",
+            "type": "object"
+        },
+        "NvdCvssV2Severity": {
+            "description": "The severity band NVD gives a CVSS 2.0 base score.",
+            "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH"
+            ],
+            "title": "NvdCvssV2Severity",
+            "type": "string"
+        },
+        "NvdHistoryResponse": {
+            "additionalProperties": false,
+            "description": "A page of the change-history API's results.",
+            "properties": {
+                "cveChanges": {
+                    "description": "The changes on this page.",
+                    "items": {
+                        "$ref": "#/$defs/NvdChangeItem"
+                    },
+                    "type": "array"
+                },
+                "format": {
+                    "const": "NVD_CVEHistory",
+                    "description": "The name NVD gives this kind of response.",
+                    "type": "string"
+                },
+                "resultsPerPage": {
+                    "description": "How many results this page holds.",
+                    "type": "integer"
+                },
+                "startIndex": {
+                    "description": "The position of this page's first result among all the results.",
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "description": "When NVD produced this response or this decision.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "totalResults": {
+                    "description": "How many results the request matched in all.",
+                    "type": "integer"
+                },
+                "version": {
+                    "description": "The response format's version.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "format",
+                "timestamp",
+                "resultsPerPage",
+                "startIndex",
+                "totalResults",
+                "version"
+            ],
+            "title": "NvdHistoryResponse",
+            "type": "object"
+        },
+        "NvdLangString": {
+            "additionalProperties": false,
+            "description": "A piece of text and the language it is in.",
+            "properties": {
+                "lang": {
+                    "description": "The language of the text beside it, as a language code.",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "The text.",
+                    "pattern": "^[\\s\\S]{0,4096}$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "lang",
+                "value"
+            ],
+            "title": "NvdLangString",
+            "type": "object"
+        },
+        "NvdMatchString": {
+            "additionalProperties": false,
+            "description": "A CPE match string or range as NVD holds it, and the CPE names it matches.",
+            "properties": {
+                "cpeLastModified": {
+                    "description": "When NVD last changed the list of CPE names this matches.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "When NVD first recorded this.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "criteria": {
+                    "description": "A CPE match string, which may hold wildcards.",
+                    "type": "string"
+                },
+                "lastModified": {
+                    "description": "When NVD last changed this.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "matchCriteriaId": {
+                    "description": "The UUID that NVD gives a CPE match string.",
+                    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                    "type": "string"
+                },
+                "matches": {
+                    "description": "The CPE names this matches.",
+                    "items": {
+                        "$ref": "#/$defs/NvdMatchedCpe"
+                    },
+                    "type": "array"
+                },
+                "status": {
+                    "$ref": "#/$defs/NvdMatchStringStatus",
+                    "description": "The state of this thing, from the list its class names."
+                },
+                "versionEndExcluding": {
+                    "description": "The version below which the match ends, itself left out.",
+                    "type": "string"
+                },
+                "versionEndIncluding": {
+                    "description": "The last version the match covers.",
+                    "type": "string"
+                },
+                "versionStartExcluding": {
+                    "description": "The version above which the match starts, itself left out.",
+                    "type": "string"
+                },
+                "versionStartIncluding": {
+                    "description": "The first version the match covers.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "criteria",
+                "matchCriteriaId",
+                "created",
+                "lastModified",
+                "status"
+            ],
+            "title": "NvdMatchString",
+            "type": "object"
+        },
+        "NvdMatchStringItem": {
+            "additionalProperties": false,
+            "description": "One entry of a match-string response, which only wraps the match string.",
+            "properties": {
+                "matchString": {
+                    "$ref": "#/$defs/NvdMatchString",
+                    "description": "The match string and what NVD holds about it."
+                }
+            },
+            "required": [
+                "matchString"
+            ],
+            "title": "NvdMatchStringItem",
+            "type": "object"
+        },
+        "NvdMatchStringStatus": {
+            "description": "Whether NVD still uses a match string.",
+            "enum": [
+                "Active",
+                "Inactive"
+            ],
+            "title": "NvdMatchStringStatus",
+            "type": "string"
+        },
+        "NvdMatchedCpe": {
+            "additionalProperties": false,
+            "description": "A CPE name that a match string matches.",
+            "properties": {
+                "cpeName": {
+                    "description": "A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.",
+                    "type": "string"
+                },
+                "cpeNameId": {
+                    "description": "The UUID that NVD gives a CPE name.",
+                    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "cpeName",
+                "cpeNameId"
+            ],
+            "title": "NvdMatchedCpe",
+            "type": "object"
+        },
+        "NvdMetrics": {
+            "additionalProperties": false,
+            "description": "The scores of a vulnerability, in a list per scoring system and version.",
+            "properties": {
+                "cvssMetricV2": {
+                    "description": "The CVSS 2.0 scores.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCvssMetricV2"
+                    },
+                    "type": "array"
+                },
+                "cvssMetricV30": {
+                    "description": "The CVSS 3.0 scores.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCvssMetricV30"
+                    },
+                    "type": "array"
+                },
+                "cvssMetricV31": {
+                    "description": "The CVSS 3.1 scores.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCvssMetricV31"
+                    },
+                    "type": "array"
+                },
+                "cvssMetricV40": {
+                    "description": "The CVSS 4.0 scores.",
+                    "items": {
+                        "$ref": "#/$defs/NvdCvssMetricV40"
+                    },
+                    "type": "array"
+                },
+                "ssvcV203": {
+                    "description": "The SSVC 2.0.3 decisions.",
+                    "items": {
+                        "$ref": "#/$defs/NvdSsvcMetricV203"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "NvdMetrics",
+            "type": "object"
+        },
+        "NvdOperator": {
+            "description": "How the parts of a configuration combine.",
+            "enum": [
+                "AND",
+                "OR"
+            ],
+            "title": "NvdOperator",
+            "type": "string"
+        },
+        "NvdProgramRoutine": {
+            "additionalProperties": false,
+            "description": "One affected source code routine.",
+            "properties": {
+                "name": {
+                    "description": "The name of the source code routine.",
+                    "pattern": "^[\\s\\S]{1,4096}$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "NvdProgramRoutine",
+            "type": "object"
+        },
+        "NvdReference": {
+            "additionalProperties": false,
+            "description": "A page about a vulnerability, with NVD's labels for what it is.",
+            "properties": {
+                "source": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                },
+                "tags": {
+                    "description": "Labels on this thing, from the list its class names.",
+                    "items": {
+                        "$ref": "#/$defs/NvdReferenceTag"
+                    },
+                    "type": "array"
                 },
                 "url": {
-                    "description": "URL pointing to the reference resource.",
+                    "description": "The address of the page.",
+                    "format": "uri",
+                    "pattern": "^[\\s\\S]{1,2048}$",
                     "type": "string"
                 }
             },
             "required": [
                 "url"
             ],
-            "title": "NVDReference",
+            "title": "NvdReference",
             "type": "object"
         },
-        "NVDTag": {
-            "description": "NVD analysis tags attached to vulnerability records.",
+        "NvdReferenceTag": {
+            "description": "NVD's label for what a reference is.",
             "enum": [
-                "ANALYSIS_PENDING",
-                "ADDITIONAL_INFORMATION"
+                "Broken Link",
+                "Exploit",
+                "Issue Tracking",
+                "Mailing List",
+                "Mitigation",
+                "Not Applicable",
+                "Patch",
+                "Permissions Required",
+                "Press/Media Coverage",
+                "Related",
+                "Product",
+                "Release Notes",
+                "Technical Description",
+                "Third Party Advisory",
+                "Tool Signature",
+                "URL Repurposed",
+                "US Government Resource",
+                "VDB Entry",
+                "Vendor Advisory"
             ],
-            "title": "NVDTag",
+            "title": "NvdReferenceTag",
             "type": "string"
         },
-        "NVDWeakness": {
+        "NvdResponseMixin": {
             "additionalProperties": false,
-            "description": "Weakness row as presented on the NVD detail page.",
+            "description": "The fields of a page of results, which every NVD API response carries.",
             "properties": {
-                "cwe_id": {
-                    "description": "CWE identifier for the weakness classification (e.g. CWE-79).",
-                    "pattern": "^CWE-[1-9][0-9]*$",
+                "format": {
+                    "description": "The name NVD gives this kind of response.",
                     "type": "string"
                 },
-                "description": {
-                    "description": "Narrative description of the vulnerability.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                "resultsPerPage": {
+                    "description": "How many results this page holds.",
+                    "type": "integer"
                 },
-                "name": {
-                    "description": "Name of the entity (product, weakness, reference, etc.).",
+                "startIndex": {
+                    "description": "The position of this page's first result among all the results.",
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "description": "When NVD produced this response or this decision.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
                     "type": "string"
                 },
+                "totalResults": {
+                    "description": "How many results the request matched in all.",
+                    "type": "integer"
+                },
+                "version": {
+                    "description": "The response format's version.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "format",
+                "timestamp",
+                "resultsPerPage",
+                "startIndex",
+                "totalResults",
+                "version"
+            ],
+            "title": "NvdResponseMixin",
+            "type": "object"
+        },
+        "NvdSourceType": {
+            "description": "Whether a score or a weakness comes from the party NVD treats as first.",
+            "enum": [
+                "Primary",
+                "Secondary"
+            ],
+            "title": "NvdSourceType",
+            "type": "string"
+        },
+        "NvdSsvcData": {
+            "additionalProperties": false,
+            "description": "One SSVC decision, as the answers chosen on the way through a decision tree.",
+            "properties": {
+                "computed": {
+                    "description": "The decision in a short form.",
+                    "type": "string"
+                },
+                "decisionTree": {
+                    "$ref": "#/$defs/NvdSsvcDecisionTree",
+                    "description": "The whole tree this decision came from."
+                },
+                "decisionTreeUrl": {
+                    "description": "Where to find the tree this decision came from.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "generator": {
+                    "description": "The tool that wrote this decision.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "The vulnerability the decision is about, by whatever identifier.",
+                    "type": "string"
+                },
+                "options": {
+                    "description": "The answers given, each as a decision point and its value.",
+                    "items": {
+                        "$ref": "#/$defs/NvdSsvcOption"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                },
+                "role": {
+                    "description": "The role of whoever made the decision, such as CISA Coordinator.",
+                    "type": "string"
+                },
+                "timestamp": {
+                    "description": "When NVD produced this response or this decision.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "Which SSVC release this decision follows.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "options",
+                "role",
+                "version"
+            ],
+            "title": "NvdSsvcData",
+            "type": "object"
+        },
+        "NvdSsvcDecisionTree": {
+            "additionalProperties": true,
+            "description": "A whole SSVC decision tree, in the form of the schema NVD's file names.",
+            "title": "NvdSsvcDecisionTree",
+            "type": [
+                "null",
+                "boolean",
+                "object",
+                "number",
+                "string"
+            ]
+        },
+        "NvdSsvcMetricV203": {
+            "additionalProperties": false,
+            "description": "A Stakeholder-Specific Vulnerability Categorization (SSVC) decision and who made it.",
+            "properties": {
                 "source": {
-                    "description": "Source column value, such as NIST or ASSIGNER.",
+                    "description": "The email address or UUID of the organization that supplied this.",
                     "type": "string"
+                },
+                "ssvcData": {
+                    "$ref": "#/$defs/NvdSsvcData",
+                    "description": "The decision."
                 }
             },
             "required": [
                 "source",
-                "cwe_id",
-                "name"
+                "ssvcData"
             ],
-            "title": "NVDWeakness",
+            "title": "NvdSsvcMetricV203",
             "type": "object"
         },
-        "NVDWorkflowEventSource": {
-            "description": "Source of state transition decisions in the status flow.",
-            "enum": [
-                "NVD_PROCESS",
-                "NVD_STAFF_DECISION",
-                "CVE_PROGRAM_PROCESS",
-                "USER_REQUEST"
-            ],
-            "title": "NVDWorkflowEventSource",
-            "type": "string"
-        },
-        "NVDWorkflowStatus": {
-            "description": "Enrichment state labels shown by NVD for CVEs.",
-            "enum": [
-                "AWAITING_ENRICHMENT",
-                "UNDERGOING_ENRICHMENT",
-                "ENRICHED",
-                "MODIFIED_AFTER_ENRICHMENT",
-                "NOT_SCHEDULED",
-                "REJECTED"
-            ],
-            "title": "NVDWorkflowStatus",
-            "type": "string"
-        },
-        "Product": {
-            "additionalProperties": false,
-            "description": "Software or hardware entity affected by the vulnerability.",
-            "properties": {
-                "name": {
-                    "description": "Name of the entity (product, weakness, reference, etc.).",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "platforms": {
-                    "description": "Platforms or operating environments affected.",
-                    "items": {
+        "NvdSsvcOption": {
+            "additionalProperties": {
+                "anyOf": [
+                    {
                         "type": "string"
                     },
-                    "type": [
-                        "array",
-                        "null"
-                    ]
+                    {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    {
+                        "type": "null"
+                    }
+                ]
+            },
+            "description": "One answer on the way through a decision tree, keyed by its decision point.",
+            "properties": {
+                "automatable": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "Whether an attacker could automate the attack, as yes or no."
                 },
-                "vendor": {
-                    "description": "Name of the vendor or organization responsible for the product.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                "exploitation": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "How far the vulnerability is known to be exploited, such as none, poc or active."
                 },
-                "version": {
-                    "description": "Version string of the affected product.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                "technicalImpact": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "How much control an attacker would gain, as partial or total."
                 }
             },
-            "title": "Product",
+            "title": "NvdSsvcOption",
             "type": "object"
         },
-        "Reference": {
+        "NvdVendorComment": {
             "additionalProperties": false,
-            "description": "External reference such as an advisory or article.",
+            "description": "What a product's vendor has said about a vulnerability.",
             "properties": {
-                "name": {
-                    "description": "Name of the entity (product, weakness, reference, etc.).",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "source": {
-                    "description": "Source or origin of the reference or data.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "url": {
-                    "description": "URL pointing to the reference resource.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                }
-            },
-            "title": "Reference",
-            "type": "object"
-        },
-        "ReferenceTag": {
-            "description": "Resource tag labels used by NVD references.",
-            "enum": [
-                "THIRD_PARTY_ADVISORY",
-                "VENDOR_ADVISORY",
-                "ISSUE_TRACKING",
-                "PATCH",
-                "TECHNICAL_DESCRIPTION",
-                "PRESS_MEDIA_COVERAGE",
-                "VDB_ENTRY"
-            ],
-            "title": "ReferenceTag",
-            "type": "string"
-        },
-        "ScoreSource": {
-            "description": "Provider of CVSS vectors and scores.",
-            "enum": [
-                "NVD",
-                "CNA",
-                "ADP",
-                "VENDOR",
-                "THIRD_PARTY"
-            ],
-            "title": "ScoreSource",
-            "type": "string"
-        },
-        "StatusTransition": {
-            "additionalProperties": false,
-            "description": "State transition event in NVD enrichment workflow.",
-            "properties": {
-                "event_source": {
-                    "$ref": "#/$defs/NVDWorkflowEventSource"
-                },
-                "from_status": {
-                    "$ref": "#/$defs/NVDWorkflowStatus"
-                },
-                "rationale": {
-                    "description": "Optional reason for transition.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "to_status": {
-                    "$ref": "#/$defs/NVDWorkflowStatus"
-                },
-                "transition_id": {
+                "comment": {
+                    "description": "What the vendor said.",
                     "type": "string"
                 },
-                "transition_time": {
-                    "format": "date-time",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                "lastModified": {
+                    "description": "When NVD last changed this.",
+                    "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+                    "type": "string"
+                },
+                "organization": {
+                    "description": "The vendor's name.",
+                    "type": "string"
                 }
             },
             "required": [
-                "transition_id"
+                "lastModified",
+                "organization",
+                "comment"
             ],
-            "title": "StatusTransition",
+            "title": "NvdVendorComment",
             "type": "object"
         },
-        "VendorComment": {
+        "NvdVersionChange": {
             "additionalProperties": false,
-            "description": "Comment provided by vendor during NVD analysis.",
+            "description": "A point within a range of versions where the status changes.",
             "properties": {
-                "comment": {
-                    "description": "Vendor-provided comment text.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                "at": {
+                    "description": "The version at which the status changes.",
+                    "pattern": "^[\\s\\S]{1,1024}$",
+                    "type": "string"
                 },
-                "last_modified_date": {
-                    "description": "Date and time the vulnerability record was last modified.",
-                    "format": "date-time",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "vendor": {
-                    "description": "Name of the vendor or organization responsible for the product.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                "status": {
+                    "$ref": "#/$defs/NvdVersionStatus",
+                    "description": "The state of this thing, from the list its class names."
                 }
             },
-            "title": "VendorComment",
+            "required": [
+                "at",
+                "status"
+            ],
+            "title": "NvdVersionChange",
             "type": "object"
         },
-        "VersionBoundType": {
-            "description": "Boundary type for version-range constraints.",
+        "NvdVersionStatus": {
+            "description": "Whether a version of a product has the vulnerability.",
             "enum": [
-                "START_INCLUDING",
-                "START_EXCLUDING",
-                "END_INCLUDING",
-                "END_EXCLUDING"
+                "affected",
+                "unaffected",
+                "unknown"
             ],
-            "title": "VersionBoundType",
+            "title": "NvdVersionStatus",
             "type": "string"
         },
-        "VulnerabilityStatus": {
-            "description": "Lifecycle state of a vulnerability record.",
+        "NvdVulnStatus": {
+            "description": "Where a vulnerability stands in NVD's own analysis.",
             "enum": [
-                "ACTIVE",
-                "REJECTED",
-                "DISPUTED",
-                "RESERVED",
-                "DEPRECATED"
+                "Analyzed",
+                "Deferred",
+                "Awaiting Analysis",
+                "Modified",
+                "Received",
+                "Undergoing Analysis",
+                "Rejected"
             ],
-            "title": "VulnerabilityStatus",
+            "title": "NvdVulnStatus",
             "type": "string"
         },
-        "Weakness": {
+        "NvdVulnerability": {
             "additionalProperties": false,
-            "description": "Weakness classification from CWE or a similar taxonomy.",
+            "description": "One entry of a response, which only wraps the vulnerability.",
             "properties": {
-                "cwe_id": {
-                    "description": "CWE identifier for the weakness classification (e.g. CWE-79).",
-                    "pattern": "^CWE-[1-9][0-9]*$",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
+                "cve": {
+                    "$ref": "#/$defs/NvdCve",
+                    "description": "The vulnerability."
+                }
+            },
+            "required": [
+                "cve"
+            ],
+            "title": "NvdVulnerability",
+            "type": "object"
+        },
+        "NvdWeakness": {
+            "additionalProperties": false,
+            "description": "The weaknesses that one source says lie behind a vulnerability.",
+            "properties": {
                 "description": {
-                    "description": "Narrative description of the vulnerability.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                    "description": "The weakness, as language-tagged text, usually a CWE identifier.",
+                    "items": {
+                        "$ref": "#/$defs/NvdLangString"
+                    },
+                    "type": "array"
                 },
-                "name": {
-                    "description": "Name of the entity (product, weakness, reference, etc.).",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                "source": {
+                    "description": "The email address or UUID of the organization that supplied this.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/$defs/NvdSourceType",
+                    "description": "The kind of this thing, from the list its class names."
                 }
             },
-            "title": "Weakness",
+            "required": [
+                "source",
+                "type",
+                "description"
+            ],
+            "title": "NvdWeakness",
             "type": "object"
         }
     },
     "$id": "https://w3id.org/lmodel/nist-nvd",
     "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "additionalProperties": true,
-    "metamodel_version": "1.7.0",
-    "title": "nist-nvd",
+    "additionalProperties": false,
+    "description": "A page of the vulnerability API's results, or a whole data feed.",
+    "metamodel_version": "1.12.0",
+    "properties": {
+        "format": {
+            "const": "NVD_CVE",
+            "description": "The name NVD gives this kind of response.",
+            "type": "string"
+        },
+        "resultsPerPage": {
+            "description": "How many results this page holds.",
+            "type": "integer"
+        },
+        "startIndex": {
+            "description": "The position of this page's first result among all the results.",
+            "type": "integer"
+        },
+        "timestamp": {
+            "description": "When NVD produced this response or this decision.",
+            "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$",
+            "type": "string"
+        },
+        "totalResults": {
+            "description": "How many results the request matched in all.",
+            "type": "integer"
+        },
+        "version": {
+            "description": "The response format's version.",
+            "type": "string"
+        },
+        "vulnerabilities": {
+            "description": "The vulnerabilities on this page.",
+            "items": {
+                "$ref": "#/$defs/NvdVulnerability"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "vulnerabilities",
+        "format",
+        "timestamp",
+        "resultsPerPage",
+        "startIndex",
+        "totalResults",
+        "version"
+    ],
+    "title": "nist_nvd",
     "type": "object",
-    "version": null
+    "version": "2.2.4"
 }

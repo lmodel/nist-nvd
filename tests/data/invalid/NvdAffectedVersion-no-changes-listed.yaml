@@ -1,0 +1,6 @@
+# Fails at: /changes
+version: '1.0'
+status: affected
+versionType: semver
+lessThan: '2.0'
+changes: []

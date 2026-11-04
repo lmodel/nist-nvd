@@ -1,252 +1,864 @@
-# metamodel_version: 1.7.0
-enum ConfigurationType
+# metamodel_version: 1.12.0
+# version: 2.2.4
+enum CvssAttackComplexity
   {
-    BASIC
-    RUNNING_ON_WITH
-    ADVANCED
+    HIGH
+    LOW
   }
 
-enum CVSSVersion
+enum CvssExploitCodeMaturity
   {
-    V2_0
-    V3_0
-    V3_1
-    V4_0
+    UNPROVEN
+    PROOF_OF_CONCEPT
+    FUNCTIONAL
+    HIGH
+    NOT_DEFINED
   }
 
-enum ImpactSeverity
+enum CvssImpact
+  {
+    NONE
+    LOW
+    HIGH
+  }
+
+enum CvssModifiedAttackComplexity
+  {
+    HIGH
+    LOW
+    NOT_DEFINED
+  }
+
+enum CvssModifiedImpact
+  {
+    NONE
+    LOW
+    HIGH
+    NOT_DEFINED
+  }
+
+enum CvssModifiedPrivilegesRequired
+  {
+    HIGH
+    LOW
+    NONE
+    NOT_DEFINED
+  }
+
+enum CvssPrivilegesRequired
+  {
+    HIGH
+    LOW
+    NONE
+  }
+
+enum CvssRemediationLevel
+  {
+    OFFICIAL_FIX
+    TEMPORARY_FIX
+    WORKAROUND
+    UNAVAILABLE
+    NOT_DEFINED
+  }
+
+enum CvssRequirement
+  {
+    LOW
+    MEDIUM
+    HIGH
+    NOT_DEFINED
+  }
+
+enum CvssSeverity
   {
     NONE
     LOW
     MEDIUM
     HIGH
     CRITICAL
+  }
+
+enum CvssV2AccessComplexity
+  {
+    HIGH
+    MEDIUM
+    LOW
+  }
+
+enum CvssV2AccessVector
+  {
+    NETWORK
+    ADJACENT_NETWORK
+    LOCAL
+  }
+
+enum CvssV2Authentication
+  {
+    MULTIPLE
+    SINGLE
+    NONE
+  }
+
+enum CvssV2CollateralDamagePotential
+  {
+    NONE
+    LOW
+    LOW_MEDIUM
+    MEDIUM_HIGH
+    HIGH
+    NOT_DEFINED
+  }
+
+enum CvssV2Impact
+  {
+    NONE
+    PARTIAL
+    COMPLETE
+  }
+
+enum CvssV2ReportConfidence
+  {
+    UNCONFIRMED
+    UNCORROBORATED
+    CONFIRMED
+    NOT_DEFINED
+  }
+
+enum CvssV2TargetDistribution
+  {
+    NONE
+    LOW
+    MEDIUM
+    HIGH
+    NOT_DEFINED
+  }
+
+enum CvssV3AttackVector
+  {
+    NETWORK
+    ADJACENT_NETWORK
+    LOCAL
+    PHYSICAL
+  }
+
+enum CvssV3ModifiedAttackVector
+  {
+    NETWORK
+    ADJACENT_NETWORK
+    LOCAL
+    PHYSICAL
+    NOT_DEFINED
+  }
+
+enum CvssV3ModifiedScope
+  {
+    UNCHANGED
+    CHANGED
+    NOT_DEFINED
+  }
+
+enum CvssV3ModifiedUserInteraction
+  {
+    NONE
+    REQUIRED
+    NOT_DEFINED
+  }
+
+enum CvssV3ReportConfidence
+  {
     UNKNOWN
+    REASONABLE
+    CONFIRMED
+    NOT_DEFINED
   }
 
-enum NVDTag
+enum CvssV3Scope
   {
-    ANALYSIS_PENDING
-    ADDITIONAL_INFORMATION
+    UNCHANGED
+    CHANGED
   }
 
-enum NVDWorkflowEventSource
+enum CvssV3UserInteraction
   {
-    NVD_PROCESS
-    NVD_STAFF_DECISION
-    CVE_PROGRAM_PROCESS
-    USER_REQUEST
+    NONE
+    REQUIRED
   }
 
-enum NVDWorkflowStatus
+enum CvssV4AttackRequirements
   {
-    AWAITING_ENRICHMENT
-    UNDERGOING_ENRICHMENT
-    ENRICHED
-    MODIFIED_AFTER_ENRICHMENT
-    NOT_SCHEDULED
-    REJECTED
+    NONE
+    PRESENT
   }
 
-enum ReferenceTag
+enum CvssV4AttackVector
   {
-    THIRD_PARTY_ADVISORY
-    VENDOR_ADVISORY
-    ISSUE_TRACKING
-    PATCH
-    TECHNICAL_DESCRIPTION
-    PRESS_MEDIA_COVERAGE
-    VDB_ENTRY
+    NETWORK
+    ADJACENT
+    LOCAL
+    PHYSICAL
   }
 
-enum ScoreSource
+enum CvssV4Automatable
   {
-    NVD
-    CNA
-    ADP
-    VENDOR
-    THIRD_PARTY
+    NO
+    YES
+    NOT_DEFINED
   }
 
-enum VersionBoundType
+enum CvssV4ExploitMaturity
   {
-    START_INCLUDING
-    START_EXCLUDING
-    END_INCLUDING
-    END_EXCLUDING
+    UNREPORTED
+    PROOF_OF_CONCEPT
+    ATTACKED
+    NOT_DEFINED
   }
 
-enum VulnerabilityStatus
+enum CvssV4ModifiedAttackRequirements
   {
+    NONE
+    PRESENT
+    NOT_DEFINED
+  }
+
+enum CvssV4ModifiedAttackVector
+  {
+    NETWORK
+    ADJACENT
+    LOCAL
+    PHYSICAL
+    NOT_DEFINED
+  }
+
+enum CvssV4ModifiedSubsequentImpact
+  {
+    NONE
+    LOW
+    HIGH
+    SAFETY
+    NOT_DEFINED
+  }
+
+enum CvssV4ModifiedUserInteraction
+  {
+    NONE
+    PASSIVE
     ACTIVE
-    REJECTED
-    DISPUTED
-    RESERVED
-    DEPRECATED
+    NOT_DEFINED
   }
 
-type Configuration
+enum CvssV4ProviderUrgency
   {
-    cpeUri: String
-    operator: String
+    CLEAR
+    GREEN
+    AMBER
+    RED
+    NOT_DEFINED
   }
 
-type CPEConfiguration
+enum CvssV4Recovery
   {
-    configurationId: String
-    configurationType: ConfigurationType
-    operator: String
-    children: [CPEConfiguration]
-    matches: [CPEMatch]
-    summary: String
+    AUTOMATIC
+    USER
+    IRRECOVERABLE
+    NOT_DEFINED
   }
 
-type CPEMatch
+enum CvssV4ResponseEffort
   {
-    matchCriteriaId: String
-    criteria: String
-    cpe23Uri: String
-    vulnerable: Boolean
-    versionStartIncluding: String
-    versionStartExcluding: String
-    versionEndIncluding: String
-    versionEndExcluding: String
-    matchedCpeNames: [String]
+    LOW
+    MODERATE
+    HIGH
+    NOT_DEFINED
   }
 
-type CVSSMetric
+enum CvssV4Safety
   {
-    version: String
-    vectorString: String
-    baseScore: Float
-    baseSeverity: ImpactSeverity
-    source: ScoreSource
-    providerLabel: String
-    scoringJustification: String
+    NEGLIGIBLE
+    PRESENT
+    NOT_DEFINED
   }
 
-type CVSSScoreNote
+enum CvssV4UserInteraction
   {
-    noteId: String!
-    message: String
-    source: String
-    created: String
+    NONE
+    PASSIVE
+    ACTIVE
   }
 
-type Impact
+enum CvssV4ValueDensity
   {
-    severity: ImpactSeverity
-    vector: String
-    score: Float
+    DIFFUSE
+    CONCENTRATED
+    NOT_DEFINED
   }
 
-type KnownExploitedVulnerability
+enum NvdCpeReferenceType
   {
-    dateAdded: String
-    dueDate: String
-    requiredAction: String
-    kevReference: String
+    Advisory
+    Change_Log
+    Product
+    Project
+    Vendor
+    Version
   }
 
-type MetricSet
+enum NvdCveTagName
   {
-    cvssV4Metrics: [CVSSMetric]
-    cvssV3Metrics: [CVSSMetric]
-    cvssV2Metrics: [CVSSMetric]
-    scoreNotes: [CVSSScoreNote]
+    unsupported__HYPHEN_MINUS__when__HYPHEN_MINUS__assigned
+    exclusively__HYPHEN_MINUS__hosted__HYPHEN_MINUS__service
+    disputed
   }
 
-type NVDEntry
+enum NvdCvssV2Severity
   {
-    cveId: CveId!
-    title: String
-    publishedDate: String
-    lastModifiedDate: String
-    products: [Product]
-    impact: Impact
-    descriptionSource: String
-    analysisDescription: String
-    metrics: MetricSet
-    configurations: [CPEConfiguration]
-    references: [NVDReference]
-    weaknesses: [NVDWeakness]
-    vendorComments: [VendorComment]
-    nvdTags: [NVDTag]
-    cveTags: [String]
-    workflowStatus: NVDWorkflowStatus
-    statusTransitions: [StatusTransition]
-    knownExploited: KnownExploitedVulnerability
-    cweView: String
-    dateReceived: String
-    status: NVDWorkflowStatus
-    description: String!
+    LOW
+    MEDIUM
+    HIGH
   }
 
-type NVDReference
+enum NvdMatchStringStatus
   {
-    name: String
-    resourceTags: [ReferenceTag]
-    url: String!
-    source: String
+    Active
+    Inactive
   }
 
-type NVDWeakness
+enum NvdOperator
   {
-    description: String
+    AND
+    OR
+  }
+
+enum NvdReferenceTag
+  {
+    Broken_Link
+    Exploit
+    Issue_Tracking
+    Mailing_List
+    Mitigation
+    Not_Applicable
+    Patch
+    Permissions_Required
+    Press__SOLIDUS__Media_Coverage
+    Related
+    Product
+    Release_Notes
+    Technical_Description
+    Third_Party_Advisory
+    Tool_Signature
+    URL_Repurposed
+    US_Government_Resource
+    VDB_Entry
+    Vendor_Advisory
+  }
+
+enum NvdSourceType
+  {
+    Primary
+    Secondary
+  }
+
+enum NvdVersionStatus
+  {
+    affected
+    unaffected
+    unknown
+  }
+
+enum NvdVulnStatus
+  {
+    Analyzed
+    Deferred
+    Awaiting_Analysis
+    Modified
+    Received
+    Undergoing_Analysis
+    Rejected
+  }
+
+interface CvssSeverityBandsMixin
+  {
+    baseScore: Float!
+    baseSeverity: CvssSeverity!
+  }
+
+type CvssV20
+  {
+    version: String!
+    vectorString: String!
+    baseScore: Float!
+    confidentialityImpact: CvssV2Impact
+    integrityImpact: CvssV2Impact
+    availabilityImpact: CvssV2Impact
+    remediationLevel: CvssRemediationLevel
+    reportConfidence: CvssV2ReportConfidence
+    temporalScore: Float
+    confidentialityRequirement: CvssRequirement
+    integrityRequirement: CvssRequirement
+    availabilityRequirement: CvssRequirement
+    environmentalScore: Float
+    accessVector: CvssV2AccessVector
+    accessComplexity: CvssV2AccessComplexity
+    authentication: CvssV2Authentication
+    exploitability: CvssExploitCodeMaturity
+    collateralDamagePotential: CvssV2CollateralDamagePotential
+    targetDistribution: CvssV2TargetDistribution
+  }
+
+type CvssV30 implements CvssSeverityBandsMixin
+  {
+    version: String!
+    vectorString: String!
+    attackVector: CvssV3AttackVector
+    attackComplexity: CvssAttackComplexity
+    privilegesRequired: CvssPrivilegesRequired
+    userInteraction: CvssV3UserInteraction
+    scope: CvssV3Scope
+    confidentialityImpact: CvssImpact
+    integrityImpact: CvssImpact
+    availabilityImpact: CvssImpact
+    exploitCodeMaturity: CvssExploitCodeMaturity
+    remediationLevel: CvssRemediationLevel
+    reportConfidence: CvssV3ReportConfidence
+    temporalScore: Float
+    temporalSeverity: CvssSeverity
+    confidentialityRequirement: CvssRequirement
+    integrityRequirement: CvssRequirement
+    availabilityRequirement: CvssRequirement
+    modifiedAttackVector: CvssV3ModifiedAttackVector
+    modifiedAttackComplexity: CvssModifiedAttackComplexity
+    modifiedPrivilegesRequired: CvssModifiedPrivilegesRequired
+    modifiedUserInteraction: CvssV3ModifiedUserInteraction
+    modifiedScope: CvssV3ModifiedScope
+    modifiedConfidentialityImpact: CvssModifiedImpact
+    modifiedIntegrityImpact: CvssModifiedImpact
+    modifiedAvailabilityImpact: CvssModifiedImpact
+    environmentalScore: Float
+    environmentalSeverity: CvssSeverity
+    baseScore: Float!
+    baseSeverity: CvssSeverity!
+  }
+
+type CvssV31 implements CvssSeverityBandsMixin
+  {
+    version: String!
+    vectorString: String!
+    attackVector: CvssV3AttackVector
+    attackComplexity: CvssAttackComplexity
+    privilegesRequired: CvssPrivilegesRequired
+    userInteraction: CvssV3UserInteraction
+    scope: CvssV3Scope
+    confidentialityImpact: CvssImpact
+    integrityImpact: CvssImpact
+    availabilityImpact: CvssImpact
+    exploitCodeMaturity: CvssExploitCodeMaturity
+    remediationLevel: CvssRemediationLevel
+    reportConfidence: CvssV3ReportConfidence
+    temporalScore: Float
+    temporalSeverity: CvssSeverity
+    confidentialityRequirement: CvssRequirement
+    integrityRequirement: CvssRequirement
+    availabilityRequirement: CvssRequirement
+    modifiedAttackVector: CvssV3ModifiedAttackVector
+    modifiedAttackComplexity: CvssModifiedAttackComplexity
+    modifiedPrivilegesRequired: CvssModifiedPrivilegesRequired
+    modifiedUserInteraction: CvssV3ModifiedUserInteraction
+    modifiedScope: CvssV3ModifiedScope
+    modifiedConfidentialityImpact: CvssModifiedImpact
+    modifiedIntegrityImpact: CvssModifiedImpact
+    modifiedAvailabilityImpact: CvssModifiedImpact
+    environmentalScore: Float
+    environmentalSeverity: CvssSeverity
+    baseScore: Float!
+    baseSeverity: CvssSeverity!
+  }
+
+type CvssV40 implements CvssSeverityBandsMixin
+  {
+    version: String!
+    vectorString: String!
+    attackVector: CvssV4AttackVector
+    attackComplexity: CvssAttackComplexity
+    privilegesRequired: CvssPrivilegesRequired
+    userInteraction: CvssV4UserInteraction
+    confidentialityRequirement: CvssRequirement
+    integrityRequirement: CvssRequirement
+    availabilityRequirement: CvssRequirement
+    modifiedAttackVector: CvssV4ModifiedAttackVector
+    modifiedAttackComplexity: CvssModifiedAttackComplexity
+    modifiedPrivilegesRequired: CvssModifiedPrivilegesRequired
+    modifiedUserInteraction: CvssV4ModifiedUserInteraction
+    attackRequirements: CvssV4AttackRequirements
+    vulnConfidentialityImpact: CvssImpact
+    vulnIntegrityImpact: CvssImpact
+    vulnAvailabilityImpact: CvssImpact
+    subConfidentialityImpact: CvssImpact
+    subIntegrityImpact: CvssImpact
+    subAvailabilityImpact: CvssImpact
+    exploitMaturity: CvssV4ExploitMaturity
+    modifiedAttackRequirements: CvssV4ModifiedAttackRequirements
+    modifiedVulnConfidentialityImpact: CvssModifiedImpact
+    modifiedVulnIntegrityImpact: CvssModifiedImpact
+    modifiedVulnAvailabilityImpact: CvssModifiedImpact
+    modifiedSubConfidentialityImpact: CvssModifiedImpact
+    modifiedSubIntegrityImpact: CvssV4ModifiedSubsequentImpact
+    modifiedSubAvailabilityImpact: CvssV4ModifiedSubsequentImpact
+    safety: CvssV4Safety
+    automatable: CvssV4Automatable
+    recovery: CvssV4Recovery
+    valueDensity: CvssV4ValueDensity
+    vulnerabilityResponseEffort: CvssV4ResponseEffort
+    providerUrgency: CvssV4ProviderUrgency
+    baseScore: Float!
+    baseSeverity: CvssSeverity!
+  }
+
+type NvdAffected
+  {
     source: String!
-    cweId: String!
+    affectedData: [NvdAffectedProduct]!
+  }
+
+type NvdAffectedProduct
+  {
+    defaultStatus: NvdVersionStatus
+    vendor: String
+    product: String
+    collectionURL: String
+    packageName: String
+    cpes: [String]
+    modules: [String]
+    programFiles: [String]
+    programRoutines: [NvdProgramRoutine]
+    platforms: [String]
+    repo: String
+    versions: [NvdAffectedVersion]
+    packageURL: String
+  }
+
+type NvdAffectedVersion
+  {
+    version: String!
+    status: NvdVersionStatus!
+    versionType: String
+    lessThan: String
+    lessThanOrEqual: String
+    changes: [NvdVersionChange]
+  }
+
+type NvdChange
+  {
+    cveChangeId: NvdUuid!
+    sourceIdentifier: String!
+    created: NvdTimestamp
+    cveId: NvdCve!
+    eventName: String!
+    details: [NvdChangeDetail]
+  }
+
+type NvdChangeDetail
+  {
+    type: String!
+    action: String
+    oldValue: String
+    newValue: String
+  }
+
+type NvdChangeItem
+  {
+    change: NvdChange!
+  }
+
+type NvdChangeObject
+  {
+  }
+
+type NvdConfiguration
+  {
+    operator: NvdOperator
+    negate: Boolean
+    nodes: [NvdConfigurationNode]!
+  }
+
+type NvdConfigurationNode
+  {
+    operator: NvdOperator!
+    negate: Boolean
+    cpeMatch: [NvdCpeMatch]!
+  }
+
+type NvdCpe
+  {
+    cpeName: String!
+    cpeNameId: NvdUuid!
+    created: NvdTimestamp!
+    lastModified: NvdTimestamp!
+    deprecated: Boolean!
+    titles: [NvdCpeTitle]
+    refs: [NvdCpeReference]
+    deprecatedBy: [NvdCpeNameLink]
+    deprecates: [NvdCpeNameLink]
+  }
+
+type NvdCpeItem
+  {
+    cpe: NvdCpe!
+  }
+
+type NvdCpeMatch
+  {
+    criteria: String!
+    matchCriteriaId: NvdUuid!
+    versionStartExcluding: String
+    versionStartIncluding: String
+    versionEndExcluding: String
+    versionEndIncluding: String
+    vulnerable: Boolean!
+  }
+
+type NvdCpeMatchResponse implements NvdResponseMixin
+  {
+    matchStrings: [NvdMatchStringItem]!
+    format: String!
+    timestamp: NvdTimestamp!
+    resultsPerPage: Int!
+    startIndex: Int!
+    totalResults: Int!
+    version: String!
+  }
+
+type NvdCpeNameLink
+  {
+    cpeName: String
+    cpeNameId: NvdUuid
+  }
+
+type NvdCpeReference
+  {
+    type: NvdCpeReferenceType
+    ref: String!
+  }
+
+type NvdCpeResponse implements NvdResponseMixin
+  {
+    products: [NvdCpeItem]!
+    format: String!
+    timestamp: NvdTimestamp!
+    resultsPerPage: Int!
+    startIndex: Int!
+    totalResults: Int!
+    version: String!
+  }
+
+type NvdCpeTitle
+  {
+    title: String!
+    lang: String!
+  }
+
+type NvdCve
+  {
+    id: NvdCveIdentifier!
+    sourceIdentifier: String
+    lastModified: NvdTimestamp!
+    references: [NvdReference]!
+    vulnStatus: NvdVulnStatus
+    published: NvdTimestamp!
+    evaluatorComment: String
+    evaluatorSolution: String
+    evaluatorImpact: String
+    cisaExploitAdd: String
+    cisaActionDue: String
+    cisaRequiredAction: String
+    cisaVulnerabilityName: String
+    cveTags: [NvdCveTag]
+    descriptions: [NvdLangString]!
+    metrics: NvdMetrics
+    affected: [NvdAffected]
+    weaknesses: [NvdWeakness]
+    configurations: [NvdConfiguration]
+    vendorComments: [NvdVendorComment]
+  }
+
+type NvdCveResponse implements NvdResponseMixin
+  {
+    vulnerabilities: [NvdVulnerability]!
+    format: String!
+    timestamp: NvdTimestamp!
+    resultsPerPage: Int!
+    startIndex: Int!
+    totalResults: Int!
+    version: String!
+  }
+
+type NvdCveTag
+  {
+    sourceIdentifier: String
+    tags: [NvdCveTagName]
+  }
+
+type NvdCvssMetricV2
+  {
+    source: String!
+    type: NvdSourceType!
+    cvssData: CvssV20!
+    exploitabilityScore: Float
+    impactScore: Float
+    baseSeverity: NvdCvssV2Severity
+    acInsufInfo: Boolean
+    obtainAllPrivilege: Boolean
+    obtainUserPrivilege: Boolean
+    obtainOtherPrivilege: Boolean
+    userInteractionRequired: Boolean
+  }
+
+type NvdCvssMetricV30
+  {
+    source: String!
+    type: NvdSourceType!
+    cvssData: CvssV30!
+    exploitabilityScore: Float
+    impactScore: Float
+  }
+
+type NvdCvssMetricV31
+  {
+    source: String!
+    type: NvdSourceType!
+    cvssData: CvssV31!
+    exploitabilityScore: Float
+    impactScore: Float
+  }
+
+type NvdCvssMetricV40
+  {
+    source: String!
+    type: NvdSourceType!
+    cvssData: CvssV40!
+  }
+
+type NvdHistoryResponse implements NvdResponseMixin
+  {
+    cveChanges: [NvdChangeItem]
+    format: String!
+    timestamp: NvdTimestamp!
+    resultsPerPage: Int!
+    startIndex: Int!
+    totalResults: Int!
+    version: String!
+  }
+
+type NvdLangString
+  {
+    lang: String!
+    value: String!
+  }
+
+type NvdMatchedCpe
+  {
+    cpeName: String!
+    cpeNameId: NvdUuid!
+  }
+
+type NvdMatchString
+  {
+    criteria: String!
+    matchCriteriaId: NvdUuid!
+    versionStartExcluding: String
+    versionStartIncluding: String
+    versionEndExcluding: String
+    versionEndIncluding: String
+    created: NvdTimestamp!
+    lastModified: NvdTimestamp!
+    status: NvdMatchStringStatus!
+    cpeLastModified: NvdTimestamp
+    matches: [NvdMatchedCpe]
+  }
+
+type NvdMatchStringItem
+  {
+    matchString: NvdMatchString!
+  }
+
+type NvdMetrics
+  {
+    cvssMetricV40: [NvdCvssMetricV40]
+    cvssMetricV31: [NvdCvssMetricV31]
+    cvssMetricV30: [NvdCvssMetricV30]
+    cvssMetricV2: [NvdCvssMetricV2]
+    ssvcV203: [NvdSsvcMetricV203]
+  }
+
+type NvdProgramRoutine
+  {
     name: String!
   }
 
-type Product
+type NvdReference
   {
-    vendor: String
-    name: String
-    version: String
-    platforms: [String]
-  }
-
-type Reference
-  {
-    url: String
-    name: String
+    url: String!
     source: String
+    tags: [NvdReferenceTag]
   }
 
-type StatusTransition
+interface NvdResponseMixin
   {
-    transitionId: String!
-    fromStatus: NVDWorkflowStatus
-    toStatus: NVDWorkflowStatus
-    eventSource: NVDWorkflowEventSource
-    transitionTime: String
-    rationale: String
+    format: String!
+    timestamp: NvdTimestamp!
+    resultsPerPage: Int!
+    startIndex: Int!
+    totalResults: Int!
+    version: String!
   }
 
-type VendorComment
+type NvdSsvcData
   {
-    vendor: String
-    comment: String
-    lastModifiedDate: String
+    timestamp: NvdTimestamp
+    computed: String
+    options: [NvdSsvcOption]!
+    role: String!
+    version: String!
+    decisionTree: NvdSsvcDecisionTree
+    id: String
+    decisionTreeUrl: String
+    generator: String
   }
 
-interface Vulnerability
+scalar NvdSsvcDecisionTree
+
+type NvdSsvcMetricV203
   {
-    cveId: CveId!
-    title: String
-    description: String
-    publishedDate: String
-    lastModifiedDate: String
-    products: [Product]
-    weaknesses: [Weakness]
-    references: [Reference]
-    impact: Impact
-    status: VulnerabilityStatus
+    source: String!
+    ssvcData: NvdSsvcData!
   }
 
-type Weakness
+type NvdSsvcOption
   {
-    cweId: String
-    name: String
-    description: String
+    exploitation: String
+    automatable: String
+    technicalImpact: String
+  }
+
+type NvdVendorComment
+  {
+    lastModified: NvdTimestamp!
+    organization: String!
+    comment: String!
+  }
+
+type NvdVersionChange
+  {
+    at: String!
+    status: NvdVersionStatus!
+  }
+
+type NvdVulnerability
+  {
+    cve: NvdCve!
+  }
+
+type NvdWeakness
+  {
+    source: String!
+    type: NvdSourceType!
+    description: [NvdLangString]!
   }

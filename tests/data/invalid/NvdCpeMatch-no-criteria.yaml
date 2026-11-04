@@ -1,0 +1,5 @@
+# Fails at: /criteria
+vulnerable: true
+matchCriteriaId: 0F1E2D3C-4B5A-4978-8695-A4B3C2D1E0F9
+versionStartIncluding: '1.0'
+versionEndExcluding: 1.2.4

@@ -1,0 +1,14 @@
+# Fails at: /status
+criteria: cpe:2.3:a:example:widget:1.2.3:*:*:*:*:*:*:*
+matchCriteriaId: 0F1E2D3C-4B5A-4978-8695-A4B3C2D1E0F9
+versionStartExcluding: '0.9'
+versionStartIncluding: '1.0'
+versionEndExcluding: 1.2.4
+versionEndIncluding: 1.2.3
+created: '2026-03-02T10:15:30.123'
+lastModified: '2026-03-05T08:00:00.000'
+cpeLastModified: '2026-03-05T08:00:00.000'
+status: Retired
+matches:
+  - cpeName: cpe:2.3:a:example:widget:1.2.3:*:*:*:*:*:*:*
+    cpeNameId: A1B2C3D4-E5F6-4789-90AB-CDEF01234567

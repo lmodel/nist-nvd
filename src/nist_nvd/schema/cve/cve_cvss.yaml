@@ -1,0 +1,1379 @@
+---
+id: https://w3id.org/lmodel/cve/cve_cvss
+name: cve_cvss
+title: CVSS scores in the CVE Record Format
+description: >-
+  The Common Vulnerability Scoring System (CVSS) score objects a CVE record can
+  carry, versions 2.0, 3.0, 3.1 and 4.0, with the property names and value lists
+  of the JSON schemas that FIRST maintains and the CVE Program adapts.
+version: "5.2.0"
+source: https://github.com/CVEProject/cve-schema/tree/v5.2.0/schema/imports/cvss
+license: Apache-2.0
+see_also:
+  - https://www.first.org/cvss/data-representations
+  - https://lmodel.github.io/cve
+comments:
+  - >-
+    The version is the edition of the CVE Record Format whose copies of the CVSS
+    schemas this module renders. Those copies differ from FIRST's own, as the
+    README beside them says, so a key or value here follows the CVE Program's
+    copy where the two part. The CVSS 4.0 modified subsequent impacts are one
+    such place.
+  - >-
+    The module imports only the LinkML types, so another schema can take it
+    alone. lmodel/nist-nvd vendors this file by its git object hash.
+  - >-
+    SPDX's CVSS classes are relationships that tie a score to a vulnerability
+    and to what it affects. A class here is the score alone, so those mappings
+    are only related. The SEPSES classes are scores built from NVD's data, and
+    SEPSES has none for version 4.0, so that class takes its general one as broad.
+notes:
+  - >-
+    Keys and permissible values keep the upstream's spelling, so a real score
+    object validates unchanged. Names that recur across CVSS versions are
+    top-level slots that each class narrows with slot_usage, since the value
+    lists differ; a key one version alone uses is an attribute of its class.
+
+prefixes:
+  cve: https://w3id.org/lmodel/cve/
+  linkml: https://w3id.org/linkml/
+  sepses_cvss: http://w3id.org/sepses/vocab/ref/cvss#
+  spdx_security: https://spdx.org/rdf/3.0.1/terms/Security/
+default_prefix: cve
+default_range: string
+
+imports:
+  - linkml:types
+
+classes:
+
+  CvssSeverityBandsMixin:
+    mixin: true
+    description: >-
+      The base score and base severity of a CVSS version with severity bands,
+      and the bands that tie one to the other.
+    comments:
+      - >-
+        The upstream also rules out a score that is not a multiple of 0.1, as a
+        list of numbers no LinkML range can state. tests/cve_rules.py checks that.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/anyOf
+        imports/cvss/cvss-v3.1.json#/anyOf
+        imports/cvss/cvss-v4.0.json#/allOf/0/anyOf
+    slots:
+      - baseScore
+      - baseSeverity
+    rules:
+      - title: base severity NONE
+        description: A base severity of NONE goes with a base score of exactly 0.
+        preconditions:
+          slot_conditions:
+            baseSeverity:
+              equals_string: NONE
+        postconditions:
+          slot_conditions:
+            baseScore:
+              minimum_value: 0
+              maximum_value: 0
+      - title: base severity LOW
+        description: A base severity of LOW goes with a base score from 0.1 to 3.9.
+        preconditions:
+          slot_conditions:
+            baseSeverity:
+              equals_string: LOW
+        postconditions:
+          slot_conditions:
+            baseScore:
+              minimum_value: 0.1
+              maximum_value: 3.9
+      - title: base severity MEDIUM
+        description: A base severity of MEDIUM goes with a base score from 4.0 to 6.9.
+        preconditions:
+          slot_conditions:
+            baseSeverity:
+              equals_string: MEDIUM
+        postconditions:
+          slot_conditions:
+            baseScore:
+              minimum_value: 4.0
+              maximum_value: 6.9
+      - title: base severity HIGH
+        description: A base severity of HIGH goes with a base score from 7.0 to 8.9.
+        preconditions:
+          slot_conditions:
+            baseSeverity:
+              equals_string: HIGH
+        postconditions:
+          slot_conditions:
+            baseScore:
+              minimum_value: 7.0
+              maximum_value: 8.9
+      - title: base severity CRITICAL
+        description: A base severity of CRITICAL goes with a base score from 9.0 to 10.
+        preconditions:
+          slot_conditions:
+            baseSeverity:
+              equals_string: CRITICAL
+        postconditions:
+          slot_conditions:
+            baseScore:
+              minimum_value: 9.0
+              maximum_value: 10.0
+
+  CvssV20:
+    description: A score under CVSS version 2.0, which has no severity bands.
+    annotations:
+      upstream_path: imports/cvss/cvss-v2.0.json#/
+    close_mappings:
+      - sepses_cvss:CVSS2BaseMetric
+    related_mappings:
+      - spdx_security:CvssV2VulnAssessmentRelationship
+    slots:
+      - version
+      - vectorString
+      - baseScore
+      - confidentialityImpact
+      - integrityImpact
+      - availabilityImpact
+      - remediationLevel
+      - reportConfidence
+      - temporalScore
+      - confidentialityRequirement
+      - integrityRequirement
+      - availabilityRequirement
+      - environmentalScore
+    slot_usage:
+      version:
+        required: true
+        equals_string: "2.0"
+      vectorString:
+        pattern: '^((AV:[NAL]|AC:[LMH]|Au:[MSN]|[CIA]:[NPC]|E:(U|POC|F|H|ND)|RL:(OF|TF|W|U|ND)|RC:(UC|UR|C|ND)|CDP:(N|L|LM|MH|H|ND)|TD:(N|L|M|H|ND)|[CIA]R:(L|M|H|ND))/)*(AV:[NAL]|AC:[LMH]|Au:[MSN]|[CIA]:[NPC]|E:(U|POC|F|H|ND)|RL:(OF|TF|W|U|ND)|RC:(UC|UR|C|ND)|CDP:(N|L|LM|MH|H|ND)|TD:(N|L|M|H|ND)|[CIA]R:(L|M|H|ND))$'
+      confidentialityImpact:
+        range: CvssV2Impact
+      integrityImpact:
+        range: CvssV2Impact
+      availabilityImpact:
+        range: CvssV2Impact
+      remediationLevel:
+        range: CvssRemediationLevel
+      reportConfidence:
+        range: CvssV2ReportConfidence
+      confidentialityRequirement:
+        range: CvssRequirement
+      integrityRequirement:
+        range: CvssRequirement
+      availabilityRequirement:
+        range: CvssRequirement
+    attributes:
+      accessVector:
+        description: How far away an attacker can be when using the flaw, in CVSS 2.0's terms.
+        range: CvssV2AccessVector
+        close_mappings:
+          - sepses_cvss:accessVector
+        annotations:
+          upstream_path: imports/cvss/cvss-v2.0.json#/properties/accessVector
+      accessComplexity:
+        description: How hard the flaw is to use once the attacker can reach it.
+        range: CvssV2AccessComplexity
+        close_mappings:
+          - sepses_cvss:accessComplexity
+        annotations:
+          upstream_path: imports/cvss/cvss-v2.0.json#/properties/accessComplexity
+      authentication:
+        description: How many times an attacker must log in before using the flaw.
+        range: CvssV2Authentication
+        close_mappings:
+          - sepses_cvss:authentication
+        annotations:
+          upstream_path: imports/cvss/cvss-v2.0.json#/properties/authentication
+      exploitability:
+        description: How far working attack code has come, in CVSS 2.0's terms.
+        range: CvssExploitCodeMaturity
+        annotations:
+          upstream_path: imports/cvss/cvss-v2.0.json#/properties/exploitability
+      collateralDamagePotential:
+        description: How much loss a successful attack could cause beyond the system itself.
+        range: CvssV2CollateralDamagePotential
+        annotations:
+          upstream_path: imports/cvss/cvss-v2.0.json#/properties/collateralDamagePotential
+      targetDistribution:
+        description: How much of the scorer's environment is exposed to the flaw.
+        range: CvssV2TargetDistribution
+        annotations:
+          upstream_path: imports/cvss/cvss-v2.0.json#/properties/targetDistribution
+
+  CvssV30:
+    description: A score under CVSS version 3.0.
+    mixins:
+      - CvssSeverityBandsMixin
+    annotations:
+      upstream_path: imports/cvss/cvss-v3.0.json#/
+    close_mappings:
+      - sepses_cvss:CVSS3BaseMetric
+    related_mappings:
+      - spdx_security:CvssV3VulnAssessmentRelationship
+    slots:
+      - version
+      - vectorString
+      - attackVector
+      - attackComplexity
+      - privilegesRequired
+      - userInteraction
+      - scope
+      - confidentialityImpact
+      - integrityImpact
+      - availabilityImpact
+      - exploitCodeMaturity
+      - remediationLevel
+      - reportConfidence
+      - temporalScore
+      - temporalSeverity
+      - confidentialityRequirement
+      - integrityRequirement
+      - availabilityRequirement
+      - modifiedAttackVector
+      - modifiedAttackComplexity
+      - modifiedPrivilegesRequired
+      - modifiedUserInteraction
+      - modifiedScope
+      - modifiedConfidentialityImpact
+      - modifiedIntegrityImpact
+      - modifiedAvailabilityImpact
+      - environmentalScore
+      - environmentalSeverity
+    slot_usage:
+      version:
+        required: true
+        equals_string: "3.0"
+      vectorString:
+        pattern: '^CVSS:3[.]0/((AV:[NALP]|AC:[LH]|PR:[UNLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XUNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])/)*(AV:[NALP]|AC:[LH]|PR:[UNLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XUNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])$'
+      attackVector:
+        range: CvssV3AttackVector
+      attackComplexity:
+        range: CvssAttackComplexity
+      privilegesRequired:
+        range: CvssPrivilegesRequired
+      userInteraction:
+        range: CvssV3UserInteraction
+      confidentialityImpact:
+        range: CvssImpact
+      integrityImpact:
+        range: CvssImpact
+      availabilityImpact:
+        range: CvssImpact
+      remediationLevel:
+        range: CvssRemediationLevel
+      reportConfidence:
+        range: CvssV3ReportConfidence
+      confidentialityRequirement:
+        range: CvssRequirement
+      integrityRequirement:
+        range: CvssRequirement
+      availabilityRequirement:
+        range: CvssRequirement
+      modifiedAttackVector:
+        range: CvssV3ModifiedAttackVector
+      modifiedAttackComplexity:
+        range: CvssModifiedAttackComplexity
+      modifiedPrivilegesRequired:
+        range: CvssModifiedPrivilegesRequired
+      modifiedUserInteraction:
+        range: CvssV3ModifiedUserInteraction
+      modifiedConfidentialityImpact:
+        range: CvssModifiedImpact
+      modifiedIntegrityImpact:
+        range: CvssModifiedImpact
+      modifiedAvailabilityImpact:
+        range: CvssModifiedImpact
+
+  CvssV31:
+    description: A score under CVSS version 3.1.
+    mixins:
+      - CvssSeverityBandsMixin
+    annotations:
+      upstream_path: imports/cvss/cvss-v3.1.json#/
+    close_mappings:
+      - sepses_cvss:CVSS3BaseMetric
+    related_mappings:
+      - spdx_security:CvssV3VulnAssessmentRelationship
+    slots:
+      - version
+      - vectorString
+      - attackVector
+      - attackComplexity
+      - privilegesRequired
+      - userInteraction
+      - scope
+      - confidentialityImpact
+      - integrityImpact
+      - availabilityImpact
+      - exploitCodeMaturity
+      - remediationLevel
+      - reportConfidence
+      - temporalScore
+      - temporalSeverity
+      - confidentialityRequirement
+      - integrityRequirement
+      - availabilityRequirement
+      - modifiedAttackVector
+      - modifiedAttackComplexity
+      - modifiedPrivilegesRequired
+      - modifiedUserInteraction
+      - modifiedScope
+      - modifiedConfidentialityImpact
+      - modifiedIntegrityImpact
+      - modifiedAvailabilityImpact
+      - environmentalScore
+      - environmentalSeverity
+    slot_usage:
+      version:
+        required: true
+        equals_string: "3.1"
+      vectorString:
+        pattern: '^CVSS:3[.]1/((AV:[NALP]|AC:[LH]|PR:[NLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])/)*(AV:[NALP]|AC:[LH]|PR:[NLH]|UI:[NR]|S:[UC]|[CIA]:[NLH]|E:[XUPFH]|RL:[XOTWU]|RC:[XURC]|[CIA]R:[XLMH]|MAV:[XNALP]|MAC:[XLH]|MPR:[XNLH]|MUI:[XNR]|MS:[XUC]|M[CIA]:[XNLH])$'
+      attackVector:
+        range: CvssV3AttackVector
+      attackComplexity:
+        range: CvssAttackComplexity
+      privilegesRequired:
+        range: CvssPrivilegesRequired
+      userInteraction:
+        range: CvssV3UserInteraction
+      confidentialityImpact:
+        range: CvssImpact
+      integrityImpact:
+        range: CvssImpact
+      availabilityImpact:
+        range: CvssImpact
+      remediationLevel:
+        range: CvssRemediationLevel
+      reportConfidence:
+        range: CvssV3ReportConfidence
+      confidentialityRequirement:
+        range: CvssRequirement
+      integrityRequirement:
+        range: CvssRequirement
+      availabilityRequirement:
+        range: CvssRequirement
+      modifiedAttackVector:
+        range: CvssV3ModifiedAttackVector
+      modifiedAttackComplexity:
+        range: CvssModifiedAttackComplexity
+      modifiedPrivilegesRequired:
+        range: CvssModifiedPrivilegesRequired
+      modifiedUserInteraction:
+        range: CvssV3ModifiedUserInteraction
+      modifiedConfidentialityImpact:
+        range: CvssModifiedImpact
+      modifiedIntegrityImpact:
+        range: CvssModifiedImpact
+      modifiedAvailabilityImpact:
+        range: CvssModifiedImpact
+
+  CvssV40:
+    description: A score under CVSS version 4.0.
+    mixins:
+      - CvssSeverityBandsMixin
+    comments:
+      - >-
+        The upstream's rules name threatScore, threatSeverity, environmentalScore
+        and environmentalSeverity, but its list of properties has none of them and
+        it refuses any other key, so a score object cannot carry them and this class
+        has no such slots.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/
+    broad_mappings:
+      - sepses_cvss:CVSS
+    related_mappings:
+      - spdx_security:CvssV4VulnAssessmentRelationship
+    slots:
+      - version
+      - vectorString
+      - attackVector
+      - attackComplexity
+      - privilegesRequired
+      - userInteraction
+      - confidentialityRequirement
+      - integrityRequirement
+      - availabilityRequirement
+      - modifiedAttackVector
+      - modifiedAttackComplexity
+      - modifiedPrivilegesRequired
+      - modifiedUserInteraction
+    slot_usage:
+      version:
+        required: true
+        equals_string: "4.0"
+      vectorString:
+        pattern: '^CVSS:4[.]0/AV:[NALP]/AC:[LH]/AT:[NP]/PR:[NLH]/UI:[NPA]/VC:[HLN]/VI:[HLN]/VA:[HLN]/SC:[HLN]/SI:[HLN]/SA:[HLN](/E:[XAPU])?(/CR:[XHML])?(/IR:[XHML])?(/AR:[XHML])?(/MAV:[XNALP])?(/MAC:[XLH])?(/MAT:[XNP])?(/MPR:[XNLH])?(/MUI:[XNPA])?(/MVC:[XNLH])?(/MVI:[XNLH])?(/MVA:[XNLH])?(/MSC:[XNLH])?(/MSI:[XNLHS])?(/MSA:[XNLHS])?(/S:[XNP])?(/AU:[XNY])?(/R:[XAUI])?(/V:[XDC])?(/RE:[XLMH])?(/U:(X|Clear|Green|Amber|Red))?$'
+      attackVector:
+        range: CvssV4AttackVector
+      attackComplexity:
+        range: CvssAttackComplexity
+      privilegesRequired:
+        range: CvssPrivilegesRequired
+      userInteraction:
+        range: CvssV4UserInteraction
+      confidentialityRequirement:
+        range: CvssRequirement
+        ifabsent: CvssRequirement(NOT_DEFINED)
+      integrityRequirement:
+        range: CvssRequirement
+        ifabsent: CvssRequirement(NOT_DEFINED)
+      availabilityRequirement:
+        range: CvssRequirement
+        ifabsent: CvssRequirement(NOT_DEFINED)
+      modifiedAttackVector:
+        range: CvssV4ModifiedAttackVector
+        ifabsent: CvssV4ModifiedAttackVector(NOT_DEFINED)
+      modifiedAttackComplexity:
+        range: CvssModifiedAttackComplexity
+        ifabsent: CvssModifiedAttackComplexity(NOT_DEFINED)
+      modifiedPrivilegesRequired:
+        range: CvssModifiedPrivilegesRequired
+        ifabsent: CvssModifiedPrivilegesRequired(NOT_DEFINED)
+      modifiedUserInteraction:
+        range: CvssV4ModifiedUserInteraction
+        ifabsent: CvssV4ModifiedUserInteraction(NOT_DEFINED)
+    attributes:
+      attackRequirements:
+        description: Whether the attack needs conditions in the target that the attacker does not control.
+        range: CvssV4AttackRequirements
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/attackRequirements
+      vulnConfidentialityImpact:
+        description: How much information in the vulnerable system an attack could expose.
+        range: CvssImpact
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/vulnConfidentialityImpact
+      vulnIntegrityImpact:
+        description: How much an attack could change in the vulnerable system.
+        range: CvssImpact
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/vulnIntegrityImpact
+      vulnAvailabilityImpact:
+        description: How much an attack could disrupt the vulnerable system.
+        range: CvssImpact
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/vulnAvailabilityImpact
+      subConfidentialityImpact:
+        description: How much information in other, connected systems an attack could expose.
+        range: CvssImpact
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/subConfidentialityImpact
+      subIntegrityImpact:
+        description: How much an attack could change in other, connected systems.
+        range: CvssImpact
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/subIntegrityImpact
+      subAvailabilityImpact:
+        description: How much an attack could disrupt other, connected systems.
+        range: CvssImpact
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/subAvailabilityImpact
+      exploitMaturity:
+        description: How much is known about attacks on this flaw, in CVSS 4.0's terms.
+        range: CvssV4ExploitMaturity
+        ifabsent: CvssV4ExploitMaturity(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/exploitMaturity
+      modifiedAttackRequirements:
+        description: The attack requirements as the scorer's own environment changes them.
+        range: CvssV4ModifiedAttackRequirements
+        ifabsent: CvssV4ModifiedAttackRequirements(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/modifiedAttackRequirements
+      modifiedVulnConfidentialityImpact:
+        description: The confidentiality impact on the vulnerable system, in the scorer's environment.
+        range: CvssModifiedImpact
+        ifabsent: CvssModifiedImpact(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/modifiedVulnConfidentialityImpact
+      modifiedVulnIntegrityImpact:
+        description: The integrity impact on the vulnerable system, in the scorer's environment.
+        range: CvssModifiedImpact
+        ifabsent: CvssModifiedImpact(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/modifiedVulnIntegrityImpact
+      modifiedVulnAvailabilityImpact:
+        description: The availability impact on the vulnerable system, in the scorer's environment.
+        range: CvssModifiedImpact
+        ifabsent: CvssModifiedImpact(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/modifiedVulnAvailabilityImpact
+      modifiedSubConfidentialityImpact:
+        description: The confidentiality impact on connected systems, in the scorer's environment.
+        range: CvssModifiedImpact
+        ifabsent: CvssModifiedImpact(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/modifiedSubConfidentialityImpact
+      modifiedSubIntegrityImpact:
+        description: The integrity impact on connected systems, in the scorer's environment.
+        range: CvssV4ModifiedSubsequentImpact
+        ifabsent: CvssV4ModifiedSubsequentImpact(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/modifiedSubIntegrityImpact
+      modifiedSubAvailabilityImpact:
+        description: The availability impact on connected systems, in the scorer's environment.
+        range: CvssV4ModifiedSubsequentImpact
+        ifabsent: CvssV4ModifiedSubsequentImpact(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/modifiedSubAvailabilityImpact
+      Safety:
+        description: Whether an attack could put people's safety at risk.
+        range: CvssV4Safety
+        ifabsent: CvssV4Safety(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/Safety
+      Automatable:
+        description: Whether an attacker could automate every step of an attack across many targets.
+        range: CvssV4Automatable
+        ifabsent: CvssV4Automatable(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/Automatable
+      Recovery:
+        description: How the affected system comes back after an attack.
+        range: CvssV4Recovery
+        ifabsent: CvssV4Recovery(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/Recovery
+      valueDensity:
+        description: Whether one successful attack gains the attacker a little or a lot of a resource.
+        range: CvssV4ValueDensity
+        ifabsent: CvssV4ValueDensity(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/valueDensity
+      vulnerabilityResponseEffort:
+        description: How much work it takes a consumer to respond to the flaw.
+        range: CvssV4ResponseEffort
+        ifabsent: CvssV4ResponseEffort(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/vulnerabilityResponseEffort
+      providerUrgency:
+        description: How urgent the product's supplier says the flaw is, as a colour.
+        range: CvssV4ProviderUrgency
+        ifabsent: CvssV4ProviderUrgency(NOT_DEFINED)
+        annotations:
+          upstream_path: imports/cvss/cvss-v4.0.json#/properties/providerUrgency
+
+slots:
+
+  version:
+    description: A version string. On a score it is the CVSS version; on a product entry, the product's.
+    slot_uri: cve:version
+    comments:
+      - Each class that uses it narrows it. A top-level slot, so that lokf adapt renames it beside LOKF's version.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/version
+        imports/cvss/cvss-v3.0.json#/properties/version
+        imports/cvss/cvss-v3.1.json#/properties/version
+        imports/cvss/cvss-v4.0.json#/properties/version
+  vectorString:
+    description: The scores' metric values written as one compact string.
+    required: true
+    close_mappings:
+      - sepses_cvss:vectorString
+      - spdx_security:vectorString
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/vectorString
+        imports/cvss/cvss-v3.0.json#/properties/vectorString
+        imports/cvss/cvss-v3.1.json#/properties/vectorString
+        imports/cvss/cvss-v4.0.json#/properties/vectorString
+  baseScore:
+    description: The score from 0 to 10 for what is inherent in the flaw.
+    range: float
+    required: true
+    minimum_value: 0
+    maximum_value: 10
+    close_mappings:
+      - sepses_cvss:baseScore
+      - spdx_security:score
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/definitions/scoreType
+        imports/cvss/cvss-v3.0.json#/definitions/scoreType
+        imports/cvss/cvss-v3.1.json#/definitions/scoreType
+        imports/cvss/cvss-v4.0.json#/definitions/scoreType
+  baseSeverity:
+    description: The rating in words that the base score falls under.
+    range: CvssSeverity
+    required: true
+    close_mappings:
+      - sepses_cvss:baseSeverity
+      - spdx_security:severity
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/baseSeverity
+        imports/cvss/cvss-v3.1.json#/properties/baseSeverity
+        imports/cvss/cvss-v4.0.json#/properties/baseSeverity
+  temporalScore:
+    description: The base score adjusted for what changes over time, such as a fix appearing.
+    range: float
+    minimum_value: 0
+    maximum_value: 10
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/temporalScore
+        imports/cvss/cvss-v3.0.json#/properties/temporalScore
+        imports/cvss/cvss-v3.1.json#/properties/temporalScore
+  temporalSeverity:
+    description: The rating in words for the temporal score.
+    range: CvssSeverity
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/temporalSeverity
+        imports/cvss/cvss-v3.1.json#/properties/temporalSeverity
+  environmentalScore:
+    description: The score adjusted for the scorer's own environment.
+    range: float
+    minimum_value: 0
+    maximum_value: 10
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/environmentalScore
+        imports/cvss/cvss-v3.0.json#/properties/environmentalScore
+        imports/cvss/cvss-v3.1.json#/properties/environmentalScore
+  environmentalSeverity:
+    description: The rating in words for the environmental score.
+    range: CvssSeverity
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/environmentalSeverity
+        imports/cvss/cvss-v3.1.json#/properties/environmentalSeverity
+  attackVector:
+    description: How far away an attacker can be when using the flaw.
+    close_mappings:
+      - sepses_cvss:attackVector
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/attackVector
+        imports/cvss/cvss-v3.1.json#/properties/attackVector
+        imports/cvss/cvss-v4.0.json#/properties/attackVector
+  attackComplexity:
+    description: How much is outside the attacker's control when using the flaw.
+    close_mappings:
+      - sepses_cvss:attackComplexity
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/attackComplexity
+        imports/cvss/cvss-v3.1.json#/properties/attackComplexity
+        imports/cvss/cvss-v4.0.json#/properties/attackComplexity
+  privilegesRequired:
+    description: What level of access an attacker needs before using the flaw.
+    close_mappings:
+      - sepses_cvss:privilegesRequired
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/privilegesRequired
+        imports/cvss/cvss-v3.1.json#/properties/privilegesRequired
+        imports/cvss/cvss-v4.0.json#/properties/privilegesRequired
+  userInteraction:
+    description: Whether someone other than the attacker has to take part.
+    close_mappings:
+      - sepses_cvss:userInteraction
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/userInteraction
+        imports/cvss/cvss-v3.1.json#/properties/userInteraction
+        imports/cvss/cvss-v4.0.json#/properties/userInteraction
+  scope:
+    description: Whether an attack can reach beyond the component that holds the flaw.
+    range: CvssV3Scope
+    close_mappings:
+      - sepses_cvss:scope
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/scope
+        imports/cvss/cvss-v3.1.json#/properties/scope
+  confidentialityImpact:
+    description: How much information an attack could expose.
+    close_mappings:
+      - sepses_cvss:confidentialityImpact
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/confidentialityImpact
+        imports/cvss/cvss-v3.0.json#/properties/confidentialityImpact
+        imports/cvss/cvss-v3.1.json#/properties/confidentialityImpact
+  integrityImpact:
+    description: How much an attack could change that should not change.
+    close_mappings:
+      - sepses_cvss:integrityImpact
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/integrityImpact
+        imports/cvss/cvss-v3.0.json#/properties/integrityImpact
+        imports/cvss/cvss-v3.1.json#/properties/integrityImpact
+  availabilityImpact:
+    description: How much an attack could disrupt the service.
+    close_mappings:
+      - sepses_cvss:availabilityImpact
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/availabilityImpact
+        imports/cvss/cvss-v3.0.json#/properties/availabilityImpact
+        imports/cvss/cvss-v3.1.json#/properties/availabilityImpact
+  exploitCodeMaturity:
+    description: How far working attack code has come.
+    range: CvssExploitCodeMaturity
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/exploitCodeMaturity
+        imports/cvss/cvss-v3.1.json#/properties/exploitCodeMaturity
+  remediationLevel:
+    description: What kind of fix is available.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/remediationLevel
+        imports/cvss/cvss-v3.0.json#/properties/remediationLevel
+        imports/cvss/cvss-v3.1.json#/properties/remediationLevel
+  reportConfidence:
+    description: How far the flaw's existence and details have been confirmed.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/reportConfidence
+        imports/cvss/cvss-v3.0.json#/properties/reportConfidence
+        imports/cvss/cvss-v3.1.json#/properties/reportConfidence
+  confidentialityRequirement:
+    description: How much confidentiality matters to the scorer for the affected system.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/confidentialityRequirement
+        imports/cvss/cvss-v3.0.json#/properties/confidentialityRequirement
+        imports/cvss/cvss-v3.1.json#/properties/confidentialityRequirement
+        imports/cvss/cvss-v4.0.json#/properties/confidentialityRequirement
+  integrityRequirement:
+    description: How much integrity matters to the scorer for the affected system.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/integrityRequirement
+        imports/cvss/cvss-v3.0.json#/properties/integrityRequirement
+        imports/cvss/cvss-v3.1.json#/properties/integrityRequirement
+        imports/cvss/cvss-v4.0.json#/properties/integrityRequirement
+  availabilityRequirement:
+    description: How much availability matters to the scorer for the affected system.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/properties/availabilityRequirement
+        imports/cvss/cvss-v3.0.json#/properties/availabilityRequirement
+        imports/cvss/cvss-v3.1.json#/properties/availabilityRequirement
+        imports/cvss/cvss-v4.0.json#/properties/availabilityRequirement
+  modifiedAttackVector:
+    description: The attack vector as the scorer's own environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/modifiedAttackVector
+        imports/cvss/cvss-v3.1.json#/properties/modifiedAttackVector
+        imports/cvss/cvss-v4.0.json#/properties/modifiedAttackVector
+  modifiedAttackComplexity:
+    description: The attack complexity as the scorer's own environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/modifiedAttackComplexity
+        imports/cvss/cvss-v3.1.json#/properties/modifiedAttackComplexity
+        imports/cvss/cvss-v4.0.json#/properties/modifiedAttackComplexity
+  modifiedPrivilegesRequired:
+    description: The privileges needed as the scorer's own environment changes them.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/modifiedPrivilegesRequired
+        imports/cvss/cvss-v3.1.json#/properties/modifiedPrivilegesRequired
+        imports/cvss/cvss-v4.0.json#/properties/modifiedPrivilegesRequired
+  modifiedUserInteraction:
+    description: The user interaction as the scorer's own environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/modifiedUserInteraction
+        imports/cvss/cvss-v3.1.json#/properties/modifiedUserInteraction
+        imports/cvss/cvss-v4.0.json#/properties/modifiedUserInteraction
+  modifiedScope:
+    description: The scope as the scorer's own environment changes it.
+    range: CvssV3ModifiedScope
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/modifiedScope
+        imports/cvss/cvss-v3.1.json#/properties/modifiedScope
+  modifiedConfidentialityImpact:
+    description: The confidentiality impact as the scorer's own environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/modifiedConfidentialityImpact
+        imports/cvss/cvss-v3.1.json#/properties/modifiedConfidentialityImpact
+  modifiedIntegrityImpact:
+    description: The integrity impact as the scorer's own environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/modifiedIntegrityImpact
+        imports/cvss/cvss-v3.1.json#/properties/modifiedIntegrityImpact
+  modifiedAvailabilityImpact:
+    description: The availability impact as the scorer's own environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/properties/modifiedAvailabilityImpact
+        imports/cvss/cvss-v3.1.json#/properties/modifiedAvailabilityImpact
+
+enums:
+
+  CvssSeverity:
+    description: A CVSS rating in words.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/severityType
+        imports/cvss/cvss-v3.1.json#/definitions/severityType
+        imports/cvss/cvss-v4.0.json#/definitions/severityType
+    permissible_values:
+      NONE:
+        description: No severity at all, for a score of 0.
+        meaning: spdx_security:CvssSeverityType/none
+      LOW:
+        description: The lowest rating above none.
+        meaning: spdx_security:CvssSeverityType/low
+      MEDIUM:
+        description: The middle rating.
+        meaning: spdx_security:CvssSeverityType/medium
+      HIGH:
+        description: The rating below critical.
+        meaning: spdx_security:CvssSeverityType/high
+      CRITICAL:
+        description: The highest rating.
+        meaning: spdx_security:CvssSeverityType/critical
+
+  CvssV2AccessVector:
+    description: How far away an attacker can be, in CVSS 2.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v2.0.json#/definitions/accessVectorType
+    permissible_values:
+      NETWORK:
+        description: From anywhere that can route to the system.
+      ADJACENT_NETWORK:
+        description: Only from the same local network segment.
+      LOCAL:
+        description: Only with an account on the system or hands on it.
+
+  CvssV2AccessComplexity:
+    description: How hard the flaw is to use, in CVSS 2.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v2.0.json#/definitions/accessComplexityType
+    permissible_values:
+      HIGH:
+        description: Only under unusual, hard-to-arrange conditions.
+      MEDIUM:
+        description: Under conditions that take some arranging.
+      LOW:
+        description: With no special conditions.
+
+  CvssV2Authentication:
+    description: How many logins an attacker needs, in CVSS 2.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v2.0.json#/definitions/authenticationType
+    permissible_values:
+      MULTIPLE:
+        description: More than one login.
+      SINGLE:
+        description: One login.
+      NONE:
+        description: No login at all.
+
+  CvssV2Impact:
+    description: How much of one security property an attack could cost, in CVSS 2.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v2.0.json#/definitions/ciaType
+    permissible_values:
+      NONE:
+        description: Nothing is lost.
+      PARTIAL:
+        description: Some is lost, and the attacker cannot choose all of it.
+      COMPLETE:
+        description: All of it is lost.
+
+  CvssExploitCodeMaturity:
+    description: How far working attack code has come.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/definitions/exploitabilityType
+        imports/cvss/cvss-v3.0.json#/definitions/exploitCodeMaturityType
+        imports/cvss/cvss-v3.1.json#/definitions/exploitCodeMaturityType
+    permissible_values:
+      UNPROVEN:
+        description: No attack code is known, or the attack is only theory.
+      PROOF_OF_CONCEPT:
+        description: A demonstration exists that needs skilled work to use.
+      FUNCTIONAL:
+        description: Working attack code exists for most situations.
+      HIGH:
+        description: Attack code is reliable and widely available, or no code is needed.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the metric does not change the score.
+
+  CvssRemediationLevel:
+    description: What kind of fix is available.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/definitions/remediationLevelType
+        imports/cvss/cvss-v3.0.json#/definitions/remediationLevelType
+        imports/cvss/cvss-v3.1.json#/definitions/remediationLevelType
+    permissible_values:
+      OFFICIAL_FIX:
+        description: The vendor offers a complete fix.
+      TEMPORARY_FIX:
+        description: The vendor offers a stopgap for now.
+      WORKAROUND:
+        description: Others offer a way round the flaw that is not from the vendor.
+      UNAVAILABLE:
+        description: No fix exists, or it cannot be applied.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the metric does not change the score.
+
+  CvssV2ReportConfidence:
+    description: How far the flaw has been confirmed, in CVSS 2.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v2.0.json#/definitions/reportConfidenceType
+    permissible_values:
+      UNCONFIRMED:
+        description: A single report or conflicting reports that nobody has checked.
+      UNCORROBORATED:
+        description: Several unofficial sources agree, with some doubt remaining.
+      CONFIRMED:
+        description: The vendor accepts it, or a working attack shows it.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the metric does not change the score.
+
+  CvssV2CollateralDamagePotential:
+    description: How much loss could follow beyond the system itself.
+    annotations:
+      upstream_path: imports/cvss/cvss-v2.0.json#/definitions/collateralDamagePotentialType
+    permissible_values:
+      NONE:
+        description: No such loss.
+      LOW:
+        description: Slight loss.
+      LOW_MEDIUM:
+        description: Moderate loss.
+      MEDIUM_HIGH:
+        description: Significant loss.
+      HIGH:
+        description: Catastrophic loss.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the metric does not change the score.
+
+  CvssV2TargetDistribution:
+    description: How much of the environment the flaw exposes.
+    annotations:
+      upstream_path: imports/cvss/cvss-v2.0.json#/definitions/targetDistributionType
+    permissible_values:
+      NONE:
+        description: No systems at all, or only in a lab.
+      LOW:
+        description: Up to about a quarter of systems.
+      MEDIUM:
+        description: About a quarter to three quarters of systems.
+      HIGH:
+        description: More than about three quarters of systems.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the metric does not change the score.
+
+  CvssRequirement:
+    description: How much one security property matters to the scorer.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v2.0.json#/definitions/ciaRequirementType
+        imports/cvss/cvss-v3.0.json#/definitions/ciaRequirementType
+        imports/cvss/cvss-v3.1.json#/definitions/ciaRequirementType
+        imports/cvss/cvss-v4.0.json#/definitions/ciaRequirementType
+    permissible_values:
+      LOW:
+        description: A loss would have limited effect.
+      MEDIUM:
+        description: A loss would have serious effect.
+      HIGH:
+        description: A loss would have catastrophic effect.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the metric does not change the score.
+
+  CvssV3AttackVector:
+    description: How far away an attacker can be, in CVSS 3's terms.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/attackVectorType
+        imports/cvss/cvss-v3.1.json#/definitions/attackVectorType
+    permissible_values:
+      NETWORK:
+        description: From anywhere that can route to the system.
+      ADJACENT_NETWORK:
+        description: Only from a logically nearby network.
+      LOCAL:
+        description: Only by acting on the system itself, directly or through a user.
+      PHYSICAL:
+        description: Only by touching the hardware.
+
+  CvssV3ModifiedAttackVector:
+    description: The attack vector as the scorer's environment changes it, in CVSS 3's terms.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/modifiedAttackVectorType
+        imports/cvss/cvss-v3.1.json#/definitions/modifiedAttackVectorType
+    permissible_values:
+      NETWORK:
+        description: From anywhere that can route to the system.
+      ADJACENT_NETWORK:
+        description: Only from a logically nearby network.
+      LOCAL:
+        description: Only by acting on the system itself, directly or through a user.
+      PHYSICAL:
+        description: Only by touching the hardware.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssAttackComplexity:
+    description: How much is outside the attacker's control.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/attackComplexityType
+        imports/cvss/cvss-v3.1.json#/definitions/attackComplexityType
+        imports/cvss/cvss-v4.0.json#/definitions/attackComplexityType
+    permissible_values:
+      HIGH:
+        description: Success depends on conditions the attacker must overcome or wait for.
+      LOW:
+        description: The attacker can succeed again and again with no special effort.
+
+  CvssModifiedAttackComplexity:
+    description: The attack complexity as the scorer's environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/modifiedAttackComplexityType
+        imports/cvss/cvss-v3.1.json#/definitions/modifiedAttackComplexityType
+        imports/cvss/cvss-v4.0.json#/definitions/modifiedAttackComplexityType
+    permissible_values:
+      HIGH:
+        description: Success depends on conditions the attacker must overcome or wait for.
+      LOW:
+        description: The attacker can succeed again and again with no special effort.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssPrivilegesRequired:
+    description: What access an attacker needs beforehand.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/privilegesRequiredType
+        imports/cvss/cvss-v3.1.json#/definitions/privilegesRequiredType
+        imports/cvss/cvss-v4.0.json#/definitions/privilegesRequiredType
+    permissible_values:
+      HIGH:
+        description: Administrator-level access.
+      LOW:
+        description: Ordinary user access.
+      NONE:
+        description: No access at all.
+
+  CvssModifiedPrivilegesRequired:
+    description: The access needed as the scorer's environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/modifiedPrivilegesRequiredType
+        imports/cvss/cvss-v3.1.json#/definitions/modifiedPrivilegesRequiredType
+        imports/cvss/cvss-v4.0.json#/definitions/modifiedPrivilegesRequiredType
+    permissible_values:
+      HIGH:
+        description: Administrator-level access.
+      LOW:
+        description: Ordinary user access.
+      NONE:
+        description: No access at all.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssV3UserInteraction:
+    description: Whether someone else has to take part, in CVSS 3's terms.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/userInteractionType
+        imports/cvss/cvss-v3.1.json#/definitions/userInteractionType
+    permissible_values:
+      NONE:
+        description: The attack needs nobody else.
+      REQUIRED:
+        description: Someone other than the attacker has to do something.
+
+  CvssV3ModifiedUserInteraction:
+    description: The user interaction as the scorer's environment changes it, in CVSS 3's terms.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/modifiedUserInteractionType
+        imports/cvss/cvss-v3.1.json#/definitions/modifiedUserInteractionType
+    permissible_values:
+      NONE:
+        description: The attack needs nobody else.
+      REQUIRED:
+        description: Someone other than the attacker has to do something.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssV3Scope:
+    description: Whether an attack can reach beyond the flawed component.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/scopeType
+        imports/cvss/cvss-v3.1.json#/definitions/scopeType
+    permissible_values:
+      UNCHANGED:
+        description: The harm stays within the same security authority.
+      CHANGED:
+        description: The harm can reach something under another security authority.
+
+  CvssV3ModifiedScope:
+    description: The scope as the scorer's environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/modifiedScopeType
+        imports/cvss/cvss-v3.1.json#/definitions/modifiedScopeType
+    permissible_values:
+      UNCHANGED:
+        description: The harm stays within the same security authority.
+      CHANGED:
+        description: The harm can reach something under another security authority.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssImpact:
+    description: How much of one security property an attack could cost.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/ciaType
+        imports/cvss/cvss-v3.1.json#/definitions/ciaType
+        imports/cvss/cvss-v4.0.json#/definitions/vulnCiaType
+        imports/cvss/cvss-v4.0.json#/definitions/subCiaType
+    permissible_values:
+      NONE:
+        description: Nothing is lost.
+      LOW:
+        description: Some is lost, with limited consequences.
+      HIGH:
+        description: All of it is lost, or the loss has serious consequences.
+
+  CvssModifiedImpact:
+    description: The impact on one security property as the scorer's environment changes it.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/modifiedCiaType
+        imports/cvss/cvss-v3.1.json#/definitions/modifiedCiaType
+        imports/cvss/cvss-v4.0.json#/definitions/modifiedVulnCiaType
+        imports/cvss/cvss-v4.0.json#/definitions/modifiedSubCType
+    permissible_values:
+      NONE:
+        description: Nothing is lost.
+      LOW:
+        description: Some is lost, with limited consequences.
+      HIGH:
+        description: All of it is lost, or the loss has serious consequences.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssV3ReportConfidence:
+    description: How far the flaw has been confirmed, in CVSS 3's terms.
+    annotations:
+      upstream_path: >-
+        imports/cvss/cvss-v3.0.json#/definitions/confidenceType
+        imports/cvss/cvss-v3.1.json#/definitions/confidenceType
+    permissible_values:
+      UNKNOWN:
+        description: Reports say something is wrong, but the cause is not clear.
+      REASONABLE:
+        description: Solid details exist, without full confirmation of the cause.
+      CONFIRMED:
+        description: The flaw is shown beyond doubt, or the vendor accepts it.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the metric does not change the score.
+
+  CvssV4AttackVector:
+    description: How far away an attacker can be, in CVSS 4.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/attackVectorType
+    permissible_values:
+      NETWORK:
+        description: From anywhere that can route to the system.
+      ADJACENT:
+        description: Only from something logically or physically nearby.
+      LOCAL:
+        description: Only by acting on the system itself, directly or through a user.
+      PHYSICAL:
+        description: Only by touching the hardware.
+
+  CvssV4ModifiedAttackVector:
+    description: The attack vector as the scorer's environment changes it, in CVSS 4.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/modifiedAttackVectorType
+    permissible_values:
+      NETWORK:
+        description: From anywhere that can route to the system.
+      ADJACENT:
+        description: Only from something logically or physically nearby.
+      LOCAL:
+        description: Only by acting on the system itself, directly or through a user.
+      PHYSICAL:
+        description: Only by touching the hardware.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssV4AttackRequirements:
+    description: Whether the attack needs conditions in the target beyond the attacker's control.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/attackRequirementsType
+    permissible_values:
+      NONE:
+        description: The attack works whatever the target's state.
+      PRESENT:
+        description: The attack works only when the target is in a certain state.
+
+  CvssV4ModifiedAttackRequirements:
+    description: The attack requirements as the scorer's environment changes them.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/modifiedAttackRequirementsType
+    permissible_values:
+      NONE:
+        description: The attack works whatever the target's state.
+      PRESENT:
+        description: The attack works only when the target is in a certain state.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssV4UserInteraction:
+    description: Whether someone else has to take part, in CVSS 4.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/userInteractionType
+    permissible_values:
+      NONE:
+        description: The attack needs nobody else.
+      PASSIVE:
+        description: Someone has to act only in the ordinary course of their work.
+      ACTIVE:
+        description: Someone has to take a deliberate step.
+
+  CvssV4ModifiedUserInteraction:
+    description: The user interaction as the scorer's environment changes it, in CVSS 4.0's terms.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/modifiedUserInteractionType
+    permissible_values:
+      NONE:
+        description: The attack needs nobody else.
+      PASSIVE:
+        description: Someone has to act only in the ordinary course of their work.
+      ACTIVE:
+        description: Someone has to take a deliberate step.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssV4ModifiedSubsequentImpact:
+    description: >-
+      The integrity or availability impact on connected systems as the scorer's
+      environment changes it, which may include a risk to safety.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/modifiedSubIaType
+    permissible_values:
+      NONE:
+        description: Nothing is lost.
+      LOW:
+        description: Some is lost, with limited consequences.
+      HIGH:
+        description: All of it is lost, or the loss has serious consequences.
+      SAFETY:
+        description: The loss could injure people.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the base metric stands.
+
+  CvssV4ExploitMaturity:
+    description: How much is known about attacks on the flaw.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/exploitMaturityType
+    permissible_values:
+      UNREPORTED:
+        description: No demonstration or attack has been reported.
+      PROOF_OF_CONCEPT:
+        description: A demonstration is public, with no reported attack.
+      ATTACKED:
+        description: Attacks have been reported, or tools for them are public.
+      NOT_DEFINED:
+        description: The scorer gave no value, so the worst case is assumed.
+
+  CvssV4Safety:
+    description: Whether an attack could put people's safety at risk.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/safetyType
+    permissible_values:
+      NEGLIGIBLE:
+        description: Any harm to people would be slight at most.
+      PRESENT:
+        description: People could be seriously hurt.
+      NOT_DEFINED:
+        description: The scorer gave no value.
+
+  CvssV4Automatable:
+    description: Whether every step of an attack could be automated across many targets.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/automatableType
+    permissible_values:
+      "NO":
+        description: At least one step resists automation.
+      "YES":
+        description: Every step can be automated.
+      NOT_DEFINED:
+        description: The scorer gave no value.
+
+  CvssV4Recovery:
+    description: How the affected system comes back after an attack.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/recoveryType
+    permissible_values:
+      AUTOMATIC:
+        description: The system recovers by itself.
+      USER:
+        description: Someone has to step in and restore it.
+      IRRECOVERABLE:
+        description: The system cannot be restored.
+      NOT_DEFINED:
+        description: The scorer gave no value.
+
+  CvssV4ValueDensity:
+    description: How much of a resource one successful attack gains the attacker.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/valueDensityType
+    permissible_values:
+      DIFFUSE:
+        description: Each target holds little, so an attacker must take many.
+      CONCENTRATED:
+        description: A single target holds a lot.
+      NOT_DEFINED:
+        description: The scorer gave no value.
+
+  CvssV4ResponseEffort:
+    description: How much work it takes a consumer to respond to the flaw.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/vulnerabilityResponseEffortType
+    permissible_values:
+      LOW:
+        description: Little work, such as reading advice or a small configuration change.
+      MODERATE:
+        description: Some work, with a noticeable effect on the service.
+      HIGH:
+        description: Much work, or a long outage.
+      NOT_DEFINED:
+        description: The scorer gave no value.
+
+  CvssV4ProviderUrgency:
+    description: How urgent the product's supplier says the flaw is, as a colour.
+    annotations:
+      upstream_path: imports/cvss/cvss-v4.0.json#/definitions/providerUrgencyType
+    permissible_values:
+      CLEAR:
+        description: The supplier sees little or no urgency.
+      GREEN:
+        description: The supplier says the flaw can wait for regular work.
+      AMBER:
+        description: The supplier says the flaw matters soon.
+      RED:
+        description: The supplier says the flaw is at the highest urgency.
+      NOT_DEFINED:
+        description: The scorer gave no value.

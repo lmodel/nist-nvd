@@ -1,0 +1,201 @@
+---
+id: https://w3id.org/lmodel/nist-nvd/nvd_core
+name: nvd_core
+title: NVD core
+description: >-
+  What the responses of the NVD API 2.0 have in common: the fields of a page of
+  results, the keys several responses share, and the forms of an NVD timestamp,
+  UUID and CVE identifier.
+license: Apache-2.0
+see_also:
+  - https://lmodel.github.io/nist-nvd
+comments:
+  - >-
+    Every key is NVD's own, so a real response validates unchanged. A key that
+    the Linked Open Knowledge Format also defines, such as type or status, is a
+    top-level slot with its own IRI, so lokf adapt renames it in the copy and
+    keeps that IRI.
+default_prefix: nist_nvd
+default_range: string
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  nist_nvd: https://w3id.org/lmodel/nist-nvd/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  dcterms: http://purl.org/dc/terms/
+  schema: http://schema.org/
+  cve: https://w3id.org/lmodel/cve/
+  spdx3: https://spdx.org/rdf/3.0.1/terms/
+
+imports:
+  - linkml:types
+
+types:
+
+  nvd_timestamp:
+    typeof: string
+    base: str
+    uri: xsd:dateTime
+    description: >-
+      A date and time as NVD writes it: ISO 8601, with fractional seconds and a
+      UTC offset where the writer gives them.
+    pattern: ^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})?$
+    comments:
+      - >-
+        NVD's schemas say format date-time, which is RFC 3339 and needs a UTC
+        offset. NVD's records and responses write none, so a validator that
+        checks the format refuses every real record. This type admits both
+        forms, and tests/test_upstream.py lists the departure.
+
+  nvd_uuid:
+    typeof: string
+    base: str
+    uri: xsd:string
+    description: A UUID in its usual hexadecimal form with four hyphens.
+    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    comments:
+      - >-
+        NVD's schemas say format uuid, and LinkML has no such type. NVD writes
+        these in capitals.
+
+  nvd_cve_identifier:
+    typeof: string
+    base: str
+    uri: xsd:string
+    description: A CVE identifier, such as CVE-2021-44228.
+    pattern: ^CVE-[0-9]{4}-[0-9]{4,}$
+
+slots:
+
+  format:
+    description: The name NVD gives this kind of response.
+    required: true
+    slot_uri: nist_nvd:format
+    comments:
+      - >-
+        NVD's schemas say only that this is a string. Each response class pins
+        the one value the API's answers carry.
+
+  timestamp:
+    description: When NVD produced this response or this decision.
+    range: nvd_timestamp
+    slot_uri: nist_nvd:timestamp
+    close_mappings:
+      - schema:dateCreated
+
+  created:
+    description: When NVD first recorded this.
+    range: nvd_timestamp
+    slot_uri: nist_nvd:created
+    close_mappings:
+      - dcterms:created
+
+  lastModified:
+    description: When NVD last changed this.
+    range: nvd_timestamp
+    slot_uri: nist_nvd:lastModified
+    close_mappings:
+      - dcterms:modified
+      - schema:dateModified
+    comments:
+      - >-
+        A CPE name, a match string and a vendor comment carry this too, so the
+        mappings that hold only of a vulnerability sit on NvdCve's use of it.
+
+  sourceIdentifier:
+    description: The email address or UUID of the organization that supplied this.
+    slot_uri: nist_nvd:sourceIdentifier
+
+  source:
+    description: The email address or UUID of the organization that supplied this.
+    slot_uri: nist_nvd:source
+
+  type:
+    description: The kind of this thing, from the list its class names.
+    slot_uri: nist_nvd:type
+
+  status:
+    description: The state of this thing, from the list its class names.
+    slot_uri: nist_nvd:status
+
+  lang:
+    description: The language of the text beside it, as a language code.
+    required: true
+    slot_uri: nist_nvd:lang
+    close_mappings:
+      - dcterms:language
+      - schema:inLanguage
+
+  cpeName:
+    description: A Common Platform Enumeration (CPE) name, in its 2.3 formatted string.
+    slot_uri: nist_nvd:cpeName
+    related_mappings:
+      - spdx3:Core/ExternalIdentifierType/cpe23
+    comments:
+      - >-
+        SPDX 3.0.1 names CPE 2.3 as one kind of external identifier. That term is
+        the kind, not a property that holds the name, so it is only related.
+
+  cpeNameId:
+    description: The UUID that NVD gives a CPE name.
+    range: nvd_uuid
+    slot_uri: nist_nvd:cpeNameId
+
+  criteria:
+    description: A CPE match string, which may hold wildcards.
+    required: true
+    slot_uri: nist_nvd:criteria
+
+  matchCriteriaId:
+    description: The UUID that NVD gives a CPE match string.
+    required: true
+    range: nvd_uuid
+    slot_uri: nist_nvd:matchCriteriaId
+
+  versionStartExcluding:
+    description: The version above which the match starts, itself left out.
+    slot_uri: nist_nvd:versionStartExcluding
+
+  versionStartIncluding:
+    description: The first version the match covers.
+    slot_uri: nist_nvd:versionStartIncluding
+
+  versionEndExcluding:
+    description: The version below which the match ends, itself left out.
+    slot_uri: nist_nvd:versionEndExcluding
+
+  versionEndIncluding:
+    description: The last version the match covers.
+    slot_uri: nist_nvd:versionEndIncluding
+
+classes:
+
+  NvdResponseMixin:
+    mixin: true
+    description: The fields of a page of results, which every NVD API response carries.
+    slots:
+      - format
+      - timestamp
+    slot_usage:
+      timestamp:
+        required: true
+    attributes:
+      resultsPerPage:
+        description: How many results this page holds.
+        range: integer
+        required: true
+        slot_uri: nist_nvd:resultsPerPage
+      startIndex:
+        description: The position of this page's first result among all the results.
+        range: integer
+        required: true
+        slot_uri: nist_nvd:startIndex
+      totalResults:
+        description: How many results the request matched in all.
+        range: integer
+        required: true
+        slot_uri: nist_nvd:totalResults
+      version:
+        description: The response format's version.
+        required: true
+        slot_uri: nist_nvd:responseVersion

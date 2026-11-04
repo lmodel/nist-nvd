@@ -1,0 +1,163 @@
+---
+id: https://w3id.org/lmodel/nist-nvd/nvd_history
+name: nvd_history
+title: NVD change history
+description: >-
+  The response of the NVD change-history API: each change NVD has made to a
+  vulnerability's record, with what it added, removed or altered.
+version: 2.0.1
+source: https://csrc.nist.gov/schema/nvd/api/2.0/cve_history_api_json_2.0.schema
+license: Apache-2.0
+see_also:
+  - https://lmodel.github.io/nist-nvd
+  - https://nvd.nist.gov/developers/vulnerabilities
+annotations:
+  upstream_sha256: 6c037873ddf8c8fe9a54d26c3438dd8d77cf0a8b3e375c04e171d6dc7b71b415
+default_prefix: nist_nvd
+default_range: string
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  nist_nvd: https://w3id.org/lmodel/nist-nvd/
+  schema: http://schema.org/
+  prov: http://www.w3.org/ns/prov#
+
+imports:
+  - linkml:types
+  - ./nvd_core
+  - ./nvd_cve
+
+slots:
+
+  cveChangeId:
+    description: The UUID that NVD gives this change.
+    required: true
+    range: nvd_uuid
+    slot_uri: nist_nvd:cveChangeId
+
+classes:
+
+  NvdHistoryResponse:
+    tree_root: true
+    description: A page of the change-history API's results.
+    mixins:
+      - NvdResponseMixin
+    slot_usage:
+      format:
+        equals_string: NVD_CVEHistory
+    attributes:
+      cveChanges:
+        description: The changes on this page.
+        range: NvdChangeItem
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+    close_mappings:
+      - schema:DataFeed
+    annotations:
+      upstream_definition: "cve_history_api_json_2.0.schema#"
+
+  NvdChangeItem:
+    description: One entry of a change-history response, which only wraps the change.
+    attributes:
+      change:
+        description: The change.
+        range: NvdChange
+        inlined: true
+        required: true
+    close_mappings:
+      - schema:DataFeedItem
+    aliases:
+      - defChange
+    annotations:
+      upstream_definition: "cve_history_api_json_2.0.schema#/definitions/defChange"
+
+  NvdChange:
+    description: One change to a vulnerability's record at NVD.
+    slots:
+      - cveChangeId
+      - sourceIdentifier
+      - created
+    slot_usage:
+      cveChangeId:
+        identifier: true
+      sourceIdentifier:
+        required: true
+    attributes:
+      cveId:
+        description: The vulnerability the change is to.
+        range: NvdCve
+        required: true
+        pattern: ^CVE-[0-9]{4}-[0-9]{4,}$
+      eventName:
+        description: The kind of event, such as Initial Analysis or CVE Modified.
+        required: true
+        comments:
+          - >-
+            NVD's schema says only that this is a string. The samples read here hold
+            too little of a list of 2.4 million changes to close it, so it stays a
+            string.
+      details:
+        description: What the change did, part by part.
+        range: NvdChangeDetail
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+    related_mappings:
+      - prov:Activity
+    comments:
+      - >-
+        A change is something that happened to a record, so it relates to a PROV
+        activity, but NVD records only when and by whom, not the entities it used.
+    notes:
+      - >-
+        The identifier is set on this class and not on the slot, so that lokf adapt
+        keeps the key beside LOKF's id, as it does for cpeNameId and matchCriteriaId.
+    aliases:
+      - changeItem
+    annotations:
+      upstream_definition: "cve_history_api_json_2.0.schema#/definitions/changeItem"
+
+  NvdChangeDetail:
+    description: One part of a change, naming what kind of data changed and how.
+    slots:
+      - type
+    slot_usage:
+      type:
+        required: true
+        comments:
+          - >-
+            NVD's schema says only that this is a string, such as CWE or CVSS V3.1.
+            It stays a string for the reason eventName does.
+    attributes:
+      action:
+        description: How the data changed, such as Added.
+      oldValue:
+        description: The value before the change.
+        any_of:
+          - range: string
+          - range: string
+            multivalued: true
+          - range: NvdChangeObject
+      newValue:
+        description: The value after the change.
+        any_of:
+          - range: string
+          - range: string
+            multivalued: true
+          - range: NvdChangeObject
+    aliases:
+      - detail
+    annotations:
+      upstream_definition: "cve_history_api_json_2.0.schema#/definitions/detail"
+
+  NvdChangeObject:
+    description: A value before or after a change that is an object, with any keys.
+    extra_slots:
+      allowed: true
+    comments:
+      - >-
+        NVD's file allows a string, an array or an object as a value, and states
+        nothing of the object's keys. The 1,335 values of the three pages read on
+        2026-11-03 are all strings, so no key is named here, and LinkML's Pydantic
+        generator, which ignores extra_slots, would refuse an object.

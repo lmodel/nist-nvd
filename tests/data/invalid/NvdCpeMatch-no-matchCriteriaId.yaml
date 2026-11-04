@@ -1,0 +1,5 @@
+# Fails at: /matchCriteriaId
+vulnerable: true
+criteria: cpe:2.3:a:example:widget:1.2.3:*:*:*:*:*:*:*
+versionStartIncluding: '1.0'
+versionEndExcluding: 1.2.4

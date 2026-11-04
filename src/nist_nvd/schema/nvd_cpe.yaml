@@ -1,0 +1,193 @@
+---
+id: https://w3id.org/lmodel/nist-nvd/nvd_cpe
+name: nvd_cpe
+title: NVD products
+description: >-
+  The response of the NVD product API: the Common Platform Enumeration (CPE)
+  names that NVD holds, their titles, references and deprecations.
+version: "2.0"
+source: https://csrc.nist.gov/schema/nvd/api/2.0/cpe_api_json_2.0.schema
+license: Apache-2.0
+see_also:
+  - https://lmodel.github.io/nist-nvd
+  - https://nvd.nist.gov/developers/products
+annotations:
+  upstream_sha256: 102ae482c48e8edfdd56ebae4e9d487675bf6499c4ee5479732a6b1b9e81df36
+default_prefix: nist_nvd
+default_range: string
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  nist_nvd: https://w3id.org/lmodel/nist-nvd/
+  sepses_cpe: http://w3id.org/sepses/vocab/ref/cpe#
+  schema: http://schema.org/
+  dcterms: http://purl.org/dc/terms/
+
+imports:
+  - linkml:types
+  - ./nvd_core
+
+enums:
+
+  NvdCpeReferenceType:
+    description: What a CPE name's reference points to.
+    permissible_values:
+      Advisory:
+        description: A security advisory.
+      Change Log:
+        description: A list of the product's changes.
+      Product:
+        description: A page about the product.
+      Project:
+        description: A page about the project behind the product.
+      Vendor:
+        description: A page about the vendor.
+      Version:
+        description: A page about this version.
+
+slots:
+
+  title:
+    description: The human-readable title.
+    required: true
+    slot_uri: nist_nvd:title
+    close_mappings:
+      - dcterms:title
+
+classes:
+
+  NvdCpeResponse:
+    tree_root: true
+    description: A page of the product API's results.
+    mixins:
+      - NvdResponseMixin
+    slot_usage:
+      format:
+        equals_string: NVD_CPE
+    attributes:
+      products:
+        description: The products on this page.
+        range: NvdCpeItem
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        required: true
+    close_mappings:
+      - schema:DataFeed
+    annotations:
+      upstream_definition: "cpe_api_json_2.0.schema#"
+
+  NvdCpeItem:
+    description: One entry of a product response, which only wraps the CPE name.
+    attributes:
+      cpe:
+        description: The CPE name and what NVD holds about it.
+        range: NvdCpe
+        inlined: true
+        required: true
+    close_mappings:
+      - schema:DataFeedItem
+    aliases:
+      - defCpe
+    annotations:
+      upstream_definition: "cpe_api_json_2.0.schema#/definitions/defCpe"
+
+  NvdCpe:
+    description: A CPE name as NVD holds it, with its UUID.
+    slots:
+      - cpeName
+      - cpeNameId
+      - created
+      - lastModified
+    slot_usage:
+      cpeName:
+        required: true
+      cpeNameId:
+        identifier: true
+      created:
+        required: true
+      lastModified:
+        required: true
+    attributes:
+      deprecated:
+        description: Whether NVD has retired this CPE name.
+        range: boolean
+        required: true
+      titles:
+        description: The product's titles, in one or more languages.
+        range: NvdCpeTitle
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+      refs:
+        description: Pages about the product.
+        range: NvdCpeReference
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        close_mappings:
+          - dcterms:references
+      deprecatedBy:
+        description: The CPE names that replace this one.
+        range: NvdCpeNameLink
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        close_mappings:
+          - dcterms:isReplacedBy
+      deprecates:
+        description: The CPE names this one replaces.
+        range: NvdCpeNameLink
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        close_mappings:
+          - dcterms:replaces
+    close_mappings:
+      - sepses_cpe:CPE
+    notes:
+      - >-
+        The identifier is set on this class alone, because cpeNameId also appears
+        where one CPE name points to another. lokf adapt replaces a slot that is an
+        identifier with LOKF's id everywhere, which would rename those keys too.
+    annotations:
+      upstream_definition: "cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe"
+
+  NvdCpeTitle:
+    description: A product's title in one language.
+    slots:
+      - title
+      - lang
+    aliases:
+      - defTitle
+    annotations:
+      upstream_definition: "cpe_api_json_2.0.schema#/definitions/defTitle"
+
+  NvdCpeReference:
+    description: A page about a product, and what kind of page it is.
+    slots:
+      - type
+    slot_usage:
+      type:
+        range: NvdCpeReferenceType
+    attributes:
+      ref:
+        description: The page's address.
+        required: true
+        pattern: ^([A-Za-z][A-Za-z0-9+.-]+):(\/\/([^@]+@)?([A-Za-z0-9.\-_~]+)(:\d+)?)?((?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\x27\[\]()*+,;=:@])+(?:\/(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\x27\[\]()*+,;=:@])*)*|(?:\/(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\x27()*+,;=:@])+)*)?(\?(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\x27\[\]()*+,;=:@]|[/?])*)?(\#(?:[A-Za-z0-9-._~]|%[A-Fa-f0-9]|[!$&\x27\[\]()*+,;=:@]|[/?])*)?$
+        comments:
+          - >-
+            NVD's own pattern, with its single quote written as \x27, which means
+            the same. gen-python cuts a raw string at a single quote.
+    aliases:
+      - defReference
+    annotations:
+      upstream_definition: "cpe_api_json_2.0.schema#/definitions/defReference"
+
+  NvdCpeNameLink:
+    description: A pointer from one CPE name to another.
+    slots:
+      - cpeName
+      - cpeNameId
+    annotations:
+      upstream_definition: "cpe_api_json_2.0.schema#/definitions/defCpe/properties/cpe/properties/deprecatedBy/items"

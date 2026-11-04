@@ -1,0 +1,7 @@
+version: '1.0'
+status: affected
+versionType: semver
+lessThan: 1.2.4
+changes:
+  - at: 1.2.0
+    status: unaffected

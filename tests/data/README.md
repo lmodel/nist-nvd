@@ -1,16 +1,10 @@
-# Example data for nist_nvd
+# Example data for nist-nvd
 
-This folder contains example data for testing and demonstrating the datamodel`
-sorted in subfolders:
+This folder holds the examples the tests check, in subfolders:
 
-- `valid` for data conforming to the datamodel. Used to verify the datamodel.
-- `classes/valid` for valid examples targeting non-tree-root classes.
-   These are loaded by `pytest` but excluded from `linkml-run-examples`.
-- `invalid` for data not conforming to the datamodel. Used to verify the validation.
-- `problem` for data which are not yet handled correctly in the current schema version,
-   again separated into valid/invalid.
+- `valid` for data that conforms to the schema. These are this project's own, not real records.
+- `invalid` for counter-examples. The first line of each, `# Fails at: <pointer>`, names where the validator must report it.
+- `problem/valid` for valid data that LinkML 1.12.1's example runner cannot take. Its dataclasses refuse an empty list for a required key, which NVD's schema allows and its data holds, its validation refuses the open keys that `extra_slots` allows, and it cannot load a change's value, which may be a string, a list or an object. `tests/test_data.py` validates these examples, and the runner leaves them out.
+- `nvd` for real responses of the NVD API, each unchanged. [Its README](nvd/README.md) says how they were chosen.
 
-The filenames of all example data must conform to the scheme `classname-###.yaml`
-where classname must be a the name of a class from the schema. "###" can be a number
-or one or more other characters allowed in filenames. The classname is derived by
-splitting at the first "-" and taking the part before the "-".
+Each file name in `valid` and `invalid` is `ClassName-anything.yaml`, and the part before the first `-` names the class the file is checked against.

@@ -1,17 +1,11 @@
-# metamodel_version: 1.7.0
+# metamodel_version: 1.12.0
+# version: 2.2.4
 BASE <https://w3id.org/lmodel/nist-nvd/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX core: <https://w3id.org/lmodel/vulnerability-core/>
 PREFIX linkml: <https://w3id.org/linkml/>
-PREFIX schema1: <http://schema.org/>
-PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX cve: <https://w3id.org/lmodel/cve/>
 
-
-core:CveId xsd:string
-
-core:IsoDate xsd:date
 
 linkml:String xsd:string
 
@@ -51,250 +45,861 @@ linkml:Jsonpath xsd:string
 
 linkml:Sparqlpath xsd:string
 
-core:Configuration CLOSED {
-    (  $core:Configuration_tes (  core:cpe_uri @linkml:String ? ;
-          core:operator @linkml:String ?
+<NvdTimestamp> xsd:dateTime
+
+<NvdUuid> xsd:string
+
+<NvdCveIdentifier> xsd:string
+
+cve:CvssSeverityBandsMixin {
+    (  $cve:CvssSeverityBandsMixin_tes (  cve:baseScore @linkml:Float ;
+          cve:baseSeverity [ <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ]
        ) ;
-       rdf:type [ core:Configuration ] ?
+       rdf:type [ cve:CvssSeverityBandsMixin ] ?
     )
 }
 
-<CPEConfiguration> CLOSED {
-    (  $<CPEConfiguration_tes> (  <configuration_id> @linkml:String ? ;
-          <configuration_type> [ <https://w3id.org/lmodel/nist-nvd/ConfigurationType#BASIC>
-             <https://w3id.org/lmodel/nist-nvd/ConfigurationType#RUNNING_ON_WITH>
-             <https://w3id.org/lmodel/nist-nvd/ConfigurationType#ADVANCED> ] ? ;
-          core:operator @linkml:String ? ;
-          <children> @<CPEConfiguration> * ;
-          <matches> @<CPEMatch> * ;
-          <summary> @linkml:String ?
+cve:CvssV20 CLOSED {
+    (  $cve:CvssV20_tes (  cve:version @linkml:String ;
+          cve:vectorString @linkml:String ;
+          cve:baseScore @linkml:Float ;
+          cve:confidentialityImpact [ <https://w3id.org/lmodel/cve/CvssV2Impact#NONE>
+             <https://w3id.org/lmodel/cve/CvssV2Impact#PARTIAL> <https://w3id.org/lmodel/cve/CvssV2Impact#COMPLETE> ] ? ;
+          cve:integrityImpact [ <https://w3id.org/lmodel/cve/CvssV2Impact#NONE> <https://w3id.org/lmodel/cve/CvssV2Impact#PARTIAL>
+             <https://w3id.org/lmodel/cve/CvssV2Impact#COMPLETE> ] ? ;
+          cve:availabilityImpact [ <https://w3id.org/lmodel/cve/CvssV2Impact#NONE>
+             <https://w3id.org/lmodel/cve/CvssV2Impact#PARTIAL> <https://w3id.org/lmodel/cve/CvssV2Impact#COMPLETE> ] ? ;
+          cve:remediationLevel [ <https://w3id.org/lmodel/cve/CvssRemediationLevel#OFFICIAL_FIX>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#TEMPORARY_FIX>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#WORKAROUND>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#UNAVAILABLE>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#NOT_DEFINED> ] ? ;
+          cve:reportConfidence [ <https://w3id.org/lmodel/cve/CvssV2ReportConfidence#UNCONFIRMED>
+             <https://w3id.org/lmodel/cve/CvssV2ReportConfidence#UNCORROBORATED>
+             <https://w3id.org/lmodel/cve/CvssV2ReportConfidence#CONFIRMED>
+             <https://w3id.org/lmodel/cve/CvssV2ReportConfidence#NOT_DEFINED> ] ? ;
+          cve:temporalScore @linkml:Float ? ;
+          cve:confidentialityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:integrityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:availabilityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:environmentalScore @linkml:Float ? ;
+          cve:accessVector [ <https://w3id.org/lmodel/cve/CvssV2AccessVector#NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV2AccessVector#ADJACENT_NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV2AccessVector#LOCAL> ] ? ;
+          cve:accessComplexity [ <https://w3id.org/lmodel/cve/CvssV2AccessComplexity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssV2AccessComplexity#MEDIUM> <https://w3id.org/lmodel/cve/CvssV2AccessComplexity#LOW> ]
+          ? ;
+          cve:authentication [ <https://w3id.org/lmodel/cve/CvssV2Authentication#MULTIPLE>
+             <https://w3id.org/lmodel/cve/CvssV2Authentication#SINGLE> <https://w3id.org/lmodel/cve/CvssV2Authentication#NONE> ] ?
+          ;
+          cve:exploitability [ <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#UNPROVEN>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#PROOF_OF_CONCEPT>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#FUNCTIONAL>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#NOT_DEFINED> ] ? ;
+          cve:collateralDamagePotential [ <https://w3id.org/lmodel/cve/CvssV2CollateralDamagePotential#NONE>
+             <https://w3id.org/lmodel/cve/CvssV2CollateralDamagePotential#LOW>
+             <https://w3id.org/lmodel/cve/CvssV2CollateralDamagePotential#LOW_MEDIUM>
+             <https://w3id.org/lmodel/cve/CvssV2CollateralDamagePotential#MEDIUM_HIGH>
+             <https://w3id.org/lmodel/cve/CvssV2CollateralDamagePotential#HIGH>
+             <https://w3id.org/lmodel/cve/CvssV2CollateralDamagePotential#NOT_DEFINED> ] ? ;
+          cve:targetDistribution [ <https://w3id.org/lmodel/cve/CvssV2TargetDistribution#NONE>
+             <https://w3id.org/lmodel/cve/CvssV2TargetDistribution#LOW>
+             <https://w3id.org/lmodel/cve/CvssV2TargetDistribution#MEDIUM>
+             <https://w3id.org/lmodel/cve/CvssV2TargetDistribution#HIGH>
+             <https://w3id.org/lmodel/cve/CvssV2TargetDistribution#NOT_DEFINED> ] ?
        ) ;
-       rdf:type [ <CPEConfiguration> ] ?
+       rdf:type [ cve:CvssV20 ] ?
     )
 }
 
-<CPEMatch> CLOSED {
-    (  $<CPEMatch_tes> (  <match_criteria_id> @linkml:String ? ;
-          <criteria> @linkml:String ? ;
-          <cpe23_uri> @linkml:String ? ;
-          <vulnerable> @linkml:Boolean ? ;
-          <version_start_including> @linkml:String ? ;
-          <version_start_excluding> @linkml:String ? ;
-          <version_end_including> @linkml:String ? ;
-          <version_end_excluding> @linkml:String ? ;
-          <matched_cpe_names> @linkml:String *
+cve:CvssV30 CLOSED {
+    (  $cve:CvssV30_tes (  &cve:CvssSeverityBandsMixin_tes ;
+          rdf:type [ cve:CvssSeverityBandsMixin ] ? ;
+          cve:version @linkml:String ;
+          cve:vectorString @linkml:String ;
+          cve:attackVector [ <https://w3id.org/lmodel/cve/CvssV3AttackVector#NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV3AttackVector#ADJACENT_NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV3AttackVector#LOCAL> <https://w3id.org/lmodel/cve/CvssV3AttackVector#PHYSICAL> ] ? ;
+          cve:attackComplexity [ <https://w3id.org/lmodel/cve/CvssAttackComplexity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssAttackComplexity#LOW> ] ? ;
+          cve:privilegesRequired [ <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#HIGH>
+             <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#LOW> <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#NONE> ] ?
+          ;
+          cve:userInteraction [ <https://w3id.org/lmodel/cve/CvssV3UserInteraction#NONE>
+             <https://w3id.org/lmodel/cve/CvssV3UserInteraction#REQUIRED> ] ? ;
+          cve:scope [ <https://w3id.org/lmodel/cve/CvssV3Scope#UNCHANGED> <https://w3id.org/lmodel/cve/CvssV3Scope#CHANGED> ] ? ;
+          cve:confidentialityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:integrityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:availabilityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:exploitCodeMaturity [ <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#UNPROVEN>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#PROOF_OF_CONCEPT>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#FUNCTIONAL>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#NOT_DEFINED> ] ? ;
+          cve:remediationLevel [ <https://w3id.org/lmodel/cve/CvssRemediationLevel#OFFICIAL_FIX>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#TEMPORARY_FIX>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#WORKAROUND>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#UNAVAILABLE>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#NOT_DEFINED> ] ? ;
+          cve:reportConfidence [ <https://w3id.org/lmodel/cve/CvssV3ReportConfidence#UNKNOWN>
+             <https://w3id.org/lmodel/cve/CvssV3ReportConfidence#REASONABLE>
+             <https://w3id.org/lmodel/cve/CvssV3ReportConfidence#CONFIRMED>
+             <https://w3id.org/lmodel/cve/CvssV3ReportConfidence#NOT_DEFINED> ] ? ;
+          cve:temporalScore @linkml:Float ? ;
+          cve:temporalSeverity [ <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ] ? ;
+          cve:confidentialityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:integrityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:availabilityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:modifiedAttackVector [ <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#ADJACENT_NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#LOCAL>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#PHYSICAL>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#NOT_DEFINED> ] ? ;
+          cve:modifiedAttackComplexity [ <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#LOW>
+             <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#NOT_DEFINED> ] ? ;
+          cve:modifiedPrivilegesRequired [ <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#LOW>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#NOT_DEFINED> ] ? ;
+          cve:modifiedUserInteraction [ <https://w3id.org/lmodel/cve/CvssV3ModifiedUserInteraction#NONE>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedUserInteraction#REQUIRED>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedUserInteraction#NOT_DEFINED> ] ? ;
+          cve:modifiedScope [ <https://w3id.org/lmodel/cve/CvssV3ModifiedScope#UNCHANGED>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedScope#CHANGED>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedScope#NOT_DEFINED> ] ? ;
+          cve:modifiedConfidentialityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedIntegrityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedAvailabilityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:environmentalScore @linkml:Float ? ;
+          cve:environmentalSeverity [ <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ] ? ;
+          cve:baseScore @linkml:Float ;
+          cve:baseSeverity [ <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ]
        ) ;
-       rdf:type [ <CPEMatch> ] ?
+       rdf:type [ cve:CvssV30 ] ?
     )
 }
 
-<CVSSMetric> CLOSED {
-    (  $<CVSSMetric_tes> (  schema1:version @linkml:String ? ;
-          <vector_string> @linkml:String ? ;
-          <base_score> @linkml:Float ? ;
-          <base_severity> [ <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#NONE>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#LOW>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#MEDIUM>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#HIGH>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#CRITICAL>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#UNKNOWN> ] ? ;
-          dcterms:source [ <https://w3id.org/lmodel/nist-nvd/ScoreSource#NVD> <https://w3id.org/lmodel/nist-nvd/ScoreSource#CNA>
-             <https://w3id.org/lmodel/nist-nvd/ScoreSource#ADP> <https://w3id.org/lmodel/nist-nvd/ScoreSource#VENDOR>
-             <https://w3id.org/lmodel/nist-nvd/ScoreSource#THIRD_PARTY> ] ? ;
-          <provider_label> @linkml:String ? ;
-          <scoring_justification> @linkml:String ?
+cve:CvssV31 CLOSED {
+    (  $cve:CvssV31_tes (  &cve:CvssSeverityBandsMixin_tes ;
+          rdf:type [ cve:CvssSeverityBandsMixin ] ? ;
+          cve:version @linkml:String ;
+          cve:vectorString @linkml:String ;
+          cve:attackVector [ <https://w3id.org/lmodel/cve/CvssV3AttackVector#NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV3AttackVector#ADJACENT_NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV3AttackVector#LOCAL> <https://w3id.org/lmodel/cve/CvssV3AttackVector#PHYSICAL> ] ? ;
+          cve:attackComplexity [ <https://w3id.org/lmodel/cve/CvssAttackComplexity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssAttackComplexity#LOW> ] ? ;
+          cve:privilegesRequired [ <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#HIGH>
+             <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#LOW> <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#NONE> ] ?
+          ;
+          cve:userInteraction [ <https://w3id.org/lmodel/cve/CvssV3UserInteraction#NONE>
+             <https://w3id.org/lmodel/cve/CvssV3UserInteraction#REQUIRED> ] ? ;
+          cve:scope [ <https://w3id.org/lmodel/cve/CvssV3Scope#UNCHANGED> <https://w3id.org/lmodel/cve/CvssV3Scope#CHANGED> ] ? ;
+          cve:confidentialityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:integrityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:availabilityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:exploitCodeMaturity [ <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#UNPROVEN>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#PROOF_OF_CONCEPT>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#FUNCTIONAL>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssExploitCodeMaturity#NOT_DEFINED> ] ? ;
+          cve:remediationLevel [ <https://w3id.org/lmodel/cve/CvssRemediationLevel#OFFICIAL_FIX>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#TEMPORARY_FIX>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#WORKAROUND>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#UNAVAILABLE>
+             <https://w3id.org/lmodel/cve/CvssRemediationLevel#NOT_DEFINED> ] ? ;
+          cve:reportConfidence [ <https://w3id.org/lmodel/cve/CvssV3ReportConfidence#UNKNOWN>
+             <https://w3id.org/lmodel/cve/CvssV3ReportConfidence#REASONABLE>
+             <https://w3id.org/lmodel/cve/CvssV3ReportConfidence#CONFIRMED>
+             <https://w3id.org/lmodel/cve/CvssV3ReportConfidence#NOT_DEFINED> ] ? ;
+          cve:temporalScore @linkml:Float ? ;
+          cve:temporalSeverity [ <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ] ? ;
+          cve:confidentialityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:integrityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:availabilityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:modifiedAttackVector [ <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#ADJACENT_NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#LOCAL>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#PHYSICAL>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedAttackVector#NOT_DEFINED> ] ? ;
+          cve:modifiedAttackComplexity [ <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#LOW>
+             <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#NOT_DEFINED> ] ? ;
+          cve:modifiedPrivilegesRequired [ <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#LOW>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#NOT_DEFINED> ] ? ;
+          cve:modifiedUserInteraction [ <https://w3id.org/lmodel/cve/CvssV3ModifiedUserInteraction#NONE>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedUserInteraction#REQUIRED>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedUserInteraction#NOT_DEFINED> ] ? ;
+          cve:modifiedScope [ <https://w3id.org/lmodel/cve/CvssV3ModifiedScope#UNCHANGED>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedScope#CHANGED>
+             <https://w3id.org/lmodel/cve/CvssV3ModifiedScope#NOT_DEFINED> ] ? ;
+          cve:modifiedConfidentialityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedIntegrityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedAvailabilityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:environmentalScore @linkml:Float ? ;
+          cve:environmentalSeverity [ <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ] ? ;
+          cve:baseScore @linkml:Float ;
+          cve:baseSeverity [ <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ]
        ) ;
-       rdf:type [ <CVSSMetric> ] ?
+       rdf:type [ cve:CvssV31 ] ?
     )
 }
 
-<CVSSScoreNote> CLOSED {
-    (  $<CVSSScoreNote_tes> (  <message> @linkml:String ? ;
-          dcterms:source @linkml:String ? ;
-          dcterms:created @linkml:Datetime ?
+cve:CvssV40 CLOSED {
+    (  $cve:CvssV40_tes (  &cve:CvssSeverityBandsMixin_tes ;
+          rdf:type [ cve:CvssSeverityBandsMixin ] ? ;
+          cve:version @linkml:String ;
+          cve:vectorString @linkml:String ;
+          cve:attackVector [ <https://w3id.org/lmodel/cve/CvssV4AttackVector#NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV4AttackVector#ADJACENT> <https://w3id.org/lmodel/cve/CvssV4AttackVector#LOCAL>
+             <https://w3id.org/lmodel/cve/CvssV4AttackVector#PHYSICAL> ] ? ;
+          cve:attackComplexity [ <https://w3id.org/lmodel/cve/CvssAttackComplexity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssAttackComplexity#LOW> ] ? ;
+          cve:privilegesRequired [ <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#HIGH>
+             <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#LOW> <https://w3id.org/lmodel/cve/CvssPrivilegesRequired#NONE> ] ?
+          ;
+          cve:userInteraction [ <https://w3id.org/lmodel/cve/CvssV4UserInteraction#NONE>
+             <https://w3id.org/lmodel/cve/CvssV4UserInteraction#PASSIVE> <https://w3id.org/lmodel/cve/CvssV4UserInteraction#ACTIVE>
+             ] ? ;
+          cve:confidentialityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:integrityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:availabilityRequirement [ <https://w3id.org/lmodel/cve/CvssRequirement#LOW>
+             <https://w3id.org/lmodel/cve/CvssRequirement#MEDIUM> <https://w3id.org/lmodel/cve/CvssRequirement#HIGH>
+             <https://w3id.org/lmodel/cve/CvssRequirement#NOT_DEFINED> ] ? ;
+          cve:modifiedAttackVector [ <https://w3id.org/lmodel/cve/CvssV4ModifiedAttackVector#NETWORK>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedAttackVector#ADJACENT>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedAttackVector#LOCAL>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedAttackVector#PHYSICAL>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedAttackVector#NOT_DEFINED> ] ? ;
+          cve:modifiedAttackComplexity [ <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#LOW>
+             <https://w3id.org/lmodel/cve/CvssModifiedAttackComplexity#NOT_DEFINED> ] ? ;
+          cve:modifiedPrivilegesRequired [ <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#LOW>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedPrivilegesRequired#NOT_DEFINED> ] ? ;
+          cve:modifiedUserInteraction [ <https://w3id.org/lmodel/cve/CvssV4ModifiedUserInteraction#NONE>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedUserInteraction#PASSIVE>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedUserInteraction#ACTIVE>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedUserInteraction#NOT_DEFINED> ] ? ;
+          cve:attackRequirements [ <https://w3id.org/lmodel/cve/CvssV4AttackRequirements#NONE>
+             <https://w3id.org/lmodel/cve/CvssV4AttackRequirements#PRESENT> ] ? ;
+          cve:vulnConfidentialityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssImpact#LOW> <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:vulnIntegrityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:vulnAvailabilityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:subConfidentialityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:subIntegrityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:subAvailabilityImpact [ <https://w3id.org/lmodel/cve/CvssImpact#NONE> <https://w3id.org/lmodel/cve/CvssImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssImpact#HIGH> ] ? ;
+          cve:exploitMaturity [ <https://w3id.org/lmodel/cve/CvssV4ExploitMaturity#UNREPORTED>
+             <https://w3id.org/lmodel/cve/CvssV4ExploitMaturity#PROOF_OF_CONCEPT>
+             <https://w3id.org/lmodel/cve/CvssV4ExploitMaturity#ATTACKED>
+             <https://w3id.org/lmodel/cve/CvssV4ExploitMaturity#NOT_DEFINED> ] ? ;
+          cve:modifiedAttackRequirements [ <https://w3id.org/lmodel/cve/CvssV4ModifiedAttackRequirements#NONE>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedAttackRequirements#PRESENT>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedAttackRequirements#NOT_DEFINED> ] ? ;
+          cve:modifiedVulnConfidentialityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedVulnIntegrityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedVulnAvailabilityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedSubConfidentialityImpact [ <https://w3id.org/lmodel/cve/CvssModifiedImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#LOW> <https://w3id.org/lmodel/cve/CvssModifiedImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssModifiedImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedSubIntegrityImpact [ <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#SAFETY>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#NOT_DEFINED> ] ? ;
+          cve:modifiedSubAvailabilityImpact [ <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#NONE>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#LOW>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#HIGH>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#SAFETY>
+             <https://w3id.org/lmodel/cve/CvssV4ModifiedSubsequentImpact#NOT_DEFINED> ] ? ;
+          cve:Safety [ <https://w3id.org/lmodel/cve/CvssV4Safety#NEGLIGIBLE> <https://w3id.org/lmodel/cve/CvssV4Safety#PRESENT>
+             <https://w3id.org/lmodel/cve/CvssV4Safety#NOT_DEFINED> ] ? ;
+          cve:Automatable [ <https://w3id.org/lmodel/cve/CvssV4Automatable#NO> <https://w3id.org/lmodel/cve/CvssV4Automatable#YES>
+             <https://w3id.org/lmodel/cve/CvssV4Automatable#NOT_DEFINED> ] ? ;
+          cve:Recovery [ <https://w3id.org/lmodel/cve/CvssV4Recovery#AUTOMATIC> <https://w3id.org/lmodel/cve/CvssV4Recovery#USER>
+             <https://w3id.org/lmodel/cve/CvssV4Recovery#IRRECOVERABLE> <https://w3id.org/lmodel/cve/CvssV4Recovery#NOT_DEFINED> ]
+          ? ;
+          cve:valueDensity [ <https://w3id.org/lmodel/cve/CvssV4ValueDensity#DIFFUSE>
+             <https://w3id.org/lmodel/cve/CvssV4ValueDensity#CONCENTRATED>
+             <https://w3id.org/lmodel/cve/CvssV4ValueDensity#NOT_DEFINED> ] ? ;
+          cve:vulnerabilityResponseEffort [ <https://w3id.org/lmodel/cve/CvssV4ResponseEffort#LOW>
+             <https://w3id.org/lmodel/cve/CvssV4ResponseEffort#MODERATE> <https://w3id.org/lmodel/cve/CvssV4ResponseEffort#HIGH>
+             <https://w3id.org/lmodel/cve/CvssV4ResponseEffort#NOT_DEFINED> ] ? ;
+          cve:providerUrgency [ <https://w3id.org/lmodel/cve/CvssV4ProviderUrgency#CLEAR>
+             <https://w3id.org/lmodel/cve/CvssV4ProviderUrgency#GREEN> <https://w3id.org/lmodel/cve/CvssV4ProviderUrgency#AMBER>
+             <https://w3id.org/lmodel/cve/CvssV4ProviderUrgency#RED>
+             <https://w3id.org/lmodel/cve/CvssV4ProviderUrgency#NOT_DEFINED> ] ? ;
+          cve:baseScore @linkml:Float ;
+          cve:baseSeverity [ <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/none>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/low>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/medium>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/high>
+             <https://spdx.org/rdf/3.0.1/terms/Security/CvssSeverityType/critical> ]
        ) ;
-       rdf:type [ <CVSSScoreNote> ]
+       rdf:type [ cve:CvssV40 ] ?
     )
 }
 
-core:Impact CLOSED {
-    (  $core:Impact_tes (  core:severity [ <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#NONE>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#LOW>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#MEDIUM>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#HIGH>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#CRITICAL>
-             <https://w3id.org/lmodel/vulnerability-core/ImpactSeverity#UNKNOWN> ] ? ;
-          core:vector @linkml:String ? ;
-          core:score @linkml:Float ?
+<NvdAffected> CLOSED {
+    (  $<NvdAffected_tes> (  <source> @linkml:String ;
+          <affectedData> @<NvdAffectedProduct> +
        ) ;
-       rdf:type [ core:Impact ] ?
+       rdf:type [ <NvdAffected> ] ?
     )
 }
 
-<KnownExploitedVulnerability> CLOSED {
-    (  $<KnownExploitedVulnerability_tes> (  dcterms:created @linkml:Date ? ;
-          dcterms:date @linkml:Date ? ;
-          dcterms:description @linkml:String ? ;
-          schema1:url @linkml:Uri ?
+<NvdAffectedProduct> CLOSED {
+    (  $<NvdAffectedProduct_tes> (  <defaultStatus> [ <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#affected>
+             <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#unaffected>
+             <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#unknown> ] ? ;
+          <vendor> @linkml:String ? ;
+          <product> @linkml:String ? ;
+          <collectionURL> @linkml:Uri ? ;
+          <packageName> @linkml:String ? ;
+          <cpes> @linkml:String * ;
+          <modules> @linkml:String * ;
+          <programFiles> @linkml:String * ;
+          <programRoutines> @<NvdProgramRoutine> * ;
+          <platforms> @linkml:String * ;
+          <repo> @linkml:String ? ;
+          <versions> @<NvdAffectedVersion> * ;
+          <packageURL> @linkml:Uri ?
        ) ;
-       rdf:type [ <KnownExploitedVulnerability> ] ?
+       rdf:type [ <NvdAffectedProduct> ] ?
     )
 }
 
-<MetricSet> CLOSED {
-    (  $<MetricSet_tes> (  <cvss_v4_metrics> @<CVSSMetric> * ;
-          <cvss_v3_metrics> @<CVSSMetric> * ;
-          <cvss_v2_metrics> @<CVSSMetric> * ;
-          <score_notes> @<CVSSScoreNote> *
+<NvdAffectedVersion> CLOSED {
+    (  $<NvdAffectedVersion_tes> (  cve:version @linkml:String ;
+          <status> [ <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#affected>
+             <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#unaffected>
+             <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#unknown> ] ;
+          <versionType> @linkml:String ? ;
+          <lessThan> @linkml:String ? ;
+          <lessThanOrEqual> @linkml:String ? ;
+          <changes> @<NvdVersionChange> *
        ) ;
-       rdf:type [ <MetricSet> ] ?
+       rdf:type [ <NvdAffectedVersion> ] ?
     )
 }
 
-<NVDEntry> CLOSED {
-    (  $<NVDEntry_tes> (  &core:Vulnerability_tes ;
-          rdf:type [ core:Vulnerability ] ? ;
-          dcterms:source @linkml:String ? ;
-          dcterms:description @linkml:String ? ;
-          <metrics> @<MetricSet> ? ;
-          <configurations> @<CPEConfiguration> * ;
-          core:references @<NVDReference> * ;
-          core:weaknesses @<NVDWeakness> * ;
-          <vendor_comments> @<VendorComment> * ;
-          <nvd_tags> [ <https://w3id.org/lmodel/nist-nvd/NVDTag#ANALYSIS_PENDING>
-             <https://w3id.org/lmodel/nist-nvd/NVDTag#ADDITIONAL_INFORMATION> ] * ;
-          <cve_tags> @linkml:String * ;
-          <workflow_status> [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
-          <status_transitions> @<StatusTransition> * ;
-          <known_exploited> @<KnownExploitedVulnerability> ? ;
-          <cwe_view> @linkml:String ? ;
-          <date_received> @linkml:Datetime ? ;
-          core:status [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
-          dcterms:description @linkml:String
+<NvdChange> CLOSED {
+    (  $<NvdChange_tes> (  <sourceIdentifier> @linkml:String ;
+          <created> @<NvdTimestamp> ? ;
+          <cveId> @<NvdCve> ;
+          <eventName> @linkml:String ;
+          <details> @<NvdChangeDetail> *
        ) ;
-       rdf:type [ <NVDEntry> ]
+       rdf:type [ <NvdChange> ]
     )
 }
 
-<NVDReference> CLOSED {
-    (  $<NVDReference_tes> (  &core:Reference_tes ;
-          rdf:type [ core:Reference ] ? ;
-          <resource_tags> [ <https://w3id.org/lmodel/nist-nvd/ReferenceTag#THIRD_PARTY_ADVISORY>
-             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VENDOR_ADVISORY>
-             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#ISSUE_TRACKING> <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PATCH>
-             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#TECHNICAL_DESCRIPTION>
-             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#PRESS_MEDIA_COVERAGE>
-             <https://w3id.org/lmodel/nist-nvd/ReferenceTag#VDB_ENTRY> ] * ;
-          schema1:url @linkml:Uri ;
-          dcterms:source @linkml:String ?
+<NvdChangeDetail> CLOSED {
+    (  $<NvdChangeDetail_tes> (  <type> @linkml:String ;
+          <action> @linkml:String ? ;
+          <oldValue> @linkml:String ? ;
+          <newValue> @linkml:String ?
        ) ;
-       rdf:type [ <NVDReference> ] ?
+       rdf:type [ <NvdChangeDetail> ] ?
     )
 }
 
-<NVDWeakness> CLOSED {
-    (  $<NVDWeakness_tes> (  &core:Weakness_tes ;
-          rdf:type [ core:Weakness ] ? ;
-          dcterms:source @linkml:String ;
-          dcterms:identifier @linkml:String ;
-          rdfs:label @linkml:String
-       ) ;
-       rdf:type [ <NVDWeakness> ] ?
+<NvdChangeItem> CLOSED {
+    (  $<NvdChangeItem_tes> <change> @<NvdChange> ;
+       rdf:type [ <NvdChangeItem> ] ?
     )
 }
 
-core:Product CLOSED {
-    (  $core:Product_tes (  schema1:name @linkml:String ? ;
-          rdfs:label @linkml:String ? ;
-          schema1:version @linkml:String ? ;
-          core:platforms @linkml:String *
-       ) ;
-       rdf:type [ core:Product ] ?
+<NvdChangeObject> CLOSED {
+    (  $<NvdChangeObject_tes> rdf:type . * ;
+       rdf:type [ <NvdChangeObject> ] ?
     )
 }
 
-core:Reference  (
-    CLOSED {
-       (  $core:Reference_tes (  schema1:url @linkml:Uri ? ;
-             rdfs:label @linkml:String ? ;
-             dcterms:source @linkml:String ?
-          ) ;
-          rdf:type [ core:Reference ] ?
-       )
-    } OR @<NVDReference>
-)
-
-<StatusTransition> CLOSED {
-    (  $<StatusTransition_tes> (  <from_status> [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
-          <to_status> [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#AWAITING_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#UNDERGOING_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#ENRICHED>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#MODIFIED_AFTER_ENRICHMENT>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#NOT_SCHEDULED>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowStatus#REJECTED> ] ? ;
-          <event_source> [ <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_PROCESS>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#NVD_STAFF_DECISION>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#CVE_PROGRAM_PROCESS>
-             <https://w3id.org/lmodel/nist-nvd/NVDWorkflowEventSource#USER_REQUEST> ] ? ;
-          dcterms:modified @linkml:Datetime ? ;
-          <rationale> @linkml:String ?
+<NvdConfiguration> CLOSED {
+    (  $<NvdConfiguration_tes> (  <operator> [ <https://w3id.org/lmodel/nist-nvd/NvdOperator#AND>
+             <https://w3id.org/lmodel/nist-nvd/NvdOperator#OR> ] ? ;
+          <negate> @linkml:Boolean ? ;
+          <nodes> @<NvdConfigurationNode> +
        ) ;
-       rdf:type [ <StatusTransition> ]
+       rdf:type [ <NvdConfiguration> ] ?
     )
 }
 
-<VendorComment> CLOSED {
-    (  $<VendorComment_tes> (  schema1:name @linkml:String ? ;
-          <comment> @linkml:String ? ;
-          dcterms:modified @linkml:Datetime ?
+<NvdConfigurationNode> CLOSED {
+    (  $<NvdConfigurationNode_tes> (  <operator> [ <https://w3id.org/lmodel/nist-nvd/NvdOperator#AND>
+             <https://w3id.org/lmodel/nist-nvd/NvdOperator#OR> ] ;
+          <negate> @linkml:Boolean ? ;
+          <cpeMatch> @<NvdCpeMatch> +
        ) ;
-       rdf:type [ <VendorComment> ] ?
+       rdf:type [ <NvdConfigurationNode> ] ?
     )
 }
 
-core:Vulnerability  (
-    {
-       (  $core:Vulnerability_tes (  dcterms:title @linkml:String ? ;
-             dcterms:description @linkml:String ? ;
-             dcterms:created @linkml:Datetime ? ;
-             dcterms:modified @linkml:Datetime ? ;
-             core:products @core:Product * ;
-             core:weaknesses @core:Weakness * ;
-             core:references @core:Reference * ;
-             core:impact @core:Impact ? ;
-             core:status [ <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#ACTIVE>
-                <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#REJECTED>
-                <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#DISPUTED>
-                <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#RESERVED>
-                <https://w3id.org/lmodel/vulnerability-core/VulnerabilityStatus#DEPRECATED> ] ?
-          ) ;
-          rdf:type [ core:Vulnerability ]
-       )
-    } OR @<NVDEntry>
-)
+<NvdCpe> CLOSED {
+    (  $<NvdCpe_tes> (  <cpeName> @linkml:String ;
+          <created> @<NvdTimestamp> ;
+          <lastModified> @<NvdTimestamp> ;
+          <deprecated> @linkml:Boolean ;
+          <titles> @<NvdCpeTitle> * ;
+          <refs> @<NvdCpeReference> * ;
+          <deprecatedBy> @<NvdCpeNameLink> * ;
+          <deprecates> @<NvdCpeNameLink> *
+       ) ;
+       rdf:type [ <NvdCpe> ]
+    )
+}
 
-core:Weakness  (
-    CLOSED {
-       (  $core:Weakness_tes (  dcterms:identifier @linkml:String ? ;
-             rdfs:label @linkml:String ? ;
-             dcterms:description @linkml:String ?
-          ) ;
-          rdf:type [ core:Weakness ] ?
-       )
-    } OR @<NVDWeakness>
-)
+<NvdCpeItem> CLOSED {
+    (  $<NvdCpeItem_tes> <cpe> @<NvdCpe> ;
+       rdf:type [ <NvdCpeItem> ] ?
+    )
+}
+
+<NvdCpeMatch> CLOSED {
+    (  $<NvdCpeMatch_tes> (  <criteria> @linkml:String ;
+          <matchCriteriaId> @<NvdUuid> ;
+          <versionStartExcluding> @linkml:String ? ;
+          <versionStartIncluding> @linkml:String ? ;
+          <versionEndExcluding> @linkml:String ? ;
+          <versionEndIncluding> @linkml:String ? ;
+          <vulnerable> @linkml:Boolean
+       ) ;
+       rdf:type [ <NvdCpeMatch> ] ?
+    )
+}
+
+<NvdCpeMatchResponse> CLOSED {
+    (  $<NvdCpeMatchResponse_tes> (  &<NvdResponseMixin_tes> ;
+          rdf:type [ <NvdResponseMixin> ] ? ;
+          <matchStrings> @<NvdMatchStringItem> + ;
+          <format> @linkml:String ;
+          <timestamp> @<NvdTimestamp> ;
+          <resultsPerPage> @linkml:Integer ;
+          <startIndex> @linkml:Integer ;
+          <totalResults> @linkml:Integer ;
+          <responseVersion> @linkml:String
+       ) ;
+       rdf:type [ <NvdCpeMatchResponse> ] ?
+    )
+}
+
+<NvdCpeNameLink> CLOSED {
+    (  $<NvdCpeNameLink_tes> (  <cpeName> @linkml:String ? ;
+          <cpeNameId> @<NvdUuid> ?
+       ) ;
+       rdf:type [ <NvdCpeNameLink> ] ?
+    )
+}
+
+<NvdCpeReference> CLOSED {
+    (  $<NvdCpeReference_tes> (  <type> [ <https://w3id.org/lmodel/nist-nvd/NvdCpeReferenceType#Advisory>
+             <https://w3id.org/lmodel/nist-nvd/NvdCpeReferenceType#Change%20Log>
+             <https://w3id.org/lmodel/nist-nvd/NvdCpeReferenceType#Product>
+             <https://w3id.org/lmodel/nist-nvd/NvdCpeReferenceType#Project>
+             <https://w3id.org/lmodel/nist-nvd/NvdCpeReferenceType#Vendor>
+             <https://w3id.org/lmodel/nist-nvd/NvdCpeReferenceType#Version> ] ? ;
+          <ref> @linkml:String
+       ) ;
+       rdf:type [ <NvdCpeReference> ] ?
+    )
+}
+
+<NvdCpeResponse> CLOSED {
+    (  $<NvdCpeResponse_tes> (  &<NvdResponseMixin_tes> ;
+          rdf:type [ <NvdResponseMixin> ] ? ;
+          <products> @<NvdCpeItem> + ;
+          <format> @linkml:String ;
+          <timestamp> @<NvdTimestamp> ;
+          <resultsPerPage> @linkml:Integer ;
+          <startIndex> @linkml:Integer ;
+          <totalResults> @linkml:Integer ;
+          <responseVersion> @linkml:String
+       ) ;
+       rdf:type [ <NvdCpeResponse> ] ?
+    )
+}
+
+<NvdCpeTitle> CLOSED {
+    (  $<NvdCpeTitle_tes> (  <title> @linkml:String ;
+          <lang> @linkml:String
+       ) ;
+       rdf:type [ <NvdCpeTitle> ] ?
+    )
+}
+
+<NvdCve> CLOSED {
+    (  $<NvdCve_tes> (  <sourceIdentifier> @linkml:String ? ;
+          <lastModified> @<NvdTimestamp> ;
+          <references> @<NvdReference> + ;
+          <vulnStatus> [ <https://w3id.org/lmodel/nist-nvd/NvdVulnStatus#Analyzed>
+             <https://w3id.org/lmodel/nist-nvd/NvdVulnStatus#Deferred>
+             <https://w3id.org/lmodel/nist-nvd/NvdVulnStatus#Awaiting%20Analysis>
+             <https://w3id.org/lmodel/nist-nvd/NvdVulnStatus#Modified> <https://w3id.org/lmodel/nist-nvd/NvdVulnStatus#Received>
+             <https://w3id.org/lmodel/nist-nvd/NvdVulnStatus#Undergoing%20Analysis>
+             <https://w3id.org/lmodel/nist-nvd/NvdVulnStatus#Rejected> ] ? ;
+          <published> @<NvdTimestamp> ;
+          <evaluatorComment> @linkml:String ? ;
+          <evaluatorSolution> @linkml:String ? ;
+          <evaluatorImpact> @linkml:String ? ;
+          <cisaExploitAdd> @linkml:Date ? ;
+          <cisaActionDue> @linkml:Date ? ;
+          <cisaRequiredAction> @linkml:String ? ;
+          <cisaVulnerabilityName> @linkml:String ? ;
+          <cveTags> @<NvdCveTag> * ;
+          <descriptions> @<NvdLangString> + ;
+          <metrics> @<NvdMetrics> ? ;
+          <affected> @<NvdAffected> * ;
+          <weaknesses> @<NvdWeakness> * ;
+          <configurations> @<NvdConfiguration> * ;
+          <vendorComments> @<NvdVendorComment> *
+       ) ;
+       rdf:type [ <NvdCve> ]
+    )
+}
+
+<NvdCveResponse> CLOSED {
+    (  $<NvdCveResponse_tes> (  &<NvdResponseMixin_tes> ;
+          rdf:type [ <NvdResponseMixin> ] ? ;
+          <vulnerabilities> @<NvdVulnerability> + ;
+          <format> @linkml:String ;
+          <timestamp> @<NvdTimestamp> ;
+          <resultsPerPage> @linkml:Integer ;
+          <startIndex> @linkml:Integer ;
+          <totalResults> @linkml:Integer ;
+          <responseVersion> @linkml:String
+       ) ;
+       rdf:type [ <NvdCveResponse> ] ?
+    )
+}
+
+<NvdCveTag> CLOSED {
+    (  $<NvdCveTag_tes> (  <sourceIdentifier> @linkml:String ? ;
+          <tags> [ <https://w3id.org/lmodel/nist-nvd/NvdCveTagName#unsupported-when-assigned>
+             <https://w3id.org/lmodel/nist-nvd/NvdCveTagName#exclusively-hosted-service>
+             <https://w3id.org/lmodel/nist-nvd/NvdCveTagName#disputed> ] *
+       ) ;
+       rdf:type [ <NvdCveTag> ] ?
+    )
+}
+
+<NvdCvssMetricV2> CLOSED {
+    (  $<NvdCvssMetricV2_tes> (  <source> @linkml:String ;
+          <type> [ <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Primary>
+             <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Secondary> ] ;
+          <cvssData> @cve:CvssV20 ;
+          <exploitabilityScore> @linkml:Float ? ;
+          <impactScore> @linkml:Float ? ;
+          <baseSeverity> [ <https://w3id.org/lmodel/nist-nvd/NvdCvssV2Severity#LOW>
+             <https://w3id.org/lmodel/nist-nvd/NvdCvssV2Severity#MEDIUM> <https://w3id.org/lmodel/nist-nvd/NvdCvssV2Severity#HIGH>
+             ] ? ;
+          <acInsufInfo> @linkml:Boolean ? ;
+          <obtainAllPrivilege> @linkml:Boolean ? ;
+          <obtainUserPrivilege> @linkml:Boolean ? ;
+          <obtainOtherPrivilege> @linkml:Boolean ? ;
+          <userInteractionRequired> @linkml:Boolean ?
+       ) ;
+       rdf:type [ <NvdCvssMetricV2> ] ?
+    )
+}
+
+<NvdCvssMetricV30> CLOSED {
+    (  $<NvdCvssMetricV30_tes> (  <source> @linkml:String ;
+          <type> [ <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Primary>
+             <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Secondary> ] ;
+          <cvssData> @cve:CvssV30 ;
+          <exploitabilityScore> @linkml:Float ? ;
+          <impactScore> @linkml:Float ?
+       ) ;
+       rdf:type [ <NvdCvssMetricV30> ] ?
+    )
+}
+
+<NvdCvssMetricV31> CLOSED {
+    (  $<NvdCvssMetricV31_tes> (  <source> @linkml:String ;
+          <type> [ <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Primary>
+             <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Secondary> ] ;
+          <cvssData> @cve:CvssV31 ;
+          <exploitabilityScore> @linkml:Float ? ;
+          <impactScore> @linkml:Float ?
+       ) ;
+       rdf:type [ <NvdCvssMetricV31> ] ?
+    )
+}
+
+<NvdCvssMetricV40> CLOSED {
+    (  $<NvdCvssMetricV40_tes> (  <source> @linkml:String ;
+          <type> [ <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Primary>
+             <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Secondary> ] ;
+          <cvssData> @cve:CvssV40
+       ) ;
+       rdf:type [ <NvdCvssMetricV40> ] ?
+    )
+}
+
+<NvdHistoryResponse> CLOSED {
+    (  $<NvdHistoryResponse_tes> (  &<NvdResponseMixin_tes> ;
+          rdf:type [ <NvdResponseMixin> ] ? ;
+          <cveChanges> @<NvdChangeItem> * ;
+          <format> @linkml:String ;
+          <timestamp> @<NvdTimestamp> ;
+          <resultsPerPage> @linkml:Integer ;
+          <startIndex> @linkml:Integer ;
+          <totalResults> @linkml:Integer ;
+          <responseVersion> @linkml:String
+       ) ;
+       rdf:type [ <NvdHistoryResponse> ] ?
+    )
+}
+
+<NvdLangString> CLOSED {
+    (  $<NvdLangString_tes> (  <lang> @linkml:String ;
+          <langStringValue> @linkml:String
+       ) ;
+       rdf:type [ <NvdLangString> ] ?
+    )
+}
+
+<NvdMatchedCpe> CLOSED {
+    (  $<NvdMatchedCpe_tes> (  <cpeName> @linkml:String ;
+          <cpeNameId> @<NvdUuid>
+       ) ;
+       rdf:type [ <NvdMatchedCpe> ] ?
+    )
+}
+
+<NvdMatchString> CLOSED {
+    (  $<NvdMatchString_tes> (  <criteria> @linkml:String ;
+          <versionStartExcluding> @linkml:String ? ;
+          <versionStartIncluding> @linkml:String ? ;
+          <versionEndExcluding> @linkml:String ? ;
+          <versionEndIncluding> @linkml:String ? ;
+          <created> @<NvdTimestamp> ;
+          <lastModified> @<NvdTimestamp> ;
+          <status> [ <https://w3id.org/lmodel/nist-nvd/NvdMatchStringStatus#Active>
+             <https://w3id.org/lmodel/nist-nvd/NvdMatchStringStatus#Inactive> ] ;
+          <cpeLastModified> @<NvdTimestamp> ? ;
+          <matches> @<NvdMatchedCpe> *
+       ) ;
+       rdf:type [ <NvdMatchString> ]
+    )
+}
+
+<NvdMatchStringItem> CLOSED {
+    (  $<NvdMatchStringItem_tes> <matchString> @<NvdMatchString> ;
+       rdf:type [ <NvdMatchStringItem> ] ?
+    )
+}
+
+<NvdMetrics> CLOSED {
+    (  $<NvdMetrics_tes> (  <cvssMetricV40> @<NvdCvssMetricV40> * ;
+          <cvssMetricV31> @<NvdCvssMetricV31> * ;
+          <cvssMetricV30> @<NvdCvssMetricV30> * ;
+          <cvssMetricV2> @<NvdCvssMetricV2> * ;
+          <ssvcV203> @<NvdSsvcMetricV203> *
+       ) ;
+       rdf:type [ <NvdMetrics> ] ?
+    )
+}
+
+<NvdProgramRoutine> CLOSED {
+    (  $<NvdProgramRoutine_tes> <name> @linkml:String ;
+       rdf:type [ <NvdProgramRoutine> ] ?
+    )
+}
+
+<NvdReference> CLOSED {
+    (  $<NvdReference_tes> (  <url> @linkml:Uri ;
+          <source> @linkml:String ? ;
+          <tags> [ <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Broken%20Link>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Exploit>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Issue%20Tracking>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Mailing%20List>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Mitigation>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Not%20Applicable>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Patch>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Permissions%20Required>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Press/Media%20Coverage>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Related> <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Product>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Release%20Notes>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Technical%20Description>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Third%20Party%20Advisory>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Tool%20Signature>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#URL%20Repurposed>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#US%20Government%20Resource>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#VDB%20Entry>
+             <https://w3id.org/lmodel/nist-nvd/NvdReferenceTag#Vendor%20Advisory> ] *
+       ) ;
+       rdf:type [ <NvdReference> ] ?
+    )
+}
+
+<NvdResponseMixin> {
+    (  $<NvdResponseMixin_tes> (  <format> @linkml:String ;
+          <timestamp> @<NvdTimestamp> ;
+          <resultsPerPage> @linkml:Integer ;
+          <startIndex> @linkml:Integer ;
+          <totalResults> @linkml:Integer ;
+          <responseVersion> @linkml:String
+       ) ;
+       rdf:type [ <NvdResponseMixin> ] ?
+    )
+}
+
+<NvdSsvcData> CLOSED {
+    (  $<NvdSsvcData_tes> (  <timestamp> @<NvdTimestamp> ? ;
+          <computed> @linkml:String ? ;
+          <options> @<NvdSsvcOption> + ;
+          <role> @linkml:String ;
+          <ssvcVersion> @linkml:String ;
+          <decisionTree> @<NvdSsvcDecisionTree> ? ;
+          <ssvcSubject> @linkml:String ? ;
+          <decisionTreeUrl> @linkml:Uri ? ;
+          <generator> @linkml:String ?
+       ) ;
+       rdf:type [ <NvdSsvcData> ] ?
+    )
+}
+
+<NvdSsvcDecisionTree> CLOSED {
+    (  $<NvdSsvcDecisionTree_tes> rdf:type . * ;
+       rdf:type [ linkml:Any ] ?
+    )
+}
+
+<NvdSsvcMetricV203> CLOSED {
+    (  $<NvdSsvcMetricV203_tes> (  <source> @linkml:String ;
+          <ssvcData> @<NvdSsvcData>
+       ) ;
+       rdf:type [ <NvdSsvcMetricV203> ] ?
+    )
+}
+
+<NvdSsvcOption> CLOSED {
+    (  $<NvdSsvcOption_tes> (  <exploitation> @linkml:String ? ;
+          <automatable> @linkml:String ? ;
+          <technicalImpact> @linkml:String ?
+       ) ;
+       rdf:type [ <NvdSsvcOption> ] ?
+    )
+}
+
+<NvdVendorComment> CLOSED {
+    (  $<NvdVendorComment_tes> (  <lastModified> @<NvdTimestamp> ;
+          <organization> @linkml:String ;
+          <comment> @linkml:String
+       ) ;
+       rdf:type [ <NvdVendorComment> ] ?
+    )
+}
+
+<NvdVersionChange> CLOSED {
+    (  $<NvdVersionChange_tes> (  <at> @linkml:String ;
+          <status> [ <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#affected>
+             <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#unaffected>
+             <https://w3id.org/lmodel/nist-nvd/NvdVersionStatus#unknown> ]
+       ) ;
+       rdf:type [ <NvdVersionChange> ] ?
+    )
+}
+
+<NvdVulnerability> CLOSED {
+    (  $<NvdVulnerability_tes> <cve> @<NvdCve> ;
+       rdf:type [ <NvdVulnerability> ] ?
+    )
+}
+
+<NvdWeakness> CLOSED {
+    (  $<NvdWeakness_tes> (  <source> @linkml:String ;
+          <type> [ <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Primary>
+             <https://w3id.org/lmodel/nist-nvd/NvdSourceType#Secondary> ] ;
+          <description> @<NvdLangString> +
+       ) ;
+       rdf:type [ <NvdWeakness> ] ?
+    )
+}

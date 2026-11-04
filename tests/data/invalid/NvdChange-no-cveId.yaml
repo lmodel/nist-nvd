@@ -1,0 +1,18 @@
+# Fails at: /cveId
+eventName: CVE Modified
+cveChangeId: 0F1E2D3C-4B5A-4978-8695-A4B3C2D1E0F9
+sourceIdentifier: nvd@nist.gov
+created: '2026-03-02T10:15:30.123'
+details:
+  - action: Changed
+    type: Description
+    oldValue: The old text.
+    newValue: The new text.
+  - action: Added
+    type: CWE
+    newValue:
+      - CWE-79
+  - action: Removed
+    type: Note
+    oldValue:
+      text: A note.

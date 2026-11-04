@@ -1,0 +1,19 @@
+# Fails at: /type
+source: cna@example.org
+type: Tertiary
+cvssData:
+  version: '4.0'
+  vectorString: CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N
+  baseScore: 9.3
+  baseSeverity: CRITICAL
+  attackVector: NETWORK
+  attackComplexity: LOW
+  attackRequirements: NONE
+  privilegesRequired: NONE
+  userInteraction: NONE
+  vulnConfidentialityImpact: HIGH
+  vulnIntegrityImpact: HIGH
+  vulnAvailabilityImpact: HIGH
+  subConfidentialityImpact: NONE
+  subIntegrityImpact: NONE
+  subAvailabilityImpact: NONE

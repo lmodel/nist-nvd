@@ -1,357 +1,941 @@
 {
    "@context": {
       "xsd": "http://www.w3.org/2001/XMLSchema#",
-      "WIKIDATA": "https://www.wikidata.org/wiki/",
-      "core": "https://w3id.org/lmodel/vulnerability-core/",
-      "cve": "https://w3id.org/lmodel/cve/",
-      "cwe": "https://w3id.org/lmodel/cwe/",
-      "dct": "http://purl.org/dc/terms/",
+      "cve": {
+         "@type": "@id",
+         "@id": "cve"
+      },
+      "dcat": "http://www.w3.org/ns/dcat#",
       "dcterms": "http://purl.org/dc/terms/",
       "kev_catalog": "https://w3id.org/lmodel/kev-catalog/",
       "linkml": "https://w3id.org/linkml/",
-      "nvd": "https://w3id.org/lmodel/nist-nvd/",
-      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+      "nist_nvd": "https://w3id.org/lmodel/nist-nvd/",
+      "prov": "http://www.w3.org/ns/prov#",
       "schema": "http://schema.org/",
-      "schema_vulnerability_core": "https://w3id.org/lmodel/vulnerability-core/schema/",
+      "sepses_cpe": "http://w3id.org/sepses/vocab/ref/cpe#",
+      "sepses_cve": "http://w3id.org/sepses/vocab/ref/cve#",
+      "sepses_cvss": "http://w3id.org/sepses/vocab/ref/cvss#",
       "skos": "http://www.w3.org/2004/02/skos/core#",
+      "spdx3": "https://spdx.org/rdf/3.0.1/terms/",
+      "spdx_security": "https://spdx.org/rdf/3.0.1/terms/Security/",
+      "stix": "https://w3id.org/lmodel/stix/",
+      "wd": "http://www.wikidata.org/entity/",
       "@vocab": "https://w3id.org/lmodel/nist-nvd/",
-      "analysis_description": {
-         "@id": "dct:description"
+      "at": {
+         "@id": "at"
       },
-      "base_score": {
+      "attackComplexity": {
+         "@id": "cve:attackComplexity"
+      },
+      "attackVector": {
+         "@id": "cve:attackVector"
+      },
+      "availabilityImpact": {
+         "@id": "cve:availabilityImpact"
+      },
+      "availabilityRequirement": {
+         "@id": "cve:availabilityRequirement"
+      },
+      "baseScore": {
          "@type": "xsd:float",
-         "@id": "base_score"
+         "@id": "cve:baseScore"
       },
-      "base_severity": {
+      "baseSeverity": {
          "@context": {
             "text": "skos:notation",
             "description": "skos:prefLabel",
             "meaning": "@id"
          },
-         "@id": "base_severity"
+         "@id": "baseSeverity"
       },
-      "children": {
-         "@type": "@id",
-         "@id": "children"
+      "confidentialityImpact": {
+         "@id": "cve:confidentialityImpact"
       },
-      "comment": {
-         "@id": "comment"
+      "confidentialityRequirement": {
+         "@id": "cve:confidentialityRequirement"
       },
-      "configuration_id": {
-         "@id": "configuration_id"
+      "cpeName": {
+         "@id": "cpeName"
       },
-      "configuration_type": {
-         "@context": {
-            "text": "skos:notation",
-            "description": "skos:prefLabel",
-            "meaning": "@id"
-         },
-         "@id": "configuration_type"
-      },
-      "configurations": {
-         "@type": "@id",
-         "@id": "configurations"
-      },
-      "cpe23_uri": {
-         "@id": "cpe23_uri"
-      },
-      "cpe_uri": {
-         "@id": "core:cpe_uri"
-      },
+      "cpeNameId": "@id",
       "created": {
          "@type": "xsd:dateTime",
-         "@id": "dct:created"
+         "@id": "created"
       },
       "criteria": {
          "@id": "criteria"
       },
-      "cve_id": "@id",
-      "cve_tags": {
-         "@id": "cve_tags"
+      "cveChangeId": "@id",
+      "cvssData": {
+         "@id": "cvssData"
       },
-      "cvss_v2_metrics": {
-         "@type": "@id",
-         "@id": "cvss_v2_metrics"
+      "accessComplexity": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:accessComplexity"
       },
-      "cvss_v3_metrics": {
-         "@type": "@id",
-         "@id": "cvss_v3_metrics"
+      "accessVector": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:accessVector"
       },
-      "cvss_v4_metrics": {
-         "@type": "@id",
-         "@id": "cvss_v4_metrics"
+      "authentication": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:authentication"
       },
-      "cwe_id": {
-         "@id": "dcterms:identifier"
+      "collateralDamagePotential": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:collateralDamagePotential"
       },
-      "cwe_view": {
-         "@id": "cwe_view"
+      "exploitability": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:exploitability"
       },
-      "date_added": {
-         "@type": "xsd:date",
-         "@id": "dct:created"
+      "targetDistribution": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:targetDistribution"
       },
-      "date_received": {
-         "@type": "xsd:dateTime",
-         "@id": "date_received"
+      "attackRequirements": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:attackRequirements"
+      },
+      "Automatable": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:Automatable"
+      },
+      "exploitMaturity": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:exploitMaturity"
+      },
+      "modifiedAttackRequirements": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:modifiedAttackRequirements"
+      },
+      "modifiedSubAvailabilityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:modifiedSubAvailabilityImpact"
+      },
+      "modifiedSubConfidentialityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:modifiedSubConfidentialityImpact"
+      },
+      "modifiedSubIntegrityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:modifiedSubIntegrityImpact"
+      },
+      "modifiedVulnAvailabilityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:modifiedVulnAvailabilityImpact"
+      },
+      "modifiedVulnConfidentialityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:modifiedVulnConfidentialityImpact"
+      },
+      "modifiedVulnIntegrityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:modifiedVulnIntegrityImpact"
+      },
+      "providerUrgency": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:providerUrgency"
+      },
+      "Recovery": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:Recovery"
+      },
+      "Safety": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:Safety"
+      },
+      "subAvailabilityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:subAvailabilityImpact"
+      },
+      "subConfidentialityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:subConfidentialityImpact"
+      },
+      "subIntegrityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:subIntegrityImpact"
+      },
+      "valueDensity": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:valueDensity"
+      },
+      "vulnAvailabilityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:vulnAvailabilityImpact"
+      },
+      "vulnConfidentialityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:vulnConfidentialityImpact"
+      },
+      "vulnerabilityResponseEffort": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:vulnerabilityResponseEffort"
+      },
+      "vulnIntegrityImpact": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:vulnIntegrityImpact"
+      },
+      "defaultStatus": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "defaultStatus"
       },
       "description": {
-         "@id": "dcterms:description"
+         "@type": "@id",
+         "@id": "description"
       },
-      "description_source": {
-         "@id": "dct:source"
+      "environmentalScore": {
+         "@type": "xsd:float",
+         "@id": "cve:environmentalScore"
       },
-      "due_date": {
-         "@type": "xsd:date",
-         "@id": "dct:date"
-      },
-      "event_source": {
+      "environmentalSeverity": {
          "@context": {
             "text": "skos:notation",
             "description": "skos:prefLabel",
             "meaning": "@id"
          },
-         "@id": "event_source"
+         "@id": "cve:environmentalSeverity"
       },
-      "from_status": {
+      "exploitabilityScore": {
+         "@type": "xsd:float",
+         "@id": "exploitabilityScore"
+      },
+      "exploitCodeMaturity": {
          "@context": {
             "text": "skos:notation",
             "description": "skos:prefLabel",
             "meaning": "@id"
          },
-         "@id": "from_status"
+         "@id": "cve:exploitCodeMaturity"
       },
-      "impact": {
-         "@type": "@id",
-         "@id": "core:impact"
+      "format": {
+         "@id": "format"
       },
-      "kev_reference": {
-         "@type": "xsd:anyURI",
-         "@id": "schema:url"
+      "id": {
+         "@id": "ssvcSubject"
       },
-      "known_exploited": {
-         "@type": "@id",
-         "@id": "known_exploited"
+      "impactScore": {
+         "@type": "xsd:float",
+         "@id": "impactScore"
       },
-      "last_modified_date": {
+      "integrityImpact": {
+         "@id": "cve:integrityImpact"
+      },
+      "integrityRequirement": {
+         "@id": "cve:integrityRequirement"
+      },
+      "lang": {
+         "@id": "lang"
+      },
+      "lastModified": {
          "@type": "xsd:dateTime",
-         "@id": "dcterms:modified"
+         "@id": "lastModified"
       },
-      "match_criteria_id": {
-         "@id": "match_criteria_id"
+      "matchCriteriaId": "@id",
+      "modifiedAttackComplexity": {
+         "@id": "cve:modifiedAttackComplexity"
       },
-      "matched_cpe_names": {
-         "@id": "matched_cpe_names"
+      "modifiedAttackVector": {
+         "@id": "cve:modifiedAttackVector"
       },
-      "matches": {
-         "@type": "@id",
-         "@id": "matches"
+      "modifiedAvailabilityImpact": {
+         "@id": "cve:modifiedAvailabilityImpact"
       },
-      "message": {
-         "@id": "message"
+      "modifiedConfidentialityImpact": {
+         "@id": "cve:modifiedConfidentialityImpact"
       },
-      "metrics": {
-         "@type": "@id",
-         "@id": "metrics"
+      "modifiedIntegrityImpact": {
+         "@id": "cve:modifiedIntegrityImpact"
+      },
+      "modifiedPrivilegesRequired": {
+         "@id": "cve:modifiedPrivilegesRequired"
+      },
+      "modifiedScope": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:modifiedScope"
+      },
+      "modifiedUserInteraction": {
+         "@id": "cve:modifiedUserInteraction"
       },
       "name": {
-         "@id": "rdfs:label"
+         "@id": "name"
       },
-      "note_id": "@id",
-      "nvd_tags": {
-         "@context": {
-            "text": "skos:notation",
-            "description": "skos:prefLabel",
-            "meaning": "@id"
-         },
-         "@id": "nvd_tags"
+      "negate": {
+         "@type": "xsd:boolean",
+         "@id": "negate"
       },
-      "operator": {
-         "@id": "core:operator"
+      "affectedData": {
+         "@type": "@id",
+         "@id": "affectedData"
+      },
+      "collectionURL": {
+         "@type": "xsd:anyURI",
+         "@id": "collectionURL"
+      },
+      "cpes": {
+         "@id": "cpes"
+      },
+      "modules": {
+         "@id": "modules"
+      },
+      "packageName": {
+         "@id": "packageName"
+      },
+      "packageURL": {
+         "@type": "xsd:anyURI",
+         "@id": "packageURL"
       },
       "platforms": {
-         "@id": "core:platforms"
+         "@id": "platforms"
       },
-      "products": {
+      "product": {
+         "@id": "product"
+      },
+      "programFiles": {
+         "@id": "programFiles"
+      },
+      "programRoutines": {
          "@type": "@id",
-         "@id": "core:products"
+         "@id": "programRoutines"
       },
-      "provider_label": {
-         "@id": "provider_label"
-      },
-      "published_date": {
-         "@type": "xsd:dateTime",
-         "@id": "dcterms:created"
-      },
-      "rationale": {
-         "@id": "rationale"
-      },
-      "references": {
-         "@type": "@id",
-         "@id": "core:references"
-      },
-      "required_action": {
-         "@id": "dct:description"
-      },
-      "resource_tags": {
-         "@context": {
-            "text": "skos:notation",
-            "description": "skos:prefLabel",
-            "meaning": "@id"
-         },
-         "@id": "resource_tags"
-      },
-      "score": {
-         "@type": "xsd:float",
-         "@id": "core:score"
-      },
-      "score_notes": {
-         "@type": "@id",
-         "@id": "score_notes"
-      },
-      "scoring_justification": {
-         "@id": "scoring_justification"
-      },
-      "severity": {
-         "@context": {
-            "text": "skos:notation",
-            "description": "skos:prefLabel",
-            "meaning": "@id"
-         },
-         "@id": "core:severity"
-      },
-      "source": {
-         "@id": "dcterms:source"
-      },
-      "status": {
-         "@context": {
-            "text": "skos:notation",
-            "description": "skos:prefLabel",
-            "meaning": "@id"
-         },
-         "@id": "core:status"
-      },
-      "status_transitions": {
-         "@type": "@id",
-         "@id": "status_transitions"
-      },
-      "summary": {
-         "@id": "summary"
-      },
-      "title": {
-         "@id": "dcterms:title"
-      },
-      "to_status": {
-         "@context": {
-            "text": "skos:notation",
-            "description": "skos:prefLabel",
-            "meaning": "@id"
-         },
-         "@id": "to_status"
-      },
-      "transition_id": "@id",
-      "transition_time": {
-         "@type": "xsd:dateTime",
-         "@id": "dct:modified"
-      },
-      "url": {
-         "@type": "xsd:anyURI",
-         "@id": "schema:url"
-      },
-      "vector": {
-         "@id": "core:vector"
-      },
-      "vector_string": {
-         "@id": "vector_string"
+      "repo": {
+         "@id": "repo"
       },
       "vendor": {
-         "@id": "schema:name"
+         "@id": "vendor"
       },
-      "vendor_comments": {
+      "versions": {
          "@type": "@id",
-         "@id": "vendor_comments"
+         "@id": "versions"
       },
-      "version": {
-         "@id": "schema:version"
+      "changes": {
+         "@type": "@id",
+         "@id": "changes"
       },
-      "version_end_excluding": {
-         "@id": "version_end_excluding"
+      "lessThan": {
+         "@id": "lessThan"
       },
-      "version_end_including": {
-         "@id": "version_end_including"
+      "lessThanOrEqual": {
+         "@id": "lessThanOrEqual"
       },
-      "version_start_excluding": {
-         "@id": "version_start_excluding"
+      "versionType": {
+         "@id": "versionType"
       },
-      "version_start_including": {
-         "@id": "version_start_including"
+      "cveId": {
+         "@type": "@id",
+         "@id": "cveId"
+      },
+      "details": {
+         "@type": "@id",
+         "@id": "details"
+      },
+      "eventName": {
+         "@id": "eventName"
+      },
+      "action": {
+         "@id": "action"
+      },
+      "newValue": {
+         "@id": "newValue"
+      },
+      "oldValue": {
+         "@id": "oldValue"
+      },
+      "change": {
+         "@type": "@id",
+         "@id": "change"
+      },
+      "nodes": {
+         "@type": "@id",
+         "@id": "nodes"
+      },
+      "cpeMatch": {
+         "@type": "@id",
+         "@id": "cpeMatch"
+      },
+      "deprecated": {
+         "@type": "xsd:boolean",
+         "@id": "deprecated"
+      },
+      "deprecatedBy": {
+         "@type": "@id",
+         "@id": "deprecatedBy"
+      },
+      "deprecates": {
+         "@type": "@id",
+         "@id": "deprecates"
+      },
+      "refs": {
+         "@type": "@id",
+         "@id": "refs"
+      },
+      "titles": {
+         "@type": "@id",
+         "@id": "titles"
+      },
+      "cpe": {
+         "@type": "@id",
+         "@id": "cpe"
       },
       "vulnerable": {
          "@type": "xsd:boolean",
          "@id": "vulnerable"
       },
-      "weaknesses": {
+      "matchStrings": {
          "@type": "@id",
-         "@id": "core:weaknesses"
+         "@id": "matchStrings"
       },
-      "workflow_status": {
+      "ref": {
+         "@id": "ref"
+      },
+      "products": {
+         "@type": "@id",
+         "@id": "products"
+      },
+      "affected": {
+         "@type": "@id",
+         "@id": "affected"
+      },
+      "cisaActionDue": {
+         "@type": "xsd:date",
+         "@id": "cisaActionDue"
+      },
+      "cisaExploitAdd": {
+         "@type": "xsd:date",
+         "@id": "cisaExploitAdd"
+      },
+      "cisaRequiredAction": {
+         "@id": "cisaRequiredAction"
+      },
+      "cisaVulnerabilityName": {
+         "@id": "cisaVulnerabilityName"
+      },
+      "configurations": {
+         "@type": "@id",
+         "@id": "configurations"
+      },
+      "cveTags": {
+         "@type": "@id",
+         "@id": "cveTags"
+      },
+      "descriptions": {
+         "@type": "@id",
+         "@id": "descriptions"
+      },
+      "evaluatorComment": {
+         "@id": "evaluatorComment"
+      },
+      "evaluatorImpact": {
+         "@id": "evaluatorImpact"
+      },
+      "evaluatorSolution": {
+         "@id": "evaluatorSolution"
+      },
+      "metrics": {
+         "@type": "@id",
+         "@id": "metrics"
+      },
+      "published": {
+         "@type": "xsd:dateTime",
+         "@id": "published"
+      },
+      "vendorComments": {
+         "@type": "@id",
+         "@id": "vendorComments"
+      },
+      "vulnStatus": {
          "@context": {
             "text": "skos:notation",
             "description": "skos:prefLabel",
             "meaning": "@id"
          },
-         "@id": "workflow_status"
+         "@id": "vulnStatus"
       },
-      "Configuration": {
-         "@id": "core:Configuration"
+      "weaknesses": {
+         "@type": "@id",
+         "@id": "weaknesses"
       },
-      "CPEConfiguration": {
-         "@id": "CPEConfiguration"
+      "vulnerabilities": {
+         "@type": "@id",
+         "@id": "vulnerabilities"
       },
-      "CPEMatch": {
-         "@id": "CPEMatch"
+      "acInsufInfo": {
+         "@type": "xsd:boolean",
+         "@id": "acInsufInfo"
       },
-      "CVSSMetric": {
-         "@id": "CVSSMetric"
+      "obtainAllPrivilege": {
+         "@type": "xsd:boolean",
+         "@id": "obtainAllPrivilege"
       },
-      "CVSSScoreNote": {
-         "@id": "CVSSScoreNote"
+      "obtainOtherPrivilege": {
+         "@type": "xsd:boolean",
+         "@id": "obtainOtherPrivilege"
       },
-      "Impact": {
-         "@id": "core:Impact"
+      "obtainUserPrivilege": {
+         "@type": "xsd:boolean",
+         "@id": "obtainUserPrivilege"
       },
-      "KnownExploitedVulnerability": {
-         "@id": "KnownExploitedVulnerability"
+      "userInteractionRequired": {
+         "@type": "xsd:boolean",
+         "@id": "userInteractionRequired"
       },
-      "MetricSet": {
-         "@id": "MetricSet"
+      "cveChanges": {
+         "@type": "@id",
+         "@id": "cveChanges"
       },
-      "NVDEntry": {
-         "@id": "NVDEntry"
+      "value": {
+         "@id": "langStringValue"
       },
-      "NVDReference": {
-         "@id": "NVDReference"
+      "cpeLastModified": {
+         "@type": "xsd:dateTime",
+         "@id": "cpeLastModified"
       },
-      "NVDWeakness": {
-         "@id": "NVDWeakness"
+      "matches": {
+         "@type": "@id",
+         "@id": "matches"
       },
-      "Product": {
-         "@id": "core:Product"
+      "matchString": {
+         "@type": "@id",
+         "@id": "matchString"
       },
-      "Reference": {
-         "@id": "core:Reference"
+      "cvssMetricV2": {
+         "@type": "@id",
+         "@id": "cvssMetricV2"
       },
-      "StatusTransition": {
-         "@id": "StatusTransition"
+      "cvssMetricV30": {
+         "@type": "@id",
+         "@id": "cvssMetricV30"
       },
-      "VendorComment": {
-         "@id": "VendorComment"
+      "cvssMetricV31": {
+         "@type": "@id",
+         "@id": "cvssMetricV31"
       },
-      "Vulnerability": {
-         "@id": "core:Vulnerability"
+      "cvssMetricV40": {
+         "@type": "@id",
+         "@id": "cvssMetricV40"
       },
-      "Weakness": {
-         "@id": "core:Weakness"
+      "ssvcV203": {
+         "@type": "@id",
+         "@id": "ssvcV203"
+      },
+      "resultsPerPage": {
+         "@type": "xsd:integer",
+         "@id": "resultsPerPage"
+      },
+      "startIndex": {
+         "@type": "xsd:integer",
+         "@id": "startIndex"
+      },
+      "totalResults": {
+         "@type": "xsd:integer",
+         "@id": "totalResults"
+      },
+      "version": {
+         "@id": "cve:version"
+      },
+      "computed": {
+         "@id": "computed"
+      },
+      "decisionTree": {
+         "@type": "@id",
+         "@id": "decisionTree"
+      },
+      "decisionTreeUrl": {
+         "@type": "xsd:anyURI",
+         "@id": "decisionTreeUrl"
+      },
+      "generator": {
+         "@id": "generator"
+      },
+      "options": {
+         "@type": "@id",
+         "@id": "options"
+      },
+      "role": {
+         "@id": "role"
+      },
+      "ssvcData": {
+         "@type": "@id",
+         "@id": "ssvcData"
+      },
+      "automatable": {
+         "@id": "automatable"
+      },
+      "exploitation": {
+         "@id": "exploitation"
+      },
+      "technicalImpact": {
+         "@id": "technicalImpact"
+      },
+      "comment": {
+         "@id": "comment"
+      },
+      "organization": {
+         "@id": "organization"
+      },
+      "operator": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "operator"
+      },
+      "privilegesRequired": {
+         "@id": "cve:privilegesRequired"
+      },
+      "references": {
+         "@type": "@id",
+         "@id": "references"
+      },
+      "remediationLevel": {
+         "@id": "cve:remediationLevel"
+      },
+      "reportConfidence": {
+         "@id": "cve:reportConfidence"
+      },
+      "scope": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:scope"
+      },
+      "source": {
+         "@id": "source"
+      },
+      "sourceIdentifier": {
+         "@id": "sourceIdentifier"
+      },
+      "status": {
+         "@id": "status"
+      },
+      "tags": {
+         "@id": "tags"
+      },
+      "temporalScore": {
+         "@type": "xsd:float",
+         "@id": "cve:temporalScore"
+      },
+      "temporalSeverity": {
+         "@context": {
+            "text": "skos:notation",
+            "description": "skos:prefLabel",
+            "meaning": "@id"
+         },
+         "@id": "cve:temporalSeverity"
+      },
+      "timestamp": {
+         "@type": "xsd:dateTime",
+         "@id": "timestamp"
+      },
+      "title": {
+         "@id": "title"
+      },
+      "type": {
+         "@id": "type"
+      },
+      "url": {
+         "@type": "xsd:anyURI",
+         "@id": "url"
+      },
+      "userInteraction": {
+         "@id": "cve:userInteraction"
+      },
+      "vectorString": {
+         "@id": "cve:vectorString"
+      },
+      "versionEndExcluding": {
+         "@id": "versionEndExcluding"
+      },
+      "versionEndIncluding": {
+         "@id": "versionEndIncluding"
+      },
+      "versionStartExcluding": {
+         "@id": "versionStartExcluding"
+      },
+      "versionStartIncluding": {
+         "@id": "versionStartIncluding"
+      },
+      "CvssSeverityBandsMixin": {
+         "@id": "cve:CvssSeverityBandsMixin"
+      },
+      "CvssV20": {
+         "@id": "cve:CvssV20"
+      },
+      "CvssV30": {
+         "@id": "cve:CvssV30"
+      },
+      "CvssV31": {
+         "@id": "cve:CvssV31"
+      },
+      "CvssV40": {
+         "@id": "cve:CvssV40"
+      },
+      "NvdAffected": {
+         "@id": "NvdAffected"
+      },
+      "NvdAffectedProduct": {
+         "@id": "NvdAffectedProduct"
+      },
+      "NvdAffectedVersion": {
+         "@id": "NvdAffectedVersion"
+      },
+      "NvdChange": {
+         "@id": "NvdChange"
+      },
+      "NvdChangeDetail": {
+         "@id": "NvdChangeDetail"
+      },
+      "NvdChangeItem": {
+         "@id": "NvdChangeItem"
+      },
+      "NvdChangeObject": {
+         "@id": "NvdChangeObject"
+      },
+      "NvdConfiguration": {
+         "@id": "NvdConfiguration"
+      },
+      "NvdConfigurationNode": {
+         "@id": "NvdConfigurationNode"
+      },
+      "NvdCpe": {
+         "@id": "NvdCpe"
+      },
+      "NvdCpeItem": {
+         "@id": "NvdCpeItem"
+      },
+      "NvdCpeMatch": {
+         "@id": "NvdCpeMatch"
+      },
+      "NvdCpeMatchResponse": {
+         "@id": "NvdCpeMatchResponse"
+      },
+      "NvdCpeNameLink": {
+         "@id": "NvdCpeNameLink"
+      },
+      "NvdCpeReference": {
+         "@id": "NvdCpeReference"
+      },
+      "NvdCpeResponse": {
+         "@id": "NvdCpeResponse"
+      },
+      "NvdCpeTitle": {
+         "@id": "NvdCpeTitle"
+      },
+      "NvdCve": {
+         "@id": "NvdCve"
+      },
+      "NvdCveResponse": {
+         "@id": "NvdCveResponse"
+      },
+      "NvdCveTag": {
+         "@id": "NvdCveTag"
+      },
+      "NvdCvssMetricV2": {
+         "@id": "NvdCvssMetricV2",
+         "@context": {
+            "cvssData": {
+               "@id": "cvssData",
+               "@type": "@id"
+            }
+         }
+      },
+      "NvdCvssMetricV30": {
+         "@id": "NvdCvssMetricV30",
+         "@context": {
+            "cvssData": {
+               "@id": "cvssData",
+               "@type": "@id"
+            }
+         }
+      },
+      "NvdCvssMetricV31": {
+         "@id": "NvdCvssMetricV31",
+         "@context": {
+            "cvssData": {
+               "@id": "cvssData",
+               "@type": "@id"
+            }
+         }
+      },
+      "NvdCvssMetricV40": {
+         "@id": "NvdCvssMetricV40",
+         "@context": {
+            "cvssData": {
+               "@id": "cvssData",
+               "@type": "@id"
+            }
+         }
+      },
+      "NvdHistoryResponse": {
+         "@id": "NvdHistoryResponse"
+      },
+      "NvdLangString": {
+         "@id": "NvdLangString"
+      },
+      "NvdMatchedCpe": {
+         "@id": "NvdMatchedCpe"
+      },
+      "NvdMatchString": {
+         "@id": "NvdMatchString"
+      },
+      "NvdMatchStringItem": {
+         "@id": "NvdMatchStringItem"
+      },
+      "NvdMetrics": {
+         "@id": "NvdMetrics"
+      },
+      "NvdProgramRoutine": {
+         "@id": "NvdProgramRoutine"
+      },
+      "NvdReference": {
+         "@id": "NvdReference"
+      },
+      "NvdResponseMixin": {
+         "@id": "NvdResponseMixin"
+      },
+      "NvdSsvcData": {
+         "@id": "NvdSsvcData"
+      },
+      "NvdSsvcDecisionTree": {
+         "@id": "linkml:Any"
+      },
+      "NvdSsvcMetricV203": {
+         "@id": "NvdSsvcMetricV203"
+      },
+      "NvdSsvcOption": {
+         "@id": "NvdSsvcOption"
+      },
+      "NvdVendorComment": {
+         "@id": "NvdVendorComment"
+      },
+      "NvdVersionChange": {
+         "@id": "NvdVersionChange"
+      },
+      "NvdVulnerability": {
+         "@id": "NvdVulnerability"
+      },
+      "NvdWeakness": {
+         "@id": "NvdWeakness"
       }
    }
 }

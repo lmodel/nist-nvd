@@ -1,0 +1,11 @@
+# Fails at: /cvssData
+source: nvd@nist.gov
+type: Primary
+baseSeverity: HIGH
+exploitabilityScore: 10.0
+impactScore: 6.4
+acInsufInfo: false
+obtainAllPrivilege: false
+obtainUserPrivilege: false
+obtainOtherPrivilege: false
+userInteractionRequired: false

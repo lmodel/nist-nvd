@@ -1,0 +1,5 @@
+vulnerable: false
+criteria: cpe:2.3:o:example:os:-:*:*:*:*:*:*:*
+matchCriteriaId: A1B2C3D4-E5F6-4789-90AB-CDEF01234567
+versionStartExcluding: '0.9'
+versionEndIncluding: '2.0'

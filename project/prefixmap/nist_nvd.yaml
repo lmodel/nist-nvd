@@ -1,34 +1,36 @@
 {
-   "WIKIDATA": "https://www.wikidata.org/wiki/",
-   "core": "https://w3id.org/lmodel/vulnerability-core/",
    "cve": "https://w3id.org/lmodel/cve/",
-   "cwe": "https://w3id.org/lmodel/cwe/",
-   "dct": "http://purl.org/dc/terms/",
+   "dcat": "http://www.w3.org/ns/dcat#",
    "dcterms": "http://purl.org/dc/terms/",
    "kev_catalog": "https://w3id.org/lmodel/kev-catalog/",
    "linkml": "https://w3id.org/linkml/",
-   "nvd": "https://w3id.org/lmodel/nist-nvd/",
-   "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+   "nist_nvd": "https://w3id.org/lmodel/nist-nvd/",
+   "prov": "http://www.w3.org/ns/prov#",
    "schema": "http://schema.org/",
-   "schema_vulnerability_core": "https://w3id.org/lmodel/vulnerability-core/schema/",
-   "skos": "http://www.w3.org/2004/02/skos/core#",
-   "xsd": "http://www.w3.org/2001/XMLSchema#",
-   "Configuration": {
-      "@id": "core:Configuration"
+   "sepses_cpe": "http://w3id.org/sepses/vocab/ref/cpe#",
+   "sepses_cve": "http://w3id.org/sepses/vocab/ref/cve#",
+   "sepses_cvss": "http://w3id.org/sepses/vocab/ref/cvss#",
+   "spdx3": "https://spdx.org/rdf/3.0.1/terms/",
+   "spdx_security": "https://spdx.org/rdf/3.0.1/terms/Security/",
+   "stix": "https://w3id.org/lmodel/stix/",
+   "wd": "http://www.wikidata.org/entity/",
+   "wdt": "http://www.wikidata.org/prop/direct/",
+   "CvssSeverityBandsMixin": {
+      "@id": "cve:CvssSeverityBandsMixin"
    },
-   "Impact": {
-      "@id": "core:Impact"
+   "CvssV20": {
+      "@id": "cve:CvssV20"
    },
-   "Product": {
-      "@id": "core:Product"
+   "CvssV30": {
+      "@id": "cve:CvssV30"
    },
-   "Reference": {
-      "@id": "core:Reference"
+   "CvssV31": {
+      "@id": "cve:CvssV31"
    },
-   "Vulnerability": {
-      "@id": "core:Vulnerability"
+   "CvssV40": {
+      "@id": "cve:CvssV40"
    },
-   "Weakness": {
-      "@id": "core:Weakness"
+   "NvdSsvcDecisionTree": {
+      "@id": "linkml:Any"
    }
 }

@@ -1,0 +1,124 @@
+NIST National Vulnerability Database (NVD) LinkML Schema (nist-nvd)
+Copyright 2026 Noel McLoughlin
+
+The code in this repository is licensed under the Apache License,
+Version 2.0 (see LICENSE). Some of the content it carries is third-party
+work under its own terms, listed below.
+
+This product uses the NVD API but is not endorsed or certified by the NVD.
+
+NVD's terms of use ask a service that uses or accesses the API to display
+that notice. They are at https://nvd.nist.gov/developers/terms-of-use. That
+address refused a plain client with 403 when it was tried on 2026-11-03, so
+this project read them that day in the copy at
+https://scancode-licensedb.aboutcode.org/nist-nvd-api-tou.html.
+
+The National Vulnerability Database
+-----------------------------------
+
+src/nist_nvd/schema/*.yaml, src/nist_nvd/datamodel/ and project/ model the
+JSON responses of the NVD API 2.0, as the National Institute of Standards
+and Technology (NIST) publishes their JSON schemas at
+https://csrc.nist.gov/schema/nvd/api/2.0/. They are this project's
+rendering, in its own words. They are not NIST's, and their use does not
+imply endorsement or certification by NIST or the NVD.
+
+upstream/ holds copies of those JSON schemas, and tests/data/nvd/ holds a
+small extract of the API's responses, each unchanged. NIST's statement on
+its data and works
+(https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications,
+read on 2026-11-03) asks a distribution to carry this statement:
+
+  This data/work was created by employees of the National Institute of
+  Standards and Technology (NIST), an agency of the Federal Government.
+  Pursuant to title 17 United States Code Section 105, works of NIST
+  employees are not subject to copyright protection in the United States.
+  This data/work may be subject to foreign copyright. The data/work is
+  provided by NIST as a public service and is expressly provided "AS IS."
+  NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED OR STATUTORY,
+  INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY.
+  NIST does not warrant or make any representations regarding the use of
+  the data or the results thereof, including but not limited to the
+  correctness, accuracy, reliability or usefulness of the data.
+
+The statement goes on to release NIST from liability; its address above
+gives the rest. The records in the extract republish text that others wrote:
+the CVE Program's records, and the Known Exploited Vulnerabilities catalog of
+the Cybersecurity and Infrastructure Security Agency (CISA).
+
+NIST's SSVC schema
+------------------
+
+upstream/ssvc-v2.0.3.structure.json is NIST's
+https://csrc.nist.gov/schema/nvd/api/2.0/ssvc-v2.0.3.json with every
+description and example removed, which leaves its keys, types and
+requirements. NIST's file states no licence, and its subject is the
+Stakeholder-Specific Vulnerability Categorization of the CERT Coordination
+Center, whose repository (https://github.com/CERTCC/SSVC) places its material
+under other terms. This project cannot tell who wrote the descriptions, so it
+copies none of them. The watch holds the structure to NIST's published file.
+
+The Forum of Incident Response and Security Teams
+-------------------------------------------------
+
+upstream/external/cvss-v*.json are NIST's copies of the CVSS JSON schemas of
+the Forum of Incident Response and Security Teams (FIRST.Org, Inc.), each
+unchanged and each carrying FIRST's copyright notice and BSD-style licence
+inside the file. Neither FIRST nor NIST endorses this project.
+
+lmodel/cve
+----------
+
+src/nist_nvd/schema/cve/cve_cvss.yaml is the CVSS module of
+https://github.com/lmodel/cve, copied unchanged under the Apache License,
+Version 2.0, and held to its git object hash by tests/test_cve_import.py.
+
+linkml-project-copier
+---------------------
+
+This project was generated from linkml-project-copier
+(https://github.com/linkml/linkml-project-copier), and its justfile,
+configuration and documentation scaffolding derive from that template:
+
+  The MIT License (MIT)
+  Copyright (c) 2025 David Linke
+
+  Permission is hereby granted, free of charge, to any person obtaining a
+  copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to permit
+  persons to whom the Software is furnished to do so, subject to the
+  following conditions:
+
+  The above copyright notice and this permission notice shall be included
+  in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+  NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+  USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Knowledge bundle
+----------------
+
+This product maintains its documentation as a Linked Open Knowledge Format
+(LOKF) bundle under .lokf/: https://lokf.nolan-nichols.com/specification/
+
+LOKF is a semantic profile of the Open Knowledge Format (OKF) specification
+by Google Cloud Platform:
+https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md
+
+The scripts under .lokf/scripts/ and .lokf/m365/ and the
+knowledge-librarian, knowledge-registrar, knowledge-release and
+knowledge-sync workflows under .github/workflows/ are copies of the
+ktl-sidecar templates in knowledge-trust-ladder
+(https://github.com/noelmcloughlin/knowledge-trust-ladder). The site under
+website/ and the knowledge-website workflow derive from the ktl-website
+templates in the same repository, and website/NOTICE lists the part
+adapted from the LOKF toolkit's site. All of them are licensed under the
+Apache License, Version 2.0.

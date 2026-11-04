@@ -1,0 +1,5 @@
+source: nvd@nist.gov
+type: Primary
+description:
+  - lang: en
+    value: CWE-79
