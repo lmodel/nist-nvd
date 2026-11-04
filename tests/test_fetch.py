@@ -4,8 +4,9 @@ scripts/fetch_nvd_feed.py downloads the feed and keeps it only when it matches t
 size and SHA-256 that the feed's own .meta file gives. These tests replace its
 opener with a stub, so they run offline. They show that a matching download is
 kept, that a wrong, oversized or cut-off one is deleted, that a feed that moved
-between the two requests gets a second try, and that the script refuses an address
-or a redirect off nvd.nist.gov.
+between the two requests gets a second try, that a 404 for the gzip file falls back
+to the zip file, and that the script refuses an address or a redirect off
+nvd.nist.gov.
 """
 
 import gzip
@@ -13,7 +14,9 @@ import hashlib
 import http.client
 import importlib.util
 import io
+import urllib.error
 import urllib.request
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -31,11 +34,24 @@ def fetch():
     return module
 
 
+def _zip(data: bytes, name: str = "nvdcve-2.0-modified.json") -> bytes:
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr(name, data)
+    return buffer.getvalue()
+
+
+def _not_found() -> urllib.error.HTTPError:
+    return urllib.error.HTTPError(
+        "https://nvd.nist.gov/x", 404, "Not Found", None, None
+    )
+
+
 def _meta(data: bytes) -> bytes:
     packed = gzip.compress(data)
     return (
         "lastModifiedDate:2026-11-03T14:00:07-05:00\r\n"
-        f"size:{len(data)}\r\nzipSize:1\r\ngzSize:{len(packed)}\r\n"
+        f"size:{len(data)}\r\nzipSize:{len(_zip(data))}\r\ngzSize:{len(packed)}\r\n"
         f"sha256:{hashlib.sha256(data).hexdigest().upper()}\r\n"
     ).encode()
 
@@ -70,6 +86,46 @@ def test_a_matching_download_lands(fetch, monkeypatch, tmp_path):
     assert code == 0, line
     assert (tmp_path / fetch.NAME).read_bytes() == GOOD
     assert [p.name for p in tmp_path.iterdir()] == [fetch.NAME]
+
+
+def test_a_missing_gzip_falls_back_to_the_zip(fetch, monkeypatch, tmp_path):
+    _serve(
+        fetch,
+        monkeypatch,
+        {"meta": [_meta(GOOD)], "gz": [_not_found()], "zip": [_zip(GOOD)]},
+    )
+    code, line = fetch.fetch(tmp_path)
+    assert code == 0, line
+    assert (tmp_path / fetch.NAME).read_bytes() == GOOD
+    assert [p.name for p in tmp_path.iterdir()] == [fetch.NAME]
+
+
+@pytest.mark.parametrize(
+    "served",
+    [_zip(GOOD.replace(b"[]", b"{}")), _zip(GOOD, "other.json"), b"not a zip at all"],
+    ids=["wrong", "no-feed-inside", "corrupt"],
+)
+def test_a_bad_zip_is_deleted(fetch, monkeypatch, tmp_path, served):
+    _serve(
+        fetch,
+        monkeypatch,
+        {"meta": [_meta(GOOD)], "gz": [_not_found()], "zip": [served]},
+    )
+    code, _ = fetch.fetch(tmp_path)
+    assert code == 1
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_a_404_for_both_archives_could_not_run(fetch, monkeypatch, tmp_path):
+    _serve(
+        fetch,
+        monkeypatch,
+        {"meta": [_meta(GOOD)], "gz": [_not_found()], "zip": [_not_found()]},
+    )
+    code, line = fetch.fetch(tmp_path)
+    assert code == 2
+    assert line.startswith("the fetch could not run")
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_a_matching_copy_is_kept_without_a_download(fetch, monkeypatch, tmp_path):
