@@ -38,7 +38,7 @@ npx skills add noelmcloughlin/knowledge-trust-ladder --skill ktl-curator --yes  
 
 ## Before opening a pull request
 
-- **Edit the schema, then regenerate.** Edit `src/nist_nvd/schema/`, run `just gen-project`, `just gen-doc` and `just lokf-adapt`, and commit the output. `project/`, `src/nist_nvd/datamodel/`, `docs/schema/` and `.lokf/nist-nvd.yaml` are generated.
+- **Edit the schema, then regenerate.** Edit `src/nist_nvd/schema/`, run `just gen-project`, `just gen-doc` and `just lokf-adapt`, and commit the output. `project/`, `src/nist_nvd/datamodel/`, `docs/schema/` and `.lokf/schema/nist-nvd.yaml` are generated.
 - **Keep NVD's keys and spelling.** Slots and permissible values are the API's wire names; class names carry the `Nvd` prefix. `tests/test_upstream.py` walks `upstream/` and fails on any definition, property, enum value or required member with no element here, or a different cardinality. A departure is listed there with its reason.
 - **State only what NVD states.** A string becomes an enum only where the data fixes its list, and a comment says so. Add no bound or rule of your own.
 - **Never edit `src/nist_nvd/schema/cve/`.** `tests/test_cve_import.py` holds it to its git object hash; re-vendor from a release of lmodel/cve.
