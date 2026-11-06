@@ -6,8 +6,8 @@
 
 # ============ Knowledge bundle: the adapted domain schema ============
 
-# `.lokf/nist-nvd.yaml` is the copy `lokf adapt` writes from the schema so that it
-# can sit beside `.lokf/lokf.yaml` (`lokf adapt --help` lists the moves). The one
+# `.lokf/schema/nist-nvd.yaml` is the copy `lokf adapt` writes from the schema so that it
+# can sit beside `.lokf/schema/lokf.yaml` (`lokf adapt --help` lists the moves). The one
 # root is NvdCve: adapt replaces the schema's identifier slot, `id`, with LOKF's own
 # and refuses a class that lists it without descending from Concept. So a concept
 # may name NvdCve as its `type`, and a response or a score is only ever held inside
@@ -21,15 +21,15 @@
 lokf_cmd := env_var_or_default("LOKF_CMD", "uv run --project .lokf lokf")
 lokf_adapt_roots := "--root NvdCve --prefix cve"
 
-# Rewrite .lokf/nist-nvd.yaml from the schema (run after every schema change)
+# Rewrite .lokf/schema/nist-nvd.yaml from the schema (run after every schema change)
 [group('knowledge bundle')]
 lokf-adapt:
-  {{lokf_cmd}} adapt {{source_schema_path}} {{lokf_adapt_roots}} --lokf .lokf/lokf.yaml -o .lokf/nist-nvd.yaml
+  {{lokf_cmd}} adapt {{source_schema_path}} {{lokf_adapt_roots}} --lokf .lokf/schema/lokf.yaml -o .lokf/schema/nist-nvd.yaml
 
-# Fail when .lokf/nist-nvd.yaml is stale against the schema or .lokf/lokf.yaml
+# Fail when .lokf/schema/nist-nvd.yaml is stale against the schema or .lokf/schema/lokf.yaml
 [group('knowledge bundle')]
 lokf-adapt-check:
-  {{lokf_cmd}} adapt {{source_schema_path}} {{lokf_adapt_roots}} --lokf .lokf/lokf.yaml -o .lokf/nist-nvd.yaml --check
+  {{lokf_cmd}} adapt {{source_schema_path}} {{lokf_adapt_roots}} --lokf .lokf/schema/lokf.yaml -o .lokf/schema/nist-nvd.yaml --check
 
 # Download NVD's modified feed into tmp/nvd-feed/, checking it against the size and
 # SHA-256 that the feed's own .meta file gives
