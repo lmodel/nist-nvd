@@ -14,7 +14,7 @@ sources:
   - resource: src/nist_nvd/schema
   - resource: src/nist_nvd/datamodel
   - resource: project.justfile
-  - resource: .lokf/nist-nvd.yaml
+  - resource: .lokf/schema/nist-nvd.yaml
   - resource: .lokf/justfile
   - resource: .lokf/pyproject.toml
   - resource: NOTICE
@@ -91,7 +91,7 @@ exclusions:
     reason: The sidecar's ignore list.
   - resource: .lokf/ingest.yaml.sample
     reason: The ingest's example manifest, unused here.
-  - resource: .lokf/lokf.yaml
+  - resource: .lokf/schema/lokf.yaml
     reason: LOKF's own schema, pinned from the installed package.
   - resource: .lokf/queries.http
     reason: The sidecar's sample queries.
@@ -103,7 +103,7 @@ exclusions:
     reason: The sidecar's Copilot skill builder, a copy from its template.
 generated:
   by: process:ktl-librarian
-  at: "2026-11-03T22:34:15Z"
+  at: "2026-11-06T21:22:40Z"
 status: draft
 ---
 
@@ -111,7 +111,7 @@ status: draft
 
 | Source | Yields | Re-check |
 | --- | --- | --- |
-| `src/nist_nvd/schema`, `project.justfile`, `.lokf/nist-nvd.yaml`, `.lokf/justfile`, `.lokf/pyproject.toml` | `datasets/nist-nvd-linkml-schema.md`, `datasets/cvss-module.md`, `datasets/adapt-copy.md`, `glossary/vuln-status.md`, `glossary/ssvc.md`, `glossary/cpe-match-string.md` | the schema's headers and classes, and the adapt recipes |
+| `src/nist_nvd/schema`, `project.justfile`, `.lokf/schema/nist-nvd.yaml`, `.lokf/justfile`, `.lokf/pyproject.toml` | `datasets/nist-nvd-linkml-schema.md`, `datasets/cvss-module.md`, `datasets/adapt-copy.md`, `glossary/vuln-status.md`, `glossary/ssvc.md`, `glossary/cpe-match-string.md` | the schema's headers and classes, and the adapt recipes |
 | `upstream`, `scripts` | `references/nvd-json-schemas.md`, `references/first-cvss-schemas.md`, `references/nvd-api.md`, `datasets/upstream-copies.md`, `playbooks/move-the-upstream-pins.md` | the pins, and what the upstream watch reports |
 | `tests/data`, `tests` | `datasets/example-data.md`, `datasets/nvd-extract.md`, `datasets/worked-record-cve-2023-29357.md`, `datasets/neighbour-copies.md`, `datasets/vocabulary-terms.md` | the lists at the top of each test |
 | `README.md`, `docs/about.md`, `docs/index.md`, `CHANGELOG.md` | `glossary/nvd.md`, `explanations/departures-from-nists-files.md`, `explanations/crosswalk-and-mappings.md`, `explanations/what-each-checker-checks.md`, `playbooks/validate-an-nvd-response.md` | each page's sections |
