@@ -68,7 +68,7 @@ A [LOKF](https://lokf.nolan-nichols.com) knowledge base for nist-nvd. Every Mark
 
 # Workflows
 
-* [Build and test (main.yaml)](workflows/main.md) - The Build and test workflow, `.github/workflows/main.yaml`: on a push to `main` and every pull request, its `test` job lints, tests and checks the adapt copy across Python 3.10 to 3.14, and its `nvd-feed` job validates NVD's live modified feed.
+* [Build and test (main.yaml)](workflows/main.md) - The Build and test workflow, `.github/workflows/main.yaml`: on a push to `main` and every pull request, its `test` job lints, tests and checks the adapt copy across Python 3.11 to 3.14, and its `nvd-feed` job validates NVD's live modified feed.
 * [Lint and docs (lint-and-docs.yaml)](workflows/lint-and-docs.md) - The Lint and docs workflow, `.github/workflows/lint-and-docs.yaml`: ShellCheck, actionlint, the word budgets of CONTRIBUTING.md and SECURITY.md, markdownlint, lychee and codespell, on a push to `main`, every pull request and Mondays at 06:00 UTC.
 * [Upstream watch (upstream-watch.yaml)](workflows/upstream-watch.md) - The Upstream watch workflow, `.github/workflows/upstream-watch.yaml`: every Monday at 07:00 UTC and by hand, its `nvd-schemas` job runs `scripts/check_upstream_release.py` against NIST's files, and on a finding, or a check that could not run, opens or updates an issue.
 * [Semantic release (semantic-release.yml)](workflows/semantic-release.md) - The Semantic release workflow, `.github/workflows/semantic-release.yml`: `plan` previews a pull request's release, and `release`, on a push to `main` in the `release` Environment, promotes the changelog, tags, publishes and dispatches the knowledge release.
