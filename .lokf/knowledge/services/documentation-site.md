@@ -13,17 +13,21 @@ sources:
   - id: site-config
     resource: website/site.toml
     title: the site's address, title and redirects
+  - id: website-readme.md
+    resource: website/README.md
+    title: the table of what the site shows
   - resource: website
 generated:
   by: process:ktl-librarian
-  at: "2026-11-15T02:44:07Z"
+  at: "2026-11-15T03:08:43Z"
 status: draft
 ---
 
 # Documentation site
 
-`website/` is a Hugo site, and `website/site.toml` names the repository, its address and what it shows. Its home page is the README. It shows the docs under `docs/`, the schema's pages that `just gen-doc` writes, and the bundle.[^site-config]
+`website/` is a Hugo site, and `website/site.toml` names the repository, its address and what it shows. Its home page is the README. It shows the docs under `docs/`, the schema's pages and the bundle.[^site-config] The build writes the schema's pages with LinkML's `gen-doc`.[^website-readme.md]
 
-`REDIRECTS` keeps the addresses of the retired mkdocs site. An old element page goes to its successor, where one exists, and otherwise to the schema's index.[^site-config]
+The redirects in `website/site.toml` keep the addresses of the retired mkdocs site. An old element page goes to its successor, where one exists, and otherwise to the schema's index.[^site-config]
 
 [^site-config]: website/site.toml, the site's address, title and redirects
+[^website-readme.md]: website/README.md, the table of what the site shows
