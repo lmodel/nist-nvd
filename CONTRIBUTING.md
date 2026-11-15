@@ -18,7 +18,7 @@ A LinkML schema of the JSON responses of the National Vulnerability Database (NV
 
 ## Development setup
 
-You need Python 3.10+, [uv](https://docs.astral.sh/uv/) and [just](https://github.com/casey/just).
+You need Python 3.11+, [uv](https://docs.astral.sh/uv/) and [just](https://github.com/casey/just).
 
 ```bash
 git clone https://github.com/lmodel/nist-nvd.git
