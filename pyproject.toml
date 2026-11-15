@@ -65,7 +65,7 @@ skip = [
   # the KTL sidecar sync or written by npm, not by hand.
   "tests/neighbours/*",
   ".lokf/scripts/*",
-  "website/package-lock.json",
+  "website/uv.lock",
   # NIST's schemas and responses, and lmodel/cve's module, copied unchanged.
   "upstream/*",
   "tests/data/nvd/*",
@@ -94,7 +94,7 @@ extend-exclude = [
   "src/nist_nvd/datamodel/nist_nvd.py",
   "tests/neighbours/*",
   ".lokf/scripts/*",
-  "website/package-lock.json",
+  "website/uv.lock",
   "upstream/*",
   "tests/data/nvd/*",
   "src/nist_nvd/schema/cve/*",

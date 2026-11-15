@@ -53,7 +53,7 @@ A reference's `tags` map to nothing: they are NVD's own vocabulary, not the CVE 
 * [src/nist_nvd/datamodel/](src/nist_nvd/datamodel): the generated Python datamodel
 * [tests/](tests/): Python tests, with example data and real responses in [data/](tests/data) and the neighbours' adapt copies in [neighbours/](tests/neighbours)
 * [upstream/](upstream/): NIST's JSON schemas
-* [website/](website/): the Astro Starlight site built from the README, `docs/`, the schema's pages and the knowledge bundle
+* [website/](website/): the Hugo site built from the README, `docs/`, the schema's pages and the knowledge bundle
 
 ## Developer Tools
 
