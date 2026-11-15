@@ -103,7 +103,7 @@ exclusions:
     reason: The sidecar's Copilot skill builder, a copy from its template.
 generated:
   by: process:ktl-librarian
-  at: "2026-11-06T21:22:40Z"
+  at: "2026-11-15T02:44:07Z"
 status: draft
 ---
 
@@ -120,6 +120,6 @@ status: draft
 | `.linkmllint.yaml` | `datasets/nist-nvd-linkml-schema.md` | the naming rule's comment |
 | `SECURITY.md`, `AI_COVENANT.md`, `NOTICE`, `LICENSE`, `.github/dependabot.yml`, `.github/release` | `policies/security-policy.md`, `policies/ai-covenant.md`, `policies/license-and-attribution.md` | each file's sections |
 | `.github/workflows`, `.github/scripts` | one concept under `workflows/` per workflow | the on key and the jobs |
-| `website` | `services/documentation-site.md` | `website/README.md` and `site.config.mjs` |
+| `website` | `services/documentation-site.md` | `website/README.md` and `site.toml` |
 
 The modified feed changes about every two hours, and the extract and the enums' comments are dated, so the bundle's numbers follow the dates they name and not NVD's latest data.
