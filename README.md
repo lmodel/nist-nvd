@@ -2,6 +2,11 @@
 
 # nist-nvd
 
+[![Build and test](https://github.com/lmodel/nist-nvd/actions/workflows/main.yaml/badge.svg)](https://github.com/lmodel/nist-nvd/actions/workflows/main.yaml)
+[![Licence](https://img.shields.io/github/license/lmodel/nist-nvd?label=licence)](LICENSE)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/lmodel/nist-nvd/badge)](https://scorecard.dev/viewer/?uri=github.com/lmodel/nist-nvd)
+[![KTL scorecard](https://img.shields.io/endpoint?url=https://lmodel.github.io/nist-nvd/badge.json)](https://lmodel.github.io/nist-nvd/health/)
+
 National Vulnerability Database (NVD) API 2.0 (LinkML)
 
 > **Only want to ask?** Install `ktl-docent` into any agent you use, by a route from [the install page](https://w3id.org/ktl/docs/install/), and ask it about this project. It answers from the bundle and says how far each answer has been checked.
@@ -53,7 +58,7 @@ A reference's `tags` map to nothing: they are NVD's own vocabulary, not the CVE 
 * [src/nist_nvd/datamodel/](src/nist_nvd/datamodel): the generated Python datamodel
 * [tests/](tests/): Python tests, with example data and real responses in [data/](tests/data) and the neighbours' adapt copies in [neighbours/](tests/neighbours)
 * [upstream/](upstream/): NIST's JSON schemas
-* [website/](website/): the Astro Starlight site built from the README, `docs/`, the schema's pages and the knowledge bundle
+* [website/](website/): the Hugo site built from the README, `docs/`, the schema's pages and the knowledge bundle
 
 ## Developer Tools
 
